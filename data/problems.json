@@ -1,0 +1,5559 @@
+[
+  {
+    "id": "ipho-1967-T1",
+    "contest": "IPhO",
+    "year": 1967,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Shooting a Ball",
+    "desc": "Find the angle of projection so that a ball thrown with given speed reaches the highest point on a given inclined target.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "projectile motion",
+      "kinematics",
+      "optimization"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S1.pdf"
+  },
+  {
+    "id": "ipho-1967-T2",
+    "contest": "IPhO",
+    "year": 1967,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Infinite Network of Resistors",
+    "desc": "Compute the equivalent resistance between two nodes of an infinite ladder/grid of identical resistors using self-similarity.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "resistor networks",
+      "self-similarity",
+      "Ohm's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S2.pdf"
+  },
+  {
+    "id": "ipho-1967-T3",
+    "contest": "IPhO",
+    "year": 1967,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Heating Balls",
+    "desc": "Two metal balls at different temperatures are brought into thermal contact; find the equilibrium temperature and entropy change.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "heat capacity",
+      "thermal equilibrium",
+      "entropy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S3.pdf"
+  },
+  {
+    "id": "ipho-1967-T4",
+    "contest": "IPhO",
+    "year": 1967,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Heating a Vessel",
+    "desc": "Determine the time-dependent temperature of liquid in a vessel with constant heating power and Newton's law of cooling.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Newton's law of cooling",
+      "heat capacity",
+      "differential equations"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S4.pdf"
+  },
+  {
+    "id": "ipho-1967-E1",
+    "contest": "IPhO",
+    "year": 1967,
+    "country": "Poland",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E1",
+    "name": "Heating Petroleum",
+    "desc": "Measure the specific heat of petroleum using an electrical heater and a calorimeter.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "specific heat",
+      "calorimetry",
+      "electric heating"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S5.pdf"
+  },
+  {
+    "id": "ipho-1968-T1",
+    "contest": "IPhO",
+    "year": 1968,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Block and Cylinder on an Inclined Plane",
+    "desc": "Analyze the coupled motion of a sliding block and a rolling cylinder on an inclined plane with friction.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rolling without slipping",
+      "friction",
+      "Newton's laws"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_S1.pdf"
+  },
+  {
+    "id": "ipho-1968-T2",
+    "contest": "IPhO",
+    "year": 1968,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Mixing Toluene",
+    "desc": "Two volumes of toluene at different temperatures are mixed; account for thermal expansion and energy balance.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "thermal expansion",
+      "energy conservation",
+      "mixing"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_S2.pdf"
+  },
+  {
+    "id": "ipho-1968-T3",
+    "contest": "IPhO",
+    "year": 1968,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Glass Semi-cylinder",
+    "desc": "Trace rays through a glass semi-cylinder, finding refraction angles and the critical angle for total internal reflection.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "Snell's law",
+      "total internal reflection",
+      "ray tracing"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_S3.pdf"
+  },
+  {
+    "id": "ipho-1968-E1",
+    "contest": "IPhO",
+    "year": 1968,
+    "country": "Hungary",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Three Black Boxes",
+    "desc": "Identify the components inside three sealed two-terminal black boxes using DC and AC measurements.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "I-V characteristic",
+      "AC/DC",
+      "circuit elements"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_S4.pdf"
+  },
+  {
+    "id": "ipho-1969-T1",
+    "contest": "IPhO",
+    "year": 1969,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Three Carts",
+    "desc": "Sequence of elastic and inelastic collisions among three carts; determine velocities and energy losses.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "momentum conservation",
+      "elastic collision",
+      "inelastic collision"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_S1.pdf"
+  },
+  {
+    "id": "ipho-1969-T2",
+    "contest": "IPhO",
+    "year": 1969,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Water inside a Copper Calorimeter",
+    "desc": "Calorimetric problem combining heat capacities and possibly latent heat for water and copper.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "calorimetry",
+      "latent heat",
+      "heat capacity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_S2.pdf"
+  },
+  {
+    "id": "ipho-1969-T3",
+    "contest": "IPhO",
+    "year": 1969,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Suspended Charged Ball",
+    "desc": "Pendulum-like equilibrium of a charged ball in a uniform electric field; find tension and angle.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "Coulomb force",
+      "static equilibrium",
+      "pendulum"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_S3.pdf"
+  },
+  {
+    "id": "ipho-1969-T4",
+    "contest": "IPhO",
+    "year": 1969,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Glass Plate above a Glass Cube",
+    "desc": "Geometric optics with a glass plate suspended over a glass cube; locate images and trace rays.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "refraction",
+      "image formation",
+      "ray tracing"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1969_S4.pdf"
+  },
+  {
+    "id": "ipho-1970-T1",
+    "contest": "IPhO",
+    "year": 1970,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Carrying a Bar",
+    "desc": "Two people carry a long bar; analyze the forces, torques and stability when one person walks toward the other.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "statics",
+      "torque",
+      "center of mass"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S1.pdf"
+  },
+  {
+    "id": "ipho-1970-T2",
+    "contest": "IPhO",
+    "year": 1970,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Salt Crystals",
+    "desc": "Use the NaCl unit cell, density and Avogadro's number to deduce inter-atomic spacing and related quantities.",
+    "topics": [
+      "Quantum Physics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "crystal lattice",
+      "Avogadro's number",
+      "density"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S2.pdf"
+  },
+  {
+    "id": "ipho-1970-T3",
+    "contest": "IPhO",
+    "year": 1970,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Spherical Capacitors",
+    "desc": "Capacitance of concentric spheres, energy stored, and behavior with dielectrics or conducting shells.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Gauss's law",
+      "capacitance",
+      "energy density"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S3.pdf"
+  },
+  {
+    "id": "ipho-1970-T4",
+    "contest": "IPhO",
+    "year": 1970,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Telescope with a Spherical Mirror",
+    "desc": "Image formation by a spherical mirror; magnification and aberrations of a reflecting telescope.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "mirror equation",
+      "telescope",
+      "aberration"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S4.pdf"
+  },
+  {
+    "id": "ipho-1970-E1",
+    "contest": "IPhO",
+    "year": 1970,
+    "country": "Soviet Union",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E1",
+    "name": "Three Lenses",
+    "desc": "Determine the focal lengths and types of three unknown lenses using an optical bench.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "thin lens equation",
+      "focal length",
+      "image formation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S5.pdf"
+  },
+  {
+    "id": "ipho-1971-T1",
+    "contest": "IPhO",
+    "year": 1971,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Connected Masses on a Prism",
+    "desc": "Two masses connected by a string over a pulley on a prism; find accelerations and tensions including friction.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "Newton's laws",
+      "constraints",
+      "friction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S1.pdf"
+  },
+  {
+    "id": "ipho-1971-T2",
+    "contest": "IPhO",
+    "year": 1971,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Mercury Barometer",
+    "desc": "Inaccurate barometer due to air trapped above the mercury; recover true pressure as a function of column height.",
+    "topics": [
+      "Thermodynamics",
+      "Mechanics"
+    ],
+    "tags": [
+      "hydrostatics",
+      "ideal gas law",
+      "barometry"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S2.pdf"
+  },
+  {
+    "id": "ipho-1971-T3",
+    "contest": "IPhO",
+    "year": 1971,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Batteries, Capacitors and Resistors in a Cube",
+    "desc": "Circuit with elements on the edges of a cube; exploit symmetry to find currents, voltages and energy.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "circuit symmetry",
+      "Kirchhoff's laws",
+      "capacitor energy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S3.pdf"
+  },
+  {
+    "id": "ipho-1971-T4",
+    "contest": "IPhO",
+    "year": 1971,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Spherical Aquarium",
+    "desc": "Refraction of light at a spherical water surface; locate the apparent image of an object.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "refraction at curved surface",
+      "image formation",
+      "Snell's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S4.pdf"
+  },
+  {
+    "id": "ipho-1971-E1",
+    "contest": "IPhO",
+    "year": 1971,
+    "country": "Bulgaria",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E1",
+    "name": "Rheostat Dissipation",
+    "desc": "Measure the power dissipated by a variable resistor as a function of position and find the optimum.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "power dissipation",
+      "matched load",
+      "rheostat"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S5.pdf"
+  },
+  {
+    "id": "ipho-1972-T1",
+    "contest": "IPhO",
+    "year": 1972,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Three Cylinders",
+    "desc": "Stacked rotating cylinders coupled by friction; analyze accelerations, slipping conditions and final state.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotational dynamics",
+      "friction torque",
+      "moment of inertia"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S1.pdf"
+  },
+  {
+    "id": "ipho-1972-T2",
+    "contest": "IPhO",
+    "year": 1972,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Molecular Physics",
+    "desc": "Kinetic theory of gases: relate pressure, temperature, mean speed and free path to molecular quantities.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "kinetic theory",
+      "mean free path",
+      "Maxwell-Boltzmann"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S2.pdf"
+  },
+  {
+    "id": "ipho-1972-T3",
+    "contest": "IPhO",
+    "year": 1972,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Dielectric Liquid",
+    "desc": "Capacitor partially filled with dielectric liquid; equilibrium height, force and energy considerations.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "dielectrics",
+      "capacitance",
+      "energy method"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S3.pdf"
+  },
+  {
+    "id": "ipho-1972-T4",
+    "contest": "IPhO",
+    "year": 1972,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Geometrical Optics and Interference",
+    "desc": "Combined ray-optics and thin-film interference setup; locate images and find conditions for bright/dark fringes.",
+    "topics": [
+      "Optics",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "thin film interference",
+      "phase change on reflection",
+      "ray optics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S4.pdf"
+  },
+  {
+    "id": "ipho-1972-E1",
+    "contest": "IPhO",
+    "year": 1972,
+    "country": "Romania",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E1",
+    "name": "Two Cylinders",
+    "desc": "Mechanical experiment with two cylinders to determine moments of inertia and/or friction coefficients.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "rolling motion",
+      "moment of inertia",
+      "friction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S5.pdf"
+  },
+  {
+    "id": "ipho-1974-T1",
+    "contest": "IPhO",
+    "year": 1974,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Hydrogen Atoms Colliding",
+    "desc": "Inelastic collision of two H atoms; minimum kinetic energy needed to excite the Bohr atom.",
+    "topics": [
+      "Quantum Physics",
+      "Mechanics"
+    ],
+    "tags": [
+      "Bohr model",
+      "inelastic collision",
+      "atomic excitation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_S1.pdf"
+  },
+  {
+    "id": "ipho-1974-T2",
+    "contest": "IPhO",
+    "year": 1974,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Bending Light",
+    "desc": "Path of light in a medium with vertically varying refractive index; derive trajectory using Fermat's principle.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "gradient index",
+      "Fermat's principle",
+      "atmospheric refraction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_S2.pdf"
+  },
+  {
+    "id": "ipho-1974-T3",
+    "contest": "IPhO",
+    "year": 1974,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Surviving with Thermodynamics",
+    "desc": "Heat-balance estimate for a person/animal in a hostile thermal environment; radiation, conduction and metabolism.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "heat transfer",
+      "Stefan-Boltzmann",
+      "thermal balance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_S3.pdf"
+  },
+  {
+    "id": "ipho-1974-E1",
+    "contest": "IPhO",
+    "year": 1974,
+    "country": "Poland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Diodes in a Black Box",
+    "desc": "Identify the network of diodes hidden in a multi-terminal black box from I-V measurements.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diode I-V",
+      "circuit identification",
+      "nonlinear element"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_S4.pdf"
+  },
+  {
+    "id": "ipho-1975-T1",
+    "contest": "IPhO",
+    "year": 1975,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Rotating Rod",
+    "desc": "Dynamics of a rod rotating about a pivot under gravity; find angular acceleration, force on pivot and energy.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotational dynamics",
+      "torque",
+      "moment of inertia"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_S1.pdf"
+  },
+  {
+    "id": "ipho-1975-T2",
+    "contest": "IPhO",
+    "year": 1975,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Thick Lens",
+    "desc": "Image formation by a thick lens; locate principal planes and compute focal length using lens-makers equation.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "thick lens",
+      "principal planes",
+      "lens-makers equation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_S2.pdf"
+  },
+  {
+    "id": "ipho-1975-T3",
+    "contest": "IPhO",
+    "year": 1975,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Ions in a Magnetic Field",
+    "desc": "Trajectory of ions in a uniform magnetic field, including a velocity selector / mass spectrometer setup.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Lorentz force",
+      "cyclotron motion",
+      "mass spectrometer"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_S3.pdf"
+  },
+  {
+    "id": "ipho-1975-E1",
+    "contest": "IPhO",
+    "year": 1975,
+    "country": "East Germany",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Semiconductor Element",
+    "desc": "Measure the I-V characteristic of an unknown semiconductor element and infer its physical parameters.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "I-V curve",
+      "semiconductor",
+      "diode equation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1975_S4.pdf"
+  },
+  {
+    "id": "ipho-1976-T1",
+    "contest": "IPhO",
+    "year": 1976,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Spinning Block Inside a Sphere",
+    "desc": "Block resting inside a rotating spherical shell; find equilibrium position and stability.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotating frame",
+      "centripetal force",
+      "friction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_S1.pdf"
+  },
+  {
+    "id": "ipho-1976-T2",
+    "contest": "IPhO",
+    "year": 1976,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "A Valve in a Cylinder",
+    "desc": "Gas in a cylinder with a valve; analyze pressures, temperatures and work after opening.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "ideal gas",
+      "first law",
+      "free expansion"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_S2.pdf"
+  },
+  {
+    "id": "ipho-1976-T3",
+    "contest": "IPhO",
+    "year": 1976,
+    "country": "Hungary",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Air Bubble inside a Glass Sphere",
+    "desc": "Locate the image of an air bubble inside a glass sphere as seen from outside; refraction at curved surfaces.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "refraction at curved surface",
+      "image formation",
+      "Snell's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_S3.pdf"
+  },
+  {
+    "id": "ipho-1976-E1",
+    "contest": "IPhO",
+    "year": 1976,
+    "country": "Hungary",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Thermal Properties of the X material",
+    "desc": "Determine the specific heat and/or latent heat of an unknown material X using calorimetry.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "specific heat",
+      "phase transition",
+      "calorimetry"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1976_S4.pdf"
+  },
+  {
+    "id": "ipho-1977-T1",
+    "contest": "IPhO",
+    "year": 1977,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Otto Cycle",
+    "desc": "Analyze the four strokes of the Otto cycle; compute efficiency, work and entropy changes.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Otto cycle",
+      "efficiency",
+      "adiabatic process"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_S1.pdf"
+  },
+  {
+    "id": "ipho-1977-T2",
+    "contest": "IPhO",
+    "year": 1977,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Rectangular Soap Film",
+    "desc": "Mechanics of a rectangular soap film with a movable wire; surface tension and energy.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "surface tension",
+      "energy method",
+      "fluid statics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_S2.pdf"
+  },
+  {
+    "id": "ipho-1977-T3",
+    "contest": "IPhO",
+    "year": 1977,
+    "country": "Czechoslovakia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Electron Gun",
+    "desc": "Electron accelerated through a potential then deflected by an electric field; ballistics and beam optics.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "electrostatic acceleration",
+      "ballistic trajectory",
+      "kinetic energy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1977_S3.pdf"
+  },
+  {
+    "id": "ipho-1979-T1",
+    "contest": "IPhO",
+    "year": 1979,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "To the Moon!",
+    "desc": "Multi-stage trajectory of a rocket from Earth to the Moon; gravitational potentials and orbital transfer.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "orbital mechanics",
+      "Hohmann transfer",
+      "gravitational potential"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_S1.pdf"
+  },
+  {
+    "id": "ipho-1979-T2",
+    "contest": "IPhO",
+    "year": 1979,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Influence of Humidity on Scales",
+    "desc": "Apparent weight of an object on a balance changes with air humidity and density; correct for buoyancy.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "buoyancy in air",
+      "humidity",
+      "density"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_S2.pdf"
+  },
+  {
+    "id": "ipho-1979-T3",
+    "contest": "IPhO",
+    "year": 1979,
+    "country": "Soviet Union",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Reflectors on the Moon",
+    "desc": "Laser ranging using lunar retroreflectors; estimate intensity, divergence and required precision.",
+    "topics": [
+      "Optics",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "retroreflector",
+      "diffraction",
+      "intensity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_S3.pdf"
+  },
+  {
+    "id": "ipho-1979-E1",
+    "contest": "IPhO",
+    "year": 1979,
+    "country": "Soviet Union",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Black Box",
+    "desc": "Identify the unknown linear circuit in a black box from impedance / response measurements.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "AC impedance",
+      "circuit identification",
+      "frequency response"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_S4.pdf"
+  },
+  {
+    "id": "ipho-1981-T1",
+    "contest": "IPhO",
+    "year": 1981,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Gas Container Rocket",
+    "desc": "Rocket propelled by a gas escaping through a nozzle; thrust, acceleration and final velocity.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "rocket equation",
+      "momentum flux",
+      "gas dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_S1.pdf"
+  },
+  {
+    "id": "ipho-1981-T2",
+    "contest": "IPhO",
+    "year": 1981,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Electric Lamp",
+    "desc": "Filament temperature and brightness as a function of voltage; couple Stefan-Boltzmann with Ohm's law.",
+    "topics": [
+      "Thermodynamics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Stefan-Boltzmann",
+      "blackbody",
+      "temperature-dependent resistance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_S2.pdf"
+  },
+  {
+    "id": "ipho-1981-T3",
+    "contest": "IPhO",
+    "year": 1981,
+    "country": "Bulgaria",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Detecting Astronomical Radiowaves",
+    "desc": "Two-dish radio interferometer detects astronomical signal; angular resolution and fringe pattern.",
+    "topics": [
+      "Waves & Oscillations",
+      "Astrophysics"
+    ],
+    "tags": [
+      "radio interferometry",
+      "angular resolution",
+      "phase difference"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_S3.pdf"
+  },
+  {
+    "id": "ipho-1981-E1",
+    "contest": "IPhO",
+    "year": 1981,
+    "country": "Bulgaria",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Elastic Rubber Cord",
+    "desc": "Measure stress-strain and thermoelastic properties of a stretched rubber cord.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "elasticity",
+      "thermoelastic effect",
+      "Hooke's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1981_S4.pdf"
+  },
+  {
+    "id": "ipho-1982-T1",
+    "contest": "IPhO",
+    "year": 1982,
+    "country": "West Germany",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Fluorescent Lamp",
+    "desc": "Steady-state operation of a fluorescent lamp with ballast inductor; AC analysis and power.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "AC circuits",
+      "inductor ballast",
+      "gas discharge"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S1.pdf"
+  },
+  {
+    "id": "ipho-1982-T2",
+    "contest": "IPhO",
+    "year": 1982,
+    "country": "West Germany",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Oscillating Coat Hanger",
+    "desc": "Period of small oscillations of a coat hanger about different pivot points; physical pendulum.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "physical pendulum",
+      "moment of inertia",
+      "parallel axis theorem"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S2.pdf"
+  },
+  {
+    "id": "ipho-1982-T3",
+    "contest": "IPhO",
+    "year": 1982,
+    "country": "West Germany",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Hot-Air Balloon",
+    "desc": "Lift of a hot-air balloon; combine ideal gas law with buoyancy in stratified atmosphere.",
+    "topics": [
+      "Thermodynamics",
+      "Mechanics"
+    ],
+    "tags": [
+      "buoyancy",
+      "ideal gas",
+      "atmosphere model"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S3.pdf"
+  },
+  {
+    "id": "ipho-1982-E1",
+    "contest": "IPhO",
+    "year": 1982,
+    "country": "West Germany",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Lens Experiment",
+    "desc": "Determine focal length and quality of an unknown lens using image formation on a screen.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "thin lens equation",
+      "magnification",
+      "aberrations"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S4.pdf"
+  },
+  {
+    "id": "ipho-1982-E2",
+    "contest": "IPhO",
+    "year": 1982,
+    "country": "West Germany",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Motion of a Rolling Cylinder",
+    "desc": "Measure motion of a rolling cylinder on an inclined plane to extract moment of inertia and friction.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "rolling without slipping",
+      "moment of inertia",
+      "energy conservation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S5.pdf"
+  },
+  {
+    "id": "ipho-1983-T1",
+    "contest": "IPhO",
+    "year": 1983,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Jumping Particle",
+    "desc": "Charged particle bouncing between regions with electric field; periodic motion and energy.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "uniform electric field",
+      "periodic motion",
+      "energy conservation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_S1.pdf"
+  },
+  {
+    "id": "ipho-1983-T2",
+    "contest": "IPhO",
+    "year": 1983,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Different Kinds of Oscillation",
+    "desc": "Compare and analyze several oscillating mechanical/electric systems; derive periods and damping.",
+    "topics": [
+      "Mechanics",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "simple harmonic motion",
+      "damping",
+      "coupled oscillators"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_S2.pdf"
+  },
+  {
+    "id": "ipho-1983-T3",
+    "contest": "IPhO",
+    "year": 1983,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Prisms",
+    "desc": "Light passing through prisms; minimum deviation and dispersion of polychromatic light.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "prism",
+      "dispersion",
+      "minimum deviation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_S3.pdf"
+  },
+  {
+    "id": "ipho-1983-T4",
+    "contest": "IPhO",
+    "year": 1983,
+    "country": "Romania",
+    "type": "Theory",
+    "num": 4,
+    "label": "T4",
+    "name": "Compton Scattering",
+    "desc": "Relativistic scattering of a photon by an electron; derive wavelength shift and angular distribution.",
+    "topics": [
+      "Quantum Physics",
+      "Relativity"
+    ],
+    "tags": [
+      "Compton effect",
+      "photon momentum",
+      "relativistic kinematics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_S4.pdf"
+  },
+  {
+    "id": "ipho-1983-E1",
+    "contest": "IPhO",
+    "year": 1983,
+    "country": "Romania",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E1",
+    "name": "IPhO's Logo",
+    "desc": "Experimental investigation of an optical/mechanical system that produces the IPhO logo pattern.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "geometric pattern",
+      "interference or shadows",
+      "measurement"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1983_S5.pdf"
+  },
+  {
+    "id": "ipho-1984-T1",
+    "contest": "IPhO",
+    "year": 1984,
+    "country": "Sweden",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Mirage",
+    "desc": "Formation of a mirage above hot ground; trace rays through a medium with vertical density gradient.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "gradient index",
+      "Snell's law",
+      "atmospheric optics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_S1.pdf"
+  },
+  {
+    "id": "ipho-1984-T2",
+    "contest": "IPhO",
+    "year": 1984,
+    "country": "Sweden",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Seiching",
+    "desc": "Standing surface waves in a closed lake/basin (a seiche); compute periods and mode shapes.",
+    "topics": [
+      "Waves & Oscillations",
+      "Mechanics"
+    ],
+    "tags": [
+      "standing waves",
+      "shallow water waves",
+      "boundary conditions"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_S2.pdf"
+  },
+  {
+    "id": "ipho-1984-T3",
+    "contest": "IPhO",
+    "year": 1984,
+    "country": "Sweden",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Electrical Filter",
+    "desc": "Analyze frequency response of an RC/RLC filter; find cutoff frequency, phase shift and gain.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "RC filter",
+      "transfer function",
+      "Bode plot"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_S3.pdf"
+  },
+  {
+    "id": "ipho-1984-E1",
+    "contest": "IPhO",
+    "year": 1984,
+    "country": "Sweden",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Diode, Capacitor and Resistor",
+    "desc": "Investigate transient and steady-state behavior of a diode-capacitor-resistor network.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "RC transient",
+      "diode rectifier",
+      "oscilloscope"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_S4.pdf"
+  },
+  {
+    "id": "ipho-1984-E2",
+    "contest": "IPhO",
+    "year": 1984,
+    "country": "Sweden",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Glow Discharge Lamp",
+    "desc": "Measure I-V curve and breakdown behavior of a glow discharge lamp.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "gas discharge",
+      "negative differential resistance",
+      "breakdown voltage"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1984_S5.pdf"
+  },
+  {
+    "id": "ipho-1985-T1",
+    "contest": "IPhO",
+    "year": 1985,
+    "country": "Yugoslavia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Antenna Array",
+    "desc": "Radiation pattern of an array of dipole antennas; phase relations and angular maxima.",
+    "topics": [
+      "Waves & Oscillations",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "antenna array",
+      "interference",
+      "radiation pattern"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_S1.pdf"
+  },
+  {
+    "id": "ipho-1985-T2",
+    "contest": "IPhO",
+    "year": 1985,
+    "country": "Yugoslavia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Hall Effect",
+    "desc": "Compute Hall voltage and carrier density in a semiconductor strip; account for magnetoresistance.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Hall effect",
+      "Lorentz force",
+      "carrier density"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_S2.pdf"
+  },
+  {
+    "id": "ipho-1985-T3",
+    "contest": "IPhO",
+    "year": 1985,
+    "country": "Yugoslavia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Escaping the Solar System",
+    "desc": "Energy and trajectory required to escape the Solar System from Earth; gravity assists.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "escape velocity",
+      "gravitational potential",
+      "gravity assist"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_S3.pdf"
+  },
+  {
+    "id": "ipho-1985-E1",
+    "contest": "IPhO",
+    "year": 1985,
+    "country": "Yugoslavia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Brass Disk",
+    "desc": "Mechanical/thermal experiment with a brass disk to extract material properties.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "moment of inertia",
+      "thermal expansion",
+      "elastic properties"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_S4.pdf"
+  },
+  {
+    "id": "ipho-1985-E2",
+    "contest": "IPhO",
+    "year": 1985,
+    "country": "Yugoslavia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Permanent Magnets",
+    "desc": "Map field and measure magnetic moment of permanent magnets using a compass / Hall probe.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "field mapping",
+      "torque on dipole"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1985_S5.pdf"
+  },
+  {
+    "id": "ipho-1986-T1",
+    "contest": "IPhO",
+    "year": 1986,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Wave Interference",
+    "desc": "Two-source interference of mechanical or EM waves; find fringe spacing and intensity pattern.",
+    "topics": [
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "interference",
+      "phase difference",
+      "intensity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_S1.pdf"
+  },
+  {
+    "id": "ipho-1986-T2",
+    "contest": "IPhO",
+    "year": 1986,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Seismic Waves",
+    "desc": "Propagation and refraction of P/S seismic waves through Earth's layered interior.",
+    "topics": [
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "seismic waves",
+      "Snell's law",
+      "layered media"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_S2.pdf"
+  },
+  {
+    "id": "ipho-1986-T3",
+    "contest": "IPhO",
+    "year": 1986,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Masses and Springs",
+    "desc": "Coupled spring-mass system; find normal modes, frequencies and energy distribution.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "coupled oscillators",
+      "normal modes",
+      "eigenfrequencies"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_S3.pdf"
+  },
+  {
+    "id": "ipho-1986-E1",
+    "contest": "IPhO",
+    "year": 1986,
+    "country": "United Kingdom",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Pendant Drop",
+    "desc": "Measure surface tension by analyzing the shape of a pendant drop.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "surface tension",
+      "drop shape",
+      "capillarity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_S4.pdf"
+  },
+  {
+    "id": "ipho-1986-E2",
+    "contest": "IPhO",
+    "year": 1986,
+    "country": "United Kingdom",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Microcomputer",
+    "desc": "Use a microcomputer to acquire data from a physics experiment; analyze and characterize the response.",
+    "topics": [
+      "Experimental Methods"
+    ],
+    "tags": [
+      "data acquisition",
+      "analog-to-digital",
+      "signal analysis"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1986_S5.pdf"
+  },
+  {
+    "id": "ipho-1987-T1",
+    "contest": "IPhO",
+    "year": 1987,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Ascending Moist Air",
+    "desc": "Adiabatic ascent of moist air, condensation level and lapse rate; meteorological thermodynamics.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "adiabatic process",
+      "humidity",
+      "lapse rate"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_S1.pdf"
+  },
+  {
+    "id": "ipho-1987-T2",
+    "contest": "IPhO",
+    "year": 1987,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Electrons in a Magnetic Field",
+    "desc": "Trajectories of electrons in combined magnetic and electric fields; cycloidal and helical motion.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Lorentz force",
+      "cyclotron motion",
+      "ExB drift"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_S2.pdf"
+  },
+  {
+    "id": "ipho-1987-T3",
+    "contest": "IPhO",
+    "year": 1987,
+    "country": "East Germany",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Infinite LC-grid",
+    "desc": "Wave propagation on an infinite ladder of LC elements; characteristic impedance and dispersion relation.",
+    "topics": [
+      "Electromagnetism",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "LC ladder",
+      "characteristic impedance",
+      "dispersion relation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_S3.pdf"
+  },
+  {
+    "id": "ipho-1987-E1",
+    "contest": "IPhO",
+    "year": 1987,
+    "country": "East Germany",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Refractive Indices",
+    "desc": "Determine refractive indices of liquids/glass using minimum deviation or Brewster angle.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "refractive index",
+      "Snell's law",
+      "Brewster angle"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1987_S4.pdf"
+  },
+  {
+    "id": "ipho-1988-T1",
+    "contest": "IPhO",
+    "year": 1988,
+    "country": "Austria",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Spectroscopy of Particle Velocities",
+    "desc": "Use Doppler shift / time-of-flight to determine the velocity distribution of particles in a beam.",
+    "topics": [
+      "Waves & Oscillations",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "Doppler effect",
+      "Maxwell-Boltzmann distribution",
+      "spectroscopy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_S1.pdf"
+  },
+  {
+    "id": "ipho-1988-T2",
+    "contest": "IPhO",
+    "year": 1988,
+    "country": "Austria",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Maxwell's Wheel",
+    "desc": "Yo-yo-like wheel falling under gravity while unwinding; energy conservation and string tension.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotational dynamics",
+      "energy conservation",
+      "moment of inertia"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_S2.pdf"
+  },
+  {
+    "id": "ipho-1988-T3",
+    "contest": "IPhO",
+    "year": 1988,
+    "country": "Austria",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Recombination of Ions in Ionized Gas",
+    "desc": "Kinetic equations for ion recombination in a partially ionized gas; time evolution of densities.",
+    "topics": [
+      "Quantum Physics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "recombination",
+      "rate equations",
+      "plasma physics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_S3.pdf"
+  },
+  {
+    "id": "ipho-1988-E1",
+    "contest": "IPhO",
+    "year": 1988,
+    "country": "Austria",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Polarized Light",
+    "desc": "Investigate polarization of light by reflection / transmission and characterize polarizers.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "polarization",
+      "Malus's law",
+      "Brewster angle"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_S4.pdf"
+  },
+  {
+    "id": "ipho-1988-E2",
+    "contest": "IPhO",
+    "year": 1988,
+    "country": "Austria",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Electron Tube",
+    "desc": "Characterize an electron tube (diode/triode); measure I-V and find work function or gain.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "thermionic emission",
+      "I-V curve",
+      "Richardson equation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1988_S5.pdf"
+  },
+  {
+    "id": "ipho-1989-T1",
+    "contest": "IPhO",
+    "year": 1989,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Boiling Liquids",
+    "desc": "Phase transition and boiling under varying pressure; Clausius-Clapeyron and latent heat.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Clausius-Clapeyron",
+      "latent heat",
+      "phase transition"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_S1.pdf"
+  },
+  {
+    "id": "ipho-1989-T2",
+    "contest": "IPhO",
+    "year": 1989,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Rotating Masses",
+    "desc": "Dynamics of masses on a rotating frame / pulley system; tensions and angular speeds.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotational dynamics",
+      "constraints",
+      "angular momentum"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_S2.pdf"
+  },
+  {
+    "id": "ipho-1989-T3",
+    "contest": "IPhO",
+    "year": 1989,
+    "country": "Poland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Proton Microscope",
+    "desc": "Resolution of a proton microscope set by de Broglie wavelength; magnetic lens optics.",
+    "topics": [
+      "Quantum Physics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "de Broglie wavelength",
+      "magnetic lens",
+      "diffraction limit"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_S3.pdf"
+  },
+  {
+    "id": "ipho-1989-E1",
+    "contest": "IPhO",
+    "year": 1989,
+    "country": "Poland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Piezoelectric Discs",
+    "desc": "Characterize the resonance and electromechanical coupling of piezoelectric discs.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "piezoelectric effect",
+      "resonance",
+      "impedance spectroscopy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1989_S4.pdf"
+  },
+  {
+    "id": "ipho-1990-T1",
+    "contest": "IPhO",
+    "year": 1990,
+    "country": "Netherlands",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "X-ray Diffraction from a Crystal",
+    "desc": "Use Bragg's law to interpret X-ray diffraction patterns from a crystal lattice and extract spacings.",
+    "topics": [
+      "Quantum Physics",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "Bragg's law",
+      "crystal lattice",
+      "X-ray diffraction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_S1.pdf"
+  },
+  {
+    "id": "ipho-1990-T2",
+    "contest": "IPhO",
+    "year": 1990,
+    "country": "Netherlands",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Electric Experiments in the Magnetosphere",
+    "desc": "Tethered satellite generates an EMF moving through the geomagnetic field; current and power dissipation.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "motional EMF",
+      "Lorentz force",
+      "induction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_S2.pdf"
+  },
+  {
+    "id": "ipho-1990-T3",
+    "contest": "IPhO",
+    "year": 1990,
+    "country": "Netherlands",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "The Rotating Neutron Star",
+    "desc": "Pulsar emission and spin-down: rotational kinetic energy, magnetic dipole radiation and braking.",
+    "topics": [
+      "Astrophysics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "pulsar",
+      "rotational energy",
+      "magnetic dipole radiation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_S3.pdf"
+  },
+  {
+    "id": "ipho-1990-E1",
+    "contest": "IPhO",
+    "year": 1990,
+    "country": "Netherlands",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "LED Efficiency",
+    "desc": "Measure the threshold voltage and quantum efficiency of a light-emitting diode.",
+    "topics": [
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "LED",
+      "Planck's constant",
+      "I-V curve"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_S4.pdf"
+  },
+  {
+    "id": "ipho-1990-E2",
+    "contest": "IPhO",
+    "year": 1990,
+    "country": "Netherlands",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Two Magnets",
+    "desc": "Measure forces and torques between two magnets and infer their dipole moments.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "force between magnets",
+      "torque"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1990_S5.pdf"
+  },
+  {
+    "id": "ipho-1991-T1",
+    "contest": "IPhO",
+    "year": 1991,
+    "country": "Cuba",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Friction on Impact",
+    "desc": "Collision of a sliding/rolling object with a wall including friction; impulse and energy loss.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "impulsive force",
+      "friction",
+      "rolling motion"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_S1.pdf"
+  },
+  {
+    "id": "ipho-1991-T2",
+    "contest": "IPhO",
+    "year": 1991,
+    "country": "Cuba",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Relativistic Square",
+    "desc": "Apparent shape of a moving square as seen by a stationary observer; aberration and length contraction.",
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "length contraction",
+      "light-time delay",
+      "relativistic optics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_S2.pdf"
+  },
+  {
+    "id": "ipho-1991-T3",
+    "contest": "IPhO",
+    "year": 1991,
+    "country": "Cuba",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Cooling Atoms by Laser",
+    "desc": "Doppler cooling of atoms by counter-propagating laser beams; momentum transfer and temperature limit.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "laser cooling",
+      "photon momentum",
+      "Doppler limit"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_S3.pdf"
+  },
+  {
+    "id": "ipho-1991-E1",
+    "contest": "IPhO",
+    "year": 1991,
+    "country": "Cuba",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Three Terminal Black Box",
+    "desc": "Identify a three-terminal nonlinear device (e.g., transistor) hidden in a black box.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "transistor",
+      "I-V characterization",
+      "nonlinear element"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1991_S4.pdf"
+  },
+  {
+    "id": "ipho-1992-T1",
+    "contest": "IPhO",
+    "year": 1992,
+    "country": "Finland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "A Rotating Satellite",
+    "desc": "Stability of a satellite's rotation in orbit; gravity gradient torque and tidal locking.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "gravity gradient",
+      "tidal locking",
+      "rotational dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_S1.pdf"
+  },
+  {
+    "id": "ipho-1992-T2",
+    "contest": "IPhO",
+    "year": 1992,
+    "country": "Finland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Longitudinal Motion of a Linear Molecule",
+    "desc": "Normal modes of a linear triatomic molecule modeled as masses connected by springs.",
+    "topics": [
+      "Mechanics",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "coupled oscillators",
+      "normal modes",
+      "molecular vibrations"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_S2.pdf"
+  },
+  {
+    "id": "ipho-1992-T3",
+    "contest": "IPhO",
+    "year": 1992,
+    "country": "Finland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "A Satellite in Sunshine",
+    "desc": "Equilibrium temperature of a satellite balancing solar absorption and thermal emission.",
+    "topics": [
+      "Thermodynamics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "Stefan-Boltzmann",
+      "radiative balance",
+      "albedo"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_S3.pdf"
+  },
+  {
+    "id": "ipho-1992-E1",
+    "contest": "IPhO",
+    "year": 1992,
+    "country": "Finland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Electric Breakdown of Air",
+    "desc": "Measure breakdown voltage of air gaps as a function of pressure and gap width (Paschen's law).",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "Paschen's law",
+      "breakdown voltage",
+      "gas discharge"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_S4.pdf"
+  },
+  {
+    "id": "ipho-1992-E2",
+    "contest": "IPhO",
+    "year": 1992,
+    "country": "Finland",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "A Grating and Optical Filters",
+    "desc": "Use a diffraction grating to determine wavelengths and characterize optical filters.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diffraction grating",
+      "spectroscopy",
+      "transmission"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1992_S5.pdf"
+  },
+  {
+    "id": "ipho-1993-T1",
+    "contest": "IPhO",
+    "year": 1993,
+    "country": "USA",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Atmospheric Electricity",
+    "desc": "Electric field, currents and capacitance of the Earth-ionosphere system; lightning maintains charge.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "atmospheric electricity",
+      "leakage current",
+      "spherical capacitor"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_S1.pdf"
+  },
+  {
+    "id": "ipho-1993-T2",
+    "contest": "IPhO",
+    "year": 1993,
+    "country": "USA",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Laser Forces on a Transparent Prism",
+    "desc": "Radiation pressure of light passing through a prism; momentum transfer and force computation.",
+    "topics": [
+      "Optics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "radiation pressure",
+      "photon momentum",
+      "refraction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_S2.pdf"
+  },
+  {
+    "id": "ipho-1993-T3",
+    "contest": "IPhO",
+    "year": 1993,
+    "country": "USA",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Electron Beam",
+    "desc": "Self-defocusing electron beam due to space charge; balance with magnetic focusing.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "space charge",
+      "electron beam",
+      "magnetic focusing"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_S3.pdf"
+  },
+  {
+    "id": "ipho-1993-E1",
+    "contest": "IPhO",
+    "year": 1993,
+    "country": "USA",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Heat of Vaporization of Nitrogen",
+    "desc": "Determine the latent heat of vaporization of liquid nitrogen using calorimetry.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "latent heat",
+      "calorimetry",
+      "phase transition"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_S4.pdf"
+  },
+  {
+    "id": "ipho-1993-E2",
+    "contest": "IPhO",
+    "year": 1993,
+    "country": "USA",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Magnetic Moments and Fields",
+    "desc": "Measure magnetic moment of a permanent magnet and characterize the field of a coil.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "Helmholtz coil",
+      "field mapping"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1993_S5.pdf"
+  },
+  {
+    "id": "ipho-1994-T1",
+    "contest": "IPhO",
+    "year": 1994,
+    "country": "China",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Relativistic Particle",
+    "desc": "Energy-momentum relations and decay kinematics of a relativistic particle.",
+    "topics": [
+      "Relativity",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "four-momentum",
+      "particle decay",
+      "relativistic kinematics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S1.pdf"
+  },
+  {
+    "id": "ipho-1994-T2",
+    "contest": "IPhO",
+    "year": 1994,
+    "country": "China",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Superconducting Magnet",
+    "desc": "Energy stored, persistent current and quench dynamics of a superconducting magnet.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "inductor energy",
+      "superconductivity",
+      "persistent current"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S2.pdf"
+  },
+  {
+    "id": "ipho-1994-T3",
+    "contest": "IPhO",
+    "year": 1994,
+    "country": "China",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Collision of Discs with Surface Friction",
+    "desc": "Two-dimensional collision between rotating discs with surface friction; conservation laws and final state.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "2D collision",
+      "friction",
+      "angular momentum"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S3.pdf"
+  },
+  {
+    "id": "ipho-1994-E1",
+    "contest": "IPhO",
+    "year": 1994,
+    "country": "China",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Light Reflectivity of a Transparent Dielectric",
+    "desc": "Measure reflectivity vs. angle to verify Fresnel equations and determine refractive index.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "Fresnel equations",
+      "Brewster angle",
+      "reflectivity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S4.pdf"
+  },
+  {
+    "id": "ipho-1994-E2",
+    "contest": "IPhO",
+    "year": 1994,
+    "country": "China",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Two Terminal Black Box",
+    "desc": "Identify the linear/nonlinear circuit inside a sealed two-terminal black box.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "AC impedance",
+      "black box",
+      "circuit identification"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S5.pdf"
+  },
+  {
+    "id": "ipho-1995-T1",
+    "contest": "IPhO",
+    "year": 1995,
+    "country": "Australia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Gravitational Red Shift and Stellar Mass",
+    "desc": "Use gravitational redshift of spectral lines from a compact star to infer its mass-to-radius ratio.",
+    "topics": [
+      "Relativity",
+      "Astrophysics"
+    ],
+    "tags": [
+      "gravitational redshift",
+      "compact star",
+      "general relativity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_S1.pdf"
+  },
+  {
+    "id": "ipho-1995-T2",
+    "contest": "IPhO",
+    "year": 1995,
+    "country": "Australia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Sound Propagation",
+    "desc": "Refraction and propagation of sound in a stratified atmosphere or ocean; ray tracing.",
+    "topics": [
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "acoustics",
+      "Snell's law",
+      "stratified medium"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_S2.pdf"
+  },
+  {
+    "id": "ipho-1995-T3",
+    "contest": "IPhO",
+    "year": 1995,
+    "country": "Australia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Cylindrical Buoy",
+    "desc": "Equilibrium and oscillations of a cylindrical buoy floating in water; period of bobbing.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "buoyancy",
+      "simple harmonic motion",
+      "hydrostatics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_S3.pdf"
+  },
+  {
+    "id": "ipho-1995-E1",
+    "contest": "IPhO",
+    "year": 1995,
+    "country": "Australia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Terminal Velocity in a Viscous Liquid",
+    "desc": "Measure terminal velocity of falling spheres in a viscous fluid to extract viscosity (Stokes' law).",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "Stokes' law",
+      "viscosity",
+      "terminal velocity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_S4.pdf"
+  },
+  {
+    "id": "ipho-1995-E2",
+    "contest": "IPhO",
+    "year": 1995,
+    "country": "Australia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Diffraction and Scattering of Laser Light",
+    "desc": "Investigate single-slit diffraction and small-particle scattering using a laser pointer.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diffraction",
+      "scattering",
+      "laser"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1995_S5.pdf"
+  },
+  {
+    "id": "ipho-1996-T1",
+    "contest": "IPhO",
+    "year": 1996,
+    "country": "Norway",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Five Short Problems",
+    "desc": "Five short conceptual problems spanning mechanics, thermodynamics, electromagnetism and waves.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "short answer",
+      "estimation",
+      "mixed topics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_S1.pdf"
+  },
+  {
+    "id": "ipho-1996-T2",
+    "contest": "IPhO",
+    "year": 1996,
+    "country": "Norway",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Dynamics of Electrons and Cylinders",
+    "desc": "Motion of charged cylinders / electrons under combined electric and magnetic fields.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "Lorentz force",
+      "induction",
+      "rotational dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_S2.pdf"
+  },
+  {
+    "id": "ipho-1996-T3",
+    "contest": "IPhO",
+    "year": 1996,
+    "country": "Norway",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Moon and Tides",
+    "desc": "Tidal forces of the Moon on Earth; height of tides, energy dissipation and lunar recession.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "tidal forces",
+      "angular momentum",
+      "celestial mechanics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_S3.pdf"
+  },
+  {
+    "id": "ipho-1996-E1",
+    "contest": "IPhO",
+    "year": 1996,
+    "country": "Norway",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Gravity and Magnetism",
+    "desc": "Combined experiment to measure local gravity g and magnetic field via pendulums and compass.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "pendulum",
+      "magnetic dipole",
+      "free fall"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_S4.pdf"
+  },
+  {
+    "id": "ipho-1997-T1",
+    "contest": "IPhO",
+    "year": 1997,
+    "country": "Canada",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Scalings",
+    "desc": "Use dimensional analysis and scaling arguments for biological/mechanical phenomena (size effects).",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "dimensional analysis",
+      "scaling laws",
+      "allometry"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_S1.pdf"
+  },
+  {
+    "id": "ipho-1997-T2",
+    "contest": "IPhO",
+    "year": 1997,
+    "country": "Canada",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Nuclear Masses and Stability",
+    "desc": "Semi-empirical mass formula; binding energy per nucleon and nuclear stability valley.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "binding energy",
+      "semi-empirical mass formula",
+      "nuclear stability"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_S2.pdf"
+  },
+  {
+    "id": "ipho-1997-T3",
+    "contest": "IPhO",
+    "year": 1997,
+    "country": "Canada",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Solar-Powered Aircraft",
+    "desc": "Power balance for a solar-powered aircraft: drag, lift and solar input determine cruise speed.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "aerodynamics",
+      "solar irradiance",
+      "power balance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_S3.pdf"
+  },
+  {
+    "id": "ipho-1997-E1",
+    "contest": "IPhO",
+    "year": 1997,
+    "country": "Canada",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Characterization of the Bimorph",
+    "desc": "Investigate the electromechanical response of a piezoelectric bimorph actuator.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "piezoelectric bimorph",
+      "displacement",
+      "elasticity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1997_S4.pdf"
+  },
+  {
+    "id": "ipho-1998-T1",
+    "contest": "IPhO",
+    "year": 1998,
+    "country": "Iceland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Rolling of a Hexagonal Prism",
+    "desc": "Step-by-step rolling of a hexagonal prism down an incline; energy loss and conditions for rolling.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rotational dynamics",
+      "angular momentum",
+      "energy loss"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_S1.pdf"
+  },
+  {
+    "id": "ipho-1998-T2",
+    "contest": "IPhO",
+    "year": 1998,
+    "country": "Iceland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Water under an Ice Cap",
+    "desc": "Heat conduction through an ice cap with geothermal heating; profile of temperature and ice melt rate.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "heat conduction",
+      "Fourier's law",
+      "geothermal"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_S2.pdf"
+  },
+  {
+    "id": "ipho-1998-T3",
+    "contest": "IPhO",
+    "year": 1998,
+    "country": "Iceland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Faster than Light?",
+    "desc": "Cherenkov radiation: charged particle moving faster than light in medium emits cone of photons.",
+    "topics": [
+      "Electromagnetism",
+      "Relativity"
+    ],
+    "tags": [
+      "Cherenkov radiation",
+      "phase velocity",
+      "shock cone"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_S3.pdf"
+  },
+  {
+    "id": "ipho-1998-E1",
+    "contest": "IPhO",
+    "year": 1998,
+    "country": "Iceland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Electromagnetism Experiment",
+    "desc": "Investigate induction / mutual inductance using coils, oscilloscope and signal generator.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "induction",
+      "mutual inductance",
+      "AC measurement"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1998_S4.pdf"
+  },
+  {
+    "id": "ipho-1999-T1",
+    "contest": "IPhO",
+    "year": 1999,
+    "country": "Italy",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Absorption of Radiation by a Gas",
+    "desc": "Beer-Lambert absorption with line-shape effects; deduce gas density and temperature.",
+    "topics": [
+      "Quantum Physics",
+      "Optics"
+    ],
+    "tags": [
+      "Beer-Lambert law",
+      "absorption coefficient",
+      "spectroscopy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_S1.pdf"
+  },
+  {
+    "id": "ipho-1999-T2",
+    "contest": "IPhO",
+    "year": 1999,
+    "country": "Italy",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Magnetic Field with a V-shaped Wire",
+    "desc": "Magnetic field of a current-carrying V-shaped wire computed via Biot-Savart law.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Biot-Savart law",
+      "magnetic field",
+      "line integral"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_S2.pdf"
+  },
+  {
+    "id": "ipho-1999-T3",
+    "contest": "IPhO",
+    "year": 1999,
+    "country": "Italy",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "A Space Probe to Jupiter",
+    "desc": "Gravitational slingshot: change in spacecraft velocity from a flyby of Jupiter.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "gravity assist",
+      "elastic scattering",
+      "orbital mechanics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_S3.pdf"
+  },
+  {
+    "id": "ipho-1999-E1",
+    "contest": "IPhO",
+    "year": 1999,
+    "country": "Italy",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Torsion Pendulum",
+    "desc": "Measure period and damping of a torsion pendulum to determine torsion constant.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "torsion pendulum",
+      "moment of inertia",
+      "damped oscillation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1999_S4.pdf"
+  },
+  {
+    "id": "ipho-2000-T1",
+    "contest": "IPhO",
+    "year": 2000,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Five Short Problems",
+    "desc": "Five short conceptual problems on diverse physics topics (mechanics, thermo, EM, optics, modern).",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "short answer",
+      "estimation",
+      "mixed topics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_S1.pdf"
+  },
+  {
+    "id": "ipho-2000-T2",
+    "contest": "IPhO",
+    "year": 2000,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Cathode Ray Tube",
+    "desc": "Trajectory of electrons in a CRT under electric and magnetic deflection fields; spot position.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Lorentz force",
+      "electron beam",
+      "CRT"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_S2.pdf"
+  },
+  {
+    "id": "ipho-2000-T3",
+    "contest": "IPhO",
+    "year": 2000,
+    "country": "United Kingdom",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Gravitational Waves and Light",
+    "desc": "Effect of a gravitational wave on light propagation; redshifts and detection in interferometers.",
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "gravitational waves",
+      "interferometer",
+      "metric perturbation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_S3.pdf"
+  },
+  {
+    "id": "ipho-2000-E1",
+    "contest": "IPhO",
+    "year": 2000,
+    "country": "United Kingdom",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "CDROM Spectrometer",
+    "desc": "Use a CDROM as a reflection grating to measure spectral lines.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diffraction grating",
+      "spectroscopy",
+      "wavelength"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_Q4.pdf",
+    "solutionUrl": ""
+  },
+  {
+    "id": "ipho-2000-E2",
+    "contest": "IPhO",
+    "year": 2000,
+    "country": "United Kingdom",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "The Magnetic Puck",
+    "desc": "Measure the magnetic dipole moment of a puck-shaped magnet via interactions with a coil.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "induction",
+      "coil"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2000_S5.pdf"
+  },
+  {
+    "id": "ipho-2001-T1",
+    "contest": "IPhO",
+    "year": 2001,
+    "country": "Turkey",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Four Short Problems",
+    "desc": "Four short conceptual problems covering mechanics, optics, thermodynamics and electromagnetism.",
+    "topics": [
+      "Mechanics",
+      "Optics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "short answer",
+      "estimation",
+      "mixed topics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_S1.pdf"
+  },
+  {
+    "id": "ipho-2001-T2",
+    "contest": "IPhO",
+    "year": 2001,
+    "country": "Turkey",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Binary Star System",
+    "desc": "Orbital dynamics of a binary star; observed Doppler shifts give masses and orbital parameters.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "Kepler's laws",
+      "Doppler effect",
+      "two-body problem"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_S2.pdf"
+  },
+  {
+    "id": "ipho-2001-T3",
+    "contest": "IPhO",
+    "year": 2001,
+    "country": "Turkey",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Magnetohydrodynamic (MHD) Generator",
+    "desc": "Conducting fluid flowing through a magnetic field generates EMF; output voltage and efficiency.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "Lorentz force",
+      "MHD",
+      "fluid flow"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_S3.pdf"
+  },
+  {
+    "id": "ipho-2001-E1",
+    "contest": "IPhO",
+    "year": 2001,
+    "country": "Turkey",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Rotating Liquid",
+    "desc": "Investigate the parabolic surface of a rotating liquid and use it to measure g or rotation rate.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "rotating frame",
+      "centrifugal force",
+      "parabolic surface"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2001_S4.pdf"
+  },
+  {
+    "id": "ipho-2002-T1",
+    "contest": "IPhO",
+    "year": 2002,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Ground-Penetrating Radar",
+    "desc": "Reflection and refraction of EM pulses in layered ground; locate buried objects from echoes.",
+    "topics": [
+      "Electromagnetism",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "EM wave reflection",
+      "time of flight",
+      "dispersion"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S1.pdf"
+  },
+  {
+    "id": "ipho-2002-T2",
+    "contest": "IPhO",
+    "year": 2002,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Sensing Electrical Signals",
+    "desc": "Detection of weak electric signals in tissue / electrolyte; electrode potentials and amplification.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "electrochemistry",
+      "signal detection",
+      "RC circuit"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S2.pdf"
+  },
+  {
+    "id": "ipho-2002-T3",
+    "contest": "IPhO",
+    "year": 2002,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Heavy Vehicle Moving on an Inclined Road",
+    "desc": "Dynamics of a multi-axle heavy vehicle on an inclined road; tire forces and stability.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "friction",
+      "torque",
+      "vehicle dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S3.pdf"
+  },
+  {
+    "id": "ipho-2002-E1",
+    "contest": "IPhO",
+    "year": 2002,
+    "country": "Indonesia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Physical Constants with Electrolysis",
+    "desc": "Determine Avogadro's number / Faraday constant via electrolysis of water.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "electrolysis",
+      "Faraday constant",
+      "Avogadro's number"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S4.pdf"
+  },
+  {
+    "id": "ipho-2002-E2",
+    "contest": "IPhO",
+    "year": 2002,
+    "country": "Indonesia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Optical Black Box",
+    "desc": "Identify optical elements (lenses, prisms, polarizers) inside a sealed optical black box.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "optical elements",
+      "image formation",
+      "polarization"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S5.pdf"
+  },
+  {
+    "id": "ipho-2003-T1",
+    "contest": "IPhO",
+    "year": 2003,
+    "country": "Taiwan",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "A Swing with a Falling Weight",
+    "desc": "Pendulum coupled to a falling weight by a string over a pulley; motion and tension analysis.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "coupled motion",
+      "energy conservation",
+      "constraints"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_S1.pdf"
+  },
+  {
+    "id": "ipho-2003-T2",
+    "contest": "IPhO",
+    "year": 2003,
+    "country": "Taiwan",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Piezoelectric Crystal Resonator",
+    "desc": "Equivalent circuit and resonance of a piezoelectric crystal driven by an AC source.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "piezoelectric resonance",
+      "equivalent circuit",
+      "Q factor"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_S2.pdf"
+  },
+  {
+    "id": "ipho-2003-T3",
+    "contest": "IPhO",
+    "year": 2003,
+    "country": "Taiwan",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Neutrino Mass and Neutron Decay",
+    "desc": "Beta decay kinematics and the effect of neutrino mass on the endpoint of the electron spectrum.",
+    "topics": [
+      "Quantum Physics",
+      "Relativity"
+    ],
+    "tags": [
+      "beta decay",
+      "neutrino mass",
+      "relativistic kinematics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_S3.pdf"
+  },
+  {
+    "id": "ipho-2003-E1",
+    "contest": "IPhO",
+    "year": 2003,
+    "country": "Taiwan",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Optical Properties of Laser Diode",
+    "desc": "Characterize the I-V curve, threshold and beam profile of a laser diode.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "laser diode",
+      "threshold current",
+      "beam divergence"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_S4.pdf"
+  },
+  {
+    "id": "ipho-2004-T1",
+    "contest": "IPhO",
+    "year": 2004,
+    "country": "Korea",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Ping-Pong Resistor",
+    "desc": "A small charged ball bounces between two plates, transferring charge - a self-oscillating switch.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "charge transfer",
+      "Coulomb force",
+      "self-oscillation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_S1.pdf"
+  },
+  {
+    "id": "ipho-2004-T2",
+    "contest": "IPhO",
+    "year": 2004,
+    "country": "Korea",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Rising Balloon",
+    "desc": "Ascent of a hot-air or helium balloon through a stratified atmosphere; equation of motion.",
+    "topics": [
+      "Thermodynamics",
+      "Mechanics"
+    ],
+    "tags": [
+      "buoyancy",
+      "ideal gas",
+      "atmosphere"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_S2.pdf"
+  },
+  {
+    "id": "ipho-2004-T3",
+    "contest": "IPhO",
+    "year": 2004,
+    "country": "Korea",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Atomic Force Microscope",
+    "desc": "Operating principle and sensitivity of an AFM cantilever; force-distance curve and resonance.",
+    "topics": [
+      "Quantum Physics",
+      "Mechanics"
+    ],
+    "tags": [
+      "AFM",
+      "harmonic oscillator",
+      "tunneling"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_S3.pdf"
+  },
+  {
+    "id": "ipho-2004-E1",
+    "contest": "IPhO",
+    "year": 2004,
+    "country": "Korea",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Mechanical Black Box",
+    "desc": "Determine the unknown mechanical contents (springs, masses) of a sealed black box.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "spring constant",
+      "moment of inertia",
+      "oscillation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2004_S4.pdf"
+  },
+  {
+    "id": "ipho-2005-T1",
+    "contest": "IPhO",
+    "year": 2005,
+    "country": "Spain",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "An Ill-Fated Satellite",
+    "desc": "Satellite spirals down due to atmospheric drag; orbital mechanics with energy dissipation.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "orbital decay",
+      "atmospheric drag",
+      "energy dissipation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_S1.pdf"
+  },
+  {
+    "id": "ipho-2005-T2",
+    "contest": "IPhO",
+    "year": 2005,
+    "country": "Spain",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Absolute Measurements of Electrical Quantities",
+    "desc": "Use mechanical force balance and Kibble-style methods to define electrical units from SI base units.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "current balance",
+      "watt balance",
+      "SI units"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_S2.pdf"
+  },
+  {
+    "id": "ipho-2005-T3",
+    "contest": "IPhO",
+    "year": 2005,
+    "country": "Spain",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Neutrons in a Gravitational Field",
+    "desc": "Quantized bound states of cold neutrons above a mirror in Earth's gravity (qBounce experiment).",
+    "topics": [
+      "Quantum Physics",
+      "Mechanics"
+    ],
+    "tags": [
+      "bound states",
+      "Schrödinger equation",
+      "Airy function"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_S3.pdf"
+  },
+  {
+    "id": "ipho-2005-E1",
+    "contest": "IPhO",
+    "year": 2005,
+    "country": "Spain",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Planck's Constant in an Incandescent Lamp",
+    "desc": "Measure spectrum of an incandescent lamp and fit to Planck/Wien laws to extract h.",
+    "topics": [
+      "Quantum Physics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "blackbody radiation",
+      "Planck's constant",
+      "Wien's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2005_S4.pdf"
+  },
+  {
+    "id": "ipho-2006-T1",
+    "contest": "IPhO",
+    "year": 2006,
+    "country": "Singapore",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Gravity in a Neutron Interferometer",
+    "desc": "COW experiment: phase shift induced by gravity on neutrons in an interferometer.",
+    "topics": [
+      "Quantum Physics",
+      "Relativity"
+    ],
+    "tags": [
+      "matter wave interference",
+      "gravitational phase",
+      "de Broglie wavelength"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_S1.pdf"
+  },
+  {
+    "id": "ipho-2006-T2",
+    "contest": "IPhO",
+    "year": 2006,
+    "country": "Singapore",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Watching a Rod in Motion",
+    "desc": "Apparent shape of a rapidly moving rod accounting for both length contraction and light-travel times.",
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "length contraction",
+      "Terrell rotation",
+      "light delay"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_S2.pdf"
+  },
+  {
+    "id": "ipho-2006-T3",
+    "contest": "IPhO",
+    "year": 2006,
+    "country": "Singapore",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Five Estimations",
+    "desc": "Five Fermi-style estimation problems requiring physical reasoning and dimensional analysis.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "estimation",
+      "dimensional analysis",
+      "order-of-magnitude"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_S3.pdf"
+  },
+  {
+    "id": "ipho-2006-E1",
+    "contest": "IPhO",
+    "year": 2006,
+    "country": "Singapore",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Interference, Reflection and Diffraction",
+    "desc": "Use a laser and simple optics to investigate interference, reflection and diffraction phenomena.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "double-slit interference",
+      "diffraction",
+      "reflection"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2006_S4.pdf"
+  },
+  {
+    "id": "ipho-2007-T1",
+    "contest": "IPhO",
+    "year": 2007,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Black Holes",
+    "desc": "Schwarzschild horizon, Hawking radiation and lifetime of a black hole; thermodynamics of horizons.",
+    "topics": [
+      "Relativity",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Schwarzschild radius",
+      "Hawking radiation",
+      "black hole entropy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_S1.pdf"
+  },
+  {
+    "id": "ipho-2007-T2",
+    "contest": "IPhO",
+    "year": 2007,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Air Bags",
+    "desc": "Inflation dynamics of an automobile airbag; gas thermodynamics and impulse on passenger.",
+    "topics": [
+      "Thermodynamics",
+      "Mechanics"
+    ],
+    "tags": [
+      "adiabatic process",
+      "impulse",
+      "ideal gas"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_S2.pdf"
+  },
+  {
+    "id": "ipho-2007-T3",
+    "contest": "IPhO",
+    "year": 2007,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Binary Stars (Doppler / Eclipsing)",
+    "desc": "Use light curves and Doppler shifts of an eclipsing binary to determine masses, radii and period.",
+    "topics": [
+      "Astrophysics",
+      "Mechanics"
+    ],
+    "tags": [
+      "eclipsing binary",
+      "Doppler effect",
+      "Kepler's laws"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_S3.pdf"
+  },
+  {
+    "id": "ipho-2007-E1",
+    "contest": "IPhO",
+    "year": 2007,
+    "country": "Iran",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Band Gap of Semiconductor Thin Films",
+    "desc": "Determine band gap of a semiconductor thin film from its optical transmission spectrum.",
+    "topics": [
+      "Quantum Physics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "band gap",
+      "optical absorption",
+      "Tauc plot"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2007_S4.pdf"
+  },
+  {
+    "id": "ipho-2008-T1",
+    "contest": "IPhO",
+    "year": 2008,
+    "country": "Vietnam",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Water-Powered Rice-Pounding Mortar",
+    "desc": "Self-oscillating water-powered mortar; combine fluid mechanics and rigid-body dynamics.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "lever",
+      "fluid dynamics",
+      "self-oscillation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_S1.pdf"
+  },
+  {
+    "id": "ipho-2008-T2",
+    "contest": "IPhO",
+    "year": 2008,
+    "country": "Vietnam",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Cherenkov Light and Ring Imaging Counter",
+    "desc": "RICH detectors: Cherenkov cone angle reveals particle velocity; design a ring imaging system.",
+    "topics": [
+      "Electromagnetism",
+      "Optics"
+    ],
+    "tags": [
+      "Cherenkov radiation",
+      "RICH detector",
+      "particle ID"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_S2.pdf"
+  },
+  {
+    "id": "ipho-2008-T3",
+    "contest": "IPhO",
+    "year": 2008,
+    "country": "Vietnam",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Change of Air Temperature in the Atmosphere",
+    "desc": "Adiabatic lapse rate, stability and convection in Earth's atmosphere.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "adiabatic process",
+      "lapse rate",
+      "atmospheric stability"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_S3.pdf"
+  },
+  {
+    "id": "ipho-2008-E1",
+    "contest": "IPhO",
+    "year": 2008,
+    "country": "Vietnam",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Differential Thermometric Method",
+    "desc": "Use a differential thermometer to measure thermal effects (e.g., Joule heating, latent heats).",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "differential measurement",
+      "calorimetry",
+      "thermistor"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2008_S4.pdf"
+  },
+  {
+    "id": "ipho-2009-T1",
+    "contest": "IPhO",
+    "year": 2009,
+    "country": "Mexico",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Evolution of the Earth-Moon System",
+    "desc": "Tidal friction transfers angular momentum from Earth's rotation to Moon's orbit; long-term evolution.",
+    "topics": [
+      "Mechanics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "tidal friction",
+      "angular momentum",
+      "lunar recession"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_S1.pdf"
+  },
+  {
+    "id": "ipho-2009-T2",
+    "contest": "IPhO",
+    "year": 2009,
+    "country": "Mexico",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Doppler Laser Cooling and Optical Molasses",
+    "desc": "Detailed treatment of Doppler cooling of a two-level atom; cooling rate and Doppler limit.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "laser cooling",
+      "optical molasses",
+      "Doppler limit"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_S2.pdf"
+  },
+  {
+    "id": "ipho-2009-T3",
+    "contest": "IPhO",
+    "year": 2009,
+    "country": "Mexico",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Why are Stars so Large?",
+    "desc": "Stellar structure: hydrostatic equilibrium, energy generation and the size of main-sequence stars.",
+    "topics": [
+      "Astrophysics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "hydrostatic equilibrium",
+      "fusion",
+      "virial theorem"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_S3.pdf"
+  },
+  {
+    "id": "ipho-2009-E1",
+    "contest": "IPhO",
+    "year": 2009,
+    "country": "Mexico",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Wavelength of a Diode Laser",
+    "desc": "Measure the wavelength of a diode laser using a diffraction grating or interferometric method.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diffraction",
+      "wavelength",
+      "laser diode"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_S4.pdf"
+  },
+  {
+    "id": "ipho-2009-E2",
+    "contest": "IPhO",
+    "year": 2009,
+    "country": "Mexico",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Birefringence of Mica",
+    "desc": "Investigate birefringence of mica using polarized light and a quarter-wave plate setup.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "birefringence",
+      "polarization",
+      "wave plate"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2009_S5.pdf"
+  },
+  {
+    "id": "ipho-2010-T1",
+    "contest": "IPhO",
+    "year": 2010,
+    "country": "Croatia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Image of a Charge in a Metallic Object",
+    "desc": "Method of images for a point charge near grounded conductors of various shapes.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "method of images",
+      "Laplace equation",
+      "boundary conditions"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_S1.pdf"
+  },
+  {
+    "id": "ipho-2010-T2",
+    "contest": "IPhO",
+    "year": 2010,
+    "country": "Croatia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Chimney Physics",
+    "desc": "Buoyancy-driven flow up a chimney; combine Bernoulli's equation with thermodynamics.",
+    "topics": [
+      "Thermodynamics",
+      "Mechanics"
+    ],
+    "tags": [
+      "natural convection",
+      "Bernoulli equation",
+      "ideal gas"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_S2.pdf"
+  },
+  {
+    "id": "ipho-2010-T3",
+    "contest": "IPhO",
+    "year": 2010,
+    "country": "Croatia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Simple Model of an Atomic Nucleus",
+    "desc": "Liquid-drop model of nuclei; surface tension and Coulomb repulsion lead to fission.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "liquid drop model",
+      "binding energy",
+      "fission"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_S3.pdf"
+  },
+  {
+    "id": "ipho-2010-E1",
+    "contest": "IPhO",
+    "year": 2010,
+    "country": "Croatia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Elasticity of Sheets",
+    "desc": "Measure elastic moduli (Young's modulus, Poisson's ratio) of thin sheets via deflection / vibration.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "Young's modulus",
+      "Poisson's ratio",
+      "vibration"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_S4.pdf"
+  },
+  {
+    "id": "ipho-2010-E2",
+    "contest": "IPhO",
+    "year": 2010,
+    "country": "Croatia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Forces between Magnets",
+    "desc": "Measure force vs distance between two cylindrical magnets and fit to a dipole model.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "force law",
+      "magnetization"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2010_S5.pdf"
+  },
+  {
+    "id": "ipho-2011-T1",
+    "contest": "IPhO",
+    "year": 2011,
+    "country": "Thailand",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Three-Body Problem and LISA",
+    "desc": "Stability of equilateral triangular three-body configuration; relevance to LISA gravitational-wave detector.",
+    "topics": [
+      "Mechanics",
+      "Relativity"
+    ],
+    "tags": [
+      "Lagrange points",
+      "three-body problem",
+      "gravitational waves"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_S1.pdf"
+  },
+  {
+    "id": "ipho-2011-T2",
+    "contest": "IPhO",
+    "year": 2011,
+    "country": "Thailand",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "An Electrified Soap Bubble",
+    "desc": "Equilibrium and stability of a charged soap bubble; surface tension vs electrostatic pressure.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "surface tension",
+      "electrostatic pressure",
+      "soap film"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_S2.pdf"
+  },
+  {
+    "id": "ipho-2011-T3",
+    "contest": "IPhO",
+    "year": 2011,
+    "country": "Thailand",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Scattering of an Ion by a Neutral Atom",
+    "desc": "Classical scattering of an ion by a polarizable atom; cross-section in attractive r^-4 potential.",
+    "topics": [
+      "Electromagnetism",
+      "Mechanics"
+    ],
+    "tags": [
+      "scattering cross-section",
+      "polarization",
+      "central force"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_S3.pdf"
+  },
+  {
+    "id": "ipho-2011-E1",
+    "contest": "IPhO",
+    "year": 2011,
+    "country": "Thailand",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Capacitive Displacement Sensor",
+    "desc": "Build and characterize a capacitive sensor; relate output to displacement.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "capacitance",
+      "displacement sensor",
+      "AC bridge"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_S4.pdf"
+  },
+  {
+    "id": "ipho-2011-E2",
+    "contest": "IPhO",
+    "year": 2011,
+    "country": "Thailand",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Mechanical Black Box: Cylinder with a Ball Inside",
+    "desc": "Determine internal contents (size and mass of ball) of a sealed cylinder via dynamic measurements.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "moment of inertia",
+      "rolling motion",
+      "black box"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2011_S5.pdf"
+  },
+  {
+    "id": "ipho-2012-T1",
+    "contest": "IPhO",
+    "year": 2012,
+    "country": "Estonia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Focus on Sketches",
+    "desc": "Several short problems requiring qualitative sketches: ray diagrams, phase portraits, field lines.",
+    "topics": [
+      "Mechanics",
+      "Optics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "qualitative analysis",
+      "phase portrait",
+      "ray diagram"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S1.pdf"
+  },
+  {
+    "id": "ipho-2012-T2",
+    "contest": "IPhO",
+    "year": 2012,
+    "country": "Estonia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Kelvin Water Dropper",
+    "desc": "Self-amplifying electrostatic generator: dripping water induces charge feedback. Find buildup dynamics.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "electrostatic induction",
+      "feedback",
+      "Kelvin generator"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S2.pdf"
+  },
+  {
+    "id": "ipho-2012-T3",
+    "contest": "IPhO",
+    "year": 2012,
+    "country": "Estonia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Protostar Formation",
+    "desc": "Gravitational collapse of a gas cloud into a protostar; virial theorem and Jeans criterion.",
+    "topics": [
+      "Astrophysics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "virial theorem",
+      "gravitational collapse",
+      "Jeans mass"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S3.pdf"
+  },
+  {
+    "id": "ipho-2012-E1",
+    "contest": "IPhO",
+    "year": 2012,
+    "country": "Estonia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Magnetic Permeability of Water",
+    "desc": "Measure the small diamagnetic susceptibility of water using a sensitive setup.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diamagnetism",
+      "magnetic susceptibility",
+      "force on magnet"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S4.pdf"
+  },
+  {
+    "id": "ipho-2012-E2",
+    "contest": "IPhO",
+    "year": 2012,
+    "country": "Estonia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Nonlinear Black Box",
+    "desc": "Identify a nonlinear two-terminal device by measuring its response under various stimuli.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "nonlinear element",
+      "I-V curve",
+      "circuit identification"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S5.pdf"
+  },
+  {
+    "id": "ipho-2013-T1",
+    "contest": "IPhO",
+    "year": 2013,
+    "country": "Denmark",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "The Maribo Meteorite",
+    "desc": "Atmospheric entry of a meteorite; ablation, drag, energy deposition and final velocity.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "atmospheric drag",
+      "ablation",
+      "energy dissipation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_S1.pdf"
+  },
+  {
+    "id": "ipho-2013-T2",
+    "contest": "IPhO",
+    "year": 2013,
+    "country": "Denmark",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Plasmonic Steam Generator",
+    "desc": "Heat absorbed by metallic nanoparticles in water generates steam without bulk heating.",
+    "topics": [
+      "Optics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "plasmonics",
+      "absorption",
+      "phase transition"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_S2.pdf"
+  },
+  {
+    "id": "ipho-2013-T3",
+    "contest": "IPhO",
+    "year": 2013,
+    "country": "Denmark",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "The Greenlandic Ice Sheet",
+    "desc": "Glacial flow under self-weight and heat balance; ice-sheet profile and basal melting.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "viscous flow",
+      "heat conduction",
+      "glaciology"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_S3.pdf"
+  },
+  {
+    "id": "ipho-2013-E1",
+    "contest": "IPhO",
+    "year": 2013,
+    "country": "Denmark",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Speed of Light",
+    "desc": "Measure the speed of light using a time-of-flight or modulation method.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "speed of light",
+      "phase shift",
+      "modulation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_S4.pdf"
+  },
+  {
+    "id": "ipho-2013-E2",
+    "contest": "IPhO",
+    "year": 2013,
+    "country": "Denmark",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Solar Cells",
+    "desc": "Characterize I-V curve, fill factor and efficiency of a solar cell under varying illumination.",
+    "topics": [
+      "Quantum Physics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "photovoltaic",
+      "I-V curve",
+      "fill factor"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2013_S5.pdf"
+  },
+  {
+    "id": "ipho-2014-T1",
+    "contest": "IPhO",
+    "year": 2014,
+    "country": "Kazakhstan",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Three Short Problems",
+    "desc": "Three short problems on mechanics, electromagnetism and modern physics.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "short answer",
+      "estimation",
+      "mixed topics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_S1.pdf"
+  },
+  {
+    "id": "ipho-2014-T2",
+    "contest": "IPhO",
+    "year": 2014,
+    "country": "Kazakhstan",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Van der Waals Gas",
+    "desc": "Equation of state and isotherms of a Van der Waals gas; critical point and Maxwell construction.",
+    "topics": [
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Van der Waals",
+      "critical point",
+      "Maxwell construction"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_S2.pdf"
+  },
+  {
+    "id": "ipho-2014-T3",
+    "contest": "IPhO",
+    "year": 2014,
+    "country": "Kazakhstan",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Gas Discharge",
+    "desc": "Glow discharge between electrodes; ionization, drift and current-voltage characteristic.",
+    "topics": [
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "gas discharge",
+      "ionization",
+      "Townsend coefficient"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_S3.pdf"
+  },
+  {
+    "id": "ipho-2014-E1",
+    "contest": "IPhO",
+    "year": 2014,
+    "country": "Kazakhstan",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "To See the Invisible!",
+    "desc": "Use simple optics to image objects that are invisible in normal light (Schlieren / shadowgraphy style).",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "refraction",
+      "imaging",
+      "phase contrast"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2014_S4.pdf"
+  },
+  {
+    "id": "ipho-2015-T1",
+    "contest": "IPhO",
+    "year": 2015,
+    "country": "India",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Particles from the Sun",
+    "desc": "Solar fusion produces neutrinos; energy spectrum, flux and detection considerations.",
+    "topics": [
+      "Astrophysics",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "solar neutrinos",
+      "fusion",
+      "neutrino oscillation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_S1.pdf"
+  },
+  {
+    "id": "ipho-2015-T2",
+    "contest": "IPhO",
+    "year": 2015,
+    "country": "India",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "The Extremum Principle",
+    "desc": "Variational/extremum approach to mechanics and optics (Fermat's principle, least action).",
+    "topics": [
+      "Mechanics",
+      "Optics"
+    ],
+    "tags": [
+      "Fermat's principle",
+      "principle of least action",
+      "variational"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_S2.pdf"
+  },
+  {
+    "id": "ipho-2015-T3",
+    "contest": "IPhO",
+    "year": 2015,
+    "country": "India",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "The Design of a Nuclear Reactor",
+    "desc": "Neutron diffusion and criticality in a fission reactor; size and material requirements.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "neutron diffusion",
+      "criticality",
+      "fission"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_S3.pdf"
+  },
+  {
+    "id": "ipho-2015-E1",
+    "contest": "IPhO",
+    "year": 2015,
+    "country": "India",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Diffraction due to Helical Structure",
+    "desc": "Diffraction pattern from a helical structure (DNA-style); deduce pitch and radius.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "diffraction",
+      "helix",
+      "X-ray analogy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_S4.pdf"
+  },
+  {
+    "id": "ipho-2015-E2",
+    "contest": "IPhO",
+    "year": 2015,
+    "country": "India",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Diffraction due to Surface Tension",
+    "desc": "Investigate diffraction of light by capillary surface waves; deduce surface tension.",
+    "topics": [
+      "Optics",
+      "Mechanics"
+    ],
+    "tags": [
+      "capillary waves",
+      "diffraction",
+      "surface tension"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2015_S5.pdf"
+  },
+  {
+    "id": "ipho-2016-T1",
+    "contest": "IPhO",
+    "year": 2016,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Two Problems in Mechanics",
+    "desc": "Two short mechanics problems: a disk on an inclined plane and a chain falling off a table.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "rolling motion",
+      "chain dynamics",
+      "energy"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_S1.pdf"
+  },
+  {
+    "id": "ipho-2016-T2",
+    "contest": "IPhO",
+    "year": 2016,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Nonlinear Dynamics in Electric Circuits",
+    "desc": "Relaxation oscillations in a circuit with a nonlinear element; phase-plane analysis.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "nonlinear oscillator",
+      "relaxation oscillation",
+      "phase plane"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_S2.pdf"
+  },
+  {
+    "id": "ipho-2016-T3",
+    "contest": "IPhO",
+    "year": 2016,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Large Hadron Collider",
+    "desc": "Particle collisions at LHC: relativistic kinematics, luminosity and synchrotron radiation.",
+    "topics": [
+      "Relativity",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "relativistic collisions",
+      "synchrotron",
+      "luminosity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_S3.pdf"
+  },
+  {
+    "id": "ipho-2016-E1",
+    "contest": "IPhO",
+    "year": 2016,
+    "country": "Switzerland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Electrical Conductivity in Two Dimensions",
+    "desc": "Measure conductivity of 2D resistive sheets and explore current/potential distributions.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "sheet resistance",
+      "Laplace equation",
+      "van der Pauw"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_Q4.pdf",
+    "solutionUrl": ""
+  },
+  {
+    "id": "ipho-2016-E2",
+    "contest": "IPhO",
+    "year": 2016,
+    "country": "Switzerland",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Jumping Beads",
+    "desc": "Granular medium experiment: characterize the parametrically excited motion of beads.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "granular dynamics",
+      "parametric resonance",
+      "energy dissipation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2016_Q5.pdf",
+    "solutionUrl": ""
+  },
+  {
+    "id": "ipho-2017-T1",
+    "contest": "IPhO",
+    "year": 2017,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Dark Matter",
+    "desc": "Galactic rotation curves and dark matter halos; estimate dark matter density and mass.",
+    "topics": [
+      "Astrophysics",
+      "Mechanics"
+    ],
+    "tags": [
+      "rotation curves",
+      "dark matter halo",
+      "gravitational dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_S1.pdf"
+  },
+  {
+    "id": "ipho-2017-T2",
+    "contest": "IPhO",
+    "year": 2017,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Earthquake, Volcano and Tsunami",
+    "desc": "Geophysical waves: seismic propagation, volcanic ejecta dynamics and tsunami wave speed.",
+    "topics": [
+      "Waves & Oscillations",
+      "Mechanics"
+    ],
+    "tags": [
+      "seismic waves",
+      "shallow water waves",
+      "ejecta dynamics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_S2.pdf"
+  },
+  {
+    "id": "ipho-2017-T3",
+    "contest": "IPhO",
+    "year": 2017,
+    "country": "Indonesia",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Cosmic Inflation",
+    "desc": "Friedmann equations applied to inflationary universe; horizon and flatness problems.",
+    "topics": [
+      "Astrophysics",
+      "Relativity"
+    ],
+    "tags": [
+      "Friedmann equations",
+      "inflation",
+      "cosmology"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_S3.pdf"
+  },
+  {
+    "id": "ipho-2017-E1",
+    "contest": "IPhO",
+    "year": 2017,
+    "country": "Indonesia",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Optics of a Salt Solution",
+    "desc": "Measure how refractive index of a salt solution depends on concentration, using a laser.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "refractive index",
+      "concentration",
+      "Snell's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_S4.pdf"
+  },
+  {
+    "id": "ipho-2017-E2",
+    "contest": "IPhO",
+    "year": 2017,
+    "country": "Indonesia",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Earthquake and Volcano Sensing",
+    "desc": "Build and characterize a seismometer-like sensor; measure response to vibrations.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "seismometer",
+      "damped oscillator",
+      "transfer function"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2017_S5.pdf"
+  },
+  {
+    "id": "ipho-2018-T1",
+    "contest": "IPhO",
+    "year": 2018,
+    "country": "Portugal",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "LIGO-GW150914",
+    "desc": "Binary black hole inspiral and merger detected by LIGO; chirp mass and energy radiated.",
+    "topics": [
+      "Relativity",
+      "Astrophysics"
+    ],
+    "tags": [
+      "gravitational waves",
+      "binary inspiral",
+      "chirp mass"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_S1.pdf"
+  },
+  {
+    "id": "ipho-2018-T2",
+    "contest": "IPhO",
+    "year": 2018,
+    "country": "Portugal",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Where Is the Neutrino?",
+    "desc": "Reconstruct neutrino momentum in a particle decay using missing energy / momentum.",
+    "topics": [
+      "Quantum Physics",
+      "Relativity"
+    ],
+    "tags": [
+      "neutrino",
+      "missing momentum",
+      "particle decay"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_S2.pdf"
+  },
+  {
+    "id": "ipho-2018-T3",
+    "contest": "IPhO",
+    "year": 2018,
+    "country": "Portugal",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Physics of Live Systems",
+    "desc": "Biophysics: diffusion, scaling and energy considerations in living systems.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "diffusion",
+      "biophysics",
+      "scaling"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_S3.pdf"
+  },
+  {
+    "id": "ipho-2018-E1",
+    "contest": "IPhO",
+    "year": 2018,
+    "country": "Portugal",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Paper Transistor",
+    "desc": "Build and characterize a transistor on paper substrate; investigate switching behavior.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "transistor",
+      "I-V curve",
+      "thin film"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_S4.pdf"
+  },
+  {
+    "id": "ipho-2018-E2",
+    "contest": "IPhO",
+    "year": 2018,
+    "country": "Portugal",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Viscoelasticity of a Polymer Thread",
+    "desc": "Investigate the viscoelastic response of a polymer thread under stretching and relaxation.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "viscoelasticity",
+      "stress relaxation",
+      "polymer"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2018_S5.pdf"
+  },
+  {
+    "id": "ipho-2019-T1",
+    "contest": "IPhO",
+    "year": 2019,
+    "country": "Israel",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Zero-Length Springs and Slinky Coils",
+    "desc": "Mechanics of zero-length springs and the falling slinky; tension propagation along a slinky.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "spring tension",
+      "slinky",
+      "wave propagation"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_S1.pdf"
+  },
+  {
+    "id": "ipho-2019-T2",
+    "contest": "IPhO",
+    "year": 2019,
+    "country": "Israel",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Physics of a Microwave Oven",
+    "desc": "Standing waves, mode patterns and heating in a microwave oven cavity.",
+    "topics": [
+      "Electromagnetism",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "microwave cavity",
+      "standing waves",
+      "dielectric heating"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_S2.pdf"
+  },
+  {
+    "id": "ipho-2019-T3",
+    "contest": "IPhO",
+    "year": 2019,
+    "country": "Israel",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Thermoacoustic Engine",
+    "desc": "Operating principle of a thermoacoustic engine: gas oscillations driven by temperature gradient.",
+    "topics": [
+      "Thermodynamics",
+      "Waves & Oscillations"
+    ],
+    "tags": [
+      "thermoacoustic",
+      "Stirling-like cycle",
+      "acoustic resonance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_S3.pdf"
+  },
+  {
+    "id": "ipho-2019-E1",
+    "contest": "IPhO",
+    "year": 2019,
+    "country": "Israel",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Optical Measurements",
+    "desc": "Series of optical measurements involving polarization, refraction and birefringence.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "polarization",
+      "Brewster angle",
+      "birefringence"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_S4.pdf"
+  },
+  {
+    "id": "ipho-2019-E2",
+    "contest": "IPhO",
+    "year": 2019,
+    "country": "Israel",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Wiedemann-Franz Law",
+    "desc": "Verify the Wiedemann-Franz law by measuring thermal and electrical conductivity of a metal.",
+    "topics": [
+      "Thermodynamics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Wiedemann-Franz",
+      "thermal conductivity",
+      "Lorenz number"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2019_S5.pdf"
+  },
+  {
+    "id": "ipho-2020-T1",
+    "contest": "IPhO",
+    "year": 2020,
+    "country": "IdPhO (online)",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Problem Mix",
+    "desc": "Several short problems on diverse topics, characteristic of the online distributed Olympiad.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "short answer",
+      "estimation",
+      "mixed topics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_S1.pdf"
+  },
+  {
+    "id": "ipho-2020-T2",
+    "contest": "IPhO",
+    "year": 2020,
+    "country": "IdPhO (online)",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Anisotropic Friction",
+    "desc": "Motion of a body on a surface where friction coefficient depends on direction; trajectories.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "friction",
+      "anisotropy",
+      "trajectory"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_S2.pdf"
+  },
+  {
+    "id": "ipho-2020-T3",
+    "contest": "IPhO",
+    "year": 2020,
+    "country": "IdPhO (online)",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Laser Technologies",
+    "desc": "Modes, gain and pulse formation in lasers; applications to mode-locking and amplification.",
+    "topics": [
+      "Optics",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "laser",
+      "mode locking",
+      "stimulated emission"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_S3.pdf"
+  },
+  {
+    "id": "ipho-2020-E1",
+    "contest": "IPhO",
+    "year": 2020,
+    "country": "IdPhO (online)",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Crystallography",
+    "desc": "Experimental crystallography (often performed remotely): deduce structure from images / patterns.",
+    "topics": [
+      "Quantum Physics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "crystal structure",
+      "diffraction",
+      "lattice"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2020_S4.pdf"
+  },
+  {
+    "id": "ipho-2021-T1",
+    "contest": "IPhO",
+    "year": 2021,
+    "country": "Lithuania",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Planetary Physics",
+    "desc": "Aspects of planetary physics: tides, atmospheres, magnetospheres and habitability.",
+    "topics": [
+      "Astrophysics",
+      "Mechanics"
+    ],
+    "tags": [
+      "tides",
+      "atmosphere",
+      "Kepler's laws"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_S1.pdf"
+  },
+  {
+    "id": "ipho-2021-T2",
+    "contest": "IPhO",
+    "year": 2021,
+    "country": "Lithuania",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Electrostatic Lens",
+    "desc": "Focusing of charged particles by a cylindrical electrostatic lens; thin-lens analogy and aberrations.",
+    "topics": [
+      "Electromagnetism",
+      "Optics"
+    ],
+    "tags": [
+      "electrostatic lens",
+      "charged particle optics",
+      "focal length"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_S2.pdf"
+  },
+  {
+    "id": "ipho-2021-T3",
+    "contest": "IPhO",
+    "year": 2021,
+    "country": "Lithuania",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Particles and Waves",
+    "desc": "Wave-particle duality and matter-wave experiments; interference and diffraction of particles.",
+    "topics": [
+      "Quantum Physics"
+    ],
+    "tags": [
+      "de Broglie wavelength",
+      "matter wave interference",
+      "uncertainty"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_S3.pdf"
+  },
+  {
+    "id": "ipho-2021-E1",
+    "contest": "IPhO",
+    "year": 2021,
+    "country": "Lithuania",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Non-Ideal Capacitors",
+    "desc": "Investigate leakage and dielectric losses of real capacitors as a function of frequency.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "dielectric loss",
+      "tan delta",
+      "AC impedance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_S4.pdf"
+  },
+  {
+    "id": "ipho-2021-E2",
+    "contest": "IPhO",
+    "year": 2021,
+    "country": "Lithuania",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "LEDs",
+    "desc": "Measure I-V curves and emission spectra of LEDs to extract band gap and Planck's constant.",
+    "topics": [
+      "Quantum Physics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "LED",
+      "band gap",
+      "Planck's constant"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2021_S5.pdf"
+  },
+  {
+    "id": "ipho-2022-T1",
+    "contest": "IPhO",
+    "year": 2022,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Permanent Magnets",
+    "desc": "Theory and applications of permanent magnets; field of dipoles and stacked magnet configurations.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "magnetic dipole",
+      "magnetization",
+      "force between magnets"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_S1.pdf"
+  },
+  {
+    "id": "ipho-2022-T2",
+    "contest": "IPhO",
+    "year": 2022,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "James Webb Space Telescope",
+    "desc": "JWST optics and orbit: mirror diffraction limit, Lagrange L2 dynamics and thermal balance.",
+    "topics": [
+      "Optics",
+      "Astrophysics"
+    ],
+    "tags": [
+      "diffraction limit",
+      "L2 point",
+      "telescope"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_S2.pdf"
+  },
+  {
+    "id": "ipho-2022-T3",
+    "contest": "IPhO",
+    "year": 2022,
+    "country": "Switzerland",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Scaling Laws",
+    "desc": "Use scaling and dimensional analysis to derive quantitative results across diverse systems.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "scaling laws",
+      "dimensional analysis",
+      "self-similarity"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_S3.pdf"
+  },
+  {
+    "id": "ipho-2022-E1",
+    "contest": "IPhO",
+    "year": 2022,
+    "country": "Switzerland",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Planet",
+    "desc": "Measure planetary parameters using a tabletop analogue / model setup.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "analogue experiment",
+      "Kepler's laws",
+      "scaling"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_S4.pdf"
+  },
+  {
+    "id": "ipho-2022-E2",
+    "contest": "IPhO",
+    "year": 2022,
+    "country": "Switzerland",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Cylindrical Diode",
+    "desc": "Measure space-charge-limited current in a cylindrical thermionic diode (Child-Langmuir law).",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "space charge",
+      "Child-Langmuir",
+      "thermionic emission"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2022_S5.pdf"
+  },
+  {
+    "id": "ipho-2023-T1",
+    "contest": "IPhO",
+    "year": 2023,
+    "country": "Japan",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Soil Colloids",
+    "desc": "Charged colloidal particles in soil; Debye screening, sedimentation and diffusion equilibrium.",
+    "topics": [
+      "Thermodynamics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Debye length",
+      "colloid",
+      "diffusion"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_S1.pdf"
+  },
+  {
+    "id": "ipho-2023-T2",
+    "contest": "IPhO",
+    "year": 2023,
+    "country": "Japan",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Neutron Stars",
+    "desc": "Equation of state and structure of a neutron star; degeneracy pressure and TOV-like equations.",
+    "topics": [
+      "Astrophysics",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "degeneracy pressure",
+      "neutron star",
+      "hydrostatic equilibrium"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_S2.pdf"
+  },
+  {
+    "id": "ipho-2023-T3",
+    "contest": "IPhO",
+    "year": 2023,
+    "country": "Japan",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Water and Objects",
+    "desc": "Hydrodynamics and statics of bodies in water; buoyancy, drag and surface waves.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "buoyancy",
+      "surface waves",
+      "fluid drag"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_S3.pdf"
+  },
+  {
+    "id": "ipho-2023-E1",
+    "contest": "IPhO",
+    "year": 2023,
+    "country": "Japan",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Mass Measurement",
+    "desc": "Determine an unknown mass by combining different precision techniques (oscillation, balance).",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "oscillation period",
+      "spring constant",
+      "balance"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_S4.pdf"
+  },
+  {
+    "id": "ipho-2023-E2",
+    "contest": "IPhO",
+    "year": 2023,
+    "country": "Japan",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Birefringence",
+    "desc": "Measure birefringence of a sample using polarized light and a quarter-wave plate setup.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "birefringence",
+      "polarization",
+      "wave plate"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2023_S5.pdf"
+  },
+  {
+    "id": "ipho-2024-T1",
+    "contest": "IPhO",
+    "year": 2024,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Greenhouse Effect",
+    "desc": "Radiative balance of Earth-atmosphere system; greenhouse effect and equilibrium temperature.",
+    "topics": [
+      "Thermodynamics",
+      "Optics"
+    ],
+    "tags": [
+      "radiative balance",
+      "Stefan-Boltzmann",
+      "albedo"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_S1.pdf"
+  },
+  {
+    "id": "ipho-2024-T2",
+    "contest": "IPhO",
+    "year": 2024,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Trapping Ions and Cooling Atoms",
+    "desc": "Paul trap and laser cooling of ions/atoms; secular motion and Doppler limit.",
+    "topics": [
+      "Quantum Physics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "Paul trap",
+      "laser cooling",
+      "secular motion"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_S2.pdf"
+  },
+  {
+    "id": "ipho-2024-T3",
+    "contest": "IPhO",
+    "year": 2024,
+    "country": "Iran",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Black Widow Pulsar",
+    "desc": "Mass loss and orbital evolution in a black widow pulsar binary system.",
+    "topics": [
+      "Astrophysics",
+      "Mechanics"
+    ],
+    "tags": [
+      "pulsar",
+      "mass transfer",
+      "orbital evolution"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_S3.pdf"
+  },
+  {
+    "id": "ipho-2024-E1",
+    "contest": "IPhO",
+    "year": 2024,
+    "country": "Iran",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Heat Conduction in a Copper Rod",
+    "desc": "Measure temperature profile along a copper rod and extract its thermal conductivity.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "Fourier's law",
+      "thermal conductivity",
+      "steady state"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_S4.pdf"
+  },
+  {
+    "id": "ipho-2024-E2",
+    "contest": "IPhO",
+    "year": 2024,
+    "country": "Iran",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Diffraction from Phase Steps",
+    "desc": "Diffraction of laser light from transparent step structures; deduce step heights from patterns.",
+    "topics": [
+      "Optics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "phase diffraction",
+      "interference",
+      "step height"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2024_S5.pdf"
+  },
+  {
+    "id": "ipho-2025-T1",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Theory",
+    "num": 1,
+    "label": "T1",
+    "name": "Hydrogen and Galaxies",
+    "desc": "21 cm line of hydrogen used to map galactic kinematics and infer rotation curves.",
+    "topics": [
+      "Astrophysics",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "21 cm line",
+      "galactic rotation",
+      "Doppler effect"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S1.pdf"
+  },
+  {
+    "id": "ipho-2025-T2",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Theory",
+    "num": 2,
+    "label": "T2",
+    "name": "Cox's Timepiece",
+    "desc": "Mechanical clock driven by atmospheric pressure variations; energy harvesting and oscillator.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "atmospheric pressure",
+      "mechanical oscillator",
+      "energy harvesting"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S2.pdf"
+  },
+  {
+    "id": "ipho-2025-T3",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Theory",
+    "num": 3,
+    "label": "T3",
+    "name": "Champagne!",
+    "desc": "Physics of bubbles in champagne: nucleation, rise, growth and acoustic emission.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "bubble dynamics",
+      "buoyancy",
+      "Henry's law"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S3.pdf"
+  },
+  {
+    "id": "ipho-2025-E1",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Experiment",
+    "num": 4,
+    "label": "E1",
+    "name": "Earth's Magnetic Field Measurement",
+    "desc": "Determine the magnitude and direction of Earth's magnetic field using a coil/compass setup.",
+    "topics": [
+      "Electromagnetism",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "geomagnetic field",
+      "Helmholtz coil",
+      "torque on dipole"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S4.pdf"
+  },
+  {
+    "id": "ipho-2025-E2",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Experiment",
+    "num": 5,
+    "label": "E2",
+    "name": "Sand Craters and Dunes",
+    "desc": "Granular physics experiment: crater formation from impacts and dune scaling laws.",
+    "topics": [
+      "Mechanics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "granular media",
+      "impact crater",
+      "scaling"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q5.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S5.pdf"
+  },
+  {
+    "id": "ipho-2025-T-Backup",
+    "contest": "IPhO",
+    "year": 2025,
+    "country": "France",
+    "type": "Theory",
+    "num": 6,
+    "label": "T-Backup",
+    "name": "Strongly Correlated Fermi Gases (Theory Backup)",
+    "desc": "Backup theory paper on ultracold strongly interacting Fermi gases; BCS-BEC crossover.",
+    "topics": [
+      "Quantum Physics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "BCS-BEC crossover",
+      "Fermi gas",
+      "ultracold atoms"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_Q6.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S6.pdf"
+  }
+]
