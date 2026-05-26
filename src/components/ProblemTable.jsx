@@ -1,33 +1,25 @@
-import { useMemo } from 'react'
-
 const COLS = [
-  { key: 'year', label: 'Year', width: 56 },
-  { key: 'label', label: '#', width: 48 },
-  { key: 'name', label: 'Problem', width: null },
-  { key: 'topics', label: 'Topics', width: 180 },
-  { key: 'links', label: 'Links', width: 90 },
+  { key: 'status', label: 'Status', width: 72, sortable: true },
+  { key: 'year', label: 'Year', width: 56, sortable: true },
+  { key: 'label', label: '#', width: 48, sortable: true },
+  { key: 'name', label: 'Problem', width: null, sortable: true },
+  { key: 'topics', label: 'Topics', width: 170, sortable: false },
+  { key: 'links', label: 'Links', width: 88, sortable: false },
 ]
 
+function StatusBadge({ status }) {
+  if (!status || status === 'not-started') return null
+  if (status === 'assigned') return <span className="status-badge assigned">→ Assigned</span>
+  if (status === 'completed') return <span className="status-badge completed">✓ Done</span>
+  return null
+}
+
 export default function ProblemTable({
-  problems, selected, doneIds, filters, setFilters,
+  problems, selected, statusMap, filters, setFilters,
   onToggle, onSelectAll, onClearAll,
   sortCol, sortDir, onSort,
-  assignments, activeStudentId, students,
 }) {
   const allSelected = problems.length > 0 && problems.every(p => selected.has(p.id))
-
-  // Build assignment lookup: problemId → [{date, studentName}]
-  const assignmentMap = useMemo(() => {
-    const map = {}
-    assignments.forEach(a => {
-      const student = students.find(s => s.id === a.studentId)
-      a.problemIds.forEach(pid => {
-        if (!map[pid]) map[pid] = []
-        map[pid].push({ date: a.date, studentName: student?.name || a.studentId, studentId: a.studentId })
-      })
-    })
-    return map
-  }, [assignments, students])
 
   if (problems.length === 0) {
     return (
@@ -70,8 +62,8 @@ export default function ProblemTable({
               {COLS.map(col => (
                 <th
                   key={col.key}
-                  style={col.width ? { width: col.width } : {}}
-                  onClick={() => col.key !== 'links' && col.key !== 'topics' && onSort(col.key)}
+                  style={{ ...(col.width ? { width: col.width } : {}), cursor: col.sortable ? 'pointer' : 'default' }}
+                  onClick={() => col.sortable && onSort(col.key)}
                 >
                   {col.label}
                   {sortCol === col.key && (
@@ -83,15 +75,15 @@ export default function ProblemTable({
           </thead>
           <tbody>
             {problems.map(p => {
-              const isDone = doneIds.has(p.id)
+              const status = statusMap[p.id]
               const isSelected = selected.has(p.id)
-              const assignedTo = assignmentMap[p.id] || []
-              const assignedToActive = assignedTo.find(a => a.studentId === activeStudentId)
+              const isAssigned = status === 'assigned'
+              const isCompleted = status === 'completed'
 
               return (
                 <tr
                   key={p.id}
-                  className={isSelected ? 'selected' : isDone ? 'done' : ''}
+                  className={isSelected ? 'selected' : isCompleted ? 'done' : isAssigned ? 'assigned-row-tr' : ''}
                   onClick={() => onToggle(p.id)}
                   style={{ cursor: 'pointer' }}
                 >
@@ -103,6 +95,9 @@ export default function ProblemTable({
                       style={{ accentColor: 'var(--accent)' }}
                     />
                   </td>
+                  <td>
+                    <StatusBadge status={status} />
+                  </td>
                   <td style={{ whiteSpace: 'nowrap' }}>
                     <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>
                   </td>
@@ -112,16 +107,6 @@ export default function ProblemTable({
                   <td>
                     <div className="problem-name">{p.name}</div>
                     <div className="problem-desc">{p.desc}</div>
-                    {assignedToActive && (
-                      <span className="done-badge" style={{ marginTop: 4, display: 'inline-block' }}>
-                        ✓ {assignedToActive.date}
-                      </span>
-                    )}
-                    {assignedTo.filter(a => a.studentId !== activeStudentId).length > 0 && (
-                      <span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 6 }}>
-                        also: {assignedTo.filter(a => a.studentId !== activeStudentId).map(a => a.studentName).join(', ')}
-                      </span>
-                    )}
                   </td>
                   <td>
                     <div className="tag-list">

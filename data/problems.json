@@ -74,7 +74,7 @@
     "tags": [
       "Newton's law of cooling",
       "heat capacity",
-      "differential equations"
+      "differential equation"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_Q4.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1967_S4.pdf"
@@ -338,7 +338,7 @@
     "tags": [
       "mirror equation",
       "telescope",
-      "aberration"
+      "aberrations"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_Q4.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1970_S4.pdf"
@@ -519,9 +519,9 @@
       "Electromagnetism"
     ],
     "tags": [
-      "dielectrics",
       "capacitance",
-      "energy method"
+      "energy method",
+      "dielectric"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_Q3.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1972_S3.pdf"
@@ -2479,9 +2479,9 @@
       "Astrophysics"
     ],
     "tags": [
-      "tidal forces",
       "angular momentum",
-      "celestial mechanics"
+      "celestial mechanics",
+      "tidal force"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_Q3.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1996_S3.pdf"
@@ -5629,9 +5629,9 @@
     "tags": [
       "spring force",
       "friction",
-      "energy methods",
       "rail constraint",
-      "work-energy theorem"
+      "work-energy theorem",
+      "energy method"
     ],
     "problemUrl": "https://drive.google.com/file/d/1xhWQxb-cYkwqfRsp1ugbhodnjle95TCf/view?usp=share_link",
     "solutionUrl": "https://drive.google.com/file/d/1M3P_qnM6NVhOHjFxzMFCmbFYRBcRYjhf/view?usp=share_link"
@@ -5787,8 +5787,8 @@
       "energy conservation",
       "spring compression",
       "damping",
-      "oscillations",
-      "friction"
+      "friction",
+      "oscillation"
     ],
     "problemUrl": "https://balkanphysicalunion.info/wp-content/uploads/2020/11/2020-BPO-Problems.pdf",
     "solutionUrl": "https://balkanphysicalunion.info/wp-content/uploads/2020/11/2020-BPO-Solutions.pdf"
@@ -6255,11 +6255,11 @@
     "tags": [
       "projectile motion",
       "elastic collision",
-      "inclined planes",
       "hemispherical bowl",
       "bouncing",
       "periodic trajectory",
-      "geometry"
+      "geometry",
+      "inclined plane"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -6337,7 +6337,7 @@
       "back-EMF",
       "motor",
       "angular momentum",
-      "coupled oscillator"
+      "coupled oscillators"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -7137,10 +7137,10 @@
     "tags": [
       "rigid body",
       "bead on rod",
-      "constraint force",
       "inverted pendulum",
       "Lagrangian mechanics",
-      "coupled motion"
+      "coupled motion",
+      "constraint forces"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2019_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2019-Solutions.pdf"
@@ -7627,13 +7627,13 @@
       "Electromagnetism (circuits)"
     ],
     "tags": [
-      "resistor network",
       "Thevenin equivalent",
       "Norton equivalent",
       "current source",
       "Kirchhoff's laws",
       "superposition",
-      "circuit analysis"
+      "circuit analysis",
+      "resistor networks"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-5.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf"
@@ -8636,14 +8636,14 @@
       "Astrophysics / orbital mechanics"
     ],
     "tags": [
-      "Kepler's law",
       "stellar mass",
       "extrasolar planet",
       "circular orbit",
       "gravitational constant",
       "Fomalhaut",
       "image scale",
-      "data analysis"
+      "data analysis",
+      "Kepler's laws"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8956,11 +8956,11 @@
     "tags": [
       "bead on hoop",
       "normal force",
-      "constraint",
       "circular hoop",
       "energy conservation",
       "angular position",
-      "critical mass ratio"
+      "critical mass ratio",
+      "constraints"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -9198,7 +9198,7 @@
       "wedge",
       "brick",
       "equilibrium",
-      "inclined planes"
+      "inclined plane"
     ],
     "problemUrl": "https://eupho.ee/wp-content/uploads/2023/06/EuPhO_2023_theory.pdf",
     "solutionUrl": "https://eupho.ee/wp-content/uploads/2023/06/EuPhO_2023_theo_sol.pdf"
@@ -9345,9 +9345,9 @@
       "magnetic field",
       "Lorentz force",
       "rotation",
-      "charged particles",
       "rigid body",
-      "dynamics"
+      "dynamics",
+      "charged particle"
     ],
     "problemUrl": "https://eupho.ee/wp-content/uploads/2022/05/EuPhO_2022_theory___English.pdf",
     "solutionUrl": "https://eupho.ee/wp-content/uploads/2022/05/EuPhO_2022_Solutions.pdf"
@@ -9610,13 +9610,13 @@
       "Mechanics"
     ],
     "tags": [
-      "springs",
       "coupled oscillators",
       "normal modes",
       "eigenfrequencies",
       "biquadratic equation",
       "mass",
-      "spring constant"
+      "spring constant",
+      "spring"
     ],
     "problemUrl": "https://eupho.ee/wp-content/uploads/2020/07/EuPhO20_experiment-1.pdf",
     "solutionUrl": "https://eupho.ee/wp-content/uploads/2020/07/EuPhO20_experiment_Solutions.pdf"
@@ -10162,7 +10162,7 @@
       "conservation of energy",
       "conservation of momentum",
       "symmetry",
-      "charged particles"
+      "charged particle"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2024/04/NBPhO_2024_problems_v1.0.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2024/04/NBPhO_2024_solutions_v0.98.pdf"
@@ -10446,9 +10446,9 @@
       "exoplanets",
       "astrometry",
       "orbital period",
-      "Kepler's law",
       "center of mass",
-      "stellar wobble"
+      "stellar wobble",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_problems.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_res_v1.0.pdf"
@@ -10517,8 +10517,8 @@
       "normal modes",
       "coupled oscillators",
       "small oscillations",
-      "strings",
-      "angular frequency"
+      "angular frequency",
+      "string"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_problems.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_res_v1.0.pdf"
@@ -10561,11 +10561,11 @@
     ],
     "tags": [
       "electric field",
-      "charged particles",
       "string tension",
       "dynamics",
       "collision",
-      "trajectory"
+      "trajectory",
+      "charged particle"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_problems.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_res_v1.0.pdf"
@@ -10681,11 +10681,11 @@
     "tags": [
       "LCR circuit",
       "resonance",
-      "AC circuit",
       "phase shift",
       "filter",
       "impedance",
-      "capacitance"
+      "capacitance",
+      "AC circuits"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2022/NBPhO_2022.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2022/NBPhO_2022_solutions.pdf"
@@ -10953,9 +10953,9 @@
       "LRC circuit",
       "negative resistance",
       "stability",
-      "oscillations",
       "V-I curve",
-      "inductor"
+      "inductor",
+      "oscillation"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2020_Q2.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2020_S2.pdf"
@@ -11024,8 +11024,8 @@
       "acoustic resonance",
       "bottle",
       "sound frequency",
-      "standing wave",
-      "volume"
+      "volume",
+      "standing waves"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2020_Q5.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2020_S5.pdf"
@@ -11046,9 +11046,9 @@
     "tags": [
       "orbital mechanics",
       "satellite",
-      "Kepler's law",
       "gravitational force",
-      "circular orbit"
+      "circular orbit",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_Q1.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_S1.pdf"
@@ -11204,12 +11204,12 @@
       "Electromagnetism"
     ],
     "tags": [
-      "resistors",
       "circuit",
       "measurement",
       "Ohm's law",
       "Wheatstone bridge",
-      "black box"
+      "black box",
+      "resistor"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_Q8.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_S8.pdf"
@@ -11323,10 +11323,10 @@
     "tags": [
       "magnetic field",
       "Lorentz force",
-      "billiard",
       "circular orbit",
       "reflection",
-      "charged particle"
+      "charged particle",
+      "billiards"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_Q5.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_S5.pdf"
@@ -11369,10 +11369,10 @@
     "tags": [
       "LCR circuit",
       "resonance",
-      "AC circuit",
       "impedance",
       "quality factor",
-      "damping"
+      "damping",
+      "AC circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_Q7.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_S7.pdf"
@@ -11465,11 +11465,11 @@
     "tags": [
       "comet",
       "elliptical orbit",
-      "Kepler's law",
       "perihelion",
       "aphelion",
       "angular momentum",
-      "orbital speed"
+      "orbital speed",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_Q2.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_S2.pdf"
@@ -11493,7 +11493,7 @@
       "time constant",
       "charging",
       "energy",
-      "DC circuit"
+      "DC circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_S3.pdf"
@@ -11727,9 +11727,9 @@
       "harmonics",
       "resonance",
       "musical instrument",
-      "acoustic",
       "string",
-      "pipe"
+      "pipe",
+      "acoustics"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_S3.pdf"
@@ -11749,10 +11749,10 @@
     "tags": [
       "dimmer",
       "thyristor",
-      "AC circuit",
       "phase angle",
       "RMS power",
-      "light bulb"
+      "light bulb",
+      "AC circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_S4.pdf"
@@ -11839,12 +11839,12 @@
       "Mechanics"
     ],
     "tags": [
-      "oscillations",
       "normal modes",
       "damping",
       "resonance",
       "coupled system",
-      "spring-mass"
+      "spring-mass",
+      "oscillation"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_Q8.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_S8.pdf"
@@ -12418,8 +12418,8 @@
       "Mars mission",
       "orbital mechanics",
       "delta-v",
-      "Kepler's law",
-      "interplanetary"
+      "interplanetary",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2013_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2013_S3.pdf"
@@ -12604,10 +12604,10 @@
     "tags": [
       "asteroid",
       "orbital mechanics",
-      "Kepler's law",
       "impact",
       "energy",
-      "deflection"
+      "deflection",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_Q1.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_S1.pdf"
@@ -12653,7 +12653,7 @@
       "rigid body",
       "equilibrium",
       "normal force",
-      "constraint"
+      "constraints"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_S3.pdf"
@@ -12674,10 +12674,10 @@
       "RLC circuit",
       "resonance",
       "damping",
-      "oscillations",
       "impedance",
       "transient",
-      "quality factor"
+      "quality factor",
+      "oscillation"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_S4.pdf"
@@ -13183,9 +13183,9 @@
     "tags": [
       "satellite",
       "orbital mechanics",
-      "Kepler's law",
       "escape velocity",
-      "gravitational force"
+      "gravitational force",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2010_Q7.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2010_S7.pdf"
@@ -13324,9 +13324,9 @@
       "nanoclock",
       "oscillator",
       "quantum mechanics",
-      "molecular vibration",
       "frequency",
-      "atomic clock"
+      "atomic clock",
+      "molecular vibrations"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2009_Q2.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2009_S2.pdf"
@@ -13603,9 +13603,9 @@
       "magnetic field",
       "Ampere's law",
       "solenoid",
-      "Helmholtz coils",
       "force",
-      "conductor"
+      "conductor",
+      "Helmholtz coil"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2008_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2008_S4.pdf"
@@ -13722,9 +13722,9 @@
       "asteroid",
       "orbital mechanics",
       "impact energy",
-      "Kepler's law",
       "deflection",
-      "gravitational"
+      "gravitational",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2008_Q9.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2008_S9.pdf"
@@ -13910,8 +13910,8 @@
       "Hohmann transfer",
       "orbital mechanics",
       "delta-v",
-      "Kepler's law",
-      "interplanetary travel"
+      "interplanetary travel",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2007_Q7.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2007_S7.pdf"
@@ -14269,13 +14269,13 @@
       "Mechanics"
     ],
     "tags": [
-      "coupled oscillator",
       "mechano-electrical",
       "speaker",
       "resonance",
       "electromechanical",
       "LC circuit",
-      "damping"
+      "damping",
+      "coupled oscillators"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2005_Q6.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2005_S6.pdf"
@@ -14393,11 +14393,11 @@
     ],
     "tags": [
       "planets",
-      "Kepler's law",
       "orbital period",
       "tidal force",
       "gravitational force",
-      "solar system"
+      "solar system",
+      "Kepler's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2004_Q2.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2004_S2.pdf"
@@ -14625,11 +14625,11 @@
     ],
     "tags": [
       "gravitation",
-      "Newton's law",
       "gravitational potential",
       "orbital mechanics",
       "tidal force",
-      "Kepler"
+      "Kepler",
+      "Newton's laws"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_S3.pdf"
@@ -14676,8 +14676,8 @@
       "natural frequency",
       "resonance",
       "forced oscillation",
-      "standing wave",
-      "normal modes"
+      "normal modes",
+      "standing waves"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_Q5.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_S5.pdf"

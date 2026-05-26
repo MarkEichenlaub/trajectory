@@ -11,7 +11,7 @@ export function buildEmailBody(student, problems) {
     '',
   ]
   problems.forEach((p, i) => {
-    lines.push(`${i + 1}. ${p.name} (IPhO ${p.year} ${p.label})`)
+    lines.push(`${i + 1}. ${p.name} (${p.contest} ${p.year} ${p.label})`)
     lines.push(`   Problem: ${p.problemUrl}`)
     if (p.solutionUrl) lines.push(`   Solution: ${p.solutionUrl}`)
     lines.push('')

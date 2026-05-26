@@ -6,6 +6,12 @@ const TOPIC_ORDER = [
   'Nuclear/Particle', 'Astrophysics', 'Experimental Methods',
 ]
 
+const STATUS_OPTIONS = [
+  { key: 'not-started', label: 'Not started' },
+  { key: 'assigned', label: 'Assigned' },
+  { key: 'completed', label: 'Completed' },
+]
+
 function useCollapsed(key, defaultVal = false) {
   const [collapsed, setCollapsed] = useState(() => {
     try { return JSON.parse(localStorage.getItem('traj_collapsed_' + key)) ?? defaultVal }
@@ -32,36 +38,63 @@ function Section({ title, collapsed, onToggle, children }) {
   )
 }
 
-export default function FilterSidebar({ problems, filters, setFilters, doneIds }) {
+export default function FilterSidebar({ problems, filteredProblems, filters, setFilters, statusMap }) {
   const [contestCollapsed, toggleContest] = useCollapsed('contest')
   const [typeCollapsed, toggleType] = useCollapsed('type')
   const [topicCollapsed, toggleTopic] = useCollapsed('topic')
+  const [statusCollapsed, toggleStatus] = useCollapsed('status', true)
   const [tagCollapsed, toggleTag] = useCollapsed('tag', true)
   const [tagSearch, setTagSearch] = useState('')
 
   const contests = useMemo(() => [...new Set(problems.map(p => p.contest))].sort(), [problems])
   const types = useMemo(() => [...new Set(problems.map(p => p.type))].sort(), [problems])
 
-  // Collect all tags
-  const allTags = useMemo(() => {
+  // Counts based on filteredProblems (after all filters except selectedTags)
+  const contestCounts = useMemo(() => {
     const counts = {}
-    problems.forEach(p => p.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1 }))
-    return Object.entries(counts).sort((a, b) => b[1] - a[1])
-  }, [problems])
+    filteredProblems.forEach(p => { counts[p.contest] = (counts[p.contest] || 0) + 1 })
+    return counts
+  }, [filteredProblems])
 
-  const filteredTags = tagSearch
-    ? allTags.filter(([t]) => t.toLowerCase().includes(tagSearch.toLowerCase()))
-    : allTags
+  const typeCounts = useMemo(() => {
+    const counts = {}
+    filteredProblems.forEach(p => { counts[p.type] = (counts[p.type] || 0) + 1 })
+    return counts
+  }, [filteredProblems])
 
-  // Count problems per topic after other filters
   const topicCounts = useMemo(() => {
     const counts = {}
     TOPIC_ORDER.forEach(t => { counts[t] = 0 })
-    problems.forEach(p => {
+    filteredProblems.forEach(p => {
       p.topics.forEach(t => { if (counts[t] !== undefined) counts[t]++ })
     })
     return counts
-  }, [problems])
+  }, [filteredProblems])
+
+  const statusCounts = useMemo(() => {
+    const counts = { 'not-started': 0, assigned: 0, completed: 0 }
+    filteredProblems.forEach(p => {
+      const s = statusMap[p.id] || 'not-started'
+      counts[s] = (counts[s] || 0) + 1
+    })
+    return counts
+  }, [filteredProblems, statusMap])
+
+  // Tag counts from filteredProblems, sorted: selected tags first, then by count
+  const tagData = useMemo(() => {
+    const counts = {}
+    filteredProblems.forEach(p => p.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1 }))
+    return Object.entries(counts).sort(([tagA, cntA], [tagB, cntB]) => {
+      const aSelected = filters.selectedTags.has(tagA)
+      const bSelected = filters.selectedTags.has(tagB)
+      if (aSelected !== bSelected) return aSelected ? -1 : 1
+      return cntB - cntA
+    })
+  }, [filteredProblems, filters.selectedTags])
+
+  const displayedTags = tagSearch
+    ? tagData.filter(([t]) => t.toLowerCase().includes(tagSearch.toLowerCase()))
+    : tagData
 
   function toggleSet(filterKey, value) {
     setFilters(prev => {
@@ -77,23 +110,28 @@ export default function FilterSidebar({ problems, filters, setFilters, doneIds }
       contests: new Set(),
       types: new Set(),
       topics: new Set(),
+      statuses: new Set(),
+      selectedTags: new Set(),
+      hideCompleted: false,
     }))
   }
 
-  const hasAnyFilter = filters.contests.size > 0 || filters.types.size > 0 || filters.topics.size > 0 || filters.hideDone
+  const hasAnyFilter = filters.contests.size > 0 || filters.types.size > 0 || filters.topics.size > 0
+    || filters.statuses.size > 0 || filters.selectedTags.size > 0 || filters.hideCompleted
+
+  const tagSectionTitle = `Tags${filters.selectedTags.size > 0 ? ` (${filters.selectedTags.size} active)` : ''}`
 
   return (
     <div className="sidebar">
       <div style={{ padding: '8px 14px 4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontSize: 11, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>Filters</span>
-        {hasAnyFilter && <button className="sm" onClick={clearAll}>Clear</button>}
+        {hasAnyFilter && <button className="sm" onClick={clearAll}>Clear all</button>}
       </div>
 
-      {/* Hide done */}
-      <div className="sidebar-item" onClick={() => setFilters(f => ({ ...f, hideDone: !f.hideDone }))}>
-        <input type="checkbox" checked={filters.hideDone} readOnly />
-        <span>Hide assigned</span>
-        <span className="sidebar-count">{doneIds.size}</span>
+      {/* Hide completed */}
+      <div className="sidebar-item" onClick={() => setFilters(f => ({ ...f, hideCompleted: !f.hideCompleted }))}>
+        <input type="checkbox" checked={filters.hideCompleted} readOnly />
+        <span>Hide completed</span>
       </div>
 
       <Section title="Contest" collapsed={contestCollapsed} onToggle={toggleContest}>
@@ -101,7 +139,7 @@ export default function FilterSidebar({ problems, filters, setFilters, doneIds }
           <div key={c} className={`sidebar-item ${filters.contests.has(c) ? 'active' : ''}`} onClick={() => toggleSet('contests', c)}>
             <input type="checkbox" checked={filters.contests.has(c)} readOnly />
             <span>{c}</span>
-            <span className="sidebar-count">{problems.filter(p => p.contest === c).length}</span>
+            <span className="sidebar-count">{contestCounts[c] || 0}</span>
           </div>
         ))}
       </Section>
@@ -111,22 +149,32 @@ export default function FilterSidebar({ problems, filters, setFilters, doneIds }
           <div key={t} className={`sidebar-item ${filters.types.has(t) ? 'active' : ''}`} onClick={() => toggleSet('types', t)}>
             <input type="checkbox" checked={filters.types.has(t)} readOnly />
             <span>{t}</span>
-            <span className="sidebar-count">{problems.filter(p => p.type === t).length}</span>
+            <span className="sidebar-count">{typeCounts[t] || 0}</span>
           </div>
         ))}
       </Section>
 
       <Section title="Topic" collapsed={topicCollapsed} onToggle={toggleTopic}>
-        {TOPIC_ORDER.filter(t => topicCounts[t] > 0).map(t => (
+        {TOPIC_ORDER.filter(t => topicCounts[t] > 0 || filters.topics.has(t)).map(t => (
           <div key={t} className={`sidebar-item ${filters.topics.has(t) ? 'active' : ''}`} onClick={() => toggleSet('topics', t)}>
             <input type="checkbox" checked={filters.topics.has(t)} readOnly />
             <span>{t}</span>
-            <span className="sidebar-count">{topicCounts[t]}</span>
+            <span className="sidebar-count">{topicCounts[t] || 0}</span>
           </div>
         ))}
       </Section>
 
-      <Section title="Tags" collapsed={tagCollapsed} onToggle={toggleTag}>
+      <Section title="Status" collapsed={statusCollapsed} onToggle={toggleStatus}>
+        {STATUS_OPTIONS.map(({ key, label }) => (
+          <div key={key} className={`sidebar-item ${filters.statuses.has(key) ? 'active' : ''}`} onClick={() => toggleSet('statuses', key)}>
+            <input type="checkbox" checked={filters.statuses.has(key)} readOnly />
+            <span>{label}</span>
+            <span className="sidebar-count">{statusCounts[key] || 0}</span>
+          </div>
+        ))}
+      </Section>
+
+      <Section title={tagSectionTitle} collapsed={tagCollapsed} onToggle={toggleTag}>
         <div className="filter-search">
           <input
             placeholder="Search tags…"
@@ -135,20 +183,23 @@ export default function FilterSidebar({ problems, filters, setFilters, doneIds }
             onClick={e => e.stopPropagation()}
           />
         </div>
-        {filteredTags.slice(0, 60).map(([tag, count]) => (
-          <div
-            key={tag}
-            className="sidebar-item"
-            style={{ fontSize: 12 }}
-            onClick={() => setFilters(f => ({
-              ...f,
-              textSearch: f.textSearch ? f.textSearch : tag,
-            }))}
-          >
-            <span style={{ flex: 1 }}>{tag}</span>
-            <span className="sidebar-count">{count}</span>
-          </div>
-        ))}
+        {displayedTags.length === 0 && (
+          <div style={{ padding: '4px 14px 8px', fontSize: 12, color: 'var(--text-dim)' }}>No tags found</div>
+        )}
+        {displayedTags.slice(0, 80).map(([tag, count]) => {
+          const isSelected = filters.selectedTags.has(tag)
+          return (
+            <div
+              key={tag}
+              className={`sidebar-item${isSelected ? ' active' : ''}`}
+              style={{ fontSize: 12 }}
+              onClick={() => toggleSet('selectedTags', tag)}
+            >
+              <span style={{ flex: 1 }}>{tag}</span>
+              <span className="sidebar-count">{count}</span>
+            </div>
+          )
+        })}
       </Section>
     </div>
   )

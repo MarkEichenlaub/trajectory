@@ -1,21 +1,22 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON, writeJSON } from './utils/github'
+import { openGmailDraft, buildEmailBody } from './utils/gmail'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
-import StudentHistory from './components/StudentHistory'
+import AssignedView from './components/AssignedView'
 import Settings from './components/Settings'
-import AssignModal from './components/AssignModal'
 import Toast from './components/Toast'
 
-const VIEWS = { BROWSER: 'browser', HISTORY: 'history', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SETTINGS: 'settings' }
 
 const DEFAULT_FILTERS = {
   contests: new Set(),
   types: new Set(),
   topics: new Set(),
-  tagSearch: '',
+  statuses: new Set(),      // 'not-started' | 'assigned' | 'completed'
+  selectedTags: new Set(),
   textSearch: '',
-  hideDone: false,
+  hideCompleted: false,
 }
 
 export default function App() {
@@ -29,7 +30,6 @@ export default function App() {
   const [activeStudentId, setActiveStudentId] = useState('borna')
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const [selected, setSelected] = useState(new Set())
-  const [assignModalOpen, setAssignModalOpen] = useState(false)
   const [toast, setToast] = useState(null)
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
@@ -61,19 +61,25 @@ export default function App() {
 
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
 
-  // Compute done set for active student
-  const doneIds = new Set(
+  // Build status map for active student: problemId → 'assigned' | 'completed'
+  const statusMap = useMemo(() => {
+    const map = {}
     assignments
       .filter(a => a.studentId === activeStudentId)
-      .flatMap(a => a.problemIds)
-  )
+      .forEach(a => { map[a.problemId] = a.status })
+    return map
+  }, [assignments, activeStudentId])
 
-  // Filtering
-  const filteredProblems = problems.filter(p => {
+  // Problems filtered by everything EXCEPT selectedTags — used for tag count computation
+  const preTagFilterProblems = useMemo(() => problems.filter(p => {
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
     if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
-    if (filters.hideDone && doneIds.has(p.id)) return false
+    if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
+    if (filters.statuses.size > 0) {
+      const pStatus = statusMap[p.id] || 'not-started'
+      if (!filters.statuses.has(pStatus)) return false
+    }
     if (filters.textSearch) {
       const q = filters.textSearch.toLowerCase()
       if (
@@ -85,16 +91,33 @@ export default function App() {
       ) return false
     }
     return true
-  })
+  }), [problems, filters, statusMap])
 
-  // Sorting
-  const sorted = [...filteredProblems].sort((a, b) => {
-    let av = a[sortCol], bv = b[sortCol]
-    if (sortCol === 'name') { av = av.toLowerCase(); bv = bv.toLowerCase() }
-    if (av < bv) return sortDir === 'asc' ? -1 : 1
-    if (av > bv) return sortDir === 'asc' ? 1 : -1
-    return 0
-  })
+  // Apply selectedTags on top
+  const filteredProblems = useMemo(() => {
+    if (filters.selectedTags.size === 0) return preTagFilterProblems
+    return preTagFilterProblems.filter(p =>
+      [...filters.selectedTags].every(tag => p.tags.includes(tag))
+    )
+  }, [preTagFilterProblems, filters.selectedTags])
+
+  // Sort
+  const sorted = useMemo(() => {
+    const statusOrder = { assigned: 0, 'not-started': 1, completed: 2 }
+    return [...filteredProblems].sort((a, b) => {
+      let av, bv
+      if (sortCol === 'status') {
+        av = statusOrder[statusMap[a.id] || 'not-started']
+        bv = statusOrder[statusMap[b.id] || 'not-started']
+      } else {
+        av = a[sortCol]; bv = b[sortCol]
+        if (sortCol === 'name') { av = av.toLowerCase(); bv = bv.toLowerCase() }
+      }
+      if (av < bv) return sortDir === 'asc' ? -1 : 1
+      if (av > bv) return sortDir === 'asc' ? 1 : -1
+      return 0
+    })
+  }, [filteredProblems, sortCol, sortDir, statusMap])
 
   function handleSort(col) {
     if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
@@ -114,29 +137,55 @@ export default function App() {
 
   const selectedProblems = problems.filter(p => selected.has(p.id))
 
-  async function handleAssign(note) {
-    if (!activeStudent) return
-    const newAssignment = {
-      id: Date.now().toString(),
-      studentId: activeStudent.id,
-      problemIds: [...selected],
-      date: new Date().toISOString().slice(0, 10),
-      note,
+  // Assign selected problems to active student (directly, no modal)
+  async function handleAssign() {
+    if (!activeStudent || selected.size === 0) return
+    const date = new Date().toISOString().slice(0, 10)
+    const toAdd = []
+    let skipped = 0
+
+    for (const pid of selected) {
+      if (statusMap[pid]) { skipped++; continue }
+      toAdd.push({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
+        studentId: activeStudent.id,
+        problemId: pid,
+        status: 'assigned',
+        assignedDate: date,
+        completedDate: null,
+      })
     }
-    const updated = [...assignments, newAssignment]
+
+    if (toAdd.length === 0) {
+      showToast('All selected problems are already assigned or completed', 'error')
+      return
+    }
+
+    const updated = [...assignments, ...toAdd]
     try {
       await writeJSON('data/assignments.json', updated)
       setAssignments(updated)
       setSelected(new Set())
-      setAssignModalOpen(false)
-      showToast(`Assigned ${selectedProblems.length} problem${selectedProblems.length > 1 ? 's' : ''} to ${activeStudent.name}`)
+      const msg = skipped > 0
+        ? `Assigned ${toAdd.length} problem${toAdd.length > 1 ? 's' : ''} (${skipped} skipped)`
+        : `Assigned ${toAdd.length} problem${toAdd.length > 1 ? 's' : ''} to ${activeStudent.name}`
+      showToast(msg)
     } catch (e) {
       showToast(e.message, 'error')
     }
   }
 
-  async function handleUpdateAssignment(id, field, value) {
-    const updated = assignments.map(a => a.id === id ? { ...a, [field]: value } : a)
+  // Toggle a problem between assigned ↔ completed
+  async function handleToggleStatus(problemId) {
+    const existing = assignments.find(a => a.studentId === activeStudentId && a.problemId === problemId)
+    if (!existing) return
+
+    const newStatus = existing.status === 'assigned' ? 'completed' : 'assigned'
+    const updated = assignments.map(a =>
+      a.id === existing.id
+        ? { ...a, status: newStatus, completedDate: newStatus === 'completed' ? new Date().toISOString().slice(0, 10) : null }
+        : a
+    )
     try {
       await writeJSON('data/assignments.json', updated)
       setAssignments(updated)
@@ -145,15 +194,39 @@ export default function App() {
     }
   }
 
-  async function handleDeleteAssignment(id) {
-    const updated = assignments.filter(a => a.id !== id)
+  // Remove an assignment entirely
+  async function handleUnassign(problemId) {
+    const updated = assignments.filter(a => !(a.studentId === activeStudentId && a.problemId === problemId))
     try {
       await writeJSON('data/assignments.json', updated)
       setAssignments(updated)
-      showToast('Assignment deleted')
+      showToast('Problem removed from assigned list')
     } catch (e) {
       showToast(e.message, 'error')
     }
+  }
+
+  // Open Gmail draft for all currently-assigned problems
+  function handleGenerateEmail() {
+    if (!activeStudent) return
+    const assignedProblems = problems.filter(p => statusMap[p.id] === 'assigned')
+    if (assignedProblems.length === 0) {
+      showToast('No assigned problems to email', 'error')
+      return
+    }
+    openGmailDraft({
+      to: activeStudent.email || '',
+      subject: `Physics problems for ${activeStudent.name}`,
+      body: buildEmailBody(activeStudent, assignedProblems),
+    })
+  }
+
+  function handleCopyUrls() {
+    const text = selectedProblems.map(p =>
+      `${p.name} (${p.contest} ${p.year} ${p.label})\n  Problem: ${p.problemUrl}${p.solutionUrl ? '\n  Solution: ' + p.solutionUrl : ''}`
+    ).join('\n\n')
+    navigator.clipboard.writeText(text)
+    showToast(`Copied ${selectedProblems.length} URL${selectedProblems.length > 1 ? 's' : ''}`)
   }
 
   async function handleSaveStudents(updated) {
@@ -166,24 +239,27 @@ export default function App() {
     }
   }
 
-  function handleCopyUrls() {
-    const text = selectedProblems.map(p =>
-      `${p.name} (${p.contest} ${p.year} ${p.label})\n  Problem: ${p.problemUrl}${p.solutionUrl ? '\n  Solution: ' + p.solutionUrl : ''}`
-    ).join('\n\n')
-    navigator.clipboard.writeText(text)
-    showToast(`Copied ${selectedProblems.length} URL${selectedProblems.length > 1 ? 's' : ''}`)
-  }
+  const activeAssignments = useMemo(() =>
+    assignments.filter(a => a.studentId === activeStudentId),
+    [assignments, activeStudentId]
+  )
+  const assignedCount = activeAssignments.filter(a => a.status === 'assigned').length
 
-  if (loading) return <div className="empty-state" style={{marginTop: 80}}>Loading… <span className="spin">⟳</span></div>
-  if (error) return <div className="empty-state" style={{marginTop: 80, color: 'var(--red)'}}>Error: {error}</div>
+  if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+  if (error) return <div className="empty-state" style={{ marginTop: 80, color: 'var(--red)' }}>Error: {error}</div>
 
   return (
     <div className="layout">
       <div className="topbar">
         <span className="logo">Trajectory</span>
         <nav>
-          <button className={view === VIEWS.BROWSER ? 'active' : ''} onClick={() => setView(VIEWS.BROWSER)}>Problems</button>
-          <button className={view === VIEWS.HISTORY ? 'active' : ''} onClick={() => setView(VIEWS.HISTORY)}>History</button>
+          <button className={view === VIEWS.BROWSER ? 'active' : ''} onClick={() => setView(VIEWS.BROWSER)}>
+            Problems
+          </button>
+          <button className={view === VIEWS.ASSIGNED ? 'active' : ''} onClick={() => setView(VIEWS.ASSIGNED)}>
+            Assigned
+            {assignedCount > 0 && <span className="nav-badge">{assignedCount}</span>}
+          </button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -200,9 +276,10 @@ export default function App() {
           <>
             <FilterSidebar
               problems={problems}
+              filteredProblems={preTagFilterProblems}
               filters={filters}
               setFilters={setFilters}
-              doneIds={doneIds}
+              statusMap={statusMap}
             />
             <div className="problem-area">
               {selected.size > 0 && (
@@ -212,7 +289,7 @@ export default function App() {
                   <button className="sm" onClick={selectAll}>Select all {sorted.length}</button>
                   <div className="spacer" />
                   <button className="sm" onClick={handleCopyUrls}>Copy URLs</button>
-                  <button className="sm primary" onClick={() => setAssignModalOpen(true)}>
+                  <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>
                 </div>
@@ -220,7 +297,7 @@ export default function App() {
               <ProblemTable
                 problems={sorted}
                 selected={selected}
-                doneIds={doneIds}
+                statusMap={statusMap}
                 filters={filters}
                 setFilters={setFilters}
                 onToggle={toggleSelect}
@@ -229,21 +306,19 @@ export default function App() {
                 sortCol={sortCol}
                 sortDir={sortDir}
                 onSort={handleSort}
-                assignments={assignments}
-                activeStudentId={activeStudentId}
-                students={students}
               />
             </div>
           </>
         )}
 
-        {view === VIEWS.HISTORY && (
-          <StudentHistory
+        {view === VIEWS.ASSIGNED && (
+          <AssignedView
             student={activeStudent}
-            assignments={assignments.filter(a => a.studentId === activeStudentId)}
+            assignments={activeAssignments}
             problems={problems}
-            onUpdateAssignment={handleUpdateAssignment}
-            onDeleteAssignment={handleDeleteAssignment}
+            onToggleStatus={handleToggleStatus}
+            onUnassign={handleUnassign}
+            onGenerateEmail={handleGenerateEmail}
           />
         )}
 
@@ -255,15 +330,6 @@ export default function App() {
           />
         )}
       </div>
-
-      {assignModalOpen && (
-        <AssignModal
-          student={activeStudent}
-          problems={selectedProblems}
-          onConfirm={handleAssign}
-          onClose={() => setAssignModalOpen(false)}
-        />
-      )}
 
       {toast && <Toast msg={toast.msg} type={toast.type} />}
     </div>
