@@ -26,12 +26,15 @@ function useCollapsed(key, defaultVal = false) {
   return [collapsed, toggle]
 }
 
-function Section({ title, collapsed, onToggle, children }) {
+function Section({ title, collapsed, onToggle, action, children }) {
   return (
     <div className="sidebar-section">
       <div className="sidebar-section-header" onClick={onToggle}>
         <span>{title}</span>
-        <span>{collapsed ? '▶' : '▼'}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {action && <span onClick={e => e.stopPropagation()}>{action}</span>}
+          <span>{collapsed ? '▶' : '▼'}</span>
+        </div>
       </div>
       {!collapsed && children}
     </div>
@@ -119,8 +122,6 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
   const hasAnyFilter = filters.contests.size > 0 || filters.types.size > 0 || filters.topics.size > 0
     || filters.statuses.size > 0 || filters.selectedTags.size > 0 || filters.hideCompleted
 
-  const tagSectionTitle = `Tags${filters.selectedTags.size > 0 ? ` (${filters.selectedTags.size} active)` : ''}`
-
   return (
     <div className="sidebar">
       <div style={{ padding: '8px 14px 4px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -174,7 +175,18 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
         ))}
       </Section>
 
-      <Section title={tagSectionTitle} collapsed={tagCollapsed} onToggle={toggleTag}>
+      <Section
+        title={`Tags${filters.selectedTags.size > 0 ? ` (${filters.selectedTags.size})` : ''}`}
+        collapsed={tagCollapsed}
+        onToggle={toggleTag}
+        action={filters.selectedTags.size > 0 && (
+          <button
+            className="sm"
+            style={{ fontSize: 11, padding: '1px 6px' }}
+            onClick={() => setFilters(f => ({ ...f, selectedTags: new Set() }))}
+          >Clear</button>
+        )}
+      >
         <div className="filter-search">
           <input
             placeholder="Search tags…"

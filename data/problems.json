@@ -176,7 +176,8 @@
     "tags": [
       "I-V characteristic",
       "AC/DC",
-      "circuit elements"
+      "circuit elements",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_Q4.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1968_S4.pdf"
@@ -420,7 +421,8 @@
     "tags": [
       "circuit symmetry",
       "Kirchhoff's laws",
-      "capacitor energy"
+      "capacitor energy",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_Q3.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1971_S3.pdf"
@@ -645,7 +647,8 @@
     "tags": [
       "diode I-V",
       "circuit identification",
-      "nonlinear element"
+      "nonlinear element",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_Q4.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1974_S4.pdf"
@@ -951,7 +954,8 @@
     "tags": [
       "AC impedance",
       "circuit identification",
-      "frequency response"
+      "frequency response",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_Q4.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1979_S4.pdf"
@@ -1055,7 +1059,8 @@
     "tags": [
       "AC circuits",
       "inductor ballast",
-      "gas discharge"
+      "gas discharge",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_Q1.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1982_S1.pdf"
@@ -2314,7 +2319,8 @@
     "tags": [
       "AC impedance",
       "black box",
-      "circuit identification"
+      "circuit identification",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_Q5.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_1994_S5.pdf"
@@ -2980,7 +2986,8 @@
     "tags": [
       "electrochemistry",
       "signal detection",
-      "RC circuit"
+      "RC circuit",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_Q2.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2002_S2.pdf"
@@ -3083,7 +3090,8 @@
     "tags": [
       "piezoelectric resonance",
       "equivalent circuit",
-      "Q factor"
+      "Q factor",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_Q2.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2003_S2.pdf"
@@ -3958,7 +3966,8 @@
     "tags": [
       "nonlinear element",
       "I-V curve",
-      "circuit identification"
+      "circuit identification",
+      "circuits"
     ],
     "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_Q5.pdf",
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2012_S5.pdf"
@@ -5743,7 +5752,8 @@
       "tungsten filament",
       "load line",
       "graphical method",
-      "series/parallel circuits"
+      "series/parallel circuits",
+      "circuits"
     ],
     "problemUrl": "https://balkanphysicalunion.info/?p=2120",
     "solutionUrl": "https://balkanphysicalunion.info/?p=2120"
@@ -5925,7 +5935,8 @@
       "equivalent resistance",
       "switches",
       "Kirchhoff's laws",
-      "inverse problem"
+      "inverse problem",
+      "circuits"
     ],
     "problemUrl": "https://balkanphysicalunion.info/wp-content/uploads/2019/07/2019-BPO-Problems-.pdf",
     "solutionUrl": "https://balkanphysicalunion.info/wp-content/uploads/2019/07/2019-BPO-Solutions.pdf"
@@ -6100,7 +6111,8 @@
       "oscillation",
       "electromagnetic radiation",
       "dipole radiation",
-      "damping"
+      "damping",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6234,7 +6246,8 @@
       "bandwidth",
       "frequency response",
       "data analysis",
-      "gain function"
+      "gain function",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6569,7 +6582,8 @@
       "op-amp",
       "RC circuit",
       "fluid dynamics",
-      "force"
+      "force",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-solutions.pdf"
@@ -7190,7 +7204,8 @@
       "ripple voltage",
       "RC circuit",
       "semiconductor",
-      "exponential"
+      "exponential",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2018.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2018-Solutions.pdf"
@@ -7488,7 +7503,8 @@
       "integrator",
       "differentiator",
       "feedback",
-      "circuit analysis"
+      "circuit analysis",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016-Solutions.pdf"
@@ -7633,7 +7649,8 @@
       "Kirchhoff's laws",
       "superposition",
       "circuit analysis",
-      "resistor networks"
+      "resistor networks",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-5.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf"
@@ -8495,7 +8512,8 @@
       "current decay",
       "self-inductance",
       "EMF",
-      "resistivity"
+      "resistivity",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8715,7 +8733,8 @@
       "power dissipation",
       "optimization",
       "Ohm's law",
-      "circuit analysis"
+      "circuit analysis",
+      "circuits"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -10020,7 +10039,8 @@
       "resistor",
       "circuit",
       "I-V curve",
-      "Wheatstone"
+      "Wheatstone",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2025/04/NBPhO_2025_problems_V1.0.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2025/04/00_NBPhO_2025_solutions_v1.0.pdf"
@@ -10376,7 +10396,8 @@
       "dielectric",
       "aluminum",
       "micrometer",
-      "circuit"
+      "circuit",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2024/04/NBPhO_2024_problems_v1.0.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2024/04/NBPhO_2024_solutions_v0.98.pdf"
@@ -10472,7 +10493,8 @@
       "resistor",
       "capacitor",
       "diode",
-      "measurement"
+      "measurement",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_problems.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2023/04/NBPhO_2023_res_v1.0.pdf"
@@ -10685,7 +10707,8 @@
       "filter",
       "impedance",
       "capacitance",
-      "AC circuits"
+      "AC circuits",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.ee/wp-content/uploads/2022/NBPhO_2022.pdf",
     "solutionUrl": "https://nbpho.ee/wp-content/uploads/2022/NBPhO_2022_solutions.pdf"
@@ -11209,7 +11232,8 @@
       "Ohm's law",
       "Wheatstone bridge",
       "black box",
-      "resistor"
+      "resistor",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_Q8.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2019_S8.pdf"
@@ -11372,7 +11396,8 @@
       "impedance",
       "quality factor",
       "damping",
-      "AC circuits"
+      "AC circuits",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_Q7.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_S7.pdf"
@@ -11419,7 +11444,8 @@
       "measurement",
       "resistor",
       "capacitor",
-      "diode"
+      "diode",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_Q9.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2018_S9.pdf"
@@ -11493,7 +11519,8 @@
       "time constant",
       "charging",
       "energy",
-      "DC circuits"
+      "DC circuits",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_Q3.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_S3.pdf"
@@ -11588,7 +11615,8 @@
       "breakdown",
       "circuit",
       "current",
-      "diode characteristics"
+      "diode characteristics",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_Q7.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_S7.pdf"
@@ -11657,7 +11685,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "components"
+      "components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_Q10.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2017_S10.pdf"
@@ -11752,7 +11781,8 @@
       "phase angle",
       "RMS power",
       "light bulb",
-      "AC circuits"
+      "AC circuits",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_S4.pdf"
@@ -11888,7 +11918,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_Q10.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2016_S10.pdf"
@@ -12536,7 +12567,8 @@
       "breakdown",
       "circuit",
       "power dissipation",
-      "current"
+      "current",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2013_Q8.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2013_S8.pdf"
@@ -12677,7 +12709,8 @@
       "impedance",
       "transient",
       "quality factor",
-      "oscillation"
+      "oscillation",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_S4.pdf"
@@ -12814,7 +12847,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_Q10.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2012_S10.pdf"
@@ -12861,7 +12895,8 @@
       "energy",
       "dielectric",
       "charging",
-      "RC circuit"
+      "RC circuit",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2011_Q2.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2011_S2.pdf"
@@ -12905,7 +12940,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2011_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2011_S4.pdf"
@@ -13277,7 +13313,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2010_Q11.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2010_S11.pdf"
@@ -13370,7 +13407,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2009_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2009_S4.pdf"
@@ -14031,7 +14069,8 @@
       "capacitance",
       "circuit",
       "Ohm's law",
-      "multimeter"
+      "multimeter",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2006_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2006_S4.pdf"
@@ -14275,7 +14314,8 @@
       "electromechanical",
       "LC circuit",
       "damping",
-      "coupled oscillators"
+      "coupled oscillators",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2005_Q6.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2005_S6.pdf"
@@ -14558,7 +14598,8 @@
       "black box",
       "circuit identification",
       "measurement",
-      "electrical components"
+      "electrical components",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2004_Q9.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2004_S9.pdf"
@@ -14653,7 +14694,8 @@
       "negative resistance",
       "V-I curve",
       "semiconductor",
-      "circuit"
+      "circuit",
+      "circuits"
     ],
     "problemUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_Q4.pdf",
     "solutionUrl": "https://nbpho.olimpicos.net/pdf/NBPhO_2003_S4.pdf"
