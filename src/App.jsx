@@ -25,6 +25,7 @@ export default function App() {
   const [problems, setProblems] = useState([])
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
+  const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -229,17 +230,21 @@ export default function App() {
     }
   }
 
-  // Open Gmail draft for all currently-assigned problems
+  // Open Gmail draft for all currently-assigned problems, in the user-defined drag order
   function handleGenerateEmail() {
     if (!activeStudent) return
-    const assignedProblems = problems.filter(p => statusMap[p.id] === 'assigned')
-    if (assignedProblems.length === 0) {
+    if (assignedOrderForStudent.length === 0) {
       showToast('No assigned problems to email', 'error')
       return
     }
+    const assignedProblems = assignedOrderForStudent
+      .map(id => problems.find(p => p.id === id))
+      .filter(Boolean)
+    const firstName = activeStudent.name.split(' ')[0]
+    const dateStr = new Date().toISOString().slice(0, 10)
     openGmailDraft({
       to: activeStudent.email || '',
-      subject: `Physics problems for ${activeStudent.name}`,
+      subject: `${firstName} physics problems ${dateStr}`,
       body: buildEmailBody(activeStudent, assignedProblems),
     })
   }
@@ -267,6 +272,26 @@ export default function App() {
     [assignments, activeStudentId]
   )
   const assignedCount = activeAssignments.filter(a => a.status === 'assigned').length
+
+  // Ordered list of assigned problemIds for the active student.
+  // Respects drag-and-drop overrides; new problems are appended at the end.
+  const assignedOrderForStudent = useMemo(() => {
+    const defaultOrder = assignments
+      .filter(a => a.studentId === activeStudentId && a.status === 'assigned')
+      .sort((a, b) => b.assignedDate.localeCompare(a.assignedDate))
+      .map(a => a.problemId)
+    const override = assignedOrderOverrides[activeStudentId]
+    if (!override) return defaultOrder
+    const currentSet = new Set(defaultOrder)
+    const filtered = override.filter(id => currentSet.has(id))
+    const filteredSet = new Set(filtered)
+    const newOnes = defaultOrder.filter(id => !filteredSet.has(id))
+    return [...filtered, ...newOnes]
+  }, [assignments, activeStudentId, assignedOrderOverrides])
+
+  function handleReorder(newOrder) {
+    setAssignedOrderOverrides(prev => ({ ...prev, [activeStudentId]: newOrder }))
+  }
 
   if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
   if (error) return <div className="empty-state" style={{ marginTop: 80, color: 'var(--red)' }}>Error: {error}</div>
@@ -339,6 +364,8 @@ export default function App() {
             student={activeStudent}
             assignments={activeAssignments}
             problems={problems}
+            assignedOrder={assignedOrderForStudent}
+            onReorder={handleReorder}
             onToggleStatus={handleToggleStatus}
             onUnassign={handleUnassign}
             onGenerateEmail={handleGenerateEmail}

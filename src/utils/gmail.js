@@ -16,6 +16,5 @@ export function buildEmailBody(student, problems) {
     if (p.solutionUrl) lines.push(`   Solution: ${p.solutionUrl}`)
     lines.push('')
   })
-  lines.push('Let me know if you have questions!')
   return lines.join('\n')
 }
