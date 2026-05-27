@@ -9,6 +9,8 @@ import Toast from './components/Toast'
 
 const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SETTINGS: 'settings' }
 
+const MARK_STUDENT_ID = 'mark'
+
 const DEFAULT_FILTERS = {
   contests: new Set(),
   types: new Set(),
@@ -144,6 +146,14 @@ export default function App() {
     const toAdd = []
     let skipped = 0
 
+    // Build Mark's status map so we can co-assign problems he hasn't completed
+    const markStatusMap = {}
+    if (activeStudent.id !== MARK_STUDENT_ID) {
+      assignments
+        .filter(a => a.studentId === MARK_STUDENT_ID)
+        .forEach(a => { markStatusMap[a.problemId] = a.status })
+    }
+
     for (const pid of selected) {
       if (statusMap[pid]) { skipped++; continue }
       toAdd.push({
@@ -154,6 +164,17 @@ export default function App() {
         assignedDate: date,
         completedDate: null,
       })
+      // Co-assign to Mark if he hasn't completed or already been assigned this problem
+      if (activeStudent.id !== MARK_STUDENT_ID && !markStatusMap[pid]) {
+        toAdd.push({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
+          studentId: MARK_STUDENT_ID,
+          problemId: pid,
+          status: 'assigned',
+          assignedDate: date,
+          completedDate: null,
+        })
+      }
     }
 
     if (toAdd.length === 0) {
@@ -166,9 +187,11 @@ export default function App() {
       await writeJSON('data/assignments.json', updated)
       setAssignments(updated)
       setSelected(new Set())
+      const studentAssigned = toAdd.filter(a => a.studentId === activeStudent.id).length
+      const markCoAssigned = toAdd.filter(a => a.studentId === MARK_STUDENT_ID).length
       const msg = skipped > 0
-        ? `Assigned ${toAdd.length} problem${toAdd.length > 1 ? 's' : ''} (${skipped} skipped)`
-        : `Assigned ${toAdd.length} problem${toAdd.length > 1 ? 's' : ''} to ${activeStudent.name}`
+        ? `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name} (${skipped} skipped)${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
+        : `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name}${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
       showToast(msg)
     } catch (e) {
       showToast(e.message, 'error')
