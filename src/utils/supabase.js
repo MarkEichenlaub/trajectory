@@ -8,8 +8,10 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // ── Admin helpers (service key, bypasses RLS) ──────────────────────────────
 
+const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dnRheGJudHFoY2ZxdGF6Ym50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTkxNzIwNywiZXhwIjoyMDk1NDkzMjA3fQ.4bgXZCbkJbOR_QvWOBLl5ek2SHgCZELsm2kW4qKA7O4'
+
 export function getServiceKey() {
-  return localStorage.getItem('trajectory_supabase_service_key') || ''
+  return localStorage.getItem('trajectory_supabase_service_key') || SUPABASE_SERVICE_KEY
 }
 
 export function setServiceKey(key) {
@@ -17,9 +19,7 @@ export function setServiceKey(key) {
 }
 
 function adminClient() {
-  const key = getServiceKey()
-  if (!key) throw new Error('No Supabase service key configured. Go to Settings.')
-  return createClient(SUPABASE_URL, key, { auth: { persistSession: false } })
+  return createClient(SUPABASE_URL, getServiceKey(), { auth: { persistSession: false } })
 }
 
 export async function fetchStudents() {
