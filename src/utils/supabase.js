@@ -62,6 +62,42 @@ export async function removeStudent(id) {
   if (error) throw new Error(error.message)
 }
 
+export async function fetchSessions(studentId) {
+  const q = adminClient().from('sessions').select('*').order('scheduled_at', { ascending: false })
+  if (studentId) q.eq('student_id', studentId)
+  const { data, error } = await q
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function saveSession(session) {
+  const { error } = await adminClient().from('sessions').upsert(session, { onConflict: 'id' })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteSession(id) {
+  const { error } = await adminClient().from('sessions').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export async function fetchStudentContacts(studentId) {
+  const { data, error } = await adminClient()
+    .from('student_contacts').select('*').eq('student_id', studentId).order('created_at')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function saveStudentContact(contact) {
+  const { error } = await adminClient()
+    .from('student_contacts').upsert(contact, { onConflict: 'student_id,email' })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteStudentContact(id) {
+  const { error } = await adminClient().from('student_contacts').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 // ── Student-facing helpers (uses public client + RLS) ─────────────────────
 
 export async function fetchStudentAssignments() {
@@ -74,4 +110,11 @@ export async function fetchStudentAssignments() {
 export async function linkStudentAccount() {
   const { error } = await supabase.rpc('link_student_account')
   if (error) console.warn('link_student_account:', error.message)
+}
+
+export async function fetchStudentSessions() {
+  const { data, error } = await supabase
+    .from('sessions').select('*').order('scheduled_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
 }

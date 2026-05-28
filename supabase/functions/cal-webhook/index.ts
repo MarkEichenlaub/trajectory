@@ -52,21 +52,22 @@ Deno.serve(async (req) => {
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-  // Match attendee email to a student
-  const { data: students } = await supabase
-    .from('students')
-    .select('id, name')
+  // Match attendee email to a student via student_contacts
+  const { data: contacts } = await supabase
+    .from('student_contacts')
+    .select('student_id, students!inner(id, name)')
     .ilike('email', attendee.email)
     .limit(1)
 
-  if (!students?.length) {
+  if (!contacts?.length) {
     console.log('No student found for email:', attendee.email)
     return new Response(JSON.stringify({ ok: true, message: 'no matching student' }), {
       status: 200, headers: { 'Content-Type': 'application/json' },
     })
   }
 
-  const student = students[0] as { id: string; name: string }
+  const studentRow = contacts[0].students as { id: string; name: string }
+  const student = { id: studentRow.id, name: studentRow.name }
   const dateStr = new Date(startTime).toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
   })
