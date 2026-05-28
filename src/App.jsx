@@ -292,7 +292,6 @@ export default function App() {
   }
 
   if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
-  if (error) return <div className="empty-state" style={{ marginTop: 80, color: 'var(--red)' }}>Error: {error}</div>
 
   // Student portal mode
   if (STUDENT_PARAM) {
@@ -339,6 +338,13 @@ export default function App() {
           </select>
         </div>
       </div>
+
+      {error && (
+        <div style={{ background: 'var(--red)', color: '#fff', padding: '8px 20px', fontSize: 13, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>{error}</span>
+          <button onClick={() => { setError(null); setView(VIEWS.SETTINGS) }} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', padding: '2px 10px', borderRadius: 4, cursor: 'pointer', marginLeft: 16 }}>Go to Settings</button>
+        </div>
+      )}
 
       <div className="content">
         {view === VIEWS.BROWSER && (
