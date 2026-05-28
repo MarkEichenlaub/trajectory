@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from './utils/github'
-import { fetchStudents, fetchAssignments, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
 import { openGmailDraft, buildEmailBody } from './utils/gmail'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
 import StudentPortal from './components/StudentPortal'
+import AdminLogin from './components/AdminLogin'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
 
 const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
+const ADMIN_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const STUDENT_PARAM = new URLSearchParams(window.location.search).get('student')
 
 const DEFAULT_FILTERS = {
@@ -30,6 +32,8 @@ export default function App() {
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [adminSession, setAdminSession] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
 
   const [view, setView] = useState(VIEWS.BROWSER)
   const [activeStudentId, setActiveStudentId] = useState('borna')
@@ -53,6 +57,19 @@ export default function App() {
       }
     }
     load()
+  }, [])
+
+  // Admin auth gate (only runs when not in student portal mode)
+  useEffect(() => {
+    if (STUDENT_PARAM) { setAuthLoading(false); return }
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setAdminSession(session)
+      setAuthLoading(false)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setAdminSession(session)
+    })
+    return () => subscription.unsubscribe()
   }, [])
 
   const showToast = useCallback((msg, type = 'success') => {
@@ -287,7 +304,28 @@ export default function App() {
     setAssignedOrderOverrides(prev => ({ ...prev, [activeStudentId]: newOrder }))
   }
 
-  if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+  if (loading || authLoading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+
+  // Admin auth gate
+  if (!STUDENT_PARAM) {
+    const email = adminSession?.user?.email
+    if (!email) return <AdminLogin />
+    if (email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+      return (
+        <div className="student-login-wrap">
+          <div className="student-login">
+            <div className="student-login-logo">Eichenlaub Physics</div>
+            <p className="student-login-error" style={{ marginTop: 16 }}>
+              {email} is not authorized to access the admin panel.
+            </p>
+            <button className="sm" style={{ marginTop: 12 }} onClick={() => supabase.auth.signOut()}>
+              Sign out
+            </button>
+          </div>
+        </div>
+      )
+    }
+  }
 
   // Student portal mode
   if (STUDENT_PARAM) {
@@ -327,6 +365,7 @@ export default function App() {
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
+        <button className="sm" style={{ marginRight: 12, opacity: 0.5 }} onClick={() => supabase.auth.signOut()}>Sign out</button>
         <div className="student-selector">
           <label>Student</label>
           <select value={activeStudentId} onChange={e => { setActiveStudentId(e.target.value); setSelected(new Set()) }}>
