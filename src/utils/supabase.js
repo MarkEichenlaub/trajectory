@@ -98,6 +98,34 @@ export async function deleteStudentContact(id) {
   if (error) throw new Error(error.message)
 }
 
+export async function fetchHandouts() {
+  const { data, error } = await adminClient()
+    .from('handouts').select('*').order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function saveHandout(handout) {
+  const { error } = await adminClient()
+    .from('handouts').upsert(handout, { onConflict: 'id' })
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteHandout(id) {
+  const { error } = await adminClient().from('handouts').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export async function uploadHandoutPDF(file, handoutId) {
+  const ext = file.name.split('.').pop()
+  const path = `${handoutId}.${ext}`
+  const { error } = await adminClient()
+    .storage.from('handout-pdfs').upload(path, file, { upsert: true })
+  if (error) throw new Error(error.message)
+  const { data } = adminClient().storage.from('handout-pdfs').getPublicUrl(path)
+  return data.publicUrl
+}
+
 // ── Student-facing helpers (uses public client + RLS) ─────────────────────
 
 export async function fetchStudentAssignments() {

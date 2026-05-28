@@ -99,10 +99,13 @@ export default function ProblemTable({
                     <StatusBadge status={status} />
                   </td>
                   <td style={{ whiteSpace: 'nowrap' }}>
-                    <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>
+                    {p.type === 'Handout'
+                      ? <span style={{ color: 'var(--accent)', fontSize: 11, fontWeight: 500 }}>{p.contest}</span>
+                      : <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>
+                    }
                   </td>
                   <td>
-                    <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>
+                    {p.type !== 'Handout' && <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>}
                   </td>
                   <td>
                     <div className="problem-name">{p.name}</div>
@@ -115,7 +118,11 @@ export default function ProblemTable({
                   </td>
                   <td onClick={e => e.stopPropagation()}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                      <a className="pdf-link" href={p.problemUrl} target="_blank" rel="noreferrer">Problem ↗</a>
+                      {p.problemUrl && (
+                        <a className="pdf-link" href={p.problemUrl} target="_blank" rel="noreferrer">
+                          {p.type === 'Handout' ? 'PDF ↗' : 'Problem ↗'}
+                        </a>
+                      )}
                       {p.solutionUrl && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                     </div>
                   </td>

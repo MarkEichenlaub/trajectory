@@ -135,7 +135,7 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
         <span>Hide completed</span>
       </div>
 
-      <Section title="Contest" collapsed={contestCollapsed} onToggle={toggleContest}>
+      <Section title="Source" collapsed={contestCollapsed} onToggle={toggleContest}>
         {contests.map(c => (
           <div key={c} className={`sidebar-item ${filters.contests.has(c) ? 'active' : ''}`} onClick={() => toggleSet('contests', c)}>
             <input type="checkbox" checked={filters.contests.has(c)} readOnly />

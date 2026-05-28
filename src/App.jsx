@@ -1,18 +1,19 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from './utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
 import { openGmailDraft, buildEmailBody } from './utils/gmail'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
 import SessionsView from './components/SessionsView'
+import HandoutsManager from './components/HandoutsManager'
 import StudentPortal from './components/StudentPortal'
 import StudentView from './components/StudentView'
 import AdminLogin from './components/AdminLogin'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 const ADMIN_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const STUDENT_PARAM = new URLSearchParams(window.location.search).get('student')
@@ -29,6 +30,7 @@ const DEFAULT_FILTERS = {
 
 export default function App() {
   const [problems, setProblems] = useState([])
+  const [handouts, setHandouts] = useState([])
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
   const [sessions, setSessions] = useState([])
@@ -52,10 +54,11 @@ export default function App() {
       setProblems(p)
       setLoading(false)
       try {
-        const [s, a, sess] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions()])
+        const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
         setStudents(s)
         setAssignments(a)
         setSessions(sess)
+        setHandouts(hout)
       } catch (e) {
         setError(e.message)
       }
@@ -80,6 +83,29 @@ export default function App() {
     setTimeout(() => setToast(null), 3500)
   }, [])
 
+  const allProblems = useMemo(() => [
+    ...problems,
+    ...handouts.map(h => ({
+      id: h.id,
+      contest: h.source,
+      type: 'Handout',
+      name: h.name,
+      desc: h.description || '',
+      topics: h.topics || [],
+      tags: h.tags || [],
+      year: 0,
+      label: '',
+      country: '',
+      problemUrl: h.pdf_url || '',
+      solutionUrl: null,
+    })),
+  ], [problems, handouts])
+
+  async function refreshHandouts() {
+    const hout = await fetchHandouts().catch(() => [])
+    setHandouts(hout)
+  }
+
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
 
   const statusMap = useMemo(() => {
@@ -90,7 +116,7 @@ export default function App() {
     return map
   }, [assignments, activeStudentId])
 
-  const preTagFilterProblems = useMemo(() => problems.filter(p => {
+  const preTagFilterProblems = useMemo(() => allProblems.filter(p => {
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
     if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
@@ -105,12 +131,12 @@ export default function App() {
         !p.name.toLowerCase().includes(q) &&
         !p.desc.toLowerCase().includes(q) &&
         !p.tags.some(t => t.toLowerCase().includes(q)) &&
-        !String(p.year).includes(q) &&
-        !p.country.toLowerCase().includes(q)
+        !(p.year ? String(p.year).includes(q) : false) &&
+        !(p.country || '').toLowerCase().includes(q)
       ) return false
     }
     return true
-  }), [problems, filters, statusMap])
+  }), [allProblems, filters, statusMap])
 
   const filteredProblems = useMemo(() => {
     if (filters.selectedTags.size === 0) return preTagFilterProblems
@@ -152,7 +178,7 @@ export default function App() {
   function selectAll() { setSelected(new Set(sorted.map(p => p.id))) }
   function clearSelection() { setSelected(new Set()) }
 
-  const selectedProblems = problems.filter(p => selected.has(p.id))
+  const selectedProblems = allProblems.filter(p => selected.has(p.id))
 
   async function handleAssign() {
     if (!activeStudent || selected.size === 0) return
@@ -243,7 +269,7 @@ export default function App() {
       return
     }
     const assignedProblems = assignedOrderForStudent
-      .map(id => problems.find(p => p.id === id))
+      .map(id => allProblems.find(p => p.id === id))
       .filter(Boolean)
     const firstName = activeStudent.name.split(' ')[0]
     const dateStr = new Date().toISOString().slice(0, 10)
@@ -353,7 +379,7 @@ export default function App() {
               student={portalStudent}
               assignments={previewAssignments}
               sessions={previewSessions}
-              problems={problems}
+              problems={allProblems}
             />
           </div>
         </div>
@@ -373,7 +399,7 @@ export default function App() {
           <StudentPortal
             student={portalStudent}
             studentId={STUDENT_PARAM}
-            problems={problems}
+            problems={allProblems}
           />
         </div>
       </div>
@@ -393,6 +419,7 @@ export default function App() {
             {assignedCount > 0 && <span className="nav-badge">{assignedCount}</span>}
           </button>
           <button className={view === VIEWS.SESSIONS ? 'active' : ''} onClick={() => setView(VIEWS.SESSIONS)}>Sessions</button>
+          <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -417,7 +444,7 @@ export default function App() {
         {view === VIEWS.BROWSER && (
           <>
             <FilterSidebar
-              problems={problems}
+              problems={allProblems}
               filteredProblems={preTagFilterProblems}
               filters={filters}
               setFilters={setFilters}
@@ -457,7 +484,7 @@ export default function App() {
           <AssignedView
             student={activeStudent}
             assignments={activeAssignments}
-            problems={problems}
+            problems={allProblems}
             assignedOrder={assignedOrderForStudent}
             onReorder={handleReorder}
             onToggleStatus={handleToggleStatus}
@@ -472,6 +499,14 @@ export default function App() {
             students={students}
             activeStudentId={activeStudentId}
             onSessionsChange={async () => setSessions(await fetchSessions())}
+            showToast={showToast}
+          />
+        )}
+
+        {view === VIEWS.HANDOUTS && (
+          <HandoutsManager
+            handouts={handouts}
+            onHandoutsChange={refreshHandouts}
             showToast={showToast}
           />
         )}
