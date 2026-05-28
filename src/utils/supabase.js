@@ -8,7 +8,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // ── Admin helpers (service key, bypasses RLS) ──────────────────────────────
 
-const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dnRheGJudHFoY2ZxdGF6Ym50Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTkxNzIwNywiZXhwIjoyMDk1NDkzMjA3fQ.4bgXZCbkJbOR_QvWOBLl5ek2SHgCZELsm2kW4qKA7O4'
+const SUPABASE_SERVICE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_KEY || ''
 
 export function getServiceKey() {
   return localStorage.getItem('trajectory_supabase_service_key') || SUPABASE_SERVICE_KEY
