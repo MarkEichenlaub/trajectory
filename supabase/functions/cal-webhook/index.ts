@@ -6,6 +6,8 @@ const MIRO_ACCESS_TOKEN = Deno.env.get('MIRO_ACCESS_TOKEN')!
 const MIRO_TEAM_ID = Deno.env.get('MIRO_TEAM_ID')!
 const CAL_WEBHOOK_SECRET = Deno.env.get('CAL_WEBHOOK_SECRET') || ''
 
+type SupabaseClient = ReturnType<typeof createClient>
+
 Deno.serve(async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 })
@@ -36,11 +38,23 @@ Deno.serve(async (req) => {
     return new Response('Invalid JSON', { status: 400 })
   }
 
-  if (body.triggerEvent !== 'BOOKING_CREATED') {
-    return new Response('OK', { status: 200 })
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+  const payload = body.payload as Record<string, unknown>
+
+  if (body.triggerEvent === 'BOOKING_CREATED') {
+    return await handleBookingCreated(payload, supabase)
+  }
+  if (body.triggerEvent === 'BOOKING_RESCHEDULED') {
+    return await handleBookingRescheduled(payload, supabase)
+  }
+  if (body.triggerEvent === 'BOOKING_CANCELLED') {
+    return await handleBookingCancelled(payload, supabase)
   }
 
-  const payload = body.payload as Record<string, unknown>
+  return new Response('OK', { status: 200 })
+})
+
+async function handleBookingCreated(payload: Record<string, unknown>, supabase: SupabaseClient) {
   const startTime = payload.startTime as string
   const attendees = payload.attendees as Array<{ name: string; email: string }>
   const attendee = attendees?.find(a => a.email)
@@ -49,8 +63,6 @@ Deno.serve(async (req) => {
   if (!attendee?.email || !startTime) {
     return new Response('Missing attendee or startTime', { status: 400 })
   }
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
   // Match attendee email to a student via student_contacts
   const { data: contacts } = await supabase
@@ -68,6 +80,7 @@ Deno.serve(async (req) => {
 
   const studentRow = contacts[0].students as { id: string; name: string }
   const student = { id: studentRow.id, name: studentRow.name }
+
   const dateStr = new Date(startTime).toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric',
   })
@@ -99,7 +112,6 @@ Deno.serve(async (req) => {
     console.error('Miro fetch error:', e)
   }
 
-  // Upsert session record
   const sessionId = `cal-${calBookingId}-${student.id}`
   const { error } = await supabase.from('sessions').upsert({
     id: sessionId,
@@ -119,4 +131,71 @@ Deno.serve(async (req) => {
   return new Response(JSON.stringify({ ok: true, sessionId, miroBoardUrl }), {
     status: 200, headers: { 'Content-Type': 'application/json' },
   })
-})
+}
+
+async function handleBookingRescheduled(payload: Record<string, unknown>, supabase: SupabaseClient) {
+  const newStartTime = payload.startTime as string
+  const newBookingId = String((payload.bookingId ?? payload.uid) ?? '')
+  // Cal.com sends rescheduleUid = the UID of the old booking
+  const oldBookingId = String(payload.rescheduleUid ?? payload.rescheduleId ?? '')
+
+  console.log('BOOKING_RESCHEDULED payload keys:', Object.keys(payload))
+
+  if (!newStartTime) {
+    return new Response('Missing startTime', { status: 400 })
+  }
+
+  // Find the session by old booking ID
+  const lookupId = oldBookingId || newBookingId
+  const { data: existing } = await supabase
+    .from('sessions')
+    .select('id')
+    .eq('cal_booking_id', lookupId)
+    .limit(1)
+
+  if (!existing?.length) {
+    console.log('No session found for rescheduled booking:', lookupId)
+    return new Response(JSON.stringify({ ok: true, message: 'no matching session' }), {
+      status: 200, headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const { error } = await supabase
+    .from('sessions')
+    .update({
+      scheduled_at: new Date(newStartTime).toISOString(),
+      cal_booking_id: newBookingId,
+    })
+    .eq('id', existing[0].id)
+
+  if (error) {
+    console.error('Session reschedule error:', error)
+    return new Response('DB error: ' + error.message, { status: 500 })
+  }
+
+  return new Response(JSON.stringify({ ok: true, rescheduled: existing[0].id }), {
+    status: 200, headers: { 'Content-Type': 'application/json' },
+  })
+}
+
+async function handleBookingCancelled(payload: Record<string, unknown>, supabase: SupabaseClient) {
+  const calBookingId = String((payload.bookingId ?? payload.uid) ?? '')
+
+  if (!calBookingId) {
+    return new Response('Missing bookingId', { status: 400 })
+  }
+
+  const { error } = await supabase
+    .from('sessions')
+    .delete()
+    .eq('cal_booking_id', calBookingId)
+
+  if (error) {
+    console.error('Session delete error:', error)
+    return new Response('DB error: ' + error.message, { status: 500 })
+  }
+
+  return new Response(JSON.stringify({ ok: true, cancelled: calBookingId }), {
+    status: 200, headers: { 'Content-Type': 'application/json' },
+  })
+}
