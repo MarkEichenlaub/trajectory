@@ -23,7 +23,7 @@ export default function StudentLogin({ studentName }) {
   return (
     <div className="student-login-wrap">
       <div className="student-login">
-        <div className="student-login-logo">Trajectory</div>
+        <div className="student-login-logo">Eichenlaub Physics</div>
         {studentName && (
           <p className="student-login-greeting">Sign in to view {studentName}'s assignments</p>
         )}
