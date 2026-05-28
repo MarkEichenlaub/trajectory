@@ -7,6 +7,7 @@ import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
 import SessionsView from './components/SessionsView'
 import StudentPortal from './components/StudentPortal'
+import StudentView from './components/StudentView'
 import AdminLogin from './components/AdminLogin'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
@@ -62,9 +63,8 @@ export default function App() {
     load()
   }, [])
 
-  // Admin auth gate (only runs when not in student portal mode)
+  // Admin auth gate — always runs so admin can preview student portals
   useEffect(() => {
-    if (STUDENT_PARAM) { setAuthLoading(false); return }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setAdminSession(session)
       setAuthLoading(false)
@@ -333,6 +333,33 @@ export default function App() {
   // Student portal mode
   if (STUDENT_PARAM) {
     const portalStudent = students.find(s => s.id === STUDENT_PARAM)
+    const isAdminPreview = adminSession?.user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+
+    if (isAdminPreview) {
+      const previewAssignments = assignments.filter(a => a.student_id === STUDENT_PARAM)
+      const previewSessions = sessions.filter(s => s.student_id === STUDENT_PARAM)
+      return (
+        <div className="layout">
+          <div className="topbar">
+            <span className="logo">Trajectory <span style={{ fontSize: 11, opacity: 0.5, fontWeight: 400 }}>v2</span></span>
+            <div style={{ marginLeft: 16, padding: '2px 10px', background: 'var(--yellow, #f5a623)', color: '#000', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>
+              Admin preview
+            </div>
+            <div className="spacer" />
+            <a href="/" style={{ fontSize: 13, color: 'var(--text-dim)', textDecoration: 'none', marginRight: 16 }}>← Back to admin</a>
+          </div>
+          <div className="content">
+            <StudentView
+              student={portalStudent}
+              assignments={previewAssignments}
+              sessions={previewSessions}
+              problems={problems}
+            />
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div className="layout">
         <div className="topbar">
@@ -375,6 +402,7 @@ export default function App() {
           <select value={activeStudentId} onChange={e => { setActiveStudentId(e.target.value); setSelected(new Set()) }}>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
+          <a href={`?student=${activeStudentId}`} style={{ fontSize: 12, color: 'var(--text-dim)', textDecoration: 'none', marginLeft: 6, whiteSpace: 'nowrap' }} title="Preview student portal">↗ preview</a>
         </div>
       </div>
 
