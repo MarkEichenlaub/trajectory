@@ -41,19 +41,15 @@ export default function App() {
 
   useEffect(() => {
     async function load() {
+      const p = await fetchJSON('data/problems.json').catch(() => [])
+      setProblems(p)
+      setLoading(false)
       try {
-        const [p, s, a] = await Promise.all([
-          fetchJSON('data/problems.json'),
-          fetchStudents(),
-          fetchAssignments(),
-        ])
-        setProblems(p)
+        const [s, a] = await Promise.all([fetchStudents(), fetchAssignments()])
         setStudents(s)
         setAssignments(a)
       } catch (e) {
         setError(e.message)
-      } finally {
-        setLoading(false)
       }
     }
     load()
