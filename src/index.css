@@ -465,6 +465,15 @@ tr.assigned-row-tr td { background: rgba(79, 142, 247, 0.04); }
 .student-login-error { color: var(--red); font-size: 12px; }
 .student-login-sent { color: var(--text); line-height: 1.6; }
 
+/* Session edit card */
+.session-edit-card {
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
 /* Toast */
 .toast {
   position: fixed;
