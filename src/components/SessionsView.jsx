@@ -12,7 +12,7 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
 
   function startEdit(session) {
     setEditingId(session.id)
-    setDraft({ ...session })
+    setDraft({ ...session, tagsInput: (session.tags || []).join(', ') })
   }
 
   function startNew() {
@@ -28,14 +28,17 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
       miro_board_url: '',
       summary: '',
       tags: [],
+      tagsInput: '',
     })
   }
 
   async function handleSave() {
     try {
+      const { tagsInput, ...rest } = draft
       const session = {
-        ...draft,
+        ...rest,
         scheduled_at: new Date(draft.scheduled_at).toISOString(),
+        tags: (tagsInput || '').split(',').map(t => t.trim()).filter(Boolean),
       }
       await saveSession(session)
       await onSessionsChange()
@@ -115,11 +118,8 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
             <label>Tags</label>
             <input
               type="text"
-              value={(draft.tags || []).join(', ')}
-              onChange={e => setDraft(d => ({
-                ...d,
-                tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean),
-              }))}
+              value={draft.tagsInput ?? ''}
+              onChange={e => setDraft(d => ({ ...d, tagsInput: e.target.value }))}
               placeholder="quantum mechanics, waves, IPhO"
               style={{ flex: 1 }}
             />
