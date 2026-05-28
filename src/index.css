@@ -413,6 +413,58 @@ tr.assigned-row-tr td { background: rgba(79, 142, 247, 0.04); }
 .modal textarea { width: 100%; min-height: 80px; resize: vertical; margin-top: 8px; }
 .modal label { font-size: 12px; color: var(--text-dim); display: block; margin-bottom: 4px; }
 
+/* Student portal */
+.student-portal {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px;
+  max-width: 860px;
+}
+.sp-header { margin-bottom: 24px; }
+.sp-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.sp-subtitle { color: var(--text-dim); font-size: 13px; }
+
+/* Student login */
+.student-login-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.student-login {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+.student-login-logo {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.student-login-greeting {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+.student-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.student-login-form label { font-size: 12px; color: var(--text-dim); }
+.student-login-form input { width: 100%; }
+.student-login-form button { width: 100%; padding: 8px; font-size: 14px; }
+.student-login-error { color: var(--red); font-size: 12px; }
+.student-login-sent { color: var(--text); line-height: 1.6; }
+
 /* Toast */
 .toast {
   position: fixed;

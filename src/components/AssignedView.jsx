@@ -22,9 +22,9 @@ export default function AssignedView({
     .filter(a => statusFilter === 'all' || a.status === statusFilter)
     .sort((a, b) => {
       if (statusFilter === 'assigned') {
-        return assignedOrder.indexOf(a.problemId) - assignedOrder.indexOf(b.problemId)
+        return assignedOrder.indexOf(a.problem_id) - assignedOrder.indexOf(b.problem_id)
       }
-      return b.assignedDate.localeCompare(a.assignedDate)
+      return (b.assigned_date || '').localeCompare(a.assigned_date || '')
     })
 
   const isDraggable = statusFilter === 'assigned'
@@ -101,25 +101,25 @@ export default function AssignedView({
       ) : (
         <div className="assigned-list">
           {filtered.map(a => {
-            const p = problemById(a.problemId)
+            const p = problemById(a.problem_id)
             if (!p) return (
               <div key={a.id} className="assigned-row">
-                <span style={{ color: 'var(--red)', flex: 1 }}>Unknown problem: {a.problemId}</span>
-                <button className="sm danger" onClick={() => onUnassign(a.problemId)}>Remove</button>
+                <span style={{ color: 'var(--red)', flex: 1 }}>Unknown problem: {a.problem_id}</span>
+                <button className="sm danger" onClick={() => onUnassign(a.problem_id)}>Remove</button>
               </div>
             )
 
-            const isBeingDragged = dragId === a.problemId
-            const isDragTarget = dragOverId === a.problemId
+            const isBeingDragged = dragId === a.problem_id
+            const isDragTarget = dragOverId === a.problem_id
 
             return (
               <div
                 key={a.id}
                 className={`assigned-row${isBeingDragged ? ' dragging' : ''}${isDragTarget ? ' drag-over' : ''}`}
                 draggable={isDraggable}
-                onDragStart={isDraggable ? e => handleDragStart(e, a.problemId) : undefined}
-                onDragOver={isDraggable ? e => handleDragOver(e, a.problemId) : undefined}
-                onDrop={isDraggable ? e => handleDrop(e, a.problemId) : undefined}
+                onDragStart={isDraggable ? e => handleDragStart(e, a.problem_id) : undefined}
+                onDragOver={isDraggable ? e => handleDragOver(e, a.problem_id) : undefined}
+                onDrop={isDraggable ? e => handleDrop(e, a.problem_id) : undefined}
                 onDragEnd={isDraggable ? handleDragEnd : undefined}
               >
                 {isDraggable && (
@@ -127,7 +127,7 @@ export default function AssignedView({
                 )}
                 <button
                   className={`status-toggle ${a.status}`}
-                  onClick={() => onToggleStatus(a.problemId)}
+                  onClick={() => onToggleStatus(a.problem_id)}
                   title={`Click to mark as ${a.status === 'assigned' ? 'completed' : 'assigned'}`}
                 >
                   {a.status === 'assigned' ? '→ Assigned' : '✓ Completed'}
@@ -135,8 +135,8 @@ export default function AssignedView({
                 <div className="assigned-problem-info">
                   <span className="p-label">{p.contest} {p.year} {p.label}</span>
                   <span className="p-name">{p.name}</span>
-                  {a.assignedDate && (
-                    <span className="p-date">{a.assignedDate}</span>
+                  {a.assigned_date && (
+                    <span className="p-date">{a.assigned_date}</span>
                   )}
                 </div>
                 <div className="assigned-row-links">
@@ -145,7 +145,7 @@ export default function AssignedView({
                   <button
                     className="sm"
                     style={{ color: 'var(--text-dim)', fontSize: 11, padding: '1px 6px' }}
-                    onClick={() => onUnassign(a.problemId)}
+                    onClick={() => onUnassign(a.problem_id)}
                     title="Remove assignment"
                   >✕</button>
                 </div>

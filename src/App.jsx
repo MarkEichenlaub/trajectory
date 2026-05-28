@@ -1,21 +1,23 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { fetchJSON, writeJSON } from './utils/github'
+import { fetchJSON } from './utils/github'
+import { fetchStudents, fetchAssignments, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
 import { openGmailDraft, buildEmailBody } from './utils/gmail'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
+import StudentPortal from './components/StudentPortal'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
 
 const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SETTINGS: 'settings' }
-
 const MARK_STUDENT_ID = 'mark'
+const STUDENT_PARAM = new URLSearchParams(window.location.search).get('student')
 
 const DEFAULT_FILTERS = {
   contests: new Set(),
   types: new Set(),
   topics: new Set(),
-  statuses: new Set(),      // 'not-started' | 'assigned' | 'completed'
+  statuses: new Set(),
   selectedTags: new Set(),
   textSearch: '',
   hideCompleted: false,
@@ -42,8 +44,8 @@ export default function App() {
       try {
         const [p, s, a] = await Promise.all([
           fetchJSON('data/problems.json'),
-          fetchJSON('data/students.json'),
-          fetchJSON('data/assignments.json'),
+          fetchStudents(),
+          fetchAssignments(),
         ])
         setProblems(p)
         setStudents(s)
@@ -64,16 +66,14 @@ export default function App() {
 
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
 
-  // Build status map for active student: problemId → 'assigned' | 'completed'
   const statusMap = useMemo(() => {
     const map = {}
     assignments
-      .filter(a => a.studentId === activeStudentId)
-      .forEach(a => { map[a.problemId] = a.status })
+      .filter(a => a.student_id === activeStudentId)
+      .forEach(a => { map[a.problem_id] = a.status })
     return map
   }, [assignments, activeStudentId])
 
-  // Problems filtered by everything EXCEPT selectedTags — used for tag count computation
   const preTagFilterProblems = useMemo(() => problems.filter(p => {
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
@@ -96,7 +96,6 @@ export default function App() {
     return true
   }), [problems, filters, statusMap])
 
-  // Apply selectedTags on top
   const filteredProblems = useMemo(() => {
     if (filters.selectedTags.size === 0) return preTagFilterProblems
     return preTagFilterProblems.filter(p =>
@@ -104,7 +103,6 @@ export default function App() {
     )
   }, [preTagFilterProblems, filters.selectedTags])
 
-  // Sort
   const sorted = useMemo(() => {
     const statusOrder = { assigned: 0, 'not-started': 1, completed: 2 }
     return [...filteredProblems].sort((a, b) => {
@@ -140,40 +138,37 @@ export default function App() {
 
   const selectedProblems = problems.filter(p => selected.has(p.id))
 
-  // Assign selected problems to active student (directly, no modal)
   async function handleAssign() {
     if (!activeStudent || selected.size === 0) return
     const date = new Date().toISOString().slice(0, 10)
     const toAdd = []
     let skipped = 0
 
-    // Build Mark's status map so we can co-assign problems he hasn't completed
     const markStatusMap = {}
     if (activeStudent.id !== MARK_STUDENT_ID) {
       assignments
-        .filter(a => a.studentId === MARK_STUDENT_ID)
-        .forEach(a => { markStatusMap[a.problemId] = a.status })
+        .filter(a => a.student_id === MARK_STUDENT_ID)
+        .forEach(a => { markStatusMap[a.problem_id] = a.status })
     }
 
     for (const pid of selected) {
       if (statusMap[pid]) { skipped++; continue }
       toAdd.push({
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
-        studentId: activeStudent.id,
-        problemId: pid,
+        student_id: activeStudent.id,
+        problem_id: pid,
         status: 'assigned',
-        assignedDate: date,
-        completedDate: null,
+        assigned_date: date,
+        completed_date: null,
       })
-      // Co-assign to Mark if he hasn't completed or already been assigned this problem
       if (activeStudent.id !== MARK_STUDENT_ID && !markStatusMap[pid]) {
         toAdd.push({
           id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
-          studentId: MARK_STUDENT_ID,
-          problemId: pid,
+          student_id: MARK_STUDENT_ID,
+          problem_id: pid,
           status: 'assigned',
-          assignedDate: date,
-          completedDate: null,
+          assigned_date: date,
+          completed_date: null,
         })
       }
     }
@@ -183,13 +178,12 @@ export default function App() {
       return
     }
 
-    const updated = [...assignments, ...toAdd]
     try {
-      await writeJSON('data/assignments.json', updated)
-      setAssignments(updated)
+      await insertAssignments(toAdd)
+      setAssignments(prev => [...prev, ...toAdd])
       setSelected(new Set())
-      const studentAssigned = toAdd.filter(a => a.studentId === activeStudent.id).length
-      const markCoAssigned = toAdd.filter(a => a.studentId === MARK_STUDENT_ID).length
+      const studentAssigned = toAdd.filter(a => a.student_id === activeStudent.id).length
+      const markCoAssigned = toAdd.filter(a => a.student_id === MARK_STUDENT_ID).length
       const msg = skipped > 0
         ? `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name} (${skipped} skipped)${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
         : `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name}${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
@@ -199,38 +193,33 @@ export default function App() {
     }
   }
 
-  // Toggle a problem between assigned ↔ completed
   async function handleToggleStatus(problemId) {
-    const existing = assignments.find(a => a.studentId === activeStudentId && a.problemId === problemId)
+    const existing = assignments.find(a => a.student_id === activeStudentId && a.problem_id === problemId)
     if (!existing) return
 
     const newStatus = existing.status === 'assigned' ? 'completed' : 'assigned'
-    const updated = assignments.map(a =>
-      a.id === existing.id
-        ? { ...a, status: newStatus, completedDate: newStatus === 'completed' ? new Date().toISOString().slice(0, 10) : null }
-        : a
-    )
+    const updates = {
+      status: newStatus,
+      completed_date: newStatus === 'completed' ? new Date().toISOString().slice(0, 10) : null,
+    }
     try {
-      await writeJSON('data/assignments.json', updated)
-      setAssignments(updated)
+      await updateAssignment(existing.id, updates)
+      setAssignments(prev => prev.map(a => a.id === existing.id ? { ...a, ...updates } : a))
     } catch (e) {
       showToast(e.message, 'error')
     }
   }
 
-  // Remove an assignment entirely
   async function handleUnassign(problemId) {
-    const updated = assignments.filter(a => !(a.studentId === activeStudentId && a.problemId === problemId))
     try {
-      await writeJSON('data/assignments.json', updated)
-      setAssignments(updated)
+      await deleteAssignment(activeStudentId, problemId)
+      setAssignments(prev => prev.filter(a => !(a.student_id === activeStudentId && a.problem_id === problemId)))
       showToast('Problem removed from assigned list')
     } catch (e) {
       showToast(e.message, 'error')
     }
   }
 
-  // Open Gmail draft for all currently-assigned problems, in the user-defined drag order
   function handleGenerateEmail() {
     if (!activeStudent) return
     if (assignedOrderForStudent.length === 0) {
@@ -257,29 +246,38 @@ export default function App() {
     showToast(`Copied ${selectedProblems.length} URL${selectedProblems.length > 1 ? 's' : ''}`)
   }
 
-  async function handleSaveStudents(updated) {
+  async function handleSaveStudent(updatedStudent, isDelete = false) {
     try {
-      await writeJSON('data/students.json', updated)
-      setStudents(updated)
-      showToast('Students saved')
+      if (isDelete) {
+        await removeStudent(updatedStudent.id)
+        setStudents(prev => prev.filter(s => s.id !== updatedStudent.id))
+        showToast(`Removed ${updatedStudent.name}`)
+      } else {
+        await saveStudent(updatedStudent)
+        setStudents(prev => {
+          const exists = prev.find(s => s.id === updatedStudent.id)
+          return exists
+            ? prev.map(s => s.id === updatedStudent.id ? updatedStudent : s)
+            : [...prev, updatedStudent]
+        })
+        showToast('Student saved')
+      }
     } catch (e) {
       showToast(e.message, 'error')
     }
   }
 
   const activeAssignments = useMemo(() =>
-    assignments.filter(a => a.studentId === activeStudentId),
+    assignments.filter(a => a.student_id === activeStudentId),
     [assignments, activeStudentId]
   )
   const assignedCount = activeAssignments.filter(a => a.status === 'assigned').length
 
-  // Ordered list of assigned problemIds for the active student.
-  // Respects drag-and-drop overrides; new problems are appended at the end.
   const assignedOrderForStudent = useMemo(() => {
     const defaultOrder = assignments
-      .filter(a => a.studentId === activeStudentId && a.status === 'assigned')
-      .sort((a, b) => b.assignedDate.localeCompare(a.assignedDate))
-      .map(a => a.problemId)
+      .filter(a => a.student_id === activeStudentId && a.status === 'assigned')
+      .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
+      .map(a => a.problem_id)
     const override = assignedOrderOverrides[activeStudentId]
     if (!override) return defaultOrder
     const currentSet = new Set(defaultOrder)
@@ -296,10 +294,33 @@ export default function App() {
   if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
   if (error) return <div className="empty-state" style={{ marginTop: 80, color: 'var(--red)' }}>Error: {error}</div>
 
+  // Student portal mode
+  if (STUDENT_PARAM) {
+    const portalStudent = students.find(s => s.id === STUDENT_PARAM)
+    return (
+      <div className="layout">
+        <div className="topbar">
+          <span className="logo">Trajectory <span style={{ fontSize: 11, opacity: 0.5, fontWeight: 400 }}>v2</span></span>
+          <div className="spacer" />
+          {portalStudent && (
+            <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{portalStudent.name}'s portal</span>
+          )}
+        </div>
+        <div className="content">
+          <StudentPortal
+            student={portalStudent}
+            studentId={STUDENT_PARAM}
+            problems={problems}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="layout">
       <div className="topbar">
-        <span className="logo">Trajectory</span>
+        <span className="logo">Trajectory <span style={{ fontSize: 11, opacity: 0.5, fontWeight: 400 }}>v2</span></span>
         <nav>
           <button className={view === VIEWS.BROWSER ? 'active' : ''} onClick={() => setView(VIEWS.BROWSER)}>
             Problems
@@ -375,7 +396,7 @@ export default function App() {
         {view === VIEWS.SETTINGS && (
           <Settings
             students={students}
-            onSave={handleSaveStudents}
+            onSaveStudent={handleSaveStudent}
             showToast={showToast}
           />
         )}

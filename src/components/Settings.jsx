@@ -1,36 +1,36 @@
 import { useState } from 'react'
-import { getPAT, setPAT } from '../utils/github'
+import { getServiceKey, setServiceKey } from '../utils/supabase'
 
-export default function Settings({ students, onSave, showToast }) {
-  const [pat, setPATState] = useState(getPAT)
-  const [draft, setDraft] = useState(() => JSON.parse(JSON.stringify(students)))
-  const [saving, setSaving] = useState(false)
+export default function Settings({ students, onSaveStudent, showToast }) {
+  const [key, setKey] = useState(getServiceKey)
+  const [saving, setSaving] = useState(null) // studentId being saved
 
-  function savePAT() {
-    setPAT(pat)
-    showToast('PAT saved to browser')
+  function saveKey() {
+    setServiceKey(key)
+    showToast('Service key saved')
   }
 
   function updateStudent(id, field, value) {
-    setDraft(d => d.map(s => s.id === id ? { ...s, [field]: value } : s))
+    // Handled via individual save buttons — no draft buffer needed
   }
 
-  function addStudent() {
+  async function handleSave(student) {
+    setSaving(student.id)
+    await onSaveStudent(student)
+    setSaving(null)
+  }
+
+  async function handleRemove(student) {
+    if (!confirm(`Remove ${student.name}? (Assignment history is kept.)`)) return
+    await onSaveStudent(student, true)
+  }
+
+  async function handleAdd() {
     const name = prompt('Student name?')
     if (!name) return
     const id = name.toLowerCase().replace(/\s+/g, '-')
-    setDraft(d => [...d, { id, name, email: '', notes: '' }])
-  }
-
-  function removeStudent(id) {
-    if (!confirm('Remove student? (Assignment history is kept.)')) return
-    setDraft(d => d.filter(s => s.id !== id))
-  }
-
-  async function saveStudents() {
-    setSaving(true)
-    await onSave(draft)
-    setSaving(false)
+    const newStudent = { id, name, email: '', notes: '' }
+    await onSaveStudent(newStudent)
   }
 
   return (
@@ -38,49 +38,73 @@ export default function Settings({ students, onSave, showToast }) {
       <h2>Settings</h2>
 
       <div className="settings-section">
-        <h3>GitHub Personal Access Token</h3>
+        <h3>Supabase Service Key</h3>
         <p style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 10 }}>
-          Required for saving assignments and notes. Create a PAT at GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens. Grant <strong>Contents: Read & Write</strong> on the <code>trajectory</code> repo.
+          Required for saving assignments and student data. Find it at{' '}
+          <a href="https://supabase.com/dashboard/project/nxvtaxbntqhcfqtazbnt/settings/api-keys/legacy" target="_blank" rel="noreferrer">
+            Supabase → Settings → API Keys → Legacy → service_role
+          </a>. Never share this key.
         </p>
         <div className="settings-row">
-          <label>PAT</label>
+          <label>Service key</label>
           <input
             type="password"
-            value={pat}
-            onChange={e => setPATState(e.target.value)}
-            placeholder="github_pat_…"
+            value={key}
+            onChange={e => setKey(e.target.value)}
+            placeholder="eyJ…"
             style={{ fontFamily: 'monospace' }}
           />
-          <button onClick={savePAT}>Save</button>
+          <button onClick={saveKey}>Save</button>
         </div>
       </div>
 
       <div className="settings-section">
         <h3>Students</h3>
-        {draft.map(s => (
-          <div key={s.id} className="student-card">
-            <div className="student-card-row">
-              <label>Name</label>
-              <input value={s.name} onChange={e => updateStudent(s.id, 'name', e.target.value)} />
-              <button className="sm danger" onClick={() => removeStudent(s.id)}>Remove</button>
-            </div>
-            <div className="student-card-row">
-              <label>Email</label>
-              <input value={s.email} onChange={e => updateStudent(s.id, 'email', e.target.value)} placeholder="student@example.com" />
-            </div>
-            <div className="student-card-row">
-              <label>Notes</label>
-              <input value={s.notes} onChange={e => updateStudent(s.id, 'notes', e.target.value)} placeholder="General notes about this student" />
-            </div>
-          </div>
+        {students.map(s => (
+          <StudentCard
+            key={s.id}
+            student={s}
+            onSave={handleSave}
+            onRemove={handleRemove}
+            saving={saving === s.id}
+          />
         ))}
-        <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-          <button onClick={addStudent}>+ Add Student</button>
-          <button className="primary" onClick={saveStudents} disabled={saving}>
-            {saving ? 'Saving…' : 'Save Students'}
+        <button onClick={handleAdd} style={{ marginTop: 8 }}>+ Add Student</button>
+      </div>
+    </div>
+  )
+}
+
+function StudentCard({ student, onSave, onRemove, saving }) {
+  const [draft, setDraft] = useState({ ...student })
+  const dirty = JSON.stringify(draft) !== JSON.stringify(student)
+
+  function set(field, value) {
+    setDraft(d => ({ ...d, [field]: value }))
+  }
+
+  return (
+    <div className="student-card">
+      <div className="student-card-row">
+        <label>Name</label>
+        <input value={draft.name} onChange={e => set('name', e.target.value)} />
+        <button className="sm danger" onClick={() => onRemove(student)}>Remove</button>
+      </div>
+      <div className="student-card-row">
+        <label>Email</label>
+        <input value={draft.email || ''} onChange={e => set('email', e.target.value)} placeholder="student@example.com" />
+      </div>
+      <div className="student-card-row">
+        <label>Notes</label>
+        <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
+      </div>
+      {dirty && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 4 }}>
+          <button className="sm primary" onClick={() => onSave(draft)} disabled={saving}>
+            {saving ? 'Saving…' : 'Save'}
           </button>
         </div>
-      </div>
+      )}
     </div>
   )
 }
