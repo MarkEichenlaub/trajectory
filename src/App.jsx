@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from './utils/github'
-import { supabase, fetchStudents, fetchAssignments, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
 import { openGmailDraft, buildEmailBody } from './utils/gmail'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
+import SessionsView from './components/SessionsView'
 import StudentPortal from './components/StudentPortal'
 import AdminLogin from './components/AdminLogin'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 const ADMIN_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const STUDENT_PARAM = new URLSearchParams(window.location.search).get('student')
@@ -29,6 +30,7 @@ export default function App() {
   const [problems, setProblems] = useState([])
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
+  const [sessions, setSessions] = useState([])
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -49,9 +51,10 @@ export default function App() {
       setProblems(p)
       setLoading(false)
       try {
-        const [s, a] = await Promise.all([fetchStudents(), fetchAssignments()])
+        const [s, a, sess] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions()])
         setStudents(s)
         setAssignments(a)
+        setSessions(sess)
       } catch (e) {
         setError(e.message)
       }
@@ -362,6 +365,7 @@ export default function App() {
             Assigned
             {assignedCount > 0 && <span className="nav-badge">{assignedCount}</span>}
           </button>
+          <button className={view === VIEWS.SESSIONS ? 'active' : ''} onClick={() => setView(VIEWS.SESSIONS)}>Sessions</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -431,6 +435,16 @@ export default function App() {
             onToggleStatus={handleToggleStatus}
             onUnassign={handleUnassign}
             onGenerateEmail={handleGenerateEmail}
+          />
+        )}
+
+        {view === VIEWS.SESSIONS && (
+          <SessionsView
+            sessions={sessions}
+            students={students}
+            activeStudentId={activeStudentId}
+            onSessionsChange={async () => setSessions(await fetchSessions())}
+            showToast={showToast}
           />
         )}
 

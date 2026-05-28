@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { supabase, fetchStudentAssignments, linkStudentAccount } from '../utils/supabase'
+import { supabase, fetchStudentAssignments, fetchStudentSessions, linkStudentAccount } from '../utils/supabase'
 import StudentLogin from './StudentLogin'
 import StudentView from './StudentView'
 
 export default function StudentPortal({ student, studentId, problems }) {
   const [session, setSession] = useState(undefined) // undefined = loading
   const [assignments, setAssignments] = useState(null)
+  const [sessions, setSessions] = useState([])
   const [loadError, setLoadError] = useState(null)
 
   // Track auth state
@@ -25,8 +26,9 @@ export default function StudentPortal({ student, studentId, problems }) {
     async function load() {
       try {
         await linkStudentAccount()
-        const data = await fetchStudentAssignments()
+        const [data, sess] = await Promise.all([fetchStudentAssignments(), fetchStudentSessions()])
         setAssignments(data)
+        setSessions(sess)
       } catch (e) {
         setLoadError(e.message)
       }
@@ -81,6 +83,7 @@ export default function StudentPortal({ student, studentId, problems }) {
     <StudentView
       student={student}
       assignments={assignments}
+      sessions={sessions}
       problems={problems}
       onSignOut={() => supabase.auth.signOut()}
     />
