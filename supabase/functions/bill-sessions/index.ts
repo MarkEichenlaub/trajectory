@@ -214,7 +214,7 @@ Deno.serve(async (_req) => {
           days_until_due: 7,
           auto_advance: 'false',
           description: `Physics tutoring — 10 sessions with ${student.name}`,
-          footer: `Student portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
+          footer: `Student portal: https://portal.eichenlaubphysics.com/`,
           'metadata[student_id]': student.id,
           'payment_settings[payment_method_types][0]': 'card',
           'payment_settings[payment_method_types][1]': 'us_bank_account',
@@ -259,7 +259,7 @@ Deno.serve(async (_req) => {
           await sendEmail(
             MARK_EMAIL,
             `Invoice ready for ${student.name}`,
-            `Invoice ready for ${student.name} — review and send from the portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
+            `Invoice ready for ${student.name} — review and send from the portal: https://portal.eichenlaubphysics.com/`,
           )
         } catch (e) {
           console.error('Mark invoice-notice email failed:', (e as Error).message)

@@ -121,6 +121,14 @@ export async function fetchMyContacts(studentId) {
   return data || []
 }
 
+// Student-role read: get_my_contacts() omits invoice routing fields, so a
+// student can see what each contact receives without seeing billing info.
+export async function fetchMyContactsView(studentId) {
+  const { data, error } = await supabase.rpc('get_my_contacts', { p_student_id: studentId })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
 export async function addMyContact(contact) {
   const { data, error } = await supabase
     .from('student_contacts').insert(contact).select().single()
@@ -311,6 +319,14 @@ export async function fetchStudentAssignments() {
 export async function linkStudentAccount() {
   const { error } = await supabase.rpc('link_student_account')
   if (error) console.warn('link_student_account:', error.message)
+}
+
+// Resolve the logged-in account: grandfathers a first login into a profile +
+// links, then returns { role, email, students:[{id,name,status,relationship}] }.
+export async function resolveMyAccount() {
+  const { data, error } = await supabase.rpc('resolve_my_account')
+  if (error) throw new Error(error.message)
+  return data || { role: 'none', students: [] }
 }
 
 export async function fetchStudentSessions() {

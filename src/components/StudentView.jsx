@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react'
 import {
   supabase,
-  fetchMyContacts, addMyContact, updateMyContact, deleteMyContact,
+  fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
   fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
   fetchMyStudyPlans, proposeStudyPlan,
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
   fetchMyProgressReports,
 } from '../utils/supabase'
 
-export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview }) {
+export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, account }) {
+  // Billing (sessions-remaining, invoices, invoice routing) is visible only to
+  // billing-capable roles. A logged-in student sees study info only.
+  const role = isPreview ? 'admin' : (account?.role || 'student')
+  const canBill = role === 'admin' || role === 'parent' || role === 'adult'
+  const isStudentRole = role === 'student'
+
   const [tab, setTab] = useState('assigned')
   const [selectedTags, setSelectedTags] = useState(new Set())
   const [tagSort, setTagSort] = useState('freq')
@@ -20,15 +26,21 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
   useEffect(() => {
     if (tab !== 'account' || !student?.id || contactsLoaded) return
-    const load = isPreview ? fetchStudentContacts(student.id) : fetchMyContacts(student.id)
+    // Admin preview → full rows; billing-capable → full rows incl invoice flags;
+    // student → RPC view that omits invoice routing.
+    const load = isPreview
+      ? fetchStudentContacts(student.id)
+      : isStudentRole
+        ? fetchMyContactsView(student.id)
+        : fetchMyContacts(student.id)
     load.then(c => { setContacts(c); setContactsLoaded(true) }).catch(console.error)
-  }, [tab, student?.id, isPreview, contactsLoaded])
+  }, [tab, student?.id, isPreview, isStudentRole, contactsLoaded])
 
   useEffect(() => {
-    if (tab !== 'account' || !student?.id || invoicesLoaded) return
+    if (tab !== 'account' || !student?.id || invoicesLoaded || !canBill) return
     const load = isPreview ? fetchInvoices(student.id) : fetchMyInvoices()
     load.then(inv => { setInvoices(inv); setInvoicesLoaded(true) }).catch(console.error)
-  }, [tab, student?.id, isPreview, invoicesLoaded])
+  }, [tab, student?.id, isPreview, canBill, invoicesLoaded])
 
   function problemById(id) {
     return problems.find(p => p.id === id)
@@ -98,7 +110,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
             <h1>{student?.name ? `${student.name}'s Portal` : 'My Portal'}</h1>
             <p className="sp-subtitle">
               {assignedItems.length} assigned · {completedItems.length} completed · {sortedSessions.length} sessions
-              {student?.session_balance != null && (
+              {canBill && student?.session_balance != null && (
                 <span style={{
                   marginLeft: 8,
                   color: student.session_balance <= 1 ? 'var(--yellow)' : 'var(--green)',
@@ -132,6 +144,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
           contacts={contacts}
           setContacts={setContacts}
           isAdmin={isPreview}
+          canBill={canBill}
+          isStudentRole={isStudentRole}
           invoices={invoices}
           setInvoices={setInvoices}
         />
@@ -277,12 +291,19 @@ const CONTACT_TOGGLES = [
   ['receives_assignments', 'Assignments'],
 ]
 
-function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setInvoices }) {
+function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill, isStudentRole, invoices, setInvoices }) {
   const [newEmail, setNewEmail] = useState('')
-  const [newLabel, setNewLabel] = useState('parent')
+  const [newLabel, setNewLabel] = useState(isStudentRole ? 'student' : 'parent')
   const [adding, setAdding] = useState(false)
   const [err, setErr] = useState(null)
   const [sendingId, setSendingId] = useState(null)
+
+  // Students never see the invoice-routing toggle (billing is hidden from them).
+  const toggles = canBill ? CONTACT_TOGGLES : CONTACT_TOGGLES.filter(([f]) => f !== 'receives_invoices')
+
+  // A student may only manage student-labelled contacts; parent contacts are
+  // read-only for them (they can see what a parent receives, not change it).
+  const canEditContact = (c) => !isStudentRole || c.label === 'student'
 
   async function handleSendInvoice(inv) {
     if (!confirm(`Send the invoice email to ${inv.staged_email_to}?`)) return
@@ -306,7 +327,7 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
       const row = {
         student_id: studentId,
         email: newEmail.trim().toLowerCase(),
-        label: newLabel,
+        label: isStudentRole ? 'student' : newLabel,
         receives_meets: true,
         receives_reports: true,
         receives_invoices: false,
@@ -361,11 +382,12 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
                 <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>{c.label}</div>
               </div>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                {CONTACT_TOGGLES.map(([field, label]) => (
-                  <label key={field} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', fontSize: 12, color: c[field] ? 'var(--accent)' : 'var(--text-dim)', whiteSpace: 'nowrap' }}>
+                {toggles.map(([field, label]) => (
+                  <label key={field} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: canEditContact(c) ? 'pointer' : 'default', fontSize: 12, color: c[field] ? 'var(--accent)' : 'var(--text-dim)', whiteSpace: 'nowrap' }}>
                     <input
                       type="checkbox"
                       checked={!!c[field]}
+                      disabled={!canEditContact(c)}
                       onChange={e => handleToggle(c.id, field, e.target.checked)}
                       style={{ accentColor: 'var(--accent)' }}
                     />
@@ -373,7 +395,9 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
                   </label>
                 ))}
               </div>
-              <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(c.id)}>✕</button>
+              {canEditContact(c)
+                ? <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(c.id)}>✕</button>
+                : <span style={{ fontSize: 11, color: 'var(--text-dim)', flexShrink: 0 }} title="Parent contacts are managed by your parent or tutor">read-only</span>}
             </div>
           ))}
         </div>
@@ -387,15 +411,19 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
           placeholder="email@example.com"
           style={{ flex: 1, minWidth: 200 }}
         />
-        <select
-          value={newLabel}
-          onChange={e => setNewLabel(e.target.value)}
-          style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13 }}
-        >
-          {isAdmin && <option value="student">student</option>}
-          <option value="parent">parent</option>
-          <option value="other">other</option>
-        </select>
+        {isStudentRole ? (
+          <span style={{ fontSize: 13, color: 'var(--text-dim)', padding: '6px 4px' }}>student email</span>
+        ) : (
+          <select
+            value={newLabel}
+            onChange={e => setNewLabel(e.target.value)}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13 }}
+          >
+            {isAdmin && <option value="student">student</option>}
+            <option value="parent">parent</option>
+            <option value="other">other</option>
+          </select>
+        )}
         <button className="sm primary" onClick={handleAdd} disabled={adding || !newEmail.trim()}>
           {adding ? 'Adding…' : '+ Add'}
         </button>
@@ -407,7 +435,7 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
         </p>
       )}
 
-      {invoices?.length > 0 && (
+      {canBill && invoices?.length > 0 && (
         <div style={{ marginTop: 28 }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>Invoices</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

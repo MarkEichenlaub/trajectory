@@ -57,7 +57,7 @@ if (!invoices?.length) {
 
   const studentName = student?.name ?? invoice.student_id
   const subject = `Invoice ready for ${studentName}`
-  const body = `Invoice ready for ${studentName} — review and send from the portal: https://portal.eichenlaubphysics.com/?student=${invoice.student_id}`
+  const body = `Invoice ready for ${studentName} — review and send from the portal: https://portal.eichenlaubphysics.com/`
 
   console.log(`\nSending invoice notification email...`)
   console.log(`  To: ${MARK_EMAIL}`)
@@ -110,7 +110,7 @@ const completed = count ?? 0
 console.log(`Sessions since last report: ${completed} (anchor: ${anchor ?? 'none'})`)
 
 const reportSubject = `Time for ${borna.name}'s progress report`
-const reportBody = `Time for ${borna.name}'s progress report — ${completed} sessions since the last one.\nPortal: https://portal.eichenlaubphysics.com/?student=${borna.id}`
+const reportBody = `Time for ${borna.name}'s progress report — ${completed} sessions since the last one.\nPortal: https://portal.eichenlaubphysics.com/`
 
 console.log(`\nSending progress report reminder email...`)
 console.log(`  To: ${MARK_EMAIL}`)
