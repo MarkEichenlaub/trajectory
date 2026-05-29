@@ -224,6 +224,81 @@ export async function fetchInvoices(studentId) {
   return data || []
 }
 
+// Send the staged billing-contact email for a drafted invoice, then mark it sent.
+export async function sendStagedInvoice(invoice) {
+  await sendEmail({
+    to: invoice.staged_email_to,
+    subject: invoice.staged_email_subject,
+    body: invoice.staged_email_body,
+  })
+  const { error } = await adminClient()
+    .from('invoices').update({ status: 'sent' }).eq('id', invoice.id)
+  if (error) throw new Error(error.message)
+}
+
+// ── Progress reports (admin) ───────────────────────────────────────────────
+
+export async function fetchProgressReports(studentId) {
+  const { data, error } = await adminClient()
+    .from('progress_reports').select('*').eq('student_id', studentId)
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function uploadProgressReport(file, studentId, title) {
+  const ext = file.name.split('.').pop()
+  const path = `${studentId}/${crypto.randomUUID()}.${ext}`
+  const client = adminClient()
+
+  const { error: upErr } = await client.storage
+    .from('progress-reports').upload(path, file, { upsert: true, contentType: file.type })
+  if (upErr) throw new Error(upErr.message)
+  const { data: pub } = client.storage.from('progress-reports').getPublicUrl(path)
+
+  // Count completed sessions since the previous report, for the cycle label.
+  const { data: prev } = await client.from('progress_reports')
+    .select('created_at').eq('student_id', studentId)
+    .order('created_at', { ascending: false }).limit(1).maybeSingle()
+  let countQ = client.from('sessions')
+    .select('id', { count: 'exact', head: true })
+    .eq('student_id', studentId)
+    .not('end_time', 'is', null)
+    .lte('end_time', new Date().toISOString())
+  if (prev?.created_at) countQ = countQ.gt('end_time', prev.created_at)
+  const { count } = await countQ
+
+  const { data, error } = await client.from('progress_reports')
+    .insert({ student_id: studentId, title, pdf_url: pub.publicUrl, sessions_covered: count ?? 0 })
+    .select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function deleteProgressReport(id) {
+  const client = adminClient()
+  const { data: row } = await client.from('progress_reports').select('pdf_url').eq('id', id).single()
+  if (row?.pdf_url) {
+    const marker = '/progress-reports/'
+    const idx = row.pdf_url.indexOf(marker)
+    if (idx >= 0) {
+      const path = row.pdf_url.slice(idx + marker.length)
+      await client.storage.from('progress-reports').remove([path])
+    }
+  }
+  const { error } = await client.from('progress_reports').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+// ── Progress reports (student, public client + RLS) ───────────────────────────
+
+export async function fetchMyProgressReports() {
+  const { data, error } = await supabase
+    .from('progress_reports').select('*').order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
 // ── Student-facing helpers (uses public client + RLS) ─────────────────────
 
 export async function fetchStudentAssignments() {

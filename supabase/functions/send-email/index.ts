@@ -13,6 +13,10 @@ Deno.serve(async (req) => {
   try {
     const { to, subject, body } = await req.json()
 
+    // Body may be plain text or HTML — send as html when it looks like markup
+    // so existing plain-text callers keep their line breaks.
+    const isHtml = /<[a-z][\s\S]*>/i.test(body || '')
+
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -23,7 +27,7 @@ Deno.serve(async (req) => {
         from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
         to: Array.isArray(to) ? to : [to],
         subject,
-        text: body,
+        ...(isHtml ? { html: body } : { text: body }),
       }),
     })
 

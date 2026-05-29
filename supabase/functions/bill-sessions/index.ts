@@ -22,6 +22,100 @@ async function stripePost(path: string, params: Record<string, string | number>)
   return json
 }
 
+const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
+
+async function sendEmail(to: string | string[], subject: string, body: string) {
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ to, subject, body }),
+  })
+  if (!res.ok) {
+    const t = await res.text()
+    throw new Error(`send-email failed: ${res.status} ${t}`)
+  }
+}
+
+function buildInvoiceEmail(studentName: string, amountDollars: number, hostedUrl: string): { subject: string; body: string } {
+  const subject = `Invoice for ${studentName}'s physics tutoring — next 10 sessions`
+  const body = `<!DOCTYPE html>
+<html><body style="margin:0;padding:0;background:#f4efe3;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;color:#2a3142;">
+  <div style="max-width:560px;margin:0 auto;padding:32px 24px;">
+    <h1 style="font-family:Spectral,Georgia,serif;color:#2a4a6d;font-size:22px;font-weight:600;margin:0 0 4px;">Eichenlaub Physics</h1>
+    <div style="height:2px;background:#e2d8c4;margin:14px 0 22px;"></div>
+    <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">Hello,</p>
+    <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">
+      ${studentName} has nearly used their current block of tutoring sessions. To keep things uninterrupted,
+      here is the invoice for the next block of <strong>10 sessions</strong>, totaling
+      <strong>$${amountDollars.toLocaleString()}</strong>.
+    </p>
+    <p style="font-size:15px;line-height:1.6;margin:0 0 24px;">
+      You can pay securely online (card or bank transfer) using the button below. Sessions are credited
+      to ${studentName}'s portal balance as soon as payment is received.
+    </p>
+    <p style="margin:0 0 28px;">
+      <a href="${hostedUrl}" style="display:inline-block;background:#2a4a6d;color:#f4efe3;text-decoration:none;font-size:15px;font-weight:600;padding:12px 28px;border-radius:6px;">Pay invoice</a>
+    </p>
+    <p style="font-size:13px;line-height:1.6;color:#6b7280;margin:0 0 4px;">
+      If the button doesn't work, copy this link into your browser:<br>
+      <a href="${hostedUrl}" style="color:#2a4a6d;word-break:break-all;">${hostedUrl}</a>
+    </p>
+    <div style="height:1px;background:#e2d8c4;margin:24px 0 16px;"></div>
+    <p style="font-size:13px;line-height:1.6;color:#6b7280;margin:0;">
+      Thank you,<br>Mark Eichenlaub<br>
+      <a href="https://eichenlaubphysics.com" style="color:#2a4a6d;">eichenlaubphysics.com</a>
+    </p>
+  </div>
+</body></html>`
+  return { subject, body }
+}
+
+// Reminds Mark when a student has accumulated 10 completed sessions since their
+// last progress report. Fires once per cycle; re-arms when the next report exists.
+async function checkReportReminder(
+  student: { id: string; name: string; last_report_reminder_at: string | null },
+) {
+  const { data: lastReport } = await supabase
+    .from('progress_reports')
+    .select('created_at')
+    .eq('student_id', student.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const anchor = lastReport?.created_at ?? null
+  const nowIso = new Date().toISOString()
+
+  let q = supabase
+    .from('sessions')
+    .select('id', { count: 'exact', head: true })
+    .eq('student_id', student.id)
+    .not('end_time', 'is', null)
+    .lte('end_time', nowIso)
+  if (anchor) q = q.gt('end_time', anchor)
+
+  const { count } = await q
+  const completed = count ?? 0
+  if (completed < 10) return
+
+  const remindedAt = student.last_report_reminder_at
+  const alreadyRemindedThisCycle = remindedAt && (!anchor || remindedAt >= anchor)
+  if (alreadyRemindedThisCycle) return
+
+  await sendEmail(
+    MARK_EMAIL,
+    `Time for ${student.name}'s progress report`,
+    `Time for ${student.name}'s progress report — ${completed} sessions since the last one. Portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
+  )
+
+  await supabase.from('students')
+    .update({ last_report_reminder_at: nowIso })
+    .eq('id', student.id)
+}
+
 Deno.serve(async (_req) => {
   const cutoff = new Date(Date.now() - 15 * 60 * 1000).toISOString()
 
@@ -64,7 +158,7 @@ Deno.serve(async (_req) => {
       // Fetch student fresh each iteration to see latest balance
       const { data: student } = await supabase
         .from('students')
-        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id')
+        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at')
         .eq('id', session.student_id)
         .single()
 
@@ -77,6 +171,13 @@ Deno.serve(async (_req) => {
         .eq('id', student.id)
 
       processed++
+
+      // Progress-report reminder: nudge Mark every 10 completed sessions per cycle.
+      try {
+        await checkReportReminder(student)
+      } catch (e) {
+        console.error('report reminder check failed for', student.id, (e as Error).message)
+      }
 
       // Invoice when balance hits 1 and student has a non-zero rate
       if (newBalance === 1 && student.hourly_rate > 0) {
@@ -128,7 +229,18 @@ Deno.serve(async (_req) => {
           'price_data[unit_amount]': unitAmountCents,
         })
 
-        // Store as draft — admin reviews and sends manually
+        // Finalize to generate the hosted payment page URL. auto_advance is false,
+        // so Stripe will NOT email anyone — Mark sends our own email from the portal.
+        const finalized = await stripePost(`invoices/${invoice.id}/finalize`, {
+          auto_advance: 'false',
+        })
+        const hostedUrl = finalized.hosted_invoice_url as string
+
+        // Compose the billing-contact email now and stage it for admin review.
+        const amountDollars = student.hourly_rate * 10
+        const staged = buildInvoiceEmail(student.name, amountDollars, hostedUrl)
+
+        // Store as draft — admin reviews and sends the staged email from the portal.
         await supabase.from('invoices').insert({
           student_id: student.id,
           stripe_invoice_id: invoice.id,
@@ -136,9 +248,23 @@ Deno.serve(async (_req) => {
           amount_cents: unitAmountCents * 10,
           sessions_count: 10,
           status: 'draft',
+          staged_email_to: invoiceEmail,
+          staged_email_subject: staged.subject,
+          staged_email_body: staged.body,
         })
 
-        invoicesSent.push(`${student.name} — $${student.hourly_rate * 10} (draft)`)
+        // Notify Mark that an invoice is staged and ready to review/send.
+        try {
+          await sendEmail(
+            MARK_EMAIL,
+            `Invoice ready for ${student.name}`,
+            `Invoice ready for ${student.name} — review and send from the portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
+          )
+        } catch (e) {
+          console.error('Mark invoice-notice email failed:', (e as Error).message)
+        }
+
+        invoicesSent.push(`${student.name} — $${amountDollars} (draft)`)
       }
     } catch (e) {
       const msg = (e as Error).message
