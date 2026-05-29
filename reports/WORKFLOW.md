@@ -62,36 +62,38 @@ reports/
 
 **Step 1 — AI drafts from portal data (your Claude subscription, not the API).**
 
-The session summaries, study plan, and assignments already live in the Supabase
-DB. Pull a single student's data into a text blob and hand it to the `claude`
-CLI with a prompt. A ready-made pull script would query:
-
-- `sessions` (date, summary, tags) for the student, this cycle
-- the active `study_plans.content`
-- `assignments` joined to problem titles
-
-Then:
+`draft.mjs` does this end to end. It pulls one student's data from Supabase —
+`sessions` (since the last report), the active `study_plans.content`, and
+`assignments` joined to problem titles from `data/problems.json` — assembles a
+prompt, hands it to the local `claude` CLI (your subscription, no API key), and
+writes a ready-to-edit `reports/<student>/<cycle>.typ`.
 
 ```powershell
-# pseudo: dump one cycle of data, then draft
-claude -p "Here are Leo's last 10 sessions, his study plan, and assignments.
-Draft a progress report by filling in the `data` dictionary in template.typ.
-Summary as 3-4 bullets; Progress Made as 2-3 narrative paragraphs with specific
-anecdotes; keep my voice (first person, warm, concrete). Output only the Typst
-`data` block." < leo_cycle_data.txt > leo_data.typ
+node reports/draft.mjs <studentId>                      # draft current cycle
+node reports/draft.mjs <studentId> --cycle "Cycle 2 · Fall 2026"
+node reports/draft.mjs <studentId> --dry-run            # free: write the prompt only, no claude call
+node reports/draft.mjs <studentId> --model <name>       # override the model
 ```
 
+The "cycle" is everything since the student's last `progress_reports` row (or
+all of their history if it's their first). Use `--dry-run` first to inspect the
+context in `reports/<student>/_prompt.txt` without spending any quota.
+
 Because the template is data-in / layout-out, the AI only writes the `data`
-block — it can't break the styling.
+block — it can't break the styling. The script strips code fences and any stray
+`#report(...)` call before writing the file.
 
 **Step 2 — Mark edits.** Open the `.typ` in VS Code with Tinymist. The PDF
 preview updates live as you refine wording. This is where your judgment and
 anecdotes go in; the AI draft is a starting point, never the final word.
 
-**Step 3 — Export PDF.**
+**Step 3 — Export PDF.** Generated reports live in a subfolder and import
+`../lib.typ`, so Typst needs `--root reports` to allow reading the parent
+layout file (the script prints the exact command when it finishes):
 
 ```powershell
-typst compile leo/2026-spring.typ leo/2026-spring.pdf
+typst compile --root reports reports/leo/2026-spring.typ reports/leo/2026-spring.pdf
+typst watch   --root reports reports/leo/2026-spring.typ reports/leo/2026-spring.pdf   # live preview
 ```
 
 **Step 4 — Upload to the portal.** In the portal (admin preview), open the
