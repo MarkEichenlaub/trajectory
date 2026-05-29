@@ -214,6 +214,16 @@ export async function uploadHandoutPDF(file, handoutId) {
   return data.publicUrl
 }
 
+// ── Invoices (admin) ─────────────────────────────────────────────────────────
+
+export async function fetchInvoices(studentId) {
+  const q = adminClient().from('invoices').select('*').order('created_at', { ascending: false })
+  if (studentId) q.eq('student_id', studentId)
+  const { data, error } = await q
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
 // ── Student-facing helpers (uses public client + RLS) ─────────────────────
 
 export async function fetchStudentAssignments() {
@@ -231,6 +241,13 @@ export async function linkStudentAccount() {
 export async function fetchStudentSessions() {
   const { data, error } = await supabase
     .from('sessions').select('*').order('scheduled_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchMyInvoices() {
+  const { data, error } = await supabase
+    .from('invoices').select('*').order('created_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
 }

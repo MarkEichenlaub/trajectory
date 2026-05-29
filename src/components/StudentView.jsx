@@ -5,6 +5,7 @@ import {
   fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
   fetchStudyPlans, saveStudyPlan, approvePendingPlan, rejectPendingPlan,
   fetchMyStudyPlans, proposeStudyPlan,
+  fetchInvoices, fetchMyInvoices,
 } from '../utils/supabase'
 
 export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview }) {
@@ -14,12 +15,20 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [tagSearch, setTagSearch] = useState('')
   const [contacts, setContacts] = useState([])
   const [contactsLoaded, setContactsLoaded] = useState(false)
+  const [invoices, setInvoices] = useState([])
+  const [invoicesLoaded, setInvoicesLoaded] = useState(false)
 
   useEffect(() => {
     if (tab !== 'account' || !student?.id || contactsLoaded) return
     const load = isPreview ? fetchStudentContacts(student.id) : fetchMyContacts(student.id)
     load.then(c => { setContacts(c); setContactsLoaded(true) }).catch(console.error)
   }, [tab, student?.id, isPreview, contactsLoaded])
+
+  useEffect(() => {
+    if (tab !== 'account' || !student?.id || invoicesLoaded) return
+    const load = isPreview ? fetchInvoices(student.id) : fetchMyInvoices()
+    load.then(inv => { setInvoices(inv); setInvoicesLoaded(true) }).catch(console.error)
+  }, [tab, student?.id, isPreview, invoicesLoaded])
 
   function problemById(id) {
     return problems.find(p => p.id === id)
@@ -89,6 +98,15 @@ export default function StudentView({ student, assignments, sessions, problems, 
             <h1>{student?.name ? `${student.name}'s Portal` : 'My Portal'}</h1>
             <p className="sp-subtitle">
               {assignedItems.length} assigned · {completedItems.length} completed · {sortedSessions.length} sessions
+              {student?.session_balance != null && (
+                <span style={{
+                  marginLeft: 8,
+                  color: student.session_balance <= 1 ? 'var(--yellow)' : 'var(--green)',
+                  fontWeight: 600,
+                }}>
+                  · {student.session_balance} session{student.session_balance !== 1 ? 's' : ''} remaining
+                </span>
+              )}
             </p>
           </div>
           {onSignOut && (
@@ -118,6 +136,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
           contacts={contacts}
           setContacts={setContacts}
           isAdmin={isPreview}
+          invoices={invoices}
         />
       ) : tab === 'sessions' ? (
         sortedSessions.length === 0 ? (
@@ -261,7 +280,7 @@ const CONTACT_TOGGLES = [
   ['receives_assignments', 'Assignments'],
 ]
 
-function ContactsTab({ studentId, contacts, setContacts, isAdmin }) {
+function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices }) {
   const [newEmail, setNewEmail] = useState('')
   const [newLabel, setNewLabel] = useState('parent')
   const [adding, setAdding] = useState(false)
@@ -374,6 +393,37 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin }) {
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 10, lineHeight: 1.5 }}>
           Added addresses receive selected communications but cannot log in to this portal. Contact your tutor to enable login access for an email.
         </p>
+      )}
+
+      {invoices?.length > 0 && (
+        <div style={{ marginTop: 28 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>Invoices</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {invoices.map(inv => (
+              <div key={inv.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <span style={{ fontSize: 12, color: 'var(--text-dim)', width: 100, flexShrink: 0 }}>
+                  {new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                </span>
+                <span style={{ fontSize: 13, flex: 1 }}>
+                  ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
+                </span>
+                <span style={{
+                  fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
+                  background: inv.status === 'paid' ? 'var(--green-bg)' : 'var(--yellow-bg)',
+                  color: inv.status === 'paid' ? 'var(--green)' : 'var(--yellow)',
+                  border: `1px solid ${inv.status === 'paid' ? 'var(--green-line)' : 'var(--yellow-line)'}`,
+                }}>
+                  {inv.status}
+                </span>
+                {inv.stripe_invoice_url && (
+                  <a href={inv.stripe_invoice_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>
+                    View ↗
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   )

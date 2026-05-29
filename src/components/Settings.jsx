@@ -96,6 +96,26 @@ function StudentCard({ student, onSave, onRemove, saving, showToast }) {
         <label>Notes</label>
         <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
       </div>
+      <div className="student-card-row">
+        <label>Balance</label>
+        <input
+          type="number" min="0"
+          value={draft.session_balance ?? 0}
+          onChange={e => set('session_balance', parseInt(e.target.value, 10) || 0)}
+          style={{ width: 80 }}
+        />
+        <span style={{ fontSize: 12, color: 'var(--text-dim)', marginLeft: 4 }}>sessions</span>
+      </div>
+      <div className="student-card-row">
+        <label>Rate</label>
+        <input
+          type="number" min="0" step="1"
+          value={draft.hourly_rate ?? 0}
+          onChange={e => set('hourly_rate', parseFloat(e.target.value) || 0)}
+          style={{ width: 80 }}
+        />
+        <span style={{ fontSize: 12, color: 'var(--text-dim)', marginLeft: 4 }}>/session</span>
+      </div>
       {dirty && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 4 }}>
           <button className="sm primary" onClick={() => onSave(draft)} disabled={saving}>
