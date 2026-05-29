@@ -93,6 +93,10 @@ function StudentCard({ student, onSave, onRemove, saving, showToast }) {
         <input value={draft.email || ''} onChange={e => set('email', e.target.value)} placeholder="student@example.com" />
       </div>
       <div className="student-card-row">
+        <label>Billing name</label>
+        <input value={draft.billing_name || ''} onChange={e => set('billing_name', e.target.value)} placeholder="Parent / guardian name on invoice" />
+      </div>
+      <div className="student-card-row">
         <label>Notes</label>
         <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
       </div>

@@ -64,7 +64,7 @@ Deno.serve(async (_req) => {
       // Fetch student fresh each iteration to see latest balance
       const { data: student } = await supabase
         .from('students')
-        .select('id, name, session_balance, hourly_rate, stripe_customer_id')
+        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id')
         .eq('id', session.student_id)
         .single()
 
@@ -95,7 +95,7 @@ Deno.serve(async (_req) => {
         if (!customerId) {
           const customer = await stripePost('customers', {
             email: invoiceEmail,
-            name: student.name,
+            name: student.billing_name || student.name,
             'metadata[student_id]': student.id,
           })
           customerId = customer.id
@@ -115,6 +115,8 @@ Deno.serve(async (_req) => {
           description: `Physics tutoring — 10 sessions with ${student.name}`,
           footer: `Student portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
           'metadata[student_id]': student.id,
+          'payment_settings[payment_method_types][0]': 'card',
+          'payment_settings[payment_method_types][1]': 'us_bank_account',
         })
 
         await stripePost('invoiceitems', {
