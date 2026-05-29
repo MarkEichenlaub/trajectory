@@ -361,6 +361,10 @@ tr.assigned-row-tr td { background: rgba(79, 142, 247, 0.04); }
 .assigned-problem-info .p-label { color: var(--text-dim); font-size: 11px; white-space: nowrap; flex-shrink: 0; }
 .assigned-problem-info .p-name { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .assigned-problem-info .p-date { color: var(--text-dim); font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+.assignment-note-placeholder { color: var(--text-dim); font-size: 11px; cursor: text; opacity: 0.5; white-space: nowrap; flex-shrink: 0; }
+.assignment-note-placeholder:hover { opacity: 0.8; }
+.assignment-note { color: var(--accent); font-size: 11px; cursor: text; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 1; min-width: 0; }
+.assignment-note-input { background: transparent; border: none; border-bottom: 1px solid var(--accent); color: var(--text); font-size: 11px; outline: none; padding: 0; width: 180px; flex-shrink: 0; }
 
 .assigned-row-links {
   display: flex;

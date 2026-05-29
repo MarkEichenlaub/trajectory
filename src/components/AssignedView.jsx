@@ -1,9 +1,54 @@
 import { useState } from 'react'
 
+function NoteField({ assignmentId, initialNote, onSave }) {
+  const [value, setValue] = useState(initialNote || '')
+  const [editing, setEditing] = useState(false)
+
+  function handleBlur() {
+    setEditing(false)
+    if (value !== (initialNote || '')) onSave(assignmentId, value)
+  }
+
+  if (!editing && !value) {
+    return (
+      <span
+        className="assignment-note-placeholder"
+        onClick={() => setEditing(true)}
+      >
+        Add note…
+      </span>
+    )
+  }
+
+  if (editing) {
+    return (
+      <input
+        className="assignment-note-input"
+        value={value}
+        autoFocus
+        onChange={e => setValue(e.target.value)}
+        onBlur={handleBlur}
+        onKeyDown={e => { if (e.key === 'Enter') e.target.blur() }}
+        placeholder="e.g. Chapter 1, problems 1–8"
+      />
+    )
+  }
+
+  return (
+    <span
+      className="assignment-note"
+      onClick={() => setEditing(true)}
+      title="Click to edit note"
+    >
+      {value}
+    </span>
+  )
+}
+
 export default function AssignedView({
   student, assignments, problems,
   assignedOrder, onReorder,
-  onToggleStatus, onUnassign, onGenerateEmail,
+  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote,
 }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [dragId, setDragId] = useState(null)
@@ -138,6 +183,11 @@ export default function AssignedView({
                   {a.assigned_date && (
                     <span className="p-date">{a.assigned_date}</span>
                   )}
+                  <NoteField
+                    assignmentId={a.id}
+                    initialNote={a.notes}
+                    onSave={onUpdateNote}
+                  />
                 </div>
                 <div className="assigned-row-links">
                   <a href={p.problemUrl} target="_blank" rel="noreferrer">Problem ↗</a>

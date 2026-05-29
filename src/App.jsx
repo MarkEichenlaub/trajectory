@@ -252,6 +252,15 @@ export default function App() {
     }
   }
 
+  async function handleUpdateNote(assignmentId, notes) {
+    try {
+      await updateAssignment(assignmentId, { notes })
+      setAssignments(prev => prev.map(a => a.id === assignmentId ? { ...a, notes } : a))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleUnassign(problemId) {
     try {
       await deleteAssignment(activeStudentId, problemId)
@@ -490,6 +499,7 @@ export default function App() {
             onToggleStatus={handleToggleStatus}
             onUnassign={handleUnassign}
             onGenerateEmail={handleGenerateEmail}
+            onUpdateNote={handleUpdateNote}
           />
         )}
 
