@@ -393,6 +393,7 @@ export default function App() {
               assignments={previewAssignments}
               sessions={previewSessions}
               problems={allProblems}
+              isPreview={true}
             />
           </div>
         </div>

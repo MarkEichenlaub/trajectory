@@ -98,6 +98,37 @@ export async function deleteStudentContact(id) {
   if (error) throw new Error(error.message)
 }
 
+export async function updateStudentContact(id, updates) {
+  const { error } = await adminClient().from('student_contacts').update(updates).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+// ── Student self-service contact management (public client, RLS-scoped) ──────
+
+export async function fetchMyContacts(studentId) {
+  const { data, error } = await supabase
+    .from('student_contacts').select('*').eq('student_id', studentId).order('created_at')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function addMyContact(contact) {
+  const { data, error } = await supabase
+    .from('student_contacts').insert(contact).select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function updateMyContact(id, updates) {
+  const { error } = await supabase.from('student_contacts').update(updates).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteMyContact(id) {
+  const { error } = await supabase.from('student_contacts').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function fetchHandouts() {
   const { data, error } = await adminClient()
     .from('handouts').select('*').order('created_at', { ascending: false })

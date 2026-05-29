@@ -1,10 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { fetchMyContacts, addMyContact, updateMyContact, deleteMyContact } from '../utils/supabase'
 
-export default function StudentView({ student, assignments, sessions, problems, onSignOut }) {
+export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview }) {
   const [tab, setTab] = useState('assigned')
   const [selectedTags, setSelectedTags] = useState(new Set())
   const [tagSort, setTagSort] = useState('freq')
   const [tagSearch, setTagSearch] = useState('')
+  const [contacts, setContacts] = useState([])
+  const [contactsLoaded, setContactsLoaded] = useState(false)
+
+  useEffect(() => {
+    if (tab !== 'account' || !student?.id || isPreview || contactsLoaded) return
+    fetchMyContacts(student.id)
+      .then(c => { setContacts(c); setContactsLoaded(true) })
+      .catch(console.error)
+  }, [tab, student?.id, isPreview, contactsLoaded])
 
   function problemById(id) {
     return problems.find(p => p.id === id)
@@ -23,7 +33,6 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
   const sortedSessions = [...(sessions || [])].sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
-  // Build tag frequency map from all sessions
   const allTagCounts = {}
   sortedSessions.forEach(s => {
     ;(s.tags || []).forEach(tag => {
@@ -53,6 +62,14 @@ export default function StudentView({ student, assignments, sessions, problems, 
     return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
   }
 
+  const tabs = [
+    ['assigned', 'Assigned', assignedItems.length],
+    ['completed', 'Completed', completedItems.length],
+    ['all', 'All Problems', allItems.length],
+    ['sessions', 'Sessions', sortedSessions.length],
+    ...(!isPreview ? [['account', 'Account', null]] : []),
+  ]
+
   return (
     <div className="student-portal">
       <div className="sp-header">
@@ -70,25 +87,25 @@ export default function StudentView({ student, assignments, sessions, problems, 
       </div>
 
       <div className="assigned-tabs">
-        {[
-          ['assigned', 'Assigned', assignedItems.length],
-          ['completed', 'Completed', completedItems.length],
-          ['all', 'All Problems', allItems.length],
-          ['sessions', 'Sessions', sortedSessions.length],
-        ].map(([key, label, count]) => (
+        {tabs.map(([key, label, count]) => (
           <button key={key} className={tab === key ? 'active' : ''} onClick={() => setTab(key)}>
             {label}
-            <span className="tab-count">{count}</span>
+            {count != null && <span className="tab-count">{count}</span>}
           </button>
         ))}
       </div>
 
-      {tab === 'sessions' ? (
+      {tab === 'account' && !isPreview ? (
+        <ContactsTab
+          studentId={student.id}
+          contacts={contacts}
+          setContacts={setContacts}
+        />
+      ) : tab === 'sessions' ? (
         sortedSessions.length === 0 ? (
           <div className="empty-state">No sessions yet.</div>
         ) : (
           <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            {/* Tag browser sidebar */}
             {filteredTagList.length > 0 && (
               <div style={{ width: 182, flexShrink: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', position: 'sticky', top: 0 }}>
                 <div style={{ padding: '10px 10px 8px', borderBottom: '1px solid var(--border)' }}>
@@ -137,8 +154,6 @@ export default function StudentView({ student, assignments, sessions, problems, 
                 </div>
               </div>
             )}
-
-            {/* Session cards */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
               {filteredSessions.length === 0 ? (
                 <div className="empty-state" style={{ padding: '40px 0' }}>No sessions match the selected topics.</div>
@@ -206,6 +221,119 @@ export default function StudentView({ student, assignments, sessions, problems, 
           })}
         </div>
       )}
+    </div>
+  )
+}
+
+const CONTACT_TOGGLES = [
+  ['receives_meets', 'Meet invites'],
+  ['receives_reports', 'Progress reports'],
+  ['receives_invoices', 'Invoices'],
+]
+
+function ContactsTab({ studentId, contacts, setContacts }) {
+  const [newEmail, setNewEmail] = useState('')
+  const [newLabel, setNewLabel] = useState('parent')
+  const [adding, setAdding] = useState(false)
+  const [err, setErr] = useState(null)
+
+  async function handleAdd() {
+    if (!newEmail.trim()) return
+    setAdding(true)
+    setErr(null)
+    try {
+      const contact = await addMyContact({
+        student_id: studentId,
+        email: newEmail.trim().toLowerCase(),
+        label: newLabel,
+        receives_meets: true,
+        receives_reports: true,
+        receives_invoices: false,
+        can_login: false,
+      })
+      setContacts(prev => [...prev, contact])
+      setNewEmail('')
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setAdding(false)
+    }
+  }
+
+  async function handleToggle(id, field, value) {
+    if (field === 'receives_invoices' && value) {
+      for (const c of contacts) {
+        if (c.id !== id && c.receives_invoices) {
+          await updateMyContact(c.id, { receives_invoices: false })
+        }
+      }
+      setContacts(prev => prev.map(c => c.id !== id ? { ...c, receives_invoices: false } : c))
+    }
+    await updateMyContact(id, { [field]: value })
+    setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
+  }
+
+  async function handleDelete(id) {
+    await deleteMyContact(id)
+    setContacts(prev => prev.filter(c => c.id !== id))
+  }
+
+  return (
+    <div>
+      <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 14 }}>Email Addresses</h3>
+      {contacts.length === 0 ? (
+        <div className="empty-state" style={{ marginBottom: 16 }}>No additional email addresses.</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+          {contacts.map(c => (
+            <div key={c.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 160 }}>
+                <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.email}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>{c.label}</div>
+              </div>
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                {CONTACT_TOGGLES.map(([field, label]) => (
+                  <label key={field} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', fontSize: 12, color: c[field] ? 'var(--accent)' : 'var(--text-dim)', whiteSpace: 'nowrap' }}>
+                    <input
+                      type="checkbox"
+                      checked={!!c[field]}
+                      onChange={e => handleToggle(c.id, field, e.target.checked)}
+                      style={{ accentColor: 'var(--accent)' }}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+              <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(c.id)}>✕</button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+        <input
+          type="email"
+          value={newEmail}
+          onChange={e => setNewEmail(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && handleAdd()}
+          placeholder="email@example.com"
+          style={{ flex: 1, minWidth: 200 }}
+        />
+        <select
+          value={newLabel}
+          onChange={e => setNewLabel(e.target.value)}
+          style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13 }}
+        >
+          <option value="parent">parent</option>
+          <option value="other">other</option>
+        </select>
+        <button className="sm primary" onClick={handleAdd} disabled={adding || !newEmail.trim()}>
+          {adding ? 'Adding…' : '+ Add'}
+        </button>
+      </div>
+      {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 6 }}>{err}</div>}
+      <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 10, lineHeight: 1.5 }}>
+        Added addresses receive selected communications but cannot log in to this portal. Contact your tutor to enable login access for an email.
+      </p>
     </div>
   )
 }
