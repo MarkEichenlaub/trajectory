@@ -33,6 +33,11 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
   const sortedSessions = [...(sessions || [])].sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
+  const now = new Date().toISOString()
+  const nextSession = [...(sessions || [])]
+    .filter(s => s.scheduled_at > now)
+    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))[0] || null
+
   const allTagCounts = {}
   sortedSessions.forEach(s => {
     ;(s.tags || []).forEach(tag => {
@@ -199,21 +204,27 @@ export default function StudentView({ student, assignments, sessions, problems, 
           {tabItems.map(a => {
             const p = problemById(a.problem_id)
             if (!p) return null
+            const isResource = p.type === 'Book' || p.type === 'Handout'
+            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : 'Problem'
             const dateLabel = a.status === 'completed' && a.completed_date
               ? `Completed ${a.completed_date}`
               : `Assigned ${a.assigned_date}`
+            const dueLabel = a.status === 'assigned' && nextSession
+              ? `Due ${formatDate(nextSession.scheduled_at)}`
+              : null
             return (
               <div key={a.id} className="assigned-row">
                 <span className={`status-badge ${a.status}`}>
                   {a.status === 'assigned' ? '→ Assigned' : '✓ Completed'}
                 </span>
                 <div className="assigned-problem-info">
-                  <span className="p-label">{p.contest} {p.year} {p.label}</span>
+                  <span className="p-label">{p.contest}{!isResource ? ` ${p.year} ${p.label}` : ''}</span>
                   <span className="p-name">{p.name}</span>
-                  <span className="p-date">{dateLabel}</span>
+                  {a.notes && <span className="p-date" style={{ fontStyle: 'italic' }}>{a.notes}</span>}
+                  <span className="p-date">{dueLabel || dateLabel}</span>
                 </div>
                 <div className="assigned-row-links">
-                  <a href={p.problemUrl} target="_blank" rel="noreferrer">Problem ↗</a>
+                  <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                 </div>
               </div>
