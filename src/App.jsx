@@ -88,7 +88,7 @@ export default function App() {
     ...handouts.map(h => ({
       id: h.id,
       contest: h.source,
-      type: 'Handout',
+      type: h.resource_type === 'book' ? 'Book' : 'Handout',
       name: h.name,
       desc: h.description || '',
       topics: h.topics || [],
@@ -278,7 +278,11 @@ export default function App() {
       return
     }
     const assignedProblems = assignedOrderForStudent
-      .map(id => allProblems.find(p => p.id === id))
+      .map(id => {
+        const p = allProblems.find(p => p.id === id)
+        const a = activeAssignments.find(a => a.problem_id === id)
+        return p ? { ...p, assignmentNote: a?.notes || '' } : null
+      })
       .filter(Boolean)
     const firstName = activeStudent.name.split(' ')[0]
     const dateStr = new Date().toISOString().slice(0, 10)

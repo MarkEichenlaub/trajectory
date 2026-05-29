@@ -7,7 +7,7 @@ const TOPIC_ORDER = [
   'Nuclear/Particle', 'Astrophysics', 'Experimental Methods',
 ]
 
-const EMPTY_FORM = { name: '', source: '', description: '', topics: [], tagsInput: '', file: null }
+const EMPTY_FORM = { resource_type: 'handout', name: '', source: '', description: '', topics: [], tagsInput: '', file: null }
 
 export default function HandoutsManager({ handouts, onHandoutsChange, showToast }) {
   const [form, setForm] = useState(EMPTY_FORM)
@@ -37,6 +37,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
       }
       await saveHandout({
         id,
+        resource_type: form.resource_type,
         source: form.source.trim(),
         name: form.name.trim(),
         description: form.description.trim(),
@@ -73,6 +74,24 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
 
       <form onSubmit={handleSubmit} className="session-edit-card" style={{ marginBottom: 24 }}>
         <div className="student-card-row">
+          <label>Type</label>
+          <div style={{ display: 'flex', gap: 12 }}>
+            {['handout', 'book'].map(t => (
+              <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, cursor: 'pointer' }}>
+                <input
+                  type="radio"
+                  name="resource_type"
+                  value={t}
+                  checked={form.resource_type === t}
+                  onChange={() => setForm(f => ({ ...f, resource_type: t }))}
+                  style={{ accentColor: 'var(--accent)' }}
+                />
+                {t === 'handout' ? 'Handout' : 'Book'}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="student-card-row">
           <label>Name</label>
           <input
             type="text"
@@ -83,12 +102,12 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
           />
         </div>
         <div className="student-card-row">
-          <label>Source</label>
+          <label>{form.resource_type === 'book' ? 'Author' : 'Source'}</label>
           <input
             type="text"
             value={form.source}
             onChange={e => setForm(f => ({ ...f, source: e.target.value }))}
-            placeholder="Purcell, PhysicsWOOT, Griffiths…"
+            placeholder={form.resource_type === 'book' ? 'Purcell, Griffiths…' : 'PhysicsWOOT, class notes…'}
             style={{ flex: 1 }}
           />
         </div>
@@ -153,7 +172,9 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ flex: 1 }}>
                   <span className="p-name" style={{ fontWeight: 500 }}>{h.name}</span>
-                  <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, marginLeft: 8 }}>{h.source}</span>
+                  <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, marginLeft: 8 }}>
+                    {h.resource_type === 'book' ? 'Book' : 'Handout'} · {h.source}
+                  </span>
                 </div>
                 <div className="assigned-row-links">
                   {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">PDF ↗</a>}

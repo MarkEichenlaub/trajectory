@@ -190,7 +190,11 @@ export default function AssignedView({
                   />
                 </div>
                 <div className="assigned-row-links">
-                  <a href={p.problemUrl} target="_blank" rel="noreferrer">Problem ↗</a>
+                  {p.problemUrl && (
+                    <a href={p.problemUrl} target="_blank" rel="noreferrer">
+                      {p.type === 'Book' ? 'Book ↗' : p.type === 'Handout' ? 'Handout ↗' : 'Problem ↗'}
+                    </a>
+                  )}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                   <button
                     className="sm"
