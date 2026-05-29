@@ -22,3 +22,7 @@ create policy "study_plans: student propose" on public.study_plans for insert
     and status = 'pending_approval'
     and proposed_by = 'student'
   );
+
+grant select, insert, update, delete on public.study_plans to anon;
+grant select, insert, update, delete on public.study_plans to authenticated;
+grant select, insert, update, delete on public.study_plans to service_role;
