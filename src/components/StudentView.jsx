@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
-import { fetchMyContacts, addMyContact, updateMyContact, deleteMyContact } from '../utils/supabase'
+import {
+  fetchMyContacts, addMyContact, updateMyContact, deleteMyContact,
+  fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
+} from '../utils/supabase'
 
 export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview }) {
   const [tab, setTab] = useState('assigned')
@@ -10,10 +13,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [contactsLoaded, setContactsLoaded] = useState(false)
 
   useEffect(() => {
-    if (tab !== 'account' || !student?.id || isPreview || contactsLoaded) return
-    fetchMyContacts(student.id)
-      .then(c => { setContacts(c); setContactsLoaded(true) })
-      .catch(console.error)
+    if (tab !== 'account' || !student?.id || contactsLoaded) return
+    const load = isPreview ? fetchStudentContacts(student.id) : fetchMyContacts(student.id)
+    load.then(c => { setContacts(c); setContactsLoaded(true) }).catch(console.error)
   }, [tab, student?.id, isPreview, contactsLoaded])
 
   function problemById(id) {
@@ -72,7 +74,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['completed', 'Completed', completedItems.length],
     ['all', 'All Problems', allItems.length],
     ['sessions', 'Sessions', sortedSessions.length],
-    ...(!isPreview ? [['account', 'Account', null]] : []),
+    ['account', 'Account', null],
   ]
 
   return (
@@ -100,11 +102,12 @@ export default function StudentView({ student, assignments, sessions, problems, 
         ))}
       </div>
 
-      {tab === 'account' && !isPreview ? (
+      {tab === 'account' ? (
         <ContactsTab
           studentId={student.id}
           contacts={contacts}
           setContacts={setContacts}
+          isAdmin={isPreview}
         />
       ) : tab === 'sessions' ? (
         sortedSessions.length === 0 ? (
@@ -243,7 +246,7 @@ const CONTACT_TOGGLES = [
   ['receives_assignments', 'Assignments'],
 ]
 
-function ContactsTab({ studentId, contacts, setContacts }) {
+function ContactsTab({ studentId, contacts, setContacts, isAdmin }) {
   const [newEmail, setNewEmail] = useState('')
   const [newLabel, setNewLabel] = useState('parent')
   const [adding, setAdding] = useState(false)
@@ -254,16 +257,22 @@ function ContactsTab({ studentId, contacts, setContacts }) {
     setAdding(true)
     setErr(null)
     try {
-      const contact = await addMyContact({
+      const row = {
         student_id: studentId,
         email: newEmail.trim().toLowerCase(),
         label: newLabel,
         receives_meets: true,
         receives_reports: true,
         receives_invoices: false,
-        can_login: false,
-      })
-      setContacts(prev => [...prev, contact])
+        can_login: isAdmin,
+      }
+      if (isAdmin) {
+        await saveStudentContact(row)
+        setContacts(await fetchStudentContacts(studentId))
+      } else {
+        const contact = await addMyContact(row)
+        setContacts(prev => [...prev, contact])
+      }
       setNewEmail('')
     } catch (e) {
       setErr(e.message)
@@ -273,20 +282,22 @@ function ContactsTab({ studentId, contacts, setContacts }) {
   }
 
   async function handleToggle(id, field, value) {
+    const updateFn = isAdmin ? updateStudentContact : updateMyContact
     if (field === 'receives_invoices' && value) {
       for (const c of contacts) {
         if (c.id !== id && c.receives_invoices) {
-          await updateMyContact(c.id, { receives_invoices: false })
+          await updateFn(c.id, { receives_invoices: false })
         }
       }
       setContacts(prev => prev.map(c => c.id !== id ? { ...c, receives_invoices: false } : c))
     }
-    await updateMyContact(id, { [field]: value })
+    await updateFn(id, { [field]: value })
     setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
   }
 
   async function handleDelete(id) {
-    await deleteMyContact(id)
+    if (isAdmin) await deleteStudentContact(id)
+    else await deleteMyContact(id)
     setContacts(prev => prev.filter(c => c.id !== id))
   }
 
@@ -335,6 +346,7 @@ function ContactsTab({ studentId, contacts, setContacts }) {
           onChange={e => setNewLabel(e.target.value)}
           style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13 }}
         >
+          {isAdmin && <option value="student">student</option>}
           <option value="parent">parent</option>
           <option value="other">other</option>
         </select>
@@ -343,9 +355,11 @@ function ContactsTab({ studentId, contacts, setContacts }) {
         </button>
       </div>
       {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 6 }}>{err}</div>}
-      <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 10, lineHeight: 1.5 }}>
-        Added addresses receive selected communications but cannot log in to this portal. Contact your tutor to enable login access for an email.
-      </p>
+      {!isAdmin && (
+        <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 10, lineHeight: 1.5 }}>
+          Added addresses receive selected communications but cannot log in to this portal. Contact your tutor to enable login access for an email.
+        </p>
+      )}
     </div>
   )
 }
