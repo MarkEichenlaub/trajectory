@@ -100,9 +100,15 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['completed', 'Completed', completedItems.length],
     ['all', 'All Problems', allItems.length],
     ['sessions', 'Sessions', sortedSessions.length],
+    ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
     ['account', 'Account', null],
   ]
+
+  const schedulePrefill = {
+    name: student?.name || '',
+    email: (isPreview ? student?.email : account?.email) || '',
+  }
 
   return (
     <div className="student-portal">
@@ -140,6 +146,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
       {tab === 'progress-plan' ? (
         <ProgressAndPlanTab studentId={student.id} />
+      ) : tab === 'scheduling' ? (
+        <SchedulingTab prefill={schedulePrefill} sessions={sortedSessions} formatDate={formatDate} />
       ) : tab === 'account' ? (
         <ContactsTab
           studentId={student.id}
@@ -522,14 +530,24 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
                 <span style={{ fontSize: 13, flex: 1 }}>
                   ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
                 </span>
-                <span style={{
-                  fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
-                  background: inv.status === 'paid' ? 'var(--green-bg)' : 'var(--yellow-bg)',
-                  color: inv.status === 'paid' ? 'var(--green)' : 'var(--yellow)',
-                  border: `1px solid ${inv.status === 'paid' ? 'var(--green-line)' : 'var(--yellow-line)'}`,
-                }}>
-                  {inv.status === 'draft' ? 'draft — review' : inv.status}
-                </span>
+                {(() => {
+                  let label, bg, color, line
+                  if (inv.status === 'paid') {
+                    label = 'paid'; bg = 'var(--green-bg)'; color = 'var(--green)'; line = 'var(--green-line)'
+                  } else if (inv.status === 'sent' && inv.due_date && new Date(inv.due_date) < new Date()) {
+                    label = 'overdue'; bg = 'var(--red-bg)'; color = 'var(--red)'; line = 'var(--red-line)'
+                  } else if (inv.status === 'sent') {
+                    label = 'due'; bg = 'var(--yellow-bg)'; color = 'var(--yellow)'; line = 'var(--yellow-line)'
+                  } else {
+                    label = inv.status === 'draft' ? 'draft — review' : inv.status
+                    bg = 'var(--yellow-bg)'; color = 'var(--yellow)'; line = 'var(--yellow-line)'
+                  }
+                  return (
+                    <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 4, background: bg, color, border: `1px solid ${line}` }}>
+                      {label}
+                    </span>
+                  )
+                })()}
                 {inv.stripe_invoice_url && (
                   <a href={inv.stripe_invoice_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>
                     {inv.status === 'draft' ? 'Open in Stripe ↗' : 'View ↗'}
@@ -550,6 +568,101 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+// Cal.com booking config. calLink is the public booking handle; namespace
+// isolates this embed instance. Reschedule/cancel links use a session's stored
+// cal_uid (the booking's string UID, written by the cal-webhook function).
+const CAL_LINK = 'markeichenlaub'
+const CAL_NAMESPACE = 'tutoring'
+const CAL_BRAND = '#2a4a6d'
+
+// Vanilla Cal.com embed loader. Injects the embed script once and returns the
+// queueing Cal() shim; safe to call on every mount.
+function loadCalApi() {
+  const C = window
+  const A = 'https://app.cal.com/embed/embed.js'
+  const L = 'init'
+  const p = (a, ar) => { a.q.push(ar) }
+  const d = C.document
+  C.Cal = C.Cal || function () {
+    const cal = C.Cal
+    const ar = arguments
+    if (!cal.loaded) {
+      cal.ns = {}
+      cal.q = cal.q || []
+      d.head.appendChild(d.createElement('script')).src = A
+      cal.loaded = true
+    }
+    if (ar[0] === L) {
+      const api = function () { p(api, arguments) }
+      const namespace = ar[1]
+      api.q = api.q || []
+      if (typeof namespace === 'string') {
+        cal.ns[namespace] = cal.ns[namespace] || api
+        p(cal.ns[namespace], ar)
+        p(cal, ['initNamespace', namespace])
+      } else p(cal, ar)
+      return
+    }
+    p(cal, ar)
+  }
+  return C.Cal
+}
+
+function SchedulingTab({ prefill, sessions, formatDate }) {
+  useEffect(() => {
+    const Cal = loadCalApi()
+    Cal('init', CAL_NAMESPACE, { origin: 'https://cal.com' })
+    const config = { layout: 'month_view' }
+    if (prefill?.name) config.name = prefill.name
+    if (prefill?.email) config.email = prefill.email
+    Cal.ns[CAL_NAMESPACE]('inline', {
+      elementOrSelector: '#cal-inline-tutoring',
+      calLink: CAL_LINK,
+      config,
+    })
+    Cal.ns[CAL_NAMESPACE]('ui', {
+      cssVarsPerTheme: { light: { 'cal-brand': CAL_BRAND } },
+      hideEventTypeDetails: false,
+      layout: 'month_view',
+    })
+  }, [prefill?.name, prefill?.email])
+
+  const now = new Date().toISOString()
+  const upcoming = (sessions || [])
+    .filter(s => s.scheduled_at > now)
+    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {upcoming.length > 0 && (
+        <div>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Upcoming sessions</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {upcoming.map(s => (
+              <div key={s.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 13, flex: 1, minWidth: 160 }}>{formatDate(s.scheduled_at)}</span>
+                {s.cal_uid ? (
+                  <div style={{ display: 'flex', gap: 14, flexShrink: 0 }}>
+                    <a href={`https://cal.com/reschedule/${s.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
+                    <a href={`https://cal.com/booking/${s.cal_uid}?cancel=true`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: 'var(--red)' }}>Cancel ↗</a>
+                  </div>
+                ) : (
+                  <span style={{ fontSize: 11, color: 'var(--text-dim)', flexShrink: 0 }}>scheduled manually</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Book a session</h3>
+        <div id="cal-inline-tutoring" style={{ width: '100%', minHeight: 600, overflow: 'scroll' }} />
+      </div>
     </div>
   )
 }
