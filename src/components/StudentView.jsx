@@ -413,11 +413,11 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices }) {
                   color: inv.status === 'paid' ? 'var(--green)' : 'var(--yellow)',
                   border: `1px solid ${inv.status === 'paid' ? 'var(--green-line)' : 'var(--yellow-line)'}`,
                 }}>
-                  {inv.status}
+                  {inv.status === 'draft' ? 'draft — review' : inv.status}
                 </span>
                 {inv.stripe_invoice_url && (
                   <a href={inv.stripe_invoice_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>
-                    View ↗
+                    {inv.status === 'draft' ? 'Open in Stripe ↗' : 'View ↗'}
                   </a>
                 )}
               </div>

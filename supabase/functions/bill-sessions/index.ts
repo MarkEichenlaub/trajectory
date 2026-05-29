@@ -106,7 +106,7 @@ Deno.serve(async (_req) => {
 
         const amountCents = Math.round(student.hourly_rate * 10 * 100)
 
-        // Create pending invoice item then invoice
+        // Create pending invoice item then draft invoice (admin reviews before sending)
         await stripePost('invoiceitems', {
           customer: customerId,
           amount: amountCents,
@@ -118,23 +118,22 @@ Deno.serve(async (_req) => {
           customer: customerId,
           collection_method: 'send_invoice',
           days_until_due: 14,
+          auto_advance: 'false',
           description: `Eichenlaub Physics — 10 session block`,
           'metadata[student_id]': student.id,
         })
 
-        const finalized = await stripePost(`invoices/${invoice.id}/finalize`, {})
-        const sent = await stripePost(`invoices/${invoice.id}/send`, {})
-
+        // Store as draft — admin reviews and sends manually
         await supabase.from('invoices').insert({
           student_id: student.id,
           stripe_invoice_id: invoice.id,
-          stripe_invoice_url: sent.hosted_invoice_url ?? finalized.hosted_invoice_url ?? null,
+          stripe_invoice_url: `https://dashboard.stripe.com/invoices/${invoice.id}`,
           amount_cents: amountCents,
           sessions_count: 10,
-          status: 'sent',
+          status: 'draft',
         })
 
-        invoicesSent.push(`${student.name} — $${student.hourly_rate * 10}`)
+        invoicesSent.push(`${student.name} — $${student.hourly_rate * 10} (draft)`)
       }
     } catch (e) {
       const msg = (e as Error).message
