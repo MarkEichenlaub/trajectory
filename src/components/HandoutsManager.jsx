@@ -182,21 +182,24 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
             style={{ flex: 1 }}
           />
         </div>
-        <div className="student-card-row">
-          <label>PDF</label>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
+          <label style={{ paddingTop: 4 }}>PDF</label>
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {editingId && (() => {
+              const existing = handouts.find(h => h.id === editingId)
+              return existing?.pdf_url
+                ? <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                    Current: <a href={existing.pdf_url} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>view ↗</a>
+                    {' '}— upload below to replace
+                  </div>
+                : <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>No PDF attached — upload one below</div>
+            })()}
             <input
               type="file"
               accept=".pdf"
               onChange={e => setForm(f => ({ ...f, file: e.target.files[0] || null }))}
-              style={{ flex: 1, fontSize: 13, color: 'var(--text)' }}
+              style={{ fontSize: 13, color: 'var(--text)' }}
             />
-            {editingId && !form.file && (() => {
-              const existing = handouts.find(h => h.id === editingId)
-              return existing?.pdf_url
-                ? <a href={existing.pdf_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, whiteSpace: 'nowrap' }}>current ↗</a>
-                : <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>no PDF</span>
-            })()}
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 8 }}>
