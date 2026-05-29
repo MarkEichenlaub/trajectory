@@ -85,17 +85,17 @@ async function main() {
     .eq('student_id', studentId).order('created_at', { ascending: false }).limit(1).maybeSingle()
   const anchor = lastReport?.created_at ?? null
 
-  // Sessions this cycle: ones that have already happened (scheduled in the past),
-  // since the last report, oldest first. We key off scheduled_at rather than
-  // end_time because end_time is only populated by calendar sync, while manually
-  // logged sessions still represent real meetings worth reporting on.
+  // Sessions this cycle: completed (end_time set and past), since the last
+  // report, oldest first. Mirrors how bill-sessions counts completed sessions
+  // so the drafted report covers exactly the sessions that triggered it.
   const nowIso = new Date().toISOString()
   let sq = db.from('sessions')
     .select('scheduled_at, end_time, summary, tags')
     .eq('student_id', studentId)
-    .lte('scheduled_at', nowIso)
+    .not('end_time', 'is', null)
+    .lte('end_time', nowIso)
     .order('scheduled_at', { ascending: true })
-  if (anchor) sq = sq.gt('scheduled_at', anchor)
+  if (anchor) sq = sq.gt('end_time', anchor)
   const { data: sessions = [] } = await sq
 
   // Active study plan.

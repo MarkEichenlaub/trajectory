@@ -137,6 +137,7 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
 
 async function handleBookingRescheduled(payload: Record<string, unknown>, supabase: SupabaseClient) {
   const newStartTime = payload.startTime as string
+  const newEndTime = payload.endTime as string | undefined
   const newBookingId = String((payload.bookingId ?? payload.uid) ?? '')
   // Cal.com sends rescheduleUid = the UID of the old booking
   const oldBookingId = String(payload.rescheduleUid ?? payload.rescheduleId ?? '')
@@ -166,6 +167,7 @@ async function handleBookingRescheduled(payload: Record<string, unknown>, supaba
     .from('sessions')
     .update({
       scheduled_at: new Date(newStartTime).toISOString(),
+      end_time: newEndTime ? new Date(newEndTime).toISOString() : null,
       cal_booking_id: newBookingId,
     })
     .eq('id', existing[0].id)
