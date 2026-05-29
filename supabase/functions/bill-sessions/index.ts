@@ -106,21 +106,22 @@ Deno.serve(async (_req) => {
 
         const amountCents = Math.round(student.hourly_rate * 10 * 100)
 
-        // Create pending invoice item then draft invoice (admin reviews before sending)
-        await stripePost('invoiceitems', {
-          customer: customerId,
-          amount: amountCents,
-          currency: 'usd',
-          description: `10 tutoring sessions × $${student.hourly_rate}/session`,
-        })
-
+        // Create invoice first, then attach item directly (newer Stripe API requires explicit attachment)
         const invoice = await stripePost('invoices', {
           customer: customerId,
           collection_method: 'send_invoice',
           days_until_due: 14,
           auto_advance: 'false',
-          description: `Eichenlaub Physics — 10 session block`,
+          description: `Eichenlaub Physics - 10 session block`,
           'metadata[student_id]': student.id,
+        })
+
+        await stripePost('invoiceitems', {
+          customer: customerId,
+          invoice: invoice.id,
+          amount: amountCents,
+          currency: 'usd',
+          description: `10 tutoring sessions`,
         })
 
         // Store as draft — admin reviews and sends manually
