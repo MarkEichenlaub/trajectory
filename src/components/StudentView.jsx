@@ -3,10 +3,9 @@ import {
   supabase,
   fetchMyContacts, addMyContact, updateMyContact, deleteMyContact,
   fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
-  fetchStudyPlans, saveStudyPlan, approvePendingPlan, rejectPendingPlan,
   fetchMyStudyPlans, proposeStudyPlan,
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
-  fetchProgressReports, fetchMyProgressReports, uploadProgressReport, deleteProgressReport,
+  fetchMyProgressReports,
 } from '../utils/supabase'
 
 export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview }) {
@@ -87,8 +86,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['completed', 'Completed', completedItems.length],
     ['all', 'All Problems', allItems.length],
     ['sessions', 'Sessions', sortedSessions.length],
-    ['study-plan', 'Study Plan', null],
-    ['reports', 'Reports', null],
+    ['progress-plan', 'Progress and Plan', null],
     ['account', 'Account', null],
   ]
 
@@ -126,14 +124,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
         ))}
       </div>
 
-      {tab === 'study-plan' ? (
-        <StudyPlanTab
-          studentId={student.id}
-          studentName={student?.name || 'Student'}
-          isAdmin={isPreview}
-        />
-      ) : tab === 'reports' ? (
-        <ReportsTab studentId={student.id} isAdmin={isPreview} />
+      {tab === 'progress-plan' ? (
+        <ProgressAndPlanTab studentId={student.id} />
       ) : tab === 'account' ? (
         <ContactsTab
           studentId={student.id}
@@ -459,42 +451,47 @@ function ContactsTab({ studentId, contacts, setContacts, isAdmin, invoices, setI
   )
 }
 
-function ReportsTab({ studentId, isAdmin }) {
+function ProgressAndPlanTab({ studentId }) {
   const [reports, setReports] = useState([])
+  const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
-  const [title, setTitle] = useState('')
-  const [file, setFile] = useState(null)
-  const [uploading, setUploading] = useState(false)
   const [err, setErr] = useState(null)
 
   useEffect(() => {
-    const load = isAdmin ? fetchProgressReports(studentId) : fetchMyProgressReports()
-    load.then(setReports).catch(e => setErr(e.message)).finally(() => setLoading(false))
-  }, [studentId, isAdmin])
+    Promise.all([
+      fetchMyProgressReports(),
+      fetchMyStudyPlans(studentId),
+    ]).then(([r, p]) => { setReports(r); setPlans(p) })
+      .catch(e => setErr(e.message))
+      .finally(() => setLoading(false))
+  }, [studentId])
 
-  async function handleUpload() {
-    if (!file || !title.trim()) return
-    setUploading(true)
+  const activePlan = plans.find(p => p.status === 'active')
+  const pendingPlan = plans.find(p => p.status === 'pending_approval')
+
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  async function handlePropose() {
+    setSaving(true)
     setErr(null)
     try {
-      const row = await uploadProgressReport(file, studentId, title.trim())
-      setReports(prev => [row, ...prev])
-      setTitle('')
-      setFile(null)
+      await proposeStudyPlan(studentId, draft)
+      await supabase.functions.invoke('send-email', {
+        body: {
+          to: ['mark@eichenlaubphysics.com'],
+          subject: `${activePlan ? 'Updated' : 'New'} study plan proposal`,
+          body: `Proposed study plan changes.\n\n---\n\n${draft}`,
+        },
+      })
+      const updated = await fetchMyStudyPlans(studentId)
+      setPlans(updated)
+      setEditing(false)
     } catch (e) {
       setErr(e.message)
     } finally {
-      setUploading(false)
-    }
-  }
-
-  async function handleDelete(id) {
-    if (!confirm('Delete this report? This cannot be undone.')) return
-    try {
-      await deleteProgressReport(id)
-      setReports(prev => prev.filter(r => r.id !== id))
-    } catch (e) {
-      setErr(e.message)
+      setSaving(false)
     }
   }
 
@@ -505,210 +502,75 @@ function ReportsTab({ studentId, isAdmin }) {
   if (loading) return <div style={{ color: 'var(--muted)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
 
   return (
-    <div style={{ maxWidth: 680 }}>
-      {isAdmin && (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px', marginBottom: 18 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Upload a report</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <input
-              type="text"
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              placeholder="Report title (e.g. Progress Report — Spring 2026)"
-              style={{ width: '100%' }}
-            />
-            <input type="file" accept="application/pdf" onChange={e => setFile(e.target.files?.[0] || null)} style={{ fontSize: 13 }} />
+    <div style={{ maxWidth: 680, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
+
+      {/* Study plan */}
+      {(activePlan || pendingPlan) && (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Study plan</h3>
+          {pendingPlan && (
+            <div style={{ background: 'var(--yellow-bg)', border: '1px solid var(--yellow-line)', borderRadius: 'var(--radius)', padding: '10px 14px', marginBottom: 14, fontSize: 13, color: 'var(--yellow)' }}>
+              Your proposed changes are pending review.
+            </div>
+          )}
+          {editing ? (
             <div>
-              <button className="sm primary" onClick={handleUpload} disabled={uploading || !file || !title.trim()}>
-                {uploading ? 'Uploading…' : 'Upload report'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {err && <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 12 }}>{err}</div>}
-
-      {reports.length === 0 ? (
-        <div className="empty-state">No progress reports yet.</div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {reports.map(r => (
-            <div key={r.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</div>
-                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>
-                  {fmt(r.created_at)}{r.sessions_covered ? ` · ${r.sessions_covered} sessions` : ''}
-                </div>
-              </div>
-              {r.pdf_url && (
-                <a href={r.pdf_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>Download ↗</a>
-              )}
-              {isAdmin && (
-                <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(r.id)}>✕</button>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function StudyPlanTab({ studentId, studentName, isAdmin }) {
-  const [plans, setPlans] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [showHistory, setShowHistory] = useState(false)
-  const [err, setErr] = useState(null)
-
-  useEffect(() => {
-    const load = isAdmin ? fetchStudyPlans(studentId) : fetchMyStudyPlans(studentId)
-    load.then(setPlans).catch(console.error).finally(() => setLoading(false))
-  }, [studentId, isAdmin])
-
-  async function reload() {
-    const data = isAdmin ? await fetchStudyPlans(studentId) : await fetchMyStudyPlans(studentId)
-    setPlans(data)
-  }
-
-  const activePlan = plans.find(p => p.status === 'active')
-  const pendingPlan = plans.find(p => p.status === 'pending_approval')
-  const archivedPlans = plans.filter(p => p.status === 'archived')
-
-  function handleStartEdit() {
-    setDraft(activePlan?.content || '')
-    setEditing(true)
-    setErr(null)
-  }
-
-  async function handleSave() {
-    setSaving(true)
-    setErr(null)
-    try {
-      if (isAdmin) {
-        await saveStudyPlan(studentId, draft)
-      } else {
-        await proposeStudyPlan(studentId, draft)
-        await supabase.functions.invoke('send-email', {
-          body: {
-            to: ['mark@eichenlaubphysics.com'],
-            subject: `${studentName} proposed study plan changes`,
-            body: `${studentName} has proposed changes to their study plan.\n\n---\n\n${draft}`,
-          },
-        })
-      }
-      await reload()
-      setEditing(false)
-    } catch (e) {
-      setErr(e.message)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  async function handleApprove() {
-    await approvePendingPlan(pendingPlan.id, studentId)
-    await reload()
-  }
-
-  async function handleReject() {
-    await rejectPendingPlan(pendingPlan.id)
-    await reload()
-  }
-
-  function formatPlanDate(iso) {
-    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-  }
-
-  if (loading) return <div style={{ color: 'var(--muted)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
-
-  return (
-    <div style={{ maxWidth: 680 }}>
-
-      {/* Pending proposal banner (admin) */}
-      {isAdmin && pendingPlan && !editing && (
-        <div style={{ background: 'var(--yellow-bg)', border: '1px solid var(--yellow-line)', borderRadius: 'var(--radius)', padding: '14px 16px', marginBottom: 18 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--yellow)' }}>Student proposed changes · {formatPlanDate(pendingPlan.created_at)}</span>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <button className="sm primary" onClick={handleApprove}>Approve</button>
-              <button className="sm danger" onClick={handleReject}>Reject</button>
-            </div>
-          </div>
-          <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{pendingPlan.content}</pre>
-        </div>
-      )}
-
-      {/* Pending notice (student) */}
-      {!isAdmin && pendingPlan && (
-        <div style={{ background: 'var(--yellow-bg)', border: '1px solid var(--yellow-line)', borderRadius: 'var(--radius)', padding: '10px 14px', marginBottom: 16, fontSize: 13, color: 'var(--yellow)' }}>
-          Your proposed changes are pending review.
-        </div>
-      )}
-
-      {/* Editor */}
-      {editing ? (
-        <div>
-          <textarea
-            value={draft}
-            onChange={e => setDraft(e.target.value)}
-            style={{ width: '100%', height: 400, fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, resize: 'vertical' }}
-          />
-          {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 6 }}>{err}</div>}
-          <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <button className="sm primary" onClick={handleSave} disabled={saving || !draft.trim()}>
-              {saving ? 'Saving…' : isAdmin ? 'Save' : 'Submit for review'}
-            </button>
-            <button className="sm" onClick={() => setEditing(false)}>Cancel</button>
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* Active plan */}
-          {activePlan ? (
-            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '18px 20px', marginBottom: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-                <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Updated {formatPlanDate(activePlan.created_at)}
-                </span>
-                <button className="sm" onClick={handleStartEdit}>
-                  {isAdmin ? 'Edit' : 'Propose changes'}
+              <textarea
+                value={draft}
+                onChange={e => setDraft(e.target.value)}
+                style={{ width: '100%', height: 320, fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, resize: 'vertical' }}
+              />
+              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                <button className="sm primary" onClick={handlePropose} disabled={saving || !draft.trim()}>
+                  {saving ? 'Submitting…' : 'Submit for review'}
                 </button>
+                <button className="sm" onClick={() => setEditing(false)}>Cancel</button>
               </div>
-              <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.8, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{activePlan.content}</pre>
             </div>
           ) : (
-            <div className="empty-state" style={{ marginBottom: 16 }}>
-              No study plan yet.
-              {isAdmin && <><br /><button className="sm primary" style={{ marginTop: 10 }} onClick={handleStartEdit}>Create plan</button></>}
-            </div>
-          )}
-
-          {/* History */}
-          {archivedPlans.length > 0 && (
-            <div>
-              <button className="sm" onClick={() => setShowHistory(v => !v)} style={{ marginBottom: 10 }}>
-                {showHistory ? 'Hide' : 'Show'} history ({archivedPlans.length})
-              </button>
-              {showHistory && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  {archivedPlans.map(p => (
-                    <div key={p.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', opacity: 0.7 }}>
-                      <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--muted)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                        {formatPlanDate(p.created_at)} · {p.proposed_by === 'student' ? 'student proposal' : 'by mentor'}
-                      </div>
-                      <pre style={{ fontFamily: 'var(--font)', fontSize: 12, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{p.content}</pre>
-                    </div>
-                  ))}
-                </div>
+            <>
+              {activePlan && (
+                <>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 10, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+                    Updated {fmt(activePlan.created_at)}
+                  </div>
+                  <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.8, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{activePlan.content}</pre>
+                </>
               )}
-            </div>
+              {!pendingPlan && (
+                <button className="sm" style={{ marginTop: activePlan ? 14 : 0 }}
+                  onClick={() => { setDraft(activePlan?.content || ''); setEditing(true) }}>
+                  Propose changes
+                </button>
+              )}
+            </>
           )}
-        </>
+        </div>
       )}
+
+      {/* Reports */}
+      <div>
+        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Reports</h3>
+        {reports.length === 0 ? (
+          <div className="empty-state">No reports yet.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {reports.map(r => (
+              <div key={r.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>{fmt(r.created_at)}</div>
+                </div>
+                {r.pdf_url && (
+                  <a href={r.pdf_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>Download ↗</a>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
+

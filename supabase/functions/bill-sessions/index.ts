@@ -108,7 +108,7 @@ async function checkReportReminder(
   await sendEmail(
     MARK_EMAIL,
     `Time for ${student.name}'s progress report`,
-    `Time for ${student.name}'s progress report — ${completed} sessions since the last one. Portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
+    `Time for ${student.name}'s progress report — ${completed} sessions since the last one.\n\nGenerate a draft:\n  node reports/draft.mjs ${student.id}\n\nEdit the .typ file in reports/${student.id}/, compile to PDF, then upload from the admin portal (Progress & Plan tab).\n\nAdmin: https://portal.eichenlaubphysics.com/`,
   )
 
   await supabase.from('students')
@@ -211,7 +211,7 @@ Deno.serve(async (_req) => {
         const invoice = await stripePost('invoices', {
           customer: customerId,
           collection_method: 'send_invoice',
-          days_until_due: 14,
+          days_until_due: 7,
           auto_advance: 'false',
           description: `Physics tutoring — 10 sessions with ${student.name}`,
           footer: `Student portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,

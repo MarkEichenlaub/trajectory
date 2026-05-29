@@ -11,11 +11,12 @@ import SessionsView from './components/SessionsView'
 import HandoutsManager from './components/HandoutsManager'
 import StudentPortal from './components/StudentPortal'
 import StudentView from './components/StudentView'
+import AdminProgressPlanView from './components/AdminProgressPlanView'
 import AdminLogin from './components/AdminLogin'
 import Settings from './components/Settings'
 import Toast from './components/Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 const ADMIN_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const STUDENT_PARAM = new URLSearchParams(window.location.search).get('student')
@@ -448,6 +449,7 @@ export default function App() {
           </button>
           <button className={view === VIEWS.SESSIONS ? 'active' : ''} onClick={() => setView(VIEWS.SESSIONS)}>Sessions</button>
           <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
+          <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress & Plan</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -537,6 +539,13 @@ export default function App() {
             handouts={handouts}
             onHandoutsChange={refreshHandouts}
             showToast={showToast}
+          />
+        )}
+
+        {view === VIEWS.PROGRESS_PLAN && (
+          <AdminProgressPlanView
+            studentId={activeStudentId}
+            studentName={activeStudent?.name || ''}
           />
         )}
 
