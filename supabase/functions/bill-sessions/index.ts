@@ -104,24 +104,26 @@ Deno.serve(async (_req) => {
             .eq('id', student.id)
         }
 
-        const amountCents = Math.round(student.hourly_rate * 10 * 100)
+        const unitAmountCents = Math.round(student.hourly_rate * 100)
 
-        // Create invoice first, then attach item directly (newer Stripe API requires explicit attachment)
+        // Create invoice first, then attach item (newer Stripe API requires explicit invoice ID on item)
         const invoice = await stripePost('invoices', {
           customer: customerId,
           collection_method: 'send_invoice',
           days_until_due: 14,
           auto_advance: 'false',
-          description: `Eichenlaub Physics - 10 session block`,
+          description: `Physics tutoring — 10 sessions with ${student.name}`,
+          footer: `Student portal: https://portal.eichenlaubphysics.com/?student=${student.id}`,
           'metadata[student_id]': student.id,
         })
 
         await stripePost('invoiceitems', {
           customer: customerId,
           invoice: invoice.id,
-          amount: amountCents,
-          currency: 'usd',
-          description: `10 tutoring sessions`,
+          quantity: 10,
+          'price_data[currency]': 'usd',
+          'price_data[product]': 'prod_UbcwrASWAMCNgU',
+          'price_data[unit_amount]': unitAmountCents,
         })
 
         // Store as draft — admin reviews and sends manually
@@ -129,7 +131,7 @@ Deno.serve(async (_req) => {
           student_id: student.id,
           stripe_invoice_id: invoice.id,
           stripe_invoice_url: `https://dashboard.stripe.com/invoices/${invoice.id}`,
-          amount_cents: amountCents,
+          amount_cents: unitAmountCents * 10,
           sessions_count: 10,
           status: 'draft',
         })
