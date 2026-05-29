@@ -124,6 +124,7 @@ const CONTACT_TOGGLES = [
   ['receives_meets', 'Meets'],
   ['receives_reports', 'Reports'],
   ['receives_invoices', 'Invoice'],
+  ['receives_assignments', 'Assignments'],
 ]
 
 function ContactsSection({ studentId, showToast }) {

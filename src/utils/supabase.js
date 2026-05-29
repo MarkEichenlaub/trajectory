@@ -103,6 +103,15 @@ export async function updateStudentContact(id, updates) {
   if (error) throw new Error(error.message)
 }
 
+export async function sendEmail({ to, subject, body }) {
+  const { data, error } = await adminClient().functions.invoke('send-email', {
+    body: { to, subject, body },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.name === 'validation_error' || (data && !data.id)) throw new Error(data?.message || 'Send failed')
+  return data
+}
+
 // ── Student self-service contact management (public client, RLS-scoped) ──────
 
 export async function fetchMyContacts(studentId) {

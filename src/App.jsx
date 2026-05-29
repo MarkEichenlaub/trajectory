@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from './utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
-import { openGmailDraft, buildEmailBody } from './utils/gmail'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent } from './utils/supabase'
+import { buildEmailBody } from './utils/gmail'
+import { sendEmail } from './utils/supabase'
+import SendEmailModal from './components/SendEmailModal'
 import FilterSidebar from './components/FilterSidebar'
 import ProblemTable from './components/ProblemTable'
 import AssignedView from './components/AssignedView'
@@ -47,6 +49,7 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
+  const [emailDraft, setEmailDraft] = useState(null)
 
   useEffect(() => {
     async function load() {
@@ -271,7 +274,7 @@ export default function App() {
     }
   }
 
-  function handleGenerateEmail() {
+  async function handleGenerateEmail() {
     if (!activeStudent) return
     if (assignedOrderForStudent.length === 0) {
       showToast('No assigned problems to email', 'error')
@@ -284,10 +287,15 @@ export default function App() {
         return p ? { ...p, assignmentNote: a?.notes || '' } : null
       })
       .filter(Boolean)
+
+    const contacts = await fetchStudentContacts(activeStudent.id).catch(() => [])
+    const recipients = contacts.filter(c => c.receives_assignments).map(c => c.email)
+    if (recipients.length === 0 && activeStudent.email) recipients.push(activeStudent.email)
+
     const firstName = activeStudent.name.split(' ')[0]
     const dateStr = new Date().toISOString().slice(0, 10)
-    openGmailDraft({
-      to: activeStudent.email || '',
+    setEmailDraft({
+      to: recipients.join(', '),
       subject: `${firstName} physics problems ${dateStr}`,
       body: buildEmailBody(activeStudent, assignedProblems),
     })
@@ -536,6 +544,19 @@ export default function App() {
       </div>
 
       {toast && <Toast msg={toast.msg} type={toast.type} />}
+
+      {emailDraft && (
+        <SendEmailModal
+          draft={emailDraft}
+          onSend={async ({ to, subject, body }) => {
+            const toList = to.split(',').map(s => s.trim()).filter(Boolean)
+            await sendEmail({ to: toList, subject, body })
+            setEmailDraft(null)
+            showToast(`Email sent to ${toList.length} recipient${toList.length !== 1 ? 's' : ''}`)
+          }}
+          onClose={() => setEmailDraft(null)}
+        />
+      )}
     </div>
   )
 }

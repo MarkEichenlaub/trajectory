@@ -229,6 +229,7 @@ const CONTACT_TOGGLES = [
   ['receives_meets', 'Meet invites'],
   ['receives_reports', 'Progress reports'],
   ['receives_invoices', 'Invoices'],
+  ['receives_assignments', 'Assignments'],
 ]
 
 function ContactsTab({ studentId, contacts, setContacts }) {
