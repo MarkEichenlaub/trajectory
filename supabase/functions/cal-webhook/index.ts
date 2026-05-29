@@ -56,6 +56,7 @@ Deno.serve(async (req) => {
 
 async function handleBookingCreated(payload: Record<string, unknown>, supabase: SupabaseClient) {
   const startTime = payload.startTime as string
+  const endTime = payload.endTime as string | undefined
   const attendees = payload.attendees as Array<{ name: string; email: string }>
   const attendee = attendees?.find(a => a.email)
   const calBookingId = String((payload.bookingId ?? payload.uid) ?? '')
@@ -117,6 +118,7 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
     id: sessionId,
     student_id: student.id,
     scheduled_at: new Date(startTime).toISOString(),
+    end_time: endTime ? new Date(endTime).toISOString() : null,
     notes: '',
     miro_board_id: miroBoardId,
     miro_board_url: miroBoardUrl,

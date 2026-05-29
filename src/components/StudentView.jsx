@@ -169,9 +169,14 @@ export default function StudentView({ student, assignments, sessions, problems, 
                 <div key={s.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 14px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: s.summary ? 8 : 0 }}>
                     <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{formatDate(s.scheduled_at)}</span>
-                    {s.miro_board_url && (
-                      <a href={s.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
-                    )}
+                    <div style={{ display: 'flex', gap: 12 }}>
+                      {s.miro_board_url && (
+                        <a href={s.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
+                      )}
+                      {s.miro_pdf_url && (
+                        <a href={s.miro_pdf_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>PDF ↗</a>
+                      )}
+                    </div>
                   </div>
                   {s.summary && (
                     <p style={{ fontSize: 13, lineHeight: 1.6, color: 'var(--text)', margin: 0, marginBottom: (s.tags || []).length ? 10 : 0 }}>
