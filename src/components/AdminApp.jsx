@@ -272,7 +272,7 @@ export default function AdminApp() {
       .filter(Boolean)
 
     const contacts = await fetchStudentContacts(activeStudent.id).catch(() => [])
-    const recipients = contacts.filter(c => c.receives_assignments).map(c => c.email)
+    const recipients = contacts.filter(c => c.receives_assignments && c.verified && !c.bounced).map(c => c.email)
     if (recipients.length === 0 && activeStudent.email) recipients.push(activeStudent.email)
 
     const firstName = activeStudent.name.split(' ')[0]

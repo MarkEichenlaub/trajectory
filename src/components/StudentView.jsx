@@ -3,6 +3,7 @@ import {
   supabase,
   fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
   fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
+  sendContactVerification,
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
   fetchMyProgressReports,
 } from '../utils/supabase'
@@ -298,6 +299,8 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
   const [adding, setAdding] = useState(false)
   const [err, setErr] = useState(null)
   const [sendingId, setSendingId] = useState(null)
+  const [verifyingId, setVerifyingId] = useState(null)
+  const [notice, setNotice] = useState(null)
 
   // Students never see the invoice-routing toggle (billing is hidden from them).
   const toggles = canBill ? CONTACT_TOGGLES : CONTACT_TOGGLES.filter(([f]) => f !== 'receives_invoices')
@@ -305,6 +308,20 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
   // A student may only manage student-labelled contacts; parent contacts are
   // read-only for them (they can see what a parent receives, not change it).
   const canEditContact = (c) => !isStudentRole || c.label === 'student'
+
+  // Mirror the DB invariant trigger: an active student must keep >=1 verified
+  // meet recipient, >=1 invoice recipient, >=1 login-capable contact. Disable
+  // the controls that would drop the last one (the trigger is the real guard).
+  const verifiedMeetIds = contacts.filter(c => c.verified && c.receives_meets).map(c => c.id)
+  const invoiceIds = contacts.filter(c => c.receives_invoices).map(c => c.id)
+  const loginIds = contacts.filter(c => c.can_login).map(c => c.id)
+  const isLastVerifiedMeet = (c) => verifiedMeetIds.length === 1 && verifiedMeetIds[0] === c.id
+  const isLastInvoice = (c) => invoiceIds.length === 1 && invoiceIds[0] === c.id
+  const isLastLogin = (c) => loginIds.length === 1 && loginIds[0] === c.id
+  const deleteLocked = (c) => isLastVerifiedMeet(c) || isLastInvoice(c) || isLastLogin(c)
+  const toggleLocked = (c, field) =>
+    (field === 'receives_meets' && isLastVerifiedMeet(c)) ||
+    (field === 'receives_invoices' && isLastInvoice(c))
 
   async function handleSendInvoice(inv) {
     if (!confirm(`Send the invoice email to ${inv.staged_email_to}?`)) return
@@ -324,6 +341,7 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
     if (!newEmail.trim()) return
     setAdding(true)
     setErr(null)
+    setNotice(null)
     try {
       const row = {
         student_id: studentId,
@@ -334,14 +352,27 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
         receives_invoices: false,
         can_login: isAdmin,
       }
+      let newId
       if (isAdmin) {
         await saveStudentContact(row)
-        setContacts(await fetchStudentContacts(studentId))
+        const fresh = await fetchStudentContacts(studentId)
+        setContacts(fresh)
+        newId = fresh.find(c => c.email === row.email)?.id
       } else {
         const contact = await addMyContact(row)
         setContacts(prev => [...prev, contact])
+        newId = contact.id
       }
       setNewEmail('')
+      // New addresses are held until confirmed — send the verification email.
+      if (newId) {
+        try {
+          await sendContactVerification(newId, isAdmin)
+          setNotice(`Confirmation email sent to ${row.email}. They'll start receiving messages once they confirm.`)
+        } catch (e) {
+          setNotice(`Contact added, but the confirmation email failed to send (${e.message}). Use “Resend”.`)
+        }
+      }
     } catch (e) {
       setErr(e.message)
     } finally {
@@ -349,24 +380,47 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
     }
   }
 
+  async function handleResend(c) {
+    setVerifyingId(c.id)
+    setErr(null)
+    setNotice(null)
+    try {
+      await sendContactVerification(c.id, isAdmin)
+      setNotice(`Confirmation email re-sent to ${c.email}.`)
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setVerifyingId(null)
+    }
+  }
+
   async function handleToggle(id, field, value) {
     const updateFn = isAdmin ? updateStudentContact : updateMyContact
+    // Invoice routing is exclusive. Set the new recipient ON before clearing the
+    // others so the count never momentarily hits 0 and trips the DB invariant.
     if (field === 'receives_invoices' && value) {
+      await updateFn(id, { receives_invoices: true })
       for (const c of contacts) {
         if (c.id !== id && c.receives_invoices) {
           await updateFn(c.id, { receives_invoices: false })
         }
       }
-      setContacts(prev => prev.map(c => c.id !== id ? { ...c, receives_invoices: false } : c))
+      setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
+      return
     }
     await updateFn(id, { [field]: value })
     setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
   }
 
   async function handleDelete(id) {
-    if (isAdmin) await deleteStudentContact(id)
-    else await deleteMyContact(id)
-    setContacts(prev => prev.filter(c => c.id !== id))
+    setErr(null)
+    try {
+      if (isAdmin) await deleteStudentContact(id)
+      else await deleteMyContact(id)
+      setContacts(prev => prev.filter(c => c.id !== id))
+    } catch (e) {
+      setErr(e.message)
+    }
   }
 
   return (
@@ -380,24 +434,43 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
             <div key={c.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: 160 }}>
                 <div style={{ fontSize: 13, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.email}</div>
-                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2 }}>{c.label}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <span>{c.label}</span>
+                  {c.bounced ? (
+                    <span title={c.bounce_reason || 'email bounced'} style={{ color: 'var(--red)', fontWeight: 600 }}>● bounced</span>
+                  ) : c.verified ? (
+                    <span style={{ color: 'var(--green)' }}>● verified</span>
+                  ) : (
+                    <>
+                      <span style={{ color: 'var(--yellow)' }}>● unconfirmed</span>
+                      {canEditContact(c) && (
+                        <button className="sm" style={{ fontSize: 10, padding: '0 5px' }} disabled={verifyingId === c.id} onClick={() => handleResend(c)}>
+                          {verifyingId === c.id ? 'Sending…' : 'Resend'}
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
               <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                {toggles.map(([field, label]) => (
-                  <label key={field} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: canEditContact(c) ? 'pointer' : 'default', fontSize: 12, color: c[field] ? 'var(--accent)' : 'var(--text-dim)', whiteSpace: 'nowrap' }}>
-                    <input
-                      type="checkbox"
-                      checked={!!c[field]}
-                      disabled={!canEditContact(c)}
-                      onChange={e => handleToggle(c.id, field, e.target.checked)}
-                      style={{ accentColor: 'var(--accent)' }}
-                    />
-                    {label}
-                  </label>
-                ))}
+                {toggles.map(([field, label]) => {
+                  const locked = toggleLocked(c, field)
+                  return (
+                    <label key={field} title={locked ? 'An active student must keep at least one recipient here.' : undefined} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: canEditContact(c) && !locked ? 'pointer' : 'default', fontSize: 12, color: c[field] ? 'var(--accent)' : 'var(--text-dim)', whiteSpace: 'nowrap' }}>
+                      <input
+                        type="checkbox"
+                        checked={!!c[field]}
+                        disabled={!canEditContact(c) || locked}
+                        onChange={e => handleToggle(c.id, field, e.target.checked)}
+                        style={{ accentColor: 'var(--accent)' }}
+                      />
+                      {label}
+                    </label>
+                  )
+                })}
               </div>
               {canEditContact(c)
-                ? <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(c.id)}>✕</button>
+                ? <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} disabled={deleteLocked(c)} title={deleteLocked(c) ? 'This is the last required recipient for an active student and cannot be removed.' : undefined} onClick={() => handleDelete(c.id)}>✕</button>
                 : <span style={{ fontSize: 11, color: 'var(--text-dim)', flexShrink: 0 }} title="Parent contacts are managed by your parent or tutor">read-only</span>}
             </div>
           ))}
@@ -430,6 +503,7 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
         </button>
       </div>
       {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 6 }}>{err}</div>}
+      {notice && <div style={{ fontSize: 12, color: 'var(--green)', marginTop: 6 }}>{notice}</div>}
       {!isAdmin && (
         <p style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 10, lineHeight: 1.5 }}>
           Added addresses receive selected communications but cannot log in to this portal. Contact your tutor to enable login access for an email.

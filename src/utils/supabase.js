@@ -103,6 +103,18 @@ export async function updateStudentContact(id, updates) {
   if (error) throw new Error(error.message)
 }
 
+// Send (or resend) the email-confirmation link for a contact. Uses the public
+// client for portal users (their JWT authorizes it) or the admin client for Mark.
+export async function sendContactVerification(contactId, isAdmin = false) {
+  const client = isAdmin ? adminClient() : supabase
+  const { data, error } = await client.functions.invoke('send-contact-verification', {
+    body: { contact_id: contactId },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
 export async function sendEmail({ to, subject, body }) {
   const { data, error } = await adminClient().functions.invoke('send-email', {
     body: { to, subject, body },

@@ -186,6 +186,8 @@ Deno.serve(async (_req) => {
           .select('email')
           .eq('student_id', student.id)
           .eq('receives_invoices', true)
+          .eq('verified', true)
+          .eq('bounced', false)
           .limit(1)
 
         const invoiceEmail = contacts?.[0]?.email
