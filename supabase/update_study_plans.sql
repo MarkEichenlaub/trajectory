@@ -1,3 +1,10 @@
+-- Archive any existing active plans for these students
+update public.study_plans
+set status = 'archived'
+where student_id in ('leo', 'borna', 'india')
+  and status = 'active';
+
+-- Insert new active plans
 insert into public.study_plans (student_id, content, status, proposed_by) values
 ('leo', $plan$
 Leo Li-Savarese — Study Plan

@@ -1,5 +1,27 @@
-insert into public.study_plans (student_id, content, status, proposed_by) values
-('leo', $plan$
+// Apply study plan updates for leo, borna, india.
+// Usage: node scripts/update_study_plans.mjs
+import { createClient } from '@supabase/supabase-js'
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ||
+  readFileSync(join(__dirname, '../.env'), 'utf8')
+    .split('\n')
+    .find(l => l.startsWith('VITE_SUPABASE_SERVICE_KEY='))
+    ?.split('=').slice(1).join('=').trim()
+
+if (!SERVICE_KEY) {
+  console.error('Could not read service key from .env')
+  process.exit(1)
+}
+
+const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } })
+
+const LEO_PLAN = `\
 Leo Li-Savarese — Study Plan
 Updated May 2026
 
@@ -41,10 +63,9 @@ Halliday, Resnick & Krane, Physics 5th ed. — our main text for the transition 
 
 Math and Research
 
-I am also available as a sounding board for Leo's nuclear fusion research and the technical materials he encounters through his work at NIF.
-$plan$, 'active', 'admin'),
+I am also available as a sounding board for Leo's nuclear fusion research and the technical materials he encounters through his work at NIF.`
 
-('borna', $plan$
+const BORNA_PLAN = `\
 Borna — Study Plan
 Updated May 2026
 
@@ -118,14 +139,41 @@ Habits
 
 Writing organized, clearly structured solutions under time pressure.
 Checking dimensions and extreme cases before committing to a final answer.
-Separating "what is the physics here" from "what is the calculation" at the start of each problem.
-$plan$, 'active', 'admin'),
+Separating "what is the physics here" from "what is the calculation" at the start of each problem.`
 
-('india', $plan$
+const INDIA_PLAN = `\
 India — Study Plan
 Updated May 2026
 
 We are in the early stages of working with India, exploring her interests and finding what she is most motivated to study. Our sessions challenge her with interesting problems in physics and mathematics as we discover where she wants to go.
 
-India will be working through Khan Academy Calculus on her own. In our sessions, we will use that foundation and push further into whatever areas of physics and math capture her attention.
-$plan$, 'active', 'admin');
+India will be working through Khan Academy Calculus on her own. In our sessions, we will use that foundation and push further into whatever areas of physics and math capture her attention.`
+
+async function run() {
+  for (const [studentId, content] of [['leo', LEO_PLAN], ['borna', BORNA_PLAN], ['india', INDIA_PLAN]]) {
+    // Archive existing active plans
+    const { error: archiveErr } = await supabase
+      .from('study_plans')
+      .update({ status: 'archived' })
+      .eq('student_id', studentId)
+      .eq('status', 'active')
+    if (archiveErr) {
+      console.error(`Archive error for ${studentId}:`, archiveErr.message)
+      process.exit(1)
+    }
+
+    // Insert new active plan
+    const { error: insertErr } = await supabase
+      .from('study_plans')
+      .insert({ student_id: studentId, content, status: 'active', proposed_by: 'admin' })
+    if (insertErr) {
+      console.error(`Insert error for ${studentId}:`, insertErr.message)
+      process.exit(1)
+    }
+
+    console.log(`✓ ${studentId}`)
+  }
+  console.log('Done.')
+}
+
+run()

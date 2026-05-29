@@ -63,8 +63,8 @@ export async function removeStudent(id) {
 }
 
 export async function fetchSessions(studentId) {
-  const q = adminClient().from('sessions').select('*').order('scheduled_at', { ascending: false })
-  if (studentId) q.eq('student_id', studentId)
+  let q = adminClient().from('sessions').select('*').order('scheduled_at', { ascending: false })
+  if (studentId) q = q.eq('student_id', studentId)
   const { data, error } = await q
   if (error) throw new Error(error.message)
   return data || []
@@ -217,8 +217,8 @@ export async function uploadHandoutPDF(file, handoutId) {
 // ── Invoices (admin) ─────────────────────────────────────────────────────────
 
 export async function fetchInvoices(studentId) {
-  const q = adminClient().from('invoices').select('*').order('created_at', { ascending: false })
-  if (studentId) q.eq('student_id', studentId)
+  let q = adminClient().from('invoices').select('*').order('created_at', { ascending: false })
+  if (studentId) q = q.eq('student_id', studentId)
   const { data, error } = await q
   if (error) throw new Error(error.message)
   return data || []

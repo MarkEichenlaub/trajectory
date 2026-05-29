@@ -241,7 +241,7 @@ Deno.serve(async (_req) => {
         const staged = buildInvoiceEmail(student.name, amountDollars, hostedUrl)
 
         // Store as draft — admin reviews and sends the staged email from the portal.
-        await supabase.from('invoices').insert({
+        const { error: insertErr } = await supabase.from('invoices').insert({
           student_id: student.id,
           stripe_invoice_id: invoice.id,
           stripe_invoice_url: `https://dashboard.stripe.com/invoices/${invoice.id}`,
@@ -252,6 +252,7 @@ Deno.serve(async (_req) => {
           staged_email_subject: staged.subject,
           staged_email_body: staged.body,
         })
+        if (insertErr) throw new Error(`invoice insert failed: ${insertErr.message}`)
 
         // Notify Mark that an invoice is staged and ready to review/send.
         try {
