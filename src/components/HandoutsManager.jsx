@@ -160,7 +160,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
           <label style={{ paddingTop: 4 }}>Topics</label>
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexWrap: 'wrap', gap: 6, paddingTop: 2 }}>
             {TOPIC_ORDER.map(t => (
-              <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' }}>
+              <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap', width: 'auto' }}>
                 <input
                   type="checkbox"
                   checked={form.topics.includes(t)}
