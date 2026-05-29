@@ -3,7 +3,6 @@ import {
   supabase,
   fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
   fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact,
-  fetchMyStudyPlans, proposeStudyPlan,
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
   fetchMyProgressReports,
 } from '../utils/supabase'
@@ -483,47 +482,17 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
 
 function ProgressAndPlanTab({ studentId }) {
   const [reports, setReports] = useState([])
-  const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
 
   useEffect(() => {
-    Promise.all([
-      fetchMyProgressReports(),
-      fetchMyStudyPlans(studentId),
-    ]).then(([r, p]) => { setReports(r); setPlans(p) })
+    // fetchMyProgressReports() returns all rows the caller's RLS allows
+    // (admin sees every student), so scope to this student client-side.
+    fetchMyProgressReports()
+      .then(r => setReports(r.filter(rep => rep.student_id === studentId)))
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
   }, [studentId])
-
-  const activePlan = plans.find(p => p.status === 'active')
-  const pendingPlan = plans.find(p => p.status === 'pending_approval')
-
-  const [editing, setEditing] = useState(false)
-  const [draft, setDraft] = useState('')
-  const [saving, setSaving] = useState(false)
-
-  async function handlePropose() {
-    setSaving(true)
-    setErr(null)
-    try {
-      await proposeStudyPlan(studentId, draft)
-      await supabase.functions.invoke('send-email', {
-        body: {
-          to: ['mark@eichenlaubphysics.com'],
-          subject: `${activePlan ? 'Updated' : 'New'} study plan proposal`,
-          body: `Proposed study plan changes.\n\n---\n\n${draft}`,
-        },
-      })
-      const updated = await fetchMyStudyPlans(studentId)
-      setPlans(updated)
-      setEditing(false)
-    } catch (e) {
-      setErr(e.message)
-    } finally {
-      setSaving(false)
-    }
-  }
 
   function fmt(iso) {
     return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
@@ -535,53 +504,8 @@ function ProgressAndPlanTab({ studentId }) {
     <div style={{ maxWidth: 680, display: 'flex', flexDirection: 'column', gap: 24 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
 
-      {/* Study plan */}
-      {(activePlan || pendingPlan) && (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Study plan</h3>
-          {pendingPlan && (
-            <div style={{ background: 'var(--yellow-bg)', border: '1px solid var(--yellow-line)', borderRadius: 'var(--radius)', padding: '10px 14px', marginBottom: 14, fontSize: 13, color: 'var(--yellow)' }}>
-              Your proposed changes are pending review.
-            </div>
-          )}
-          {editing ? (
-            <div>
-              <textarea
-                value={draft}
-                onChange={e => setDraft(e.target.value)}
-                style={{ width: '100%', height: 320, fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, resize: 'vertical' }}
-              />
-              <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-                <button className="sm primary" onClick={handlePropose} disabled={saving || !draft.trim()}>
-                  {saving ? 'Submitting…' : 'Submit for review'}
-                </button>
-                <button className="sm" onClick={() => setEditing(false)}>Cancel</button>
-              </div>
-            </div>
-          ) : (
-            <>
-              {activePlan && (
-                <>
-                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 10, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                    Updated {fmt(activePlan.created_at)}
-                  </div>
-                  <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.8, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{activePlan.content}</pre>
-                </>
-              )}
-              {!pendingPlan && (
-                <button className="sm" style={{ marginTop: activePlan ? 14 : 0 }}
-                  onClick={() => { setDraft(activePlan?.content || ''); setEditing(true) }}>
-                  Propose changes
-                </button>
-              )}
-            </>
-          )}
-        </div>
-      )}
-
-      {/* Reports */}
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Reports</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Progress and Plan</h3>
         {reports.length === 0 ? (
           <div className="empty-state">No reports yet.</div>
         ) : (

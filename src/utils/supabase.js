@@ -146,54 +146,6 @@ export async function deleteMyContact(id) {
   if (error) throw new Error(error.message)
 }
 
-// ── Study plans (admin) ───────────────────────────────────────────────────────
-
-export async function fetchStudyPlans(studentId) {
-  const { data, error } = await adminClient()
-    .from('study_plans').select('*').eq('student_id', studentId)
-    .order('created_at', { ascending: false })
-  if (error) throw new Error(error.message)
-  return data || []
-}
-
-export async function saveStudyPlan(studentId, content) {
-  await adminClient().from('study_plans')
-    .update({ status: 'archived' }).eq('student_id', studentId).eq('status', 'active')
-  const { error } = await adminClient().from('study_plans')
-    .insert({ student_id: studentId, content, status: 'active', proposed_by: 'admin' })
-  if (error) throw new Error(error.message)
-}
-
-export async function approvePendingPlan(pendingId, studentId) {
-  await adminClient().from('study_plans')
-    .update({ status: 'archived' }).eq('student_id', studentId).eq('status', 'active')
-  const { error } = await adminClient().from('study_plans')
-    .update({ status: 'active' }).eq('id', pendingId)
-  if (error) throw new Error(error.message)
-}
-
-export async function rejectPendingPlan(pendingId) {
-  const { error } = await adminClient().from('study_plans')
-    .update({ status: 'archived' }).eq('id', pendingId)
-  if (error) throw new Error(error.message)
-}
-
-// ── Study plans (student, public client + RLS) ────────────────────────────────
-
-export async function fetchMyStudyPlans(studentId) {
-  const { data, error } = await supabase
-    .from('study_plans').select('*').eq('student_id', studentId)
-    .order('created_at', { ascending: false })
-  if (error) throw new Error(error.message)
-  return data || []
-}
-
-export async function proposeStudyPlan(studentId, content) {
-  const { error } = await supabase.from('study_plans')
-    .insert({ student_id: studentId, content, status: 'pending_approval', proposed_by: 'student' })
-  if (error) throw new Error(error.message)
-}
-
 export async function fetchHandouts() {
   const { data, error } = await adminClient()
     .from('handouts').select('*').order('created_at', { ascending: false })

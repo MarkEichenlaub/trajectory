@@ -1,39 +1,25 @@
 import { useState, useEffect } from 'react'
 import {
   fetchProgressReports, uploadProgressReport, deleteProgressReport,
-  fetchStudyPlans, saveStudyPlan, approvePendingPlan, rejectPendingPlan,
 } from '../utils/supabase'
 
 export default function AdminProgressPlanView({ studentId, studentName }) {
   const [reports, setReports] = useState([])
-  const [plans, setPlans] = useState([])
   const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
   const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
-  const [editing, setEditing] = useState(false)
-  const [planDraft, setPlanDraft] = useState('')
-  const [saving, setSaving] = useState(false)
-  const [showPlanHistory, setShowPlanHistory] = useState(false)
   const [err, setErr] = useState(null)
 
   useEffect(() => {
     if (!studentId) return
     setLoading(true)
-    setEditing(false)
     setErr(null)
-    Promise.all([
-      fetchProgressReports(studentId),
-      fetchStudyPlans(studentId),
-    ]).then(([r, p]) => {
-      setReports(r)
-      setPlans(p)
-    }).catch(e => setErr(e.message)).finally(() => setLoading(false))
+    fetchProgressReports(studentId)
+      .then(setReports)
+      .catch(e => setErr(e.message))
+      .finally(() => setLoading(false))
   }, [studentId])
-
-  const activePlan = plans.find(p => p.status === 'active')
-  const pendingPlan = plans.find(p => p.status === 'pending_approval')
-  const archivedPlans = plans.filter(p => p.status === 'archived')
 
   async function handleUpload() {
     if (!file || !title.trim()) return
@@ -59,37 +45,6 @@ export default function AdminProgressPlanView({ studentId, studentName }) {
     } catch (e) {
       setErr(e.message)
     }
-  }
-
-  function handleStartEditPlan() {
-    setPlanDraft(activePlan?.content || '')
-    setEditing(true)
-    setErr(null)
-  }
-
-  async function handleSavePlan() {
-    setSaving(true)
-    setErr(null)
-    try {
-      await saveStudyPlan(studentId, planDraft)
-      const updated = await fetchStudyPlans(studentId)
-      setPlans(updated)
-      setEditing(false)
-    } catch (e) {
-      setErr(e.message)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  async function handleApprovePlan() {
-    await approvePendingPlan(pendingPlan.id, studentId)
-    setPlans(await fetchStudyPlans(studentId))
-  }
-
-  async function handleRejectPlan() {
-    await rejectPendingPlan(pendingPlan.id)
-    setPlans(await fetchStudyPlans(studentId))
   }
 
   function fmt(iso) {
@@ -135,74 +90,6 @@ export default function AdminProgressPlanView({ studentId, studentName }) {
         </div>
       </div>
 
-      {/* Study plan */}
-      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>Study plan</h3>
-          {!editing && (
-            <button className="sm" onClick={handleStartEditPlan}>{activePlan ? 'Edit' : 'Create'}</button>
-          )}
-        </div>
-
-        {pendingPlan && !editing && (
-          <div style={{ background: 'var(--yellow-bg)', border: '1px solid var(--yellow-line)', borderRadius: 'var(--radius)', padding: '12px 14px', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--yellow)' }}>Student proposed changes · {fmt(pendingPlan.created_at)}</span>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <button className="sm primary" onClick={handleApprovePlan}>Approve</button>
-                <button className="sm danger" onClick={handleRejectPlan}>Reject</button>
-              </div>
-            </div>
-            <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{pendingPlan.content}</pre>
-          </div>
-        )}
-
-        {editing ? (
-          <div>
-            <textarea
-              value={planDraft}
-              onChange={e => setPlanDraft(e.target.value)}
-              style={{ width: '100%', height: 320, fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.7, resize: 'vertical' }}
-            />
-            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-              <button className="sm primary" onClick={handleSavePlan} disabled={saving || !planDraft.trim()}>
-                {saving ? 'Saving…' : 'Save'}
-              </button>
-              <button className="sm" onClick={() => setEditing(false)}>Cancel</button>
-            </div>
-          </div>
-        ) : activePlan ? (
-          <>
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 10, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-              Updated {fmt(activePlan.created_at)}
-            </div>
-            <pre style={{ fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.8, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{activePlan.content}</pre>
-            {archivedPlans.length > 0 && (
-              <div style={{ marginTop: 14 }}>
-                <button className="sm" onClick={() => setShowPlanHistory(v => !v)}>
-                  {showPlanHistory ? 'Hide' : 'Show'} history ({archivedPlans.length})
-                </button>
-                {showPlanHistory && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 10 }}>
-                    {archivedPlans.map(p => (
-                      <div key={p.id} style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 14px', opacity: 0.65 }}>
-                        <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-                          {fmt(p.created_at)} · {p.proposed_by === 'student' ? 'student proposal' : 'by mentor'}
-                        </div>
-                        <pre style={{ fontFamily: 'var(--font)', fontSize: 12, lineHeight: 1.7, whiteSpace: 'pre-wrap', margin: 0, color: 'var(--text)' }}>{p.content}</pre>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        ) : (
-          <div style={{ color: 'var(--text-dim)', fontSize: 13 }}>No study plan yet.</div>
-        )}
-      </div>
-
-      {/* Report history */}
       {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
 
       <div>
