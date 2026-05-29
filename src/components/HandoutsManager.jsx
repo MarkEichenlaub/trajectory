@@ -158,7 +158,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
         </div>
         <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
           <label style={{ paddingTop: 4 }}>Topics</label>
-          <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', gap: 6, paddingTop: 2 }}>
+          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexWrap: 'wrap', gap: 6, paddingTop: 2 }}>
             {TOPIC_ORDER.map(t => (
               <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, cursor: 'pointer', userSelect: 'none', whiteSpace: 'nowrap' }}>
                 <input
