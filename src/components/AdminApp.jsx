@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -8,12 +8,12 @@ import ProblemTable from './ProblemTable'
 import AssignedView from './AssignedView'
 import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
-import StudentView from './StudentView'
+import StudentView, { ContactsTab } from './StudentView'
 import AdminProgressPlanView from './AdminProgressPlanView'
 import Settings from './Settings'
 import Toast from './Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -385,6 +385,7 @@ export default function AdminApp() {
           <button className={view === VIEWS.SESSIONS ? 'active' : ''} onClick={() => setView(VIEWS.SESSIONS)}>Sessions</button>
           <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress & Plan</button>
+          <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -484,6 +485,14 @@ export default function AdminApp() {
           />
         )}
 
+        {view === VIEWS.BILLING && (
+          <BillingView
+            key={activeStudentId}
+            studentId={activeStudentId}
+            studentName={activeStudent?.name || ''}
+          />
+        )}
+
         {view === VIEWS.SETTINGS && (
           <Settings
             students={students}
@@ -507,6 +516,42 @@ export default function AdminApp() {
           onClose={() => setEmailDraft(null)}
         />
       )}
+    </div>
+  )
+}
+
+// Admin billing: manage all of a student's contacts (incl. invoice routing) and
+// review / send drafted invoices. Reuses ContactsTab in full-admin mode.
+function BillingView({ studentId, studentName }) {
+  const [contacts, setContacts] = useState([])
+  const [invoices, setInvoices] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [err, setErr] = useState(null)
+
+  useEffect(() => {
+    setLoading(true)
+    Promise.all([fetchStudentContacts(studentId), fetchInvoices(studentId)])
+      .then(([c, inv]) => { setContacts(c); setInvoices(inv) })
+      .catch(e => setErr(e.message))
+      .finally(() => setLoading(false))
+  }, [studentId])
+
+  if (loading) return <div className="empty-state" style={{ marginTop: 40 }}>Loading billing… <span className="spin">⟳</span></div>
+  if (err) return <div className="empty-state" style={{ color: 'var(--red)', marginTop: 40 }}>{err}</div>
+
+  return (
+    <div style={{ maxWidth: 900, width: '100%', margin: '0 auto', padding: '20px 0' }}>
+      <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>{studentName} — Billing</h2>
+      <ContactsTab
+        studentId={studentId}
+        contacts={contacts}
+        setContacts={setContacts}
+        isAdmin={true}
+        canBill={true}
+        isStudentRole={false}
+        invoices={invoices}
+        setInvoices={setInvoices}
+      />
     </div>
   )
 }

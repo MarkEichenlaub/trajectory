@@ -10,9 +10,11 @@ import {
 
 export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
-  // billing-capable roles. A logged-in student sees study info only.
-  const role = isPreview ? 'admin' : (account?.role || 'student')
-  const canBill = role === 'admin' || role === 'parent' || role === 'adult'
+  // billing-capable roles. A logged-in student sees study info only. Admin
+  // preview faithfully renders the student view (billing lives in the admin
+  // Billing tab, not here); isPreview only changes the read source to admin.
+  const role = isPreview ? 'student' : (account?.role || 'student')
+  const canBill = role === 'parent' || role === 'adult'
   const isStudentRole = role === 'student'
 
   const [tab, setTab] = useState('assigned')
@@ -291,7 +293,7 @@ const CONTACT_TOGGLES = [
   ['receives_assignments', 'Assignments'],
 ]
 
-function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill, isStudentRole, invoices, setInvoices }) {
+export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill, isStudentRole, invoices, setInvoices }) {
   const [newEmail, setNewEmail] = useState('')
   const [newLabel, setNewLabel] = useState(isStudentRole ? 'student' : 'parent')
   const [adding, setAdding] = useState(false)
