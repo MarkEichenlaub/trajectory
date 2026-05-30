@@ -718,7 +718,7 @@ function SchedulingTab({ prefill, sessions, formatDate }) {
     if (prefill?.email) config.email = prefill.email
     Cal.ns[CAL_NAMESPACE]('inline', {
       elementOrSelector: '#cal-inline-tutoring',
-      calLink: CAL_LINK,
+      calLink: `${CAL_LINK}/1-hr-session`,
       config,
     })
     Cal.ns[CAL_NAMESPACE]('ui', {
