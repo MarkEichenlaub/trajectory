@@ -55,9 +55,18 @@ Deno.serve(async (req) => {
 
   const rawBody = await req.text()
 
-  // Verify Cal.com HMAC-SHA256 signature
+  // Verify Cal.com HMAC-SHA256 signature. Mandatory: this endpoint creates,
+  // reschedules, and deletes sessions, so an unsigned request must never be
+  // trusted. A missing secret is a misconfiguration, not a bypass.
+  if (!CAL_WEBHOOK_SECRET) {
+    console.error('CAL_WEBHOOK_SECRET is not set — refusing to process webhook')
+    return new Response('Webhook secret not configured', { status: 500 })
+  }
   const sigHeader = req.headers.get('X-Cal-Signature-256')
-  if (CAL_WEBHOOK_SECRET && sigHeader) {
+  if (!sigHeader) {
+    return new Response('Missing signature', { status: 401 })
+  }
+  {
     const encoder = new TextEncoder()
     const key = await crypto.subtle.importKey(
       'raw', encoder.encode(CAL_WEBHOOK_SECRET),
@@ -250,33 +259,50 @@ async function handleBookingCancelled(payload: Record<string, unknown>, supabase
   // Grab the session first so we can notify before the row disappears.
   const { data: doomed } = await supabase
     .from('sessions')
-    .select('student_id, scheduled_at, students!inner(name)')
+    .select('id, student_id, scheduled_at, balance_decremented, students!inner(name)')
     .eq('cal_booking_id', calBookingId)
     .limit(1)
+
+  if (!doomed?.length) {
+    return new Response(JSON.stringify({ ok: true, message: 'no matching session' }), {
+      status: 200, headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const session = doomed[0]
+
+  // Never delete a session that has already been billed — it's part of the
+  // billing audit trail. (A real cancellation always arrives before the session
+  // is completed/billed; a "cancel" of an already-billed session is either a
+  // late event or replay, and must not erase financial history.)
+  if (session.balance_decremented) {
+    console.log('cancel ignored for already-billed session', session.id)
+    return new Response(JSON.stringify({ ok: true, ignored: 'already billed' }), {
+      status: 200, headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
   const { error } = await supabase
     .from('sessions')
     .delete()
-    .eq('cal_booking_id', calBookingId)
+    .eq('id', session.id)
+    .eq('balance_decremented', false)
 
   if (error) {
     console.error('Session delete error:', error)
     return new Response('DB error: ' + error.message, { status: 500 })
   }
 
-  if (doomed?.length) {
-    const session = doomed[0]
-    const studentName = (session.students as { name: string }).name
-    try {
-      await notifyScheduleChange(
-        supabase, session.student_id as string,
-        `${studentName}'s tutoring session was cancelled`,
-        `${studentName}'s tutoring session scheduled for ${fmtWhen(session.scheduled_at as string)} has been cancelled.\n\n` +
-          `To book a new time, visit the portal: https://portal.eichenlaubphysics.com/`,
-      )
-    } catch (e) {
-      console.error('cancel notice failed:', (e as Error).message)
-    }
+  const studentName = (session.students as { name: string }).name
+  try {
+    await notifyScheduleChange(
+      supabase, session.student_id as string,
+      `${studentName}'s tutoring session was cancelled`,
+      `${studentName}'s tutoring session scheduled for ${fmtWhen(session.scheduled_at as string)} has been cancelled.\n\n` +
+        `To book a new time, visit the portal: https://portal.eichenlaubphysics.com/`,
+    )
+  } catch (e) {
+    console.error('cancel notice failed:', (e as Error).message)
   }
 
   return new Response(JSON.stringify({ ok: true, cancelled: calBookingId }), {

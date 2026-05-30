@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react'
-import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
+import { fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
 
 export default function Settings({ students, allSources, onSaveStudent, onStatusChange, showToast }) {
-  const [key, setKey] = useState(getServiceKey)
   const [saving, setSaving] = useState(null)
-
-  function saveKey() {
-    setServiceKey(key)
-    showToast('Service key saved')
-  }
 
   async function handleSave(student) {
     setSaving(student.id)
@@ -32,27 +26,6 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
   return (
     <div className="settings-view">
       <h2>Settings</h2>
-
-      <div className="settings-section">
-        <h3>Supabase Service Key</h3>
-        <p style={{ color: 'var(--text-dim)', fontSize: 12, marginBottom: 10 }}>
-          Required for saving assignments and student data. Find it at{' '}
-          <a href="https://supabase.com/dashboard/project/nxvtaxbntqhcfqtazbnt/settings/api-keys/legacy" target="_blank" rel="noreferrer">
-            Supabase → Settings → API Keys → Legacy → service_role
-          </a>. Never share this key.
-        </p>
-        <div className="settings-row">
-          <label>Service key</label>
-          <input
-            type="password"
-            value={key}
-            onChange={e => setKey(e.target.value)}
-            placeholder="eyJ…"
-            style={{ fontFamily: 'monospace' }}
-          />
-          <button onClick={saveKey}>Save</button>
-        </div>
-      </div>
 
       <div className="settings-section">
         <h3>Students</h3>

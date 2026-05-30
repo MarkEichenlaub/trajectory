@@ -3,23 +3,17 @@ import { createClient } from '@supabase/supabase-js'
 const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dnRheGJudHFoY2ZxdGF6Ym50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTcyMDcsImV4cCI6MjA5NTQ5MzIwN30.uPWnJGvQQtCfbpZj3Slwdq8jA3p40NupQWK5F9ViNHM'
 
-// Public client — used for student auth and RLS-scoped reads
+// Single authenticated client. Admin access is granted server-side through RLS
+// (is_admin() policies keyed off the admin's profile), so there is NO service
+// key in the browser — a privileged key shipped to the client would bypass all
+// row-level security. "Admin" calls below use this same client; the database
+// decides what the logged-in admin may read and write.
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// ── Admin helpers (service key, bypasses RLS) ──────────────────────────────
-
-const SUPABASE_SERVICE_KEY = import.meta.env.VITE_SUPABASE_SERVICE_KEY || ''
-
-export function getServiceKey() {
-  return localStorage.getItem('trajectory_supabase_service_key') || SUPABASE_SERVICE_KEY
-}
-
-export function setServiceKey(key) {
-  localStorage.setItem('trajectory_supabase_service_key', key)
-}
-
+// Retained as a thin alias so the admin data helpers below read clearly. It is
+// the ordinary authenticated client — it does NOT bypass RLS.
 function adminClient() {
-  return createClient(SUPABASE_URL, getServiceKey(), { auth: { persistSession: false } })
+  return supabase
 }
 
 export async function fetchStudents() {
@@ -103,11 +97,10 @@ export async function updateStudentContact(id, updates) {
   if (error) throw new Error(error.message)
 }
 
-// Send (or resend) the email-confirmation link for a contact. Uses the public
-// client for portal users (their JWT authorizes it) or the admin client for Mark.
-export async function sendContactVerification(contactId, isAdmin = false) {
-  const client = isAdmin ? adminClient() : supabase
-  const { data, error } = await client.functions.invoke('send-contact-verification', {
+// Send (or resend) the email-confirmation link for a contact. The caller's JWT
+// (admin or portal user) authorizes the request server-side.
+export async function sendContactVerification(contactId) {
+  const { data, error } = await supabase.functions.invoke('send-contact-verification', {
     body: { contact_id: contactId },
   })
   if (error) throw new Error(error.message)

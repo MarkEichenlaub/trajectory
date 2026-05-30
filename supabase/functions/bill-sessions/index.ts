@@ -226,6 +226,23 @@ Deno.serve(async (_req) => {
           'payment_settings[payment_method_types][1]': 'us_bank_account',
         })
 
+        // Record the local invoice row BEFORE finalizing the Stripe invoice. If a
+        // later step fails, we still have a row tied to stripe_invoice_id — so a
+        // finalized (real, owed) Stripe invoice is never orphaned without a local
+        // record. If this insert fails, we throw before finalizing, so nothing
+        // billable was created. The staged email (which needs the hosted URL from
+        // finalize) is filled in by the update below.
+        const { error: insertErr } = await supabase.from('invoices').insert({
+          student_id: student.id,
+          stripe_invoice_id: invoice.id,
+          stripe_invoice_url: `https://dashboard.stripe.com/invoices/${invoice.id}`,
+          amount_cents: unitAmountCents * 10,
+          sessions_count: 10,
+          status: 'draft',
+          staged_email_to: invoiceEmail,
+        })
+        if (insertErr) throw new Error(`invoice insert failed: ${insertErr.message}`)
+
         await stripePost('invoiceitems', {
           customer: customerId,
           invoice: invoice.id,
@@ -242,23 +259,17 @@ Deno.serve(async (_req) => {
         })
         const hostedUrl = finalized.hosted_invoice_url as string
 
-        // Compose the billing-contact email now and stage it for admin review.
+        // Compose the billing-contact email now and stage it onto the existing row.
         const amountDollars = student.hourly_rate * 10
         const staged = buildInvoiceEmail(student.name, amountDollars, hostedUrl)
 
-        // Store as draft — admin reviews and sends the staged email from the portal.
-        const { error: insertErr } = await supabase.from('invoices').insert({
-          student_id: student.id,
-          stripe_invoice_id: invoice.id,
-          stripe_invoice_url: `https://dashboard.stripe.com/invoices/${invoice.id}`,
-          amount_cents: unitAmountCents * 10,
-          sessions_count: 10,
-          status: 'draft',
-          staged_email_to: invoiceEmail,
-          staged_email_subject: staged.subject,
-          staged_email_body: staged.body,
-        })
-        if (insertErr) throw new Error(`invoice insert failed: ${insertErr.message}`)
+        const { error: stageErr } = await supabase.from('invoices')
+          .update({
+            staged_email_subject: staged.subject,
+            staged_email_body: staged.body,
+          })
+          .eq('stripe_invoice_id', invoice.id)
+        if (stageErr) throw new Error(`invoice stage update failed: ${stageErr.message}`)
 
         // Notify Mark that an invoice is staged and ready to review/send.
         try {
