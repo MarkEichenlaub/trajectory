@@ -21,14 +21,20 @@ export default function App() {
     return () => subscription.unsubscribe()
   }, [])
 
+  // Derive a stable userId so this effect only re-runs when the user actually
+  // changes (sign-in / sign-out), not on every TOKEN_REFRESHED event that
+  // Supabase fires when the tab regains focus — which was resetting the portal.
+  const userId = session === undefined ? undefined : (session?.user?.id ?? null)
+
   useEffect(() => {
-    if (!session) { setAccount(null); return }
+    if (userId === undefined) return
+    if (!userId) { setAccount(null); return }
     setResolving(true)
     resolveMyAccount()
       .then(setAccount)
       .catch(e => setAccount({ role: 'none', students: [], error: e.message }))
       .finally(() => setResolving(false))
-  }, [session])
+  }, [userId])
 
   const signOut = () => supabase.auth.signOut()
 
