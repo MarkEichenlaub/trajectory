@@ -6,7 +6,7 @@ import {
   sendContactVerification,
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
   fetchMyProgressReports,
-  createInvite, setStudentStatus,
+  createInvite, setStudentStatus, cancelUpcomingSessions,
 } from '../utils/supabase'
 
 export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, previewRole, account }) {
@@ -41,7 +41,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
   }, [tab, student?.id, isPreview, isStudentRole, contactsLoaded])
 
   useEffect(() => {
-    if (tab !== 'account' || !student?.id || invoicesLoaded || !canBill) return
+    if ((tab !== 'account' && tab !== 'invoices') || !student?.id || invoicesLoaded || !canBill) return
     const load = isPreview ? fetchInvoices(student.id) : fetchMyInvoices()
     load.then(inv => { setInvoices(inv); setInvoicesLoaded(true) }).catch(console.error)
   }, [tab, student?.id, isPreview, canBill, invoicesLoaded])
@@ -104,6 +104,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['sessions', 'Sessions', sortedSessions.length],
     ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
+    ...(canBill ? [['invoices', 'Invoices', null]] : []),
     ['account', 'Account', null],
   ]
 
@@ -150,6 +151,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
         <ProgressAndPlanTab studentId={student.id} />
       ) : tab === 'scheduling' ? (
         <SchedulingTab prefill={schedulePrefill} sessions={sortedSessions} formatDate={formatDate} />
+      ) : tab === 'invoices' ? (
+        <InvoicesTab invoices={invoices} setInvoices={setInvoices} isAdmin={isPreview} />
       ) : tab === 'account' ? (
         <>
           {canBill && (
@@ -166,8 +169,6 @@ export default function StudentView({ student, assignments, sessions, problems, 
             isAdmin={isPreview}
             canBill={canBill}
             isStudentRole={isStudentRole}
-            invoices={invoices}
-            setInvoices={setInvoices}
           />
         </>
       ) : tab === 'sessions' ? (
@@ -321,9 +322,10 @@ function AccountManagement({ student, relationship, isPreview }) {
     setBusy(true); setErr(null); setMsg(null)
     try {
       await setStudentStatus(student.id, next)
+      if (next === 'inactive') await cancelUpcomingSessions(student.id)
       setStatus(next)
       setMsg(next === 'inactive'
-        ? `${student.name} is paused — automated emails and invoicing will stop.`
+        ? `${student.name} is paused — upcoming sessions cancelled, automated emails and invoicing will stop.`
         : `${student.name} is active again.`)
     } catch (e) {
       setErr(e.message)
@@ -361,7 +363,7 @@ function AccountManagement({ student, relationship, isPreview }) {
           </button>
         </div>
         <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: '8px 0 0', lineHeight: 1.5 }}>
-          Pausing keeps all history but stops automated session emails and invoicing.
+          Pausing cancels all upcoming sessions and stops automated emails and invoicing.
         </p>
       </div>
 
@@ -665,6 +667,80 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+function InvoicesTab({ invoices, setInvoices, isAdmin }) {
+  const [sendingId, setSendingId] = useState(null)
+  const [err, setErr] = useState(null)
+
+  async function handleSendInvoice(inv) {
+    if (!confirm(`Send the invoice email to ${inv.staged_email_to}?`)) return
+    setSendingId(inv.id)
+    setErr(null)
+    try {
+      await sendStagedInvoice(inv)
+      setInvoices(prev => prev.map(i => i.id === inv.id ? { ...i, status: 'sent' } : i))
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setSendingId(null)
+    }
+  }
+
+  if (!invoices || invoices.length === 0) {
+    return <div className="empty-state">No invoices yet.</div>
+  }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {invoices.map(inv => (
+          <div key={inv.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: 12, color: 'var(--text-dim)', width: 100, flexShrink: 0 }}>
+              {new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+            <span style={{ fontSize: 13, flex: 1 }}>
+              ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
+            </span>
+            {(() => {
+              let label, bg, color, line
+              if (inv.status === 'paid') {
+                label = 'paid'; bg = 'var(--green-bg)'; color = 'var(--green)'; line = 'var(--green-line)'
+              } else if (inv.status === 'sent' && inv.due_date && new Date(inv.due_date) < new Date()) {
+                label = 'overdue'; bg = 'var(--red-bg)'; color = 'var(--red)'; line = 'var(--red-line)'
+              } else if (inv.status === 'sent') {
+                label = 'due'; bg = 'var(--yellow-bg)'; color = 'var(--yellow)'; line = 'var(--yellow-line)'
+              } else {
+                label = inv.status === 'draft' ? 'draft — review' : inv.status
+                bg = 'var(--yellow-bg)'; color = 'var(--yellow)'; line = 'var(--yellow-line)'
+              }
+              return (
+                <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 4, background: bg, color, border: `1px solid ${line}` }}>
+                  {label}
+                </span>
+              )
+            })()}
+            {inv.stripe_invoice_url && (
+              <a href={inv.stripe_invoice_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>
+                {inv.status === 'draft' ? 'Open in Stripe ↗' : 'View ↗'}
+              </a>
+            )}
+            {isAdmin && inv.status === 'draft' && inv.staged_email_body && (
+              <button
+                className="sm primary"
+                style={{ fontSize: 11, flexShrink: 0 }}
+                disabled={sendingId === inv.id}
+                onClick={() => handleSendInvoice(inv)}
+              >
+                {sendingId === inv.id ? 'Sending…' : 'Send'}
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+      {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 6 }}>{err}</div>}
     </div>
   )
 }

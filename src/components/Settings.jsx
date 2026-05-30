@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus } from '../utils/supabase'
+import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions } from '../utils/supabase'
 
 export default function Settings({ students, onSaveStudent, onStatusChange, showToast }) {
   const [key, setKey] = useState(getServiceKey)
@@ -89,6 +89,7 @@ function StudentCard({ student, onSave, onRemove, onStatusChange, saving, showTo
     setTogglingStatus(true)
     try {
       await setStudentStatus(student.id, next)
+      if (next === 'inactive') await cancelUpcomingSessions(student.id)
       set('status', next)
       onStatusChange?.(student.id, next)
       showToast(`${student.name} marked ${next}`)

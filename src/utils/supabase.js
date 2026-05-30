@@ -356,3 +356,14 @@ export async function setStudentStatus(studentId, status) {
   })
   if (error) throw new Error(error.message)
 }
+
+// Cancels all upcoming sessions for a student (DB rows + Cal.com bookings).
+// Call after setStudentStatus when pausing.
+export async function cancelUpcomingSessions(studentId) {
+  const { data, error } = await supabase.functions.invoke('cancel-upcoming-sessions', {
+    body: { student_id: studentId },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.error) throw new Error(data.error)
+  return data
+}
