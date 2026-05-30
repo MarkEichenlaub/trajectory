@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification } from '../utils/supabase'
+import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus } from '../utils/supabase'
 
-export default function Settings({ students, onSaveStudent, showToast }) {
+export default function Settings({ students, onSaveStudent, onStatusChange, showToast }) {
   const [key, setKey] = useState(getServiceKey)
   const [saving, setSaving] = useState(null)
 
@@ -62,6 +62,7 @@ export default function Settings({ students, onSaveStudent, showToast }) {
             student={s}
             onSave={handleSave}
             onRemove={handleRemove}
+            onStatusChange={onStatusChange}
             saving={saving === s.id}
             showToast={showToast}
           />
@@ -72,13 +73,30 @@ export default function Settings({ students, onSaveStudent, showToast }) {
   )
 }
 
-function StudentCard({ student, onSave, onRemove, saving, showToast }) {
+function StudentCard({ student, onSave, onRemove, onStatusChange, saving, showToast }) {
   const [draft, setDraft] = useState({ ...student })
   const [showContacts, setShowContacts] = useState(false)
+  const [togglingStatus, setTogglingStatus] = useState(false)
   const dirty = JSON.stringify(draft) !== JSON.stringify(student)
+  const status = student.status || 'active'
 
   function set(field, value) {
     setDraft(d => ({ ...d, [field]: value }))
+  }
+
+  async function handleToggleStatus() {
+    const next = status === 'active' ? 'inactive' : 'active'
+    setTogglingStatus(true)
+    try {
+      await setStudentStatus(student.id, next)
+      set('status', next)
+      onStatusChange?.(student.id, next)
+      showToast(`${student.name} marked ${next}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setTogglingStatus(false)
+    }
   }
 
   return (
@@ -86,6 +104,15 @@ function StudentCard({ student, onSave, onRemove, saving, showToast }) {
       <div className="student-card-row">
         <label>Name</label>
         <input value={draft.name} onChange={e => set('name', e.target.value)} />
+        <button
+          className="sm"
+          style={{ color: status === 'active' ? 'var(--green)' : 'var(--text-dim)' }}
+          disabled={togglingStatus}
+          title={status === 'active' ? 'Active — click to make inactive' : 'Inactive — click to reactivate'}
+          onClick={handleToggleStatus}
+        >
+          {togglingStatus ? '…' : status === 'active' ? '● active' : '○ inactive'}
+        </button>
         <button className="sm danger" onClick={() => onRemove(student)}>Remove</button>
       </div>
       <div className="student-card-row">
@@ -127,6 +154,7 @@ function StudentCard({ student, onSave, onRemove, saving, showToast }) {
           </button>
         </div>
       )}
+      <InviteRow studentId={student.id} showToast={showToast} />
       <div className="student-card-row" style={{ marginTop: 4 }}>
         <label style={{ color: 'var(--text-dim)' }}>Contacts</label>
         <button
@@ -140,6 +168,57 @@ function StudentCard({ student, onSave, onRemove, saving, showToast }) {
       {showContacts && (
         <ContactsSection studentId={student.id} showToast={showToast} />
       )}
+    </div>
+  )
+}
+
+// Sends a portal invitation. relationship 'self' (the student / adult self-payer)
+// or 'parent'. The invitee accepts by signing in with the invited email.
+function InviteRow({ studentId, showToast }) {
+  const [email, setEmail] = useState('')
+  const [kind, setKind] = useState('parent')
+  const [sending, setSending] = useState(false)
+
+  async function handleInvite() {
+    const addr = email.trim().toLowerCase()
+    if (!addr) return
+    setSending(true)
+    try {
+      const relationship = kind === 'parent' ? 'parent' : 'self'
+      const account_type = kind === 'parent' ? 'parent' : kind === 'adult' ? 'adult' : 'student'
+      await createInvite({ student_id: studentId, email: addr, relationship, account_type })
+      setEmail('')
+      showToast(`Invitation sent to ${addr}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div className="student-card-row" style={{ marginTop: 4 }}>
+      <label style={{ color: 'var(--text-dim)' }}>Invite</label>
+      <input
+        type="email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && handleInvite()}
+        placeholder="email to invite"
+        style={{ fontSize: 12 }}
+      />
+      <select
+        value={kind}
+        onChange={e => setKind(e.target.value)}
+        style={{ fontSize: 12, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '4px 6px' }}
+      >
+        <option value="parent">parent</option>
+        <option value="student">student</option>
+        <option value="adult">adult (self-pay)</option>
+      </select>
+      <button className="sm" disabled={sending || !email.trim()} onClick={handleInvite}>
+        {sending ? '…' : 'Send invite'}
+      </button>
     </div>
   )
 }

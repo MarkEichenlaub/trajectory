@@ -158,7 +158,7 @@ Deno.serve(async (_req) => {
       // Fetch student fresh each iteration to see latest balance
       const { data: student } = await supabase
         .from('students')
-        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at')
+        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at, status')
         .eq('id', session.student_id)
         .single()
 
@@ -171,6 +171,10 @@ Deno.serve(async (_req) => {
         .eq('id', student.id)
 
       processed++
+
+      // Paused (inactive) students: keep the balance accounting but stop all
+      // automated nudges and invoicing.
+      if (student.status !== 'active') continue
 
       // Progress-report reminder: nudge Mark every 10 completed sessions per cycle.
       try {

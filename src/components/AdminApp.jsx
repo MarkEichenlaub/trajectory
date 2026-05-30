@@ -497,6 +497,7 @@ export default function AdminApp() {
           <Settings
             students={students}
             onSaveStudent={handleSaveStudent}
+            onStatusChange={(id, status) => setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s))}
             showToast={showToast}
           />
         )}

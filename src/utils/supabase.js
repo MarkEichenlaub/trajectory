@@ -203,8 +203,10 @@ export async function sendStagedInvoice(invoice) {
     subject: invoice.staged_email_subject,
     body: invoice.staged_email_body,
   })
+  const dueDate = new Date()
+  dueDate.setDate(dueDate.getDate() + 30)
   const { error } = await adminClient()
-    .from('invoices').update({ status: 'sent' }).eq('id', invoice.id)
+    .from('invoices').update({ status: 'sent', due_date: dueDate.toISOString() }).eq('id', invoice.id)
   if (error) throw new Error(error.message)
 }
 
@@ -305,4 +307,26 @@ export async function fetchMyInvoices() {
     .from('invoices').select('*').order('created_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
+}
+
+// ── Invites & status (admin + parents; both have an auth session) ────────────
+
+// Sends an invitation email. The invitee accepts by signing in with this email;
+// resolve_my_account() then provisions their profile/link/contact.
+export async function createInvite({ student_id, email, relationship = 'parent', account_type = 'parent' }) {
+  const { data, error } = await supabase.functions.invoke('create-invite', {
+    body: { student_id, email, relationship, account_type },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
+// Active/inactive toggle. Authorized server-side to admin or billing-capable
+// accounts via the set_student_status() SECURITY DEFINER function.
+export async function setStudentStatus(studentId, status) {
+  const { error } = await supabase.rpc('set_student_status', {
+    p_student_id: studentId, p_status: status,
+  })
+  if (error) throw new Error(error.message)
 }
