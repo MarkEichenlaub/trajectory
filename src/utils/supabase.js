@@ -304,7 +304,7 @@ export async function fetchMyInvoices() {
   return data || []
 }
 
-// ── Accounts graph (admin; service key bypasses RLS) ─────────────────────────
+// ── Accounts graph (admin; access via is_admin() RLS policies) ───────────────
 
 export async function fetchProfiles() {
   const { data, error } = await adminClient().from('profiles').select('*').order('email')
@@ -363,7 +363,7 @@ export async function cancelUpcomingSessions(studentId) {
   return data
 }
 
-// ── Student accessible sources (admin; service key) ───────────────────────
+// ── Student accessible sources (admin; access via is_admin() RLS policies) ──
 
 export async function fetchStudentAccessibleSources(studentId) {
   const { data, error } = await adminClient()

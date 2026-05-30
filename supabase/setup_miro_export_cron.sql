@@ -1,3 +1,14 @@
+-- Reschedules the export-miro-pdf cron for the new API-key system.
+--
+-- export-miro-pdf is deployed --no-verify-jwt (the old job authenticated with the
+-- legacy anon JWT, which is being disabled). Auth is now a shared secret sent in
+-- the X-Cron-Secret header and checked inside the function. The secret itself is
+-- NOT stored here — it lives in Supabase Vault under the name 'cron_secret' and is
+-- read at runtime, so this file carries no credential.
+--
+-- Prereq (run once, in the dashboard SQL editor — keeps the literal out of git):
+--   select vault.create_secret('<CRON_SECRET value>', 'cron_secret');
+
 create extension if not exists pg_cron;
 create extension if not exists pg_net;
 
@@ -6,9 +17,12 @@ select cron.schedule(
   '*/5 * * * *',
   $$
   select net.http_post(
-    url    := 'https://nxvtaxbntqhcfqtazbnt.supabase.co/functions/v1/export-miro-pdf',
-    headers := '{"Content-Type": "application/json", "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dnRheGJudHFoY2ZxdGF6Ym50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTcyMDcsImV4cCI6MjA5NTQ5MzIwN30.uPWnJGvQQtCfbpZj3Slwdq8jA3p40NupQWK5F9ViNHM"}'::jsonb,
-    body   := '{}'::jsonb
+    url     := 'https://nxvtaxbntqhcfqtazbnt.supabase.co/functions/v1/export-miro-pdf',
+    headers := jsonb_build_object(
+      'Content-Type',  'application/json',
+      'X-Cron-Secret', (select decrypted_secret from vault.decrypted_secrets where name = 'cron_secret')
+    ),
+    body    := '{}'::jsonb
   )
   $$
 );

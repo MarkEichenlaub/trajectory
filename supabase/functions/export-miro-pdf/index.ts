@@ -1,11 +1,19 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
-const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!  // new secret API key (RLS-bypass); replaces legacy service_role
 const MIRO_ACCESS_TOKEN = Deno.env.get('MIRO_ACCESS_TOKEN')!
+const CRON_SECRET = Deno.env.get('CRON_SECRET')!
 const BUCKET = 'session-pdfs'
 
-Deno.serve(async (_req) => {
+Deno.serve(async (req) => {
+  // Deployed --no-verify-jwt; the cron authenticates with this shared-secret header.
+  if (req.headers.get('X-Cron-Secret') !== CRON_SECRET) {
+    return new Response(JSON.stringify({ error: 'forbidden' }), {
+      status: 401, headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
   // Ensure storage bucket exists

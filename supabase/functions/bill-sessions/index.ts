@@ -1,8 +1,9 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
-const SUPABASE_SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!  // new secret API key (RLS-bypass); replaces legacy service_role
 const STRIPE_SECRET_KEY = Deno.env.get('STRIPE_SECRET_KEY')!
+const CRON_SECRET = Deno.env.get('CRON_SECRET')!
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
@@ -116,7 +117,15 @@ async function checkReportReminder(
     .eq('id', student.id)
 }
 
-Deno.serve(async (_req) => {
+Deno.serve(async (req) => {
+  // Deployed --no-verify-jwt (the cron posts the publishable key, not a JWT, so the
+  // gateway can't authenticate it). Auth is this shared-secret header instead.
+  if (req.headers.get('X-Cron-Secret') !== CRON_SECRET) {
+    return new Response(JSON.stringify({ error: 'forbidden' }), {
+      status: 401, headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
   const cutoff = new Date(Date.now() - 15 * 60 * 1000).toISOString()
 
   const { data: sessions, error } = await supabase
