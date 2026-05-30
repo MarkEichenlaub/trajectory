@@ -1,7 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im54dnRheGJudHFoY2ZxdGF6Ym50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5MTcyMDcsImV4cCI6MjA5NTQ5MzIwN30.uPWnJGvQQtCfbpZj3Slwdq8jA3p40NupQWK5F9ViNHM'
+// Publishable key (new Supabase API-key system). Safe to ship in the browser:
+// it is RLS-scoped exactly like the old anon key, never bypasses RLS.
+const SUPABASE_ANON_KEY = 'sb_publishable_51M6zUC11pz8fIPkCvi4WQ_owCE99pB'
 
 // Single authenticated client. Admin access is granted server-side through RLS
 // (is_admin() policies keyed off the admin's profile), so there is NO service
