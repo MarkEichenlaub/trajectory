@@ -425,7 +425,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
         setFilters={setFilters}
         statusMap={statusMap}
       />
-      <div className="problem-area" style={{ flex: 1, minWidth: 0 }}>
+      <div className="problem-area" style={{ flex: 1, minWidth: 0, overflowX: 'auto' }}>
         <div className="search-bar">
           <input
             placeholder="Search problems, tags, countries…"
@@ -438,7 +438,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
           <div className="empty-state">No problems match the current filters.</div>
         ) : (
           <div className="problem-table-wrap">
-            <table>
+            <table style={{ minWidth: 640 }}>
               <thead>
                 <tr>
                   <th style={{ width: 80, cursor: 'pointer' }} onClick={() => handleSort('status')}>
