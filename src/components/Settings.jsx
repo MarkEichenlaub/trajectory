@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions } from '../utils/supabase'
+import { getServiceKey, setServiceKey, fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
 
-export default function Settings({ students, onSaveStudent, onStatusChange, showToast }) {
+export default function Settings({ students, allSources, onSaveStudent, onStatusChange, showToast }) {
   const [key, setKey] = useState(getServiceKey)
   const [saving, setSaving] = useState(null)
 
@@ -60,6 +60,7 @@ export default function Settings({ students, onSaveStudent, onStatusChange, show
           <StudentCard
             key={s.id}
             student={s}
+            allSources={allSources || []}
             onSave={handleSave}
             onRemove={handleRemove}
             onStatusChange={onStatusChange}
@@ -73,12 +74,35 @@ export default function Settings({ students, onSaveStudent, onStatusChange, show
   )
 }
 
-function StudentCard({ student, onSave, onRemove, onStatusChange, saving, showToast }) {
+function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, saving, showToast }) {
   const [draft, setDraft] = useState({ ...student })
   const [showContacts, setShowContacts] = useState(false)
+  const [showBank, setShowBank] = useState(false)
+  const [accessibleSources, setAccessibleSources] = useState(null)
   const [togglingStatus, setTogglingStatus] = useState(false)
   const dirty = JSON.stringify(draft) !== JSON.stringify(student)
   const status = student.status || 'active'
+
+  useEffect(() => {
+    if (!showBank || accessibleSources !== null) return
+    fetchStudentAccessibleSources(student.id)
+      .then(setAccessibleSources)
+      .catch(() => setAccessibleSources([]))
+  }, [showBank, student.id, accessibleSources])
+
+  async function handleToggleSource(source) {
+    const current = accessibleSources || []
+    const next = current.includes(source)
+      ? current.filter(s => s !== source)
+      : [...current, source]
+    setAccessibleSources(next)
+    try {
+      await saveStudentAccessibleSources(student.id, next)
+    } catch (e) {
+      showToast(e.message, 'error')
+      setAccessibleSources(current)
+    }
+  }
 
   function set(field, value) {
     setDraft(d => ({ ...d, [field]: value }))
@@ -168,6 +192,44 @@ function StudentCard({ student, onSave, onRemove, onStatusChange, saving, showTo
       </div>
       {showContacts && (
         <ContactsSection studentId={student.id} showToast={showToast} />
+      )}
+      <div className="student-card-row" style={{ marginTop: 4 }}>
+        <label style={{ color: 'var(--text-dim)' }}>Problem bank</label>
+        <button
+          className="sm"
+          style={{ fontSize: 11 }}
+          onClick={() => setShowBank(v => !v)}
+        >
+          {showBank ? 'Hide' : 'Manage'}
+        </button>
+        {accessibleSources !== null && (
+          <span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 6 }}>
+            {accessibleSources.length} source{accessibleSources.length !== 1 ? 's' : ''} accessible
+          </span>
+        )}
+      </div>
+      {showBank && (
+        <div style={{ paddingLeft: 68, paddingBottom: 4 }}>
+          {accessibleSources === null ? (
+            <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '4px 0' }}>Loading…</div>
+          ) : allSources.length === 0 ? (
+            <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '4px 0' }}>No problem sources available yet.</div>
+          ) : (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 16px', paddingTop: 4 }}>
+              {allSources.map(source => (
+                <label key={source} style={{ display: 'flex', alignItems: 'center', gap: 5, cursor: 'pointer', fontSize: 12, whiteSpace: 'nowrap', color: accessibleSources.includes(source) ? 'var(--accent)' : 'var(--text)' }}>
+                  <input
+                    type="checkbox"
+                    checked={accessibleSources.includes(source)}
+                    onChange={() => handleToggleSource(source)}
+                    style={{ accentColor: 'var(--accent)' }}
+                  />
+                  {source}
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   )

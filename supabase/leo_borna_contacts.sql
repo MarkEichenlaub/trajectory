@@ -15,7 +15,7 @@ on conflict (student_id, email) do update set
   can_login         = excluded.can_login;
 
 insert into public.student_contacts (student_id, email, label, receives_meets, receives_reports, receives_invoices, can_login)
-values ('borna', 'ana.curkovic@cjb.hr', 'parent', false, true, true, false)
+values ('borna', 'ana.curkovic@cjb.hr', 'parent', false, true, true, true)
 on conflict (student_id, email) do update set
   label             = excluded.label,
   receives_reports  = excluded.receives_reports,

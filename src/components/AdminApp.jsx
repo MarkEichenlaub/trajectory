@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -41,6 +41,7 @@ export default function AdminApp() {
   const [activeStudentId, setActiveStudentId] = useState('borna')
   const [previewStudentId, setPreviewStudentId] = useState(null)
   const [previewRole, setPreviewRole] = useState('student')
+  const [previewAccessibleSources, setPreviewAccessibleSources] = useState([])
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const [selected, setSelected] = useState(new Set())
   const [toast, setToast] = useState(null)
@@ -71,6 +72,13 @@ export default function AdminApp() {
     setTimeout(() => setToast(null), 3500)
   }, [])
 
+  useEffect(() => {
+    if (!previewStudentId) { setPreviewAccessibleSources([]); return }
+    fetchStudentAccessibleSources(previewStudentId)
+      .then(setPreviewAccessibleSources)
+      .catch(() => setPreviewAccessibleSources([]))
+  }, [previewStudentId])
+
   const allProblems = useMemo(() => [
     ...problems,
     ...handouts.map(h => ({
@@ -88,6 +96,11 @@ export default function AdminApp() {
       solutionUrl: null,
     })),
   ], [problems, handouts])
+
+  const allSources = useMemo(() =>
+    [...new Set(allProblems.map(p => p.contest))].sort(),
+    [allProblems]
+  )
 
   async function refreshHandouts() {
     const hout = await fetchHandouts().catch(() => [])
@@ -373,6 +386,8 @@ export default function AdminApp() {
             assignments={previewAssignments}
             sessions={previewSessions}
             problems={allProblems}
+            accessibleSources={previewAccessibleSources}
+            onMarkCompleted={null}
             isPreview={true}
             previewRole={previewRole}
           />
@@ -512,6 +527,7 @@ export default function AdminApp() {
         {view === VIEWS.SETTINGS && (
           <Settings
             students={students}
+            allSources={allSources}
             onSaveStudent={handleSaveStudent}
             onStatusChange={(id, status) => setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s))}
             showToast={showToast}

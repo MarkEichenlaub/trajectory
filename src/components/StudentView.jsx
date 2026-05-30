@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import {
   supabase,
   fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
@@ -7,9 +7,11 @@ import {
   fetchInvoices, fetchMyInvoices, sendStagedInvoice,
   fetchMyProgressReports,
   createInvite, setStudentStatus, cancelUpcomingSessions,
+  markMyProblemCompleted,
 } from '../utils/supabase'
+import FilterSidebar from './FilterSidebar'
 
-export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, previewRole, account }) {
+export default function StudentView({ student, assignments, sessions, problems, accessibleSources, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
   // billing-capable roles. A logged-in student sees study info only. In admin
   // preview the role is chosen via previewRole, so Mark can see exactly what a
@@ -61,6 +63,13 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const allItems = [...assignedItems, ...completedItems]
   const tabItems = tab === 'assigned' ? assignedItems : tab === 'completed' ? completedItems : allItems
 
+  // Problem bank: accessible sources + any assigned/completed problems
+  const bankProblems = useMemo(() => {
+    const accessibleSet = new Set(accessibleSources || [])
+    const assignedIds = new Set(assignments.map(a => a.problem_id))
+    return problems.filter(p => accessibleSet.has(p.contest) || assignedIds.has(p.id))
+  }, [problems, accessibleSources, assignments])
+
   const sortedSessions = [...(sessions || [])].sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
   const now = new Date().toISOString()
@@ -100,7 +109,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const tabs = [
     ['assigned', 'Assigned', assignedItems.length],
     ['completed', 'Completed', completedItems.length],
-    ['all', 'All Problems', allItems.length],
+    ['all', 'All Problems', bankProblems.length],
     ['sessions', 'Sessions', sortedSessions.length],
     ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
@@ -171,6 +180,14 @@ export default function StudentView({ student, assignments, sessions, problems, 
             isStudentRole={isStudentRole}
           />
         </>
+      ) : tab === 'all' ? (
+        <ProblemBankBrowser
+          bankProblems={bankProblems}
+          assignments={assignments}
+          student={student}
+          onMarkCompleted={onMarkCompleted}
+          isPreview={isPreview}
+        />
       ) : tab === 'sessions' ? (
         sortedSessions.length === 0 ? (
           <div className="empty-state">No sessions yet.</div>
@@ -266,8 +283,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
       ) : tabItems.length === 0 ? (
         <div className="empty-state">
           {tab === 'assigned' ? 'No problems currently assigned.'
-            : tab === 'completed' ? 'No completed problems yet.'
-            : 'No problems yet.'}
+            : 'No completed problems yet.'}
         </div>
       ) : (
         <div className="assigned-list">
@@ -302,6 +318,203 @@ export default function StudentView({ student, assignments, sessions, problems, 
           })}
         </div>
       )}
+    </div>
+  )
+}
+
+const DEFAULT_BANK_FILTERS = {
+  contests: new Set(),
+  types: new Set(),
+  topics: new Set(),
+  statuses: new Set(),
+  selectedTags: new Set(),
+  textSearch: '',
+  hideCompleted: false,
+}
+
+function ProblemBankBrowser({ bankProblems, assignments, student, onMarkCompleted, isPreview }) {
+  const [filters, setFilters] = useState(DEFAULT_BANK_FILTERS)
+  const [sortCol, setSortCol] = useState('year')
+  const [sortDir, setSortDir] = useState('desc')
+  const [markingDoneId, setMarkingDoneId] = useState(null)
+
+  const statusMap = useMemo(() => {
+    const map = {}
+    assignments.forEach(a => { map[a.problem_id] = a.status })
+    return map
+  }, [assignments])
+
+  const preTagFiltered = useMemo(() => bankProblems.filter(p => {
+    if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
+    if (filters.types.size > 0 && !filters.types.has(p.type)) return false
+    if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
+    if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
+    if (filters.statuses.size > 0) {
+      const s = statusMap[p.id] || 'not-started'
+      if (!filters.statuses.has(s)) return false
+    }
+    if (filters.textSearch) {
+      const q = filters.textSearch.toLowerCase()
+      if (
+        !p.name.toLowerCase().includes(q) &&
+        !p.desc.toLowerCase().includes(q) &&
+        !p.tags.some(t => t.toLowerCase().includes(q)) &&
+        !(p.year ? String(p.year).includes(q) : false) &&
+        !(p.country || '').toLowerCase().includes(q)
+      ) return false
+    }
+    return true
+  }), [bankProblems, filters, statusMap])
+
+  const filtered = useMemo(() => {
+    if (filters.selectedTags.size === 0) return preTagFiltered
+    return preTagFiltered.filter(p =>
+      [...filters.selectedTags].every(tag => p.tags.includes(tag))
+    )
+  }, [preTagFiltered, filters.selectedTags])
+
+  const sorted = useMemo(() => {
+    const statusOrder = { assigned: 0, 'not-started': 1, completed: 2 }
+    return [...filtered].sort((a, b) => {
+      let av, bv
+      if (sortCol === 'status') {
+        av = statusOrder[statusMap[a.id] || 'not-started']
+        bv = statusOrder[statusMap[b.id] || 'not-started']
+      } else {
+        av = a[sortCol]; bv = b[sortCol]
+        if (typeof av === 'string') { av = av.toLowerCase(); bv = bv.toLowerCase() }
+      }
+      if (av < bv) return sortDir === 'asc' ? -1 : 1
+      if (av > bv) return sortDir === 'asc' ? 1 : -1
+      return 0
+    })
+  }, [filtered, sortCol, sortDir, statusMap])
+
+  function handleSort(col) {
+    if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    else { setSortCol(col); setSortDir(col === 'year' ? 'desc' : 'asc') }
+  }
+
+  async function handleMarkDone(problemId) {
+    if (!student?.id || !onMarkCompleted || isPreview) return
+    setMarkingDoneId(problemId)
+    try {
+      const result = await markMyProblemCompleted(student.id, problemId)
+      if (result) onMarkCompleted(result)
+    } catch (e) {
+      console.error('Failed to mark done:', e)
+    } finally {
+      setMarkingDoneId(null)
+    }
+  }
+
+  if (bankProblems.length === 0) {
+    return (
+      <div className="empty-state">
+        No problem bank configured yet. Your tutor will add accessible sources.
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ display: 'flex', gap: 0, alignItems: 'flex-start' }}>
+      <FilterSidebar
+        problems={bankProblems}
+        filteredProblems={preTagFiltered}
+        filters={filters}
+        setFilters={setFilters}
+        statusMap={statusMap}
+      />
+      <div className="problem-area" style={{ flex: 1, minWidth: 0 }}>
+        <div className="search-bar">
+          <input
+            placeholder="Search problems, tags, countries…"
+            value={filters.textSearch}
+            onChange={e => setFilters(f => ({ ...f, textSearch: e.target.value }))}
+          />
+          <span className="result-count">{sorted.length} problem{sorted.length !== 1 ? 's' : ''}</span>
+        </div>
+        {sorted.length === 0 ? (
+          <div className="empty-state">No problems match the current filters.</div>
+        ) : (
+          <div className="problem-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ width: 80, cursor: 'pointer' }} onClick={() => handleSort('status')}>
+                    Status {sortCol === 'status' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                  <th style={{ width: 56, cursor: 'pointer' }} onClick={() => handleSort('year')}>
+                    Year {sortCol === 'year' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                  <th style={{ width: 48 }}>#</th>
+                  <th style={{ cursor: 'pointer' }} onClick={() => handleSort('name')}>
+                    Problem {sortCol === 'name' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                  <th style={{ width: 170 }}>Topics</th>
+                  <th style={{ width: 88 }}>Links</th>
+                  <th style={{ width: 80 }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {sorted.map(p => {
+                  const status = statusMap[p.id]
+                  const isResource = p.type === 'Book' || p.type === 'Handout'
+                  const isCompleted = status === 'completed'
+                  return (
+                    <tr key={p.id} className={isCompleted ? 'done' : status === 'assigned' ? 'assigned-row-tr' : ''}>
+                      <td>
+                        {status === 'assigned' && <span className="status-badge assigned">→ Assigned</span>}
+                        {status === 'completed' && <span className="status-badge completed">✓ Done</span>}
+                      </td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        {isResource
+                          ? <span style={{ color: 'var(--accent)', fontSize: 11, fontWeight: 500 }}>{p.contest}</span>
+                          : <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>
+                        }
+                      </td>
+                      <td>
+                        {!isResource && <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>}
+                      </td>
+                      <td>
+                        <div className="problem-name">{p.name}</div>
+                        {!isResource && <div className="problem-desc">{p.desc}</div>}
+                      </td>
+                      <td>
+                        <div className="tag-list">
+                          {(p.topics || []).map(t => <span key={t} className="tag topic">{t}</span>)}
+                        </div>
+                      </td>
+                      <td>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                          {p.problemUrl && (
+                            <a className="pdf-link" href={p.problemUrl} target="_blank" rel="noreferrer">
+                              {isResource ? 'PDF ↗' : 'Problem ↗'}
+                            </a>
+                          )}
+                          {p.solutionUrl && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
+                        </div>
+                      </td>
+                      <td>
+                        {!isCompleted && !isPreview && onMarkCompleted && (
+                          <button
+                            className="sm"
+                            style={{ fontSize: 11, whiteSpace: 'nowrap' }}
+                            disabled={markingDoneId === p.id}
+                            onClick={() => handleMarkDone(p.id)}
+                          >
+                            {markingDoneId === p.id ? '…' : 'Mark done'}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

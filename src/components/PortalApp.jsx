@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudentAssignments, fetchStudentSessions } from '../utils/supabase'
+import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources } from '../utils/supabase'
 import StudentView from './StudentView'
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
@@ -13,8 +13,10 @@ export default function PortalApp({ account, onSignOut }) {
   const students = account.students || []
   const [activeId, setActiveId] = useState(students[0]?.id || null)
   const [problems, setProblems] = useState([])
+  const [handouts, setHandouts] = useState([])
   const [assignments, setAssignments] = useState(null)
   const [sessions, setSessions] = useState([])
+  const [accessibleSources, setAccessibleSources] = useState([])
   const [loadError, setLoadError] = useState(null)
 
   useEffect(() => {
@@ -24,15 +26,40 @@ export default function PortalApp({ account, onSignOut }) {
   useEffect(() => {
     async function load() {
       try {
-        const [a, sess] = await Promise.all([fetchStudentAssignments(), fetchStudentSessions()])
+        const [a, sess, hout, sources] = await Promise.all([
+          fetchStudentAssignments(),
+          fetchStudentSessions(),
+          fetchHandoutsPublic().catch(() => []),
+          fetchMyAccessibleSources().catch(() => []),
+        ])
         setAssignments(a)
         setSessions(sess)
+        setHandouts(hout)
+        setAccessibleSources(sources)
       } catch (e) {
         setLoadError(e.message)
       }
     }
     load()
   }, [])
+
+  const allProblems = useMemo(() => [
+    ...problems,
+    ...handouts.map(h => ({
+      id: h.id,
+      contest: h.source,
+      type: h.resource_type === 'book' ? 'Book' : 'Handout',
+      name: h.name,
+      desc: h.description || '',
+      topics: h.topics || [],
+      tags: h.tags || [],
+      year: 0,
+      label: '',
+      country: '',
+      problemUrl: h.pdf_url || '',
+      solutionUrl: null,
+    })),
+  ], [problems, handouts])
 
   const activeStudent = useMemo(
     () => students.find(s => s.id === activeId) || students[0] || null,
@@ -47,6 +74,15 @@ export default function PortalApp({ account, onSignOut }) {
     () => sessions.filter(s => s.student_id === activeStudent?.id),
     [sessions, activeStudent]
   )
+
+  function handleMarkCompleted(updatedAssignment) {
+    setAssignments(prev => {
+      if (!prev) return [updatedAssignment]
+      const exists = prev.find(a => a.id === updatedAssignment.id)
+      if (exists) return prev.map(a => a.id === updatedAssignment.id ? updatedAssignment : a)
+      return [...prev, updatedAssignment]
+    })
+  }
 
   if (loadError) {
     return (
@@ -73,7 +109,9 @@ export default function PortalApp({ account, onSignOut }) {
           student={activeStudent}
           assignments={studentAssignments}
           sessions={studentSessions}
-          problems={problems}
+          problems={allProblems}
+          accessibleSources={accessibleSources}
+          onMarkCompleted={handleMarkCompleted}
           account={account}
         />
       </div>

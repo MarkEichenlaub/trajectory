@@ -367,3 +367,60 @@ export async function cancelUpcomingSessions(studentId) {
   if (data?.error) throw new Error(data.error)
   return data
 }
+
+// ── Student accessible sources (admin; service key) ───────────────────────
+
+export async function fetchStudentAccessibleSources(studentId) {
+  const { data, error } = await adminClient()
+    .from('student_accessible_sources').select('source').eq('student_id', studentId)
+  if (error) throw new Error(error.message)
+  return (data || []).map(r => r.source)
+}
+
+export async function saveStudentAccessibleSources(studentId, sources) {
+  const admin = adminClient()
+  const { error: delErr } = await admin
+    .from('student_accessible_sources').delete().eq('student_id', studentId)
+  if (delErr) throw new Error(delErr.message)
+  if (sources.length > 0) {
+    const rows = sources.map(source => ({ student_id: studentId, source }))
+    const { error } = await admin.from('student_accessible_sources').insert(rows)
+    if (error) throw new Error(error.message)
+  }
+}
+
+// ── Student-facing problem bank (public client + RLS) ─────────────────────
+
+export async function fetchMyAccessibleSources() {
+  const { data, error } = await supabase.from('student_accessible_sources').select('source')
+  if (error) throw new Error(error.message)
+  return (data || []).map(r => r.source)
+}
+
+export async function fetchHandoutsPublic() {
+  const { data, error } = await supabase
+    .from('handouts').select('*').order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function markMyProblemCompleted(studentId, problemId) {
+  const date = new Date().toISOString().slice(0, 10)
+  const { data: existing } = await supabase
+    .from('assignments').select('id, status').eq('student_id', studentId).eq('problem_id', problemId)
+    .maybeSingle()
+  if (existing?.status === 'completed') return null
+  if (existing) {
+    const { error } = await supabase
+      .from('assignments').update({ status: 'completed', completed_date: date }).eq('id', existing.id)
+    if (error) throw new Error(error.message)
+    return { ...existing, status: 'completed', completed_date: date }
+  }
+  const id = `${Date.now()}-${Math.random().toString(36).slice(2)}-${problemId.slice(-8)}`
+  const { data, error } = await supabase
+    .from('assignments')
+    .insert({ id, student_id: studentId, problem_id: problemId, status: 'completed', assigned_date: date, completed_date: date })
+    .select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
