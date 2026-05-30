@@ -6,8 +6,8 @@
   cycle:   "Cycle 1 · Spring 2026",
   summary: (
     "25 sessions across roughly eleven weeks, almost all oriented toward IPhO-level problem solving.",
-    "Built out the modern-physics core: a four-session run through quantum mechanics (QHO through neutron interferometry), then statistical mechanics, special relativity, and a white-dwarf capstone.",
-    "Worked through 17 olympiad problems to completion this cycle, including most of USAPhO 2019 and a strong slice of recent IPhO experimentals.",
+    "Built out the modern-physics core: a four-session run through quantum mechanics, statistical mechanics, special relativity, and a white-dwarf capstone.",
+    "Worked through 17 olympiad problems to completion this cycle, including most of USAPhO 2019 and a strong slice of recent IPhO experiments.",
     "Closed the cycle pivoting into optics and circuits — polarization, Snell's law experiments, and the start of impedance and Thevenin analysis."
   ),
   goals: (

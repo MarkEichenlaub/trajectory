@@ -5,6 +5,9 @@ const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!  // new secret API k
 const MIRO_ACCESS_TOKEN = Deno.env.get('MIRO_ACCESS_TOKEN')!
 const MIRO_TEAM_ID = Deno.env.get('MIRO_TEAM_ID')!
 const CAL_WEBHOOK_SECRET = Deno.env.get('CAL_WEBHOOK_SECRET') || ''
+const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID') || ''
+const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET') || ''
+const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN') || ''
 
 type SupabaseClient = ReturnType<typeof createClient>
 
@@ -29,6 +32,73 @@ function fmtWhen(iso: string): string {
     timeZone: 'America/Los_Angeles',
   })
 }
+
+// ── Google Calendar helpers ───────────────────────────────────────────────────
+
+type CalRef = { type: string; uid: string; externalCalendarId?: string }
+
+async function getGoogleAccessToken(): Promise<string | null> {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) return null
+  try {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        refresh_token: GOOGLE_REFRESH_TOKEN,
+        grant_type: 'refresh_token',
+      }).toString(),
+    })
+    if (!res.ok) {
+      console.error('Google token refresh failed:', res.status, await res.text())
+      return null
+    }
+    const data = await res.json() as { access_token?: string }
+    return data.access_token ?? null
+  } catch (e) {
+    console.error('Google token fetch error:', e)
+    return null
+  }
+}
+
+// Patches the Google Calendar event created by Cal.com to append the Miro URL
+// to its description. Best-effort: errors are logged but do not fail the webhook.
+async function appendMiroToCalendarEvent(
+  references: CalRef[], miroBoardUrl: string,
+): Promise<void> {
+  const calRef = references.find(r => r.type === 'google_calendar')
+  if (!calRef?.uid) return
+  const accessToken = await getGoogleAccessToken()
+  if (!accessToken) return
+
+  const calendarId = encodeURIComponent(calRef.externalCalendarId || 'primary')
+  const eventId = calRef.uid
+
+  try {
+    const getRes = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      { headers: { 'Authorization': `Bearer ${accessToken}` } },
+    )
+    const existing = getRes.ok ? (await getRes.json() as { description?: string }) : {}
+    const base = existing.description ? existing.description.trimEnd() + '\n\n' : ''
+    const patchRes = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description: `${base}Miro whiteboard: ${miroBoardUrl}` }),
+      },
+    )
+    if (!patchRes.ok) {
+      console.error('Google Calendar PATCH failed:', patchRes.status, await patchRes.text())
+    }
+  } catch (e) {
+    console.error('Google Calendar update error:', e)
+  }
+}
+
+// ── Email helpers ─────────────────────────────────────────────────────────────
 
 // Email contacts who opted into schedule-change notices. Held until verified
 // and skipped if the address has bounced, matching the rest of the system.
@@ -160,6 +230,12 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
     }
   } catch (e) {
     console.error('Miro fetch error:', e)
+  }
+
+  // Patch the Google Calendar event Cal.com created to include the Miro URL.
+  if (miroBoardUrl) {
+    const refs = payload.references as CalRef[] | undefined
+    if (refs?.length) await appendMiroToCalendarEvent(refs, miroBoardUrl)
   }
 
   const sessionId = `cal-${calBookingId}-${student.id}`
