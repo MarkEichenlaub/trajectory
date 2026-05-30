@@ -309,6 +309,32 @@ export async function fetchMyInvoices() {
   return data || []
 }
 
+// ── Accounts graph (admin; service key bypasses RLS) ─────────────────────────
+
+export async function fetchProfiles() {
+  const { data, error } = await adminClient().from('profiles').select('*').order('email')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchStudentLinks() {
+  const { data, error } = await adminClient().from('student_links').select('*')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchInvites() {
+  const { data, error } = await adminClient()
+    .from('invites').select('*').order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function deleteInvite(id) {
+  const { error } = await adminClient().from('invites').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 // ── Invites & status (admin + parents; both have an auth session) ────────────
 
 // Sends an invitation email. The invitee accepts by signing in with this email;

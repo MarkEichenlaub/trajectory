@@ -9,12 +9,13 @@ import {
   createInvite, setStudentStatus,
 } from '../utils/supabase'
 
-export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, account }) {
+export default function StudentView({ student, assignments, sessions, problems, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
-  // billing-capable roles. A logged-in student sees study info only. Admin
-  // preview faithfully renders the student view (billing lives in the admin
-  // Billing tab, not here); isPreview only changes the read source to admin.
-  const role = isPreview ? 'student' : (account?.role || 'student')
+  // billing-capable roles. A logged-in student sees study info only. In admin
+  // preview the role is chosen via previewRole, so Mark can see exactly what a
+  // student / parent / adult sees; isPreview also switches reads to the admin
+  // source and disables side-effecting actions.
+  const role = isPreview ? (previewRole || 'student') : (account?.role || 'student')
   const canBill = role === 'parent' || role === 'adult'
   const isStudentRole = role === 'student'
 
@@ -151,8 +152,12 @@ export default function StudentView({ student, assignments, sessions, problems, 
         <SchedulingTab prefill={schedulePrefill} sessions={sortedSessions} formatDate={formatDate} />
       ) : tab === 'account' ? (
         <>
-          {canBill && !isPreview && (
-            <AccountManagement student={student} relationship={account?.students?.find(s => s.id === student.id)?.relationship} />
+          {canBill && (
+            <AccountManagement
+              student={student}
+              relationship={isPreview ? (role === 'parent' ? 'parent' : 'self') : account?.students?.find(s => s.id === student.id)?.relationship}
+              isPreview={isPreview}
+            />
           )}
           <ContactsTab
             studentId={student.id}
@@ -303,7 +308,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
 // Parent/adult self-service: invite another guardian and pause/resume the
 // student. Both go through server-authorized paths (create-invite edge function
 // and set_student_status RPC), which verify billing access.
-function AccountManagement({ student, relationship }) {
+function AccountManagement({ student, relationship, isPreview }) {
   const [status, setStatus] = useState(student?.status || 'active')
   const [busy, setBusy] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
@@ -351,7 +356,7 @@ function AccountManagement({ student, relationship }) {
           <span style={{ fontSize: 13, flex: 1, minWidth: 180 }}>
             Status: <strong style={{ color: status === 'active' ? 'var(--green)' : 'var(--text-dim)' }}>{status}</strong>
           </span>
-          <button className="sm" disabled={busy} onClick={handleToggleStatus}>
+          <button className="sm" disabled={busy || isPreview} onClick={handleToggleStatus}>
             {busy ? '…' : status === 'active' ? 'Pause tutoring' : 'Resume tutoring'}
           </button>
         </div>
@@ -372,13 +377,14 @@ function AccountManagement({ student, relationship }) {
               placeholder="email@example.com"
               style={{ flex: 1, minWidth: 200 }}
             />
-            <button className="sm primary" disabled={sending || !inviteEmail.trim()} onClick={handleInvite}>
+            <button className="sm primary" disabled={sending || isPreview || !inviteEmail.trim()} onClick={handleInvite}>
               {sending ? 'Sending…' : 'Send invite'}
             </button>
           </div>
         </div>
       )}
 
+      {isPreview && <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 8 }}>Preview only — actions are disabled.</div>}
       {msg && <div style={{ fontSize: 12, color: 'var(--green)', marginTop: 8 }}>{msg}</div>}
       {err && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 8 }}>{err}</div>}
     </div>

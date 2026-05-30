@@ -10,10 +10,11 @@ import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
 import StudentView, { ContactsTab } from './StudentView'
 import AdminProgressPlanView from './AdminProgressPlanView'
+import AccountsView from './AccountsView'
 import Settings from './Settings'
 import Toast from './Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', ACCOUNTS: 'accounts', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -39,6 +40,7 @@ export default function AdminApp() {
   const [view, setView] = useState(VIEWS.BROWSER)
   const [activeStudentId, setActiveStudentId] = useState('borna')
   const [previewStudentId, setPreviewStudentId] = useState(null)
+  const [previewRole, setPreviewRole] = useState('student')
   const [filters, setFilters] = useState(DEFAULT_FILTERS)
   const [selected, setSelected] = useState(new Set())
   const [toast, setToast] = useState(null)
@@ -354,6 +356,14 @@ export default function AdminApp() {
           <div style={{ marginLeft: 16, padding: '2px 10px', background: 'var(--yellow-bg)', color: 'var(--yellow)', border: '1px solid var(--yellow-line)', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>
             Admin preview
           </div>
+          <div style={{ display: 'flex', gap: 4, marginLeft: 12 }}>
+            {['student', 'parent', 'adult'].map(r => (
+              <button key={r} className="sm" onClick={() => setPreviewRole(r)}
+                style={previewRole === r ? { background: 'var(--accent-dim)', color: 'var(--accent)' } : {}}>
+                as {r}
+              </button>
+            ))}
+          </div>
           <div className="spacer" />
           <button className="sm" style={{ marginRight: 16 }} onClick={() => setPreviewStudentId(null)}>← Back to admin</button>
         </div>
@@ -364,6 +374,7 @@ export default function AdminApp() {
             sessions={previewSessions}
             problems={allProblems}
             isPreview={true}
+            previewRole={previewRole}
           />
         </div>
       </div>
@@ -386,6 +397,7 @@ export default function AdminApp() {
           <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress and Plan</button>
           <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
+          <button className={view === VIEWS.ACCOUNTS ? 'active' : ''} onClick={() => setView(VIEWS.ACCOUNTS)}>Accounts</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -491,6 +503,10 @@ export default function AdminApp() {
             studentId={activeStudentId}
             studentName={activeStudent?.name || ''}
           />
+        )}
+
+        {view === VIEWS.ACCOUNTS && (
+          <AccountsView students={students} showToast={showToast} />
         )}
 
         {view === VIEWS.SETTINGS && (
