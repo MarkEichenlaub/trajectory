@@ -179,13 +179,64 @@ async function main() {
   }
 
   const file = path.join(outDir, `${slug}.typ`)
-  const contents = `#import "../lib.typ": report\n\n${dataBlock}\n\n#report(data)\n`
-  fs.writeFileSync(file, contents)
   const rel = path.relative(ROOT, file).replace(/\\/g, '/')
   const reportsRel = path.relative(ROOT, __dirname).replace(/\\/g, '/')
+  const pdfFile = file.replace(/\.typ$/, '.pdf')
+  const pdfRel = path.relative(ROOT, pdfFile).replace(/\\/g, '/')
+
+  function writeTyp(block) {
+    fs.writeFileSync(file, `#import "../lib.typ": report\n\n${block}\n\n#report(data)\n`)
+  }
+  writeTyp(dataBlock)
   console.log(`\nDraft written to ${rel}`)
-  console.log(`Preview/edit:  typst watch --root ${reportsRel} ${rel} ${rel.replace(/\.typ$/, '.pdf')}`)
-  console.log(`Then compile:  typst compile --root ${reportsRel} ${rel} ${rel.replace(/\.typ$/, '.pdf')}`)
+
+  // ---- compile verification + retry ----
+  const typstCheck = spawnSync('typst', ['--version'], { encoding: 'utf8', shell: true })
+  if (typstCheck.status !== 0) {
+    console.warn('Note: typst not found on PATH — skipping compile check. Install via: scoop install typst')
+  } else {
+    let compiled = false
+    let lastErr = ''
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const cr = spawnSync('typst', ['compile', '--root', reportsRel, rel, pdfRel], {
+        cwd: ROOT, encoding: 'utf8', shell: true,
+      })
+      if (cr.status === 0 && fs.existsSync(pdfFile)) {
+        compiled = true
+        console.log(attempt > 1 ? `Compiled to PDF (attempt ${attempt}).` : 'Compiled to PDF.')
+        break
+      }
+      lastErr = (cr.stderr || cr.stdout || `exit ${cr.status}`).trim()
+      console.error(`Typst compile failed (attempt ${attempt}):\n${lastErr}`)
+      if (attempt === 3) break
+
+      console.log('Sending error back to Claude to fix…')
+      const fixPrompt = `The Typst file you generated does not compile. Current file:\n\n${fs.readFileSync(file, 'utf8')}\n\nTypst error:\n\n${lastErr}\n\nFix the error and output ONLY the corrected #let data block — same format as before, no prose, no code fences, no #report call.`
+      const fixRes = spawnSync('claude', ['-p'], {
+        input: fixPrompt, encoding: 'utf8', shell: true, maxBuffer: 16 * 1024 * 1024,
+      })
+      if (fixRes.status !== 0 || !fixRes.stdout?.trim()) {
+        console.error('claude CLI failed during fix.', fixRes.stderr || '')
+        break
+      }
+      let fixedBlock = fixRes.stdout.replace(/```[a-zA-Z]*\n?/g, '').trim()
+      const fi = fixedBlock.indexOf('#let data')
+      if (fi >= 0) fixedBlock = fixedBlock.slice(fi)
+      fixedBlock = fixedBlock.replace(/#report\s*\([^)]*\)\s*$/, '').trim()
+      if (!fixedBlock.startsWith('#let data')) {
+        console.error('Claude fix did not produce a valid #let data block.')
+        break
+      }
+      writeTyp(fixedBlock)
+    }
+    if (!compiled) {
+      console.warn(`\nCould not compile after 3 attempts. .typ file saved; fix manually.`)
+      console.warn(`Last error:\n${lastErr}`)
+    }
+  }
+
+  console.log(`Live preview: typst watch --root ${reportsRel} ${rel} ${pdfRel}`)
+  console.log(`Compile:      typst compile --root ${reportsRel} ${rel} ${pdfRel}`)
 }
 
 function buildPrompt(student, cycle, sessions, context) {

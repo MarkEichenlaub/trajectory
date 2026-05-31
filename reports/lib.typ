@@ -89,7 +89,7 @@
     bullets(data.summary)
   }
   if "goals" in data {
-    section("Goals This Cycle")
+    section("Goals at the Outset")
     bullets(data.goals)
   }
   if "progress" in data {

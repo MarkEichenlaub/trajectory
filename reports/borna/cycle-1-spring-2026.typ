@@ -1,7 +1,7 @@
 #import "../lib.typ": report
 
 #let data = (
-  student: "Borna",
+  student: "Borna Curic",
   mentor:  "Mark Eichenlaub",
   cycle:   "Cycle 1 · Spring 2026",
   summary: (
