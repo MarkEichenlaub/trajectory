@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { saveHandout, deleteHandout, uploadHandoutPDF } from '../utils/supabase'
+import { saveHandout, deleteHandout, uploadHandoutPDF, uploadHandoutSolutionPDF } from '../utils/supabase'
 
 const TOPIC_ORDER = [
   'Mechanics', 'Electromagnetism', 'Waves & Oscillations', 'Optics',
@@ -7,7 +7,7 @@ const TOPIC_ORDER = [
   'Nuclear/Particle', 'Astrophysics', 'Experimental Methods',
 ]
 
-const EMPTY_FORM = { resource_type: 'handout', name: '', source: '', description: '', topics: [], tagsInput: '', file: null }
+const EMPTY_FORM = { resource_type: 'handout', name: '', source: '', description: '', topics: [], tagsInput: '', file: null, year: '', solutionFile: null }
 
 function handoutToForm(h) {
   return {
@@ -18,6 +18,8 @@ function handoutToForm(h) {
     topics: h.topics || [],
     tagsInput: (h.tags || []).join(', '),
     file: null,
+    year: h.year ? String(h.year) : '',
+    solutionFile: null,
   }
 }
 
@@ -56,14 +58,20 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
     try {
       const id = editingId || `handout-${Date.now()}`
       let pdf_url = ''
+      let solution_url = ''
 
       if (editingId) {
         const existing = handouts.find(h => h.id === editingId)
         pdf_url = existing?.pdf_url || ''
+        solution_url = existing?.solution_url || ''
       }
 
       if (form.file) {
         pdf_url = await uploadHandoutPDF(form.file, id)
+      }
+
+      if (form.solutionFile) {
+        solution_url = await uploadHandoutSolutionPDF(form.solutionFile, id)
       }
 
       await saveHandout({
@@ -75,6 +83,8 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
         topics: form.topics,
         tags: (form.tagsInput || '').split(',').map(t => t.trim()).filter(Boolean),
         pdf_url,
+        solution_url,
+        year: form.resource_type === 'exam' ? (parseInt(form.year) || 0) : 0,
       })
       await onHandoutsChange()
       setForm(EMPTY_FORM)
@@ -99,11 +109,13 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
   }
 
   const isBook = form.resource_type === 'book'
+  const isExam = form.resource_type === 'exam'
+  const typeLabel = isBook ? 'Book' : isExam ? 'Exam' : 'Handout'
 
   return (
     <div className="assigned-view">
       <div className="assigned-header">
-        <h2>{editingId ? 'Edit' : 'Add'} {isBook ? 'Book' : 'Handout'}</h2>
+        <h2>{editingId ? 'Edit' : 'Add'} {typeLabel}</h2>
         <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{handouts.length} resource{handouts.length !== 1 ? 's' : ''}</span>
       </div>
 
@@ -111,7 +123,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
         <div className="student-card-row">
           <label>Type</label>
           <div style={{ display: 'flex', gap: 12 }}>
-            {['handout', 'book'].map(t => (
+            {['handout', 'book', 'exam'].map(t => (
               <label key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, cursor: 'pointer' }}>
                 <input
                   type="radio"
@@ -121,11 +133,23 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
                   onChange={() => setForm(f => ({ ...f, resource_type: t }))}
                   style={{ accentColor: 'var(--accent)' }}
                 />
-                {t === 'handout' ? 'Handout' : 'Book'}
+                {t === 'handout' ? 'Handout' : t === 'book' ? 'Book' : 'Exam'}
               </label>
             ))}
           </div>
         </div>
+        {isExam && (
+          <div className="student-card-row">
+            <label>Year</label>
+            <input
+              type="number"
+              value={form.year}
+              onChange={e => setForm(f => ({ ...f, year: e.target.value }))}
+              placeholder="2025"
+              style={{ width: 100 }}
+            />
+          </div>
+        )}
         <div className="student-card-row">
           <label>Name</label>
           <input
@@ -142,7 +166,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
             type="text"
             value={form.source}
             onChange={e => setForm(f => ({ ...f, source: e.target.value }))}
-            placeholder={isBook ? 'Purcell, Griffiths…' : 'PhysicsWOOT, class notes…'}
+            placeholder={isBook ? 'Purcell, Griffiths…' : isExam ? 'F=ma' : 'PhysicsWOOT, class notes…'}
             style={{ flex: 1 }}
           />
         </div>
@@ -183,7 +207,7 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
           />
         </div>
         <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
-          <label style={{ paddingTop: 4 }}>PDF</label>
+          <label style={{ paddingTop: 4 }}>{isExam ? 'Exam PDF' : 'PDF'}</label>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
             {editingId && (() => {
               const existing = handouts.find(h => h.id === editingId)
@@ -202,6 +226,28 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
             />
           </div>
         </div>
+        {isExam && (
+          <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
+            <label style={{ paddingTop: 4 }}>Solutions PDF</label>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {editingId && (() => {
+                const existing = handouts.find(h => h.id === editingId)
+                return existing?.solution_url
+                  ? <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                      Current: <a href={existing.solution_url} target="_blank" rel="noreferrer" style={{ color: 'var(--accent)' }}>view ↗</a>
+                      {' '}— upload below to replace
+                    </div>
+                  : <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>No solutions PDF attached</div>
+              })()}
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={e => setForm(f => ({ ...f, solutionFile: e.target.files[0] || null }))}
+                style={{ fontSize: 13, color: 'var(--text)' }}
+              />
+            </div>
+          </div>
+        )}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 8 }}>
           {editingId && (
             <button type="button" className="sm" onClick={cancelEdit}>Cancel</button>
@@ -226,11 +272,13 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
                 <div style={{ flex: 1 }}>
                   <span className="p-name" style={{ fontWeight: 500 }}>{h.name}</span>
                   <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, marginLeft: 8 }}>
-                    {h.resource_type === 'book' ? 'Book' : 'Handout'} · {h.source}
+                    {h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout'} · {h.source}
+                    {h.resource_type === 'exam' && h.year ? ` · ${h.year}` : ''}
                   </span>
                 </div>
                 <div className="assigned-row-links">
-                  {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">PDF ↗</a>}
+                  {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">{h.resource_type === 'exam' ? 'Exam ↗' : 'PDF ↗'}</a>}
+                  {h.solution_url && <a href={h.solution_url} target="_blank" rel="noreferrer">Solutions ↗</a>}
                   <button
                     className="sm"
                     style={{ fontSize: 11, padding: '1px 6px' }}

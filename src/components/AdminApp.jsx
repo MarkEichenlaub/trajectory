@@ -84,16 +84,16 @@ export default function AdminApp() {
     ...handouts.map(h => ({
       id: h.id,
       contest: h.source,
-      type: h.resource_type === 'book' ? 'Book' : 'Handout',
+      type: h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout',
       name: h.name,
       desc: h.description || '',
       topics: h.topics || [],
       tags: h.tags || [],
-      year: 0,
+      year: h.year || 0,
       label: '',
       country: '',
       problemUrl: h.pdf_url || '',
-      solutionUrl: null,
+      solutionUrl: h.solution_url || null,
     })),
   ], [problems, handouts])
 

@@ -290,8 +290,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
           {tabItems.map(a => {
             const p = problemById(a.problem_id)
             if (!p) return null
-            const isResource = p.type === 'Book' || p.type === 'Handout'
-            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : 'Problem'
+            const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'
+            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : p.type === 'Exam' ? 'Exam' : 'Problem'
             const dateLabel = a.status === 'completed' && a.completed_date
               ? `Completed ${a.completed_date}`
               : `Assigned ${a.assigned_date}`
@@ -459,7 +459,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
               <tbody>
                 {sorted.map(p => {
                   const status = statusMap[p.id]
-                  const isResource = p.type === 'Book' || p.type === 'Handout'
+                  const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'
                   const isCompleted = status === 'completed'
                   return (
                     <tr key={p.id} className={isCompleted ? 'done' : status === 'assigned' ? 'assigned-row-tr' : ''}>
@@ -489,7 +489,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                           {p.problemUrl && (
                             <a className="pdf-link" href={p.problemUrl} target="_blank" rel="noreferrer">
-                              {isResource ? 'PDF ↗' : 'Problem ↗'}
+                              {p.type === 'Exam' ? 'Exam ↗' : isResource ? 'PDF ↗' : 'Problem ↗'}
                             </a>
                           )}
                           {p.solutionUrl && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}

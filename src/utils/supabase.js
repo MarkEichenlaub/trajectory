@@ -181,6 +181,16 @@ export async function uploadHandoutPDF(file, handoutId) {
   return data.publicUrl
 }
 
+export async function uploadHandoutSolutionPDF(file, handoutId) {
+  const ext = file.name.split('.').pop()
+  const path = `${handoutId}-sol.${ext}`
+  const { error } = await adminClient()
+    .storage.from('handout-pdfs').upload(path, file, { upsert: true })
+  if (error) throw new Error(error.message)
+  const { data } = adminClient().storage.from('handout-pdfs').getPublicUrl(path)
+  return data.publicUrl
+}
+
 // ── Invoices (admin) ─────────────────────────────────────────────────────────
 
 export async function fetchInvoices(studentId) {
