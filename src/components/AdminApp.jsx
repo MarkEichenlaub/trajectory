@@ -12,9 +12,10 @@ import StudentView, { ContactsTab } from './StudentView'
 import AdminProgressPlanView from './AdminProgressPlanView'
 import AccountsView from './AccountsView'
 import Settings from './Settings'
+import TagOntologyView from './TagOntologyView'
 import Toast from './Toast'
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', ACCOUNTS: 'accounts', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', ACCOUNTS: 'accounts', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -411,6 +412,7 @@ export default function AdminApp() {
           <button className={view === VIEWS.SESSIONS ? 'active' : ''} onClick={() => setView(VIEWS.SESSIONS)}>Sessions</button>
           <button className={view === VIEWS.SCHEDULE ? 'active' : ''} onClick={() => setView(VIEWS.SCHEDULE)}>Schedule</button>
           <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
+          <button className={view === VIEWS.TAGS ? 'active' : ''} onClick={() => setView(VIEWS.TAGS)}>Tags</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress and Plan</button>
           <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
           <button className={view === VIEWS.ACCOUNTS ? 'active' : ''} onClick={() => setView(VIEWS.ACCOUNTS)}>Accounts</button>
@@ -512,6 +514,10 @@ export default function AdminApp() {
             onHandoutsChange={refreshHandouts}
             showToast={showToast}
           />
+        )}
+
+        {view === VIEWS.TAGS && (
+          <TagOntologyView problems={allProblems} />
         )}
 
         {view === VIEWS.PROGRESS_PLAN && (

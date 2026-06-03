@@ -10,7 +10,9 @@ const SUPABASE_ANON_KEY = 'sb_publishable_51M6zUC11pz8fIPkCvi4WQ_owCE99pB'
 // key in the browser — a privileged key shipped to the client would bypass all
 // row-level security. "Admin" calls below use this same client; the database
 // decides what the logged-in admin may read and write.
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { flowType: 'implicit' },
+})
 
 // Retained as a thin alias so the admin data helpers below read clearly. It is
 // the ordinary authenticated client — it does NOT bypass RLS.
