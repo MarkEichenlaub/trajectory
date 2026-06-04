@@ -73,6 +73,11 @@ export async function saveSession(session) {
   if (error) throw new Error(error.message)
 }
 
+export async function updateSession(id, updates) {
+  const { error } = await adminClient().from('sessions').update(updates).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function deleteSession(id) {
   const { error } = await adminClient().from('sessions').delete().eq('id', id)
   if (error) throw new Error(error.message)
@@ -302,9 +307,12 @@ export async function resolveMyAccount() {
   return data || { role: 'none', students: [] }
 }
 
+// Excludes admin-only columns (paid, balance_decremented) from the student-facing query.
 export async function fetchStudentSessions() {
   const { data, error } = await supabase
-    .from('sessions').select('*').order('scheduled_at', { ascending: false })
+    .from('sessions')
+    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, cal_booking_id, cal_uid, end_time, created_at, summary, tags')
+    .order('scheduled_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
 }

@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { saveSession, deleteSession } from '../utils/supabase'
+import { saveSession, updateSession, deleteSession } from '../utils/supabase'
 
 export default function SessionsView({ sessions, students, activeStudentId, onSessionsChange, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
 
   const student = students.find(s => s.id === activeStudentId)
+  const now = new Date().toISOString()
   const studentSessions = sessions
-    .filter(s => s.student_id === activeStudentId)
+    .filter(s => s.student_id === activeStudentId && s.end_time && s.end_time <= now)
     .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
   function startEdit(session) {
@@ -49,6 +50,16 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
     }
   }
 
+  async function handleTogglePaid(s) {
+    const next = s.paid === true ? false : true
+    try {
+      await updateSession(s.id, { paid: next })
+      await onSessionsChange()
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleDelete(id) {
     try {
       await deleteSession(id)
@@ -69,7 +80,7 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
     <div className="assigned-view">
       <div className="assigned-header">
         <div>
-          <h2>{student.name}'s Sessions</h2>
+          <h2>{student.name}'s Past Sessions</h2>
           <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{studentSessions.length} sessions</span>
         </div>
         <button className="primary" onClick={startNew}>+ New Session</button>
@@ -132,7 +143,7 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
       )}
 
       {studentSessions.length === 0 && !editingId ? (
-        <div className="empty-state">No sessions yet. Sessions appear automatically when booked via Cal.com, or add one manually.</div>
+        <div className="empty-state">No past sessions yet. Sessions appear here automatically once they end.</div>
       ) : (
         <div className="assigned-list">
           {studentSessions.map(s => (
@@ -143,6 +154,16 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
                   {s.notes && <span className="p-name" style={{ marginLeft: 8, fontWeight: 500 }}>{s.notes}</span>}
                 </div>
                 <div className="assigned-row-links">
+                  {!student.invoicing_enabled && (
+                    <button
+                      className="sm"
+                      style={{ fontSize: 11, padding: '1px 8px', color: s.paid === true ? 'var(--green)' : s.paid === false ? 'var(--red)' : 'var(--text-dim)' }}
+                      title={s.paid === true ? 'Paid — click to mark unpaid' : s.paid === false ? 'Unpaid — click to mark paid' : 'Not marked — click to mark paid'}
+                      onClick={() => handleTogglePaid(s)}
+                    >
+                      {s.paid === true ? '✓ paid' : s.paid === false ? '✗ unpaid' : '— ?'}
+                    </button>
+                  )}
                   {s.miro_board_url && (
                     <a href={s.miro_board_url} target="_blank" rel="noreferrer">Whiteboard ↗</a>
                   )}

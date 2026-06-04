@@ -77,8 +77,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
     .filter(s => s.scheduled_at > now)
     .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))[0] || null
 
+  const pastSessions = sortedSessions.filter(s => s.end_time && s.end_time <= now)
+
   const allTagCounts = {}
-  sortedSessions.forEach(s => {
+  pastSessions.forEach(s => {
     ;(s.tags || []).forEach(tag => {
       allTagCounts[tag] = (allTagCounts[tag] || 0) + 1
     })
@@ -91,8 +93,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
       : ([a], [b]) => a.localeCompare(b))
 
   const filteredSessions = selectedTags.size === 0
-    ? sortedSessions
-    : sortedSessions.filter(s => [...selectedTags].every(tag => (s.tags || []).includes(tag)))
+    ? pastSessions
+    : pastSessions.filter(s => [...selectedTags].every(tag => (s.tags || []).includes(tag)))
 
   function toggleTag(tag) {
     setSelectedTags(prev => {
@@ -110,7 +112,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['assigned', 'Assigned', assignedItems.length],
     ['completed', 'Completed', completedItems.length],
     ['all', 'All Problems', bankProblems.length],
-    ['sessions', 'Sessions', sortedSessions.length],
+    ['sessions', 'Past Sessions', pastSessions.length],
     ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
     ...(canBill ? [['invoices', 'Invoices', null]] : []),
@@ -189,8 +191,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
           isPreview={isPreview}
         />
       ) : tab === 'sessions' ? (
-        sortedSessions.length === 0 ? (
-          <div className="empty-state">No sessions yet.</div>
+        pastSessions.length === 0 ? (
+          <div className="empty-state">No past sessions yet.</div>
         ) : (
           <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
             {filteredTagList.length > 0 && (
@@ -958,96 +960,131 @@ function InvoicesTab({ invoices, setInvoices, isAdmin }) {
   )
 }
 
-// Cal.com booking config. calLink is the public booking handle; namespace
-// isolates this embed instance. Reschedule/cancel links use a session's stored
-// cal_uid (the booking's string UID, written by the cal-webhook function).
 const CAL_LINK = 'markeichenlaub'
-const CAL_NAMESPACE = 'tutoring'
-const CAL_BRAND = '#2a4a6d'
-
-// Vanilla Cal.com embed loader. Injects the embed script once and returns the
-// queueing Cal() shim; safe to call on every mount.
-function loadCalApi() {
-  const C = window
-  const A = 'https://app.cal.com/embed/embed.js'
-  const L = 'init'
-  const p = (a, ar) => { a.q.push(ar) }
-  const d = C.document
-  C.Cal = C.Cal || function () {
-    const cal = C.Cal
-    const ar = arguments
-    if (!cal.loaded) {
-      cal.ns = {}
-      cal.q = cal.q || []
-      d.head.appendChild(d.createElement('script')).src = A
-      cal.loaded = true
-    }
-    if (ar[0] === L) {
-      const api = function () { p(api, arguments) }
-      const namespace = ar[1]
-      api.q = api.q || []
-      if (typeof namespace === 'string') {
-        cal.ns[namespace] = cal.ns[namespace] || api
-        p(cal.ns[namespace], ar)
-        p(cal, ['initNamespace', namespace])
-      } else p(cal, ar)
-      return
-    }
-    p(cal, ar)
-  }
-  return C.Cal
-}
 
 function SchedulingTab({ prefill, sessions, formatDate }) {
-  useEffect(() => {
-    const Cal = loadCalApi()
-    Cal('init', CAL_NAMESPACE, { origin: 'https://cal.com' })
-    const config = { layout: 'month_view' }
-    if (prefill?.name) config.name = prefill.name
-    if (prefill?.email) config.email = prefill.email
-    Cal.ns[CAL_NAMESPACE]('inline', {
-      elementOrSelector: '#cal-inline-tutoring',
-      calLink: `${CAL_LINK}/1-hr-session`,
-      config,
-    })
-    Cal.ns[CAL_NAMESPACE]('ui', {
-      cssVarsPerTheme: { light: { 'cal-brand': CAL_BRAND } },
-      hideEventTypeDetails: false,
-      layout: 'month_view',
-    })
-  }, [prefill?.name, prefill?.email])
+  const nowIso = new Date().toISOString()
+  const upcoming = useMemo(() =>
+    (sessions || [])
+      .filter(s => s.scheduled_at > nowIso)
+      .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at)),
+    [sessions] // eslint-disable-line react-hooks/exhaustive-deps
+  )
 
-  const now = new Date().toISOString()
-  const upcoming = (sessions || [])
-    .filter(s => s.scheduled_at > now)
-    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+  const [viewDate, setViewDate] = useState(() => {
+    const d = new Date(); d.setDate(1); return d
+  })
+  const [selectedSession, setSelectedSession] = useState(null)
+
+  const sessionsByDate = useMemo(() => {
+    const map = {}
+    upcoming.forEach(s => {
+      const key = new Date(s.scheduled_at).toLocaleDateString('en-CA')
+      if (!map[key]) map[key] = []
+      map[key].push(s)
+    })
+    return map
+  }, [upcoming])
+
+  const year = viewDate.getFullYear()
+  const month = viewDate.getMonth()
+  const firstDow = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7
+  const todayKey = new Date().toLocaleDateString('en-CA')
+  const monthLabel = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+
+  function prevMonth() { setViewDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)) }
+  function nextMonth() { setViewDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)) }
+
+  const selectedKey = selectedSession
+    ? new Date(selectedSession.scheduled_at).toLocaleDateString('en-CA')
+    : null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-      {upcoming.length > 0 && (
-        <div>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Upcoming sessions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {upcoming.map(s => (
-              <div key={s.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 13, flex: 1, minWidth: 160 }}>{formatDate(s.scheduled_at)}</span>
-                {s.cal_uid ? (
-                  <div style={{ display: 'flex', gap: 14, flexShrink: 0 }}>
-                    <a href={`https://cal.com/reschedule/${s.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
-                    <a href={`https://cal.com/booking/${s.cal_uid}?cancel=true`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: 'var(--red)' }}>Cancel ↗</a>
-                  </div>
-                ) : (
-                  <span style={{ fontSize: 11, color: 'var(--text-dim)', flexShrink: 0 }}>scheduled manually</span>
-                )}
-              </div>
-            ))}
+    <div style={{ maxWidth: 500, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <button className="sm" onClick={prevMonth}>‹</button>
+        <span style={{ fontSize: 15, fontWeight: 600, flex: 1, textAlign: 'center' }}>{monthLabel}</span>
+        <button className="sm" onClick={nextMonth}>›</button>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
+          <div key={d} style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-dim)', padding: '4px 0', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d}</div>
+        ))}
+        {Array.from({ length: totalCells }, (_, i) => {
+          const dayNum = i - firstDow + 1
+          if (dayNum < 1 || dayNum > daysInMonth) return <div key={i} />
+          const key = new Date(year, month, dayNum).toLocaleDateString('en-CA')
+          const daySessions = sessionsByDate[key] || []
+          const hasSessions = daySessions.length > 0
+          const isToday = key === todayKey
+          const isSelected = key === selectedKey
+          return (
+            <div
+              key={key}
+              onClick={() => hasSessions ? setSelectedSession(daySessions[0]) : setSelectedSession(null)}
+              style={{
+                padding: '6px 2px',
+                borderRadius: 6,
+                cursor: hasSessions ? 'pointer' : 'default',
+                background: isSelected ? 'var(--accent)' : hasSessions ? 'var(--accent-dim)' : 'transparent',
+                border: `1px solid ${isToday ? 'var(--border)' : 'transparent'}`,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
+                minHeight: 44,
+              }}
+            >
+              <span style={{
+                fontSize: 13,
+                fontWeight: hasSessions ? 600 : 400,
+                color: isSelected ? 'white' : hasSessions ? 'var(--accent)' : isToday ? 'var(--text)' : 'var(--text-dim)',
+              }}>
+                {dayNum}
+              </span>
+              {hasSessions && (
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--accent)' }} />
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {selectedSession ? (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>{formatDate(selectedSession.scheduled_at)}</div>
+              {selectedSession.end_time && (
+                <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
+                  Ends {new Date(selectedSession.end_time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                </div>
+              )}
+            </div>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0, flexWrap: 'wrap' }}>
+              {selectedSession.miro_board_url && (
+                <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
+              )}
+              {selectedSession.cal_uid && (
+                <a href={`https://cal.com/reschedule/${selectedSession.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
+              )}
+              <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={() => setSelectedSession(null)}>✕</button>
+            </div>
           </div>
         </div>
-      )}
+      ) : upcoming.length === 0 ? (
+        <div className="empty-state">No upcoming sessions scheduled.</div>
+      ) : null}
 
-      <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Book a session</h3>
-        <div id="cal-inline-tutoring" style={{ width: '100%', minHeight: 600, overflow: 'scroll' }} />
+      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
+        <a
+          href={`https://cal.com/${CAL_LINK}/1-hr-session`}
+          target="_blank"
+          rel="noreferrer"
+          style={{ fontSize: 13, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}
+        >
+          + Book a new session ↗
+        </a>
       </div>
     </div>
   )

@@ -145,6 +145,20 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         />
         <span style={{ fontSize: 12, color: 'var(--text-dim)', marginLeft: 4 }}>/session</span>
       </div>
+      <div className="student-card-row">
+        <label>Invoicing</label>
+        <button
+          className="sm"
+          style={{ color: draft.invoicing_enabled ? 'var(--green)' : 'var(--text-dim)' }}
+          title={draft.invoicing_enabled ? 'Stripe invoicing on — click to disable' : 'Invoicing off — click to enable Stripe invoicing'}
+          onClick={() => set('invoicing_enabled', !draft.invoicing_enabled)}
+        >
+          {draft.invoicing_enabled ? '● on' : '○ off'}
+        </button>
+        <span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 6 }}>
+          {draft.invoicing_enabled ? 'auto-invoices via Stripe' : 'mark sessions paid/unpaid manually'}
+        </span>
+      </div>
       {dirty && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 4 }}>
           <button className="sm primary" onClick={() => onSave(draft)} disabled={saving}>

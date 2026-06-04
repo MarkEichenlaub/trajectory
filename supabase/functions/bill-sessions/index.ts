@@ -167,7 +167,7 @@ Deno.serve(async (req) => {
       // Fetch student fresh each iteration to see latest balance
       const { data: student } = await supabase
         .from('students')
-        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at, status')
+        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at, status, invoicing_enabled')
         .eq('id', session.student_id)
         .single()
 
@@ -192,8 +192,8 @@ Deno.serve(async (req) => {
         console.error('report reminder check failed for', student.id, (e as Error).message)
       }
 
-      // Invoice when balance hits 1 and student has a non-zero rate
-      if (newBalance === 1 && student.hourly_rate > 0) {
+      // Invoice when balance hits 1, invoicing is enabled, and student has a non-zero rate
+      if (newBalance === 1 && student.invoicing_enabled && student.hourly_rate > 0) {
         const { data: contacts } = await supabase
           .from('student_contacts')
           .select('email')
