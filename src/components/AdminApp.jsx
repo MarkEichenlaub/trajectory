@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -241,7 +241,8 @@ export default function AdminApp() {
     const existing = assignments.find(a => a.student_id === activeStudentId && a.problem_id === problemId)
     if (!existing) return
 
-    const newStatus = existing.status === 'assigned' ? 'completed' : 'assigned'
+    // completed → back to assigned; anything else → completed
+    const newStatus = existing.status === 'completed' ? 'assigned' : 'completed'
     const updates = {
       status: newStatus,
       completed_date: newStatus === 'completed' ? new Date().toISOString().slice(0, 10) : null,
@@ -258,6 +259,26 @@ export default function AdminApp() {
     try {
       await updateAssignment(assignmentId, { notes })
       setAssignments(prev => prev.map(a => a.id === assignmentId ? { ...a, notes } : a))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleUploadFeedback(assignmentId, file) {
+    const assignment = assignments.find(a => a.id === assignmentId)
+    if (!assignment) return
+    const student = students.find(s => s.id === assignment.student_id)
+    const problem = allProblems.find(p => p.id === assignment.problem_id)
+    const problemLabel = problem
+      ? `${problem.contest} ${problem.year} ${problem.label} — ${problem.name}`
+      : assignment.problem_id
+    try {
+      const feedbackUrl = await uploadFeedback(assignment.student_id, assignmentId, file)
+      await publishFeedback(assignment, feedbackUrl, student?.name || assignment.student_id, problemLabel)
+      setAssignments(prev => prev.map(a => a.id === assignmentId
+        ? { ...a, status: 'reviewed', feedback_url: feedbackUrl, feedback_at: new Date().toISOString() }
+        : a))
+      showToast('Feedback uploaded and student notified')
     } catch (e) {
       showToast(e.message, 'error')
     }
@@ -487,6 +508,7 @@ export default function AdminApp() {
             onUnassign={handleUnassign}
             onGenerateEmail={handleGenerateEmail}
             onUpdateNote={handleUpdateNote}
+            onUploadFeedback={handleUploadFeedback}
           />
         )}
 

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 function NoteField({ assignmentId, initialNote, onSave }) {
   const [value, setValue] = useState(initialNote || '')
@@ -48,11 +48,14 @@ function NoteField({ assignmentId, initialNote, onSave }) {
 export default function AssignedView({
   student, assignments, problems,
   assignedOrder, onReorder,
-  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote,
+  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUploadFeedback,
 }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [dragId, setDragId] = useState(null)
   const [dragOverId, setDragOverId] = useState(null)
+  const [uploadingId, setUploadingId] = useState(null)
+  const feedbackInputRef = useRef(null)
+  const pendingFeedbackId = useRef(null)
 
   if (!student) return <div className="assigned-view"><div className="empty-state">No student selected.</div></div>
 
@@ -61,7 +64,27 @@ export default function AssignedView({
   }
 
   const assignedCount = assignments.filter(a => a.status === 'assigned').length
+  const submittedCount = assignments.filter(a => a.status === 'submitted').length
+  const reviewedCount = assignments.filter(a => a.status === 'reviewed').length
   const completedCount = assignments.filter(a => a.status === 'completed').length
+
+  function triggerFeedbackUpload(assignmentId) {
+    pendingFeedbackId.current = assignmentId
+    feedbackInputRef.current?.click()
+  }
+
+  async function handleFeedbackFileChange(e) {
+    const file = e.target.files?.[0]
+    const assignmentId = pendingFeedbackId.current
+    e.target.value = ''
+    if (!file || !assignmentId) return
+    setUploadingId(assignmentId)
+    try {
+      await onUploadFeedback(assignmentId, file)
+    } finally {
+      setUploadingId(null)
+    }
+  }
 
   const filtered = [...assignments]
     .filter(a => statusFilter === 'all' || a.status === statusFilter)
@@ -120,10 +143,21 @@ export default function AssignedView({
         )}
       </div>
 
+      {/* Hidden file input for feedback uploads */}
+      <input
+        ref={feedbackInputRef}
+        type="file"
+        accept="image/*,application/pdf"
+        style={{ display: 'none' }}
+        onChange={handleFeedbackFileChange}
+      />
+
       <div className="assigned-tabs">
         {[
           ['all', 'All', assignments.length],
           ['assigned', 'Assigned', assignedCount],
+          ['submitted', 'Submitted', submittedCount],
+          ['reviewed', 'Reviewed', reviewedCount],
           ['completed', 'Completed', completedCount],
         ].map(([key, label, count]) => (
           <button
@@ -173,9 +207,12 @@ export default function AssignedView({
                 <button
                   className={`status-toggle ${a.status}`}
                   onClick={() => onToggleStatus(a.problem_id)}
-                  title={`Click to mark as ${a.status === 'assigned' ? 'completed' : 'assigned'}`}
+                  title={a.status === 'completed' ? 'Click to revert to assigned' : 'Click to mark as completed'}
                 >
-                  {a.status === 'assigned' ? '→ Assigned' : '✓ Completed'}
+                  {a.status === 'assigned' ? '→ Assigned'
+                    : a.status === 'submitted' ? '⬆ Submitted'
+                    : a.status === 'reviewed' ? '◎ Reviewed'
+                    : '✓ Completed'}
                 </button>
                 <div className="assigned-problem-info">
                   <span className="p-label">{p.contest} {p.year} {p.label}</span>
@@ -196,6 +233,22 @@ export default function AssignedView({
                     </a>
                   )}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
+                  {a.submission_url && (
+                    <a href={a.submission_url} target="_blank" rel="noreferrer">Submission ↗</a>
+                  )}
+                  {a.status === 'submitted' && (
+                    <button
+                      className="sm"
+                      style={{ fontSize: 11, padding: '1px 6px' }}
+                      disabled={uploadingId === a.id}
+                      onClick={() => triggerFeedbackUpload(a.id)}
+                    >
+                      {uploadingId === a.id ? 'Uploading…' : 'Upload feedback'}
+                    </button>
+                  )}
+                  {a.feedback_url && (
+                    <a href={a.feedback_url} target="_blank" rel="noreferrer">Feedback ↗</a>
+                  )}
                   <button
                     className="sm"
                     style={{ color: 'var(--text-dim)', fontSize: 11, padding: '1px 6px' }}

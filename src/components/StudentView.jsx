@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import {
   supabase,
   fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
@@ -8,6 +8,7 @@ import {
   fetchMyProgressReports,
   createInvite, setStudentStatus, cancelUpcomingSessions,
   markMyProblemCompleted,
+  uploadSubmission, notifySubmission,
 } from '../utils/supabase'
 import FilterSidebar from './FilterSidebar'
 
@@ -29,6 +30,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [contactsLoaded, setContactsLoaded] = useState(false)
   const [invoices, setInvoices] = useState([])
   const [invoicesLoaded, setInvoicesLoaded] = useState(false)
+  const [submittingId, setSubmittingId] = useState(null)
+  const [submitError, setSubmitError] = useState(null)
+  const submitInputRef = useRef(null)
+  const pendingSubmitId = useRef(null)
 
   useEffect(() => {
     if (tab !== 'account' || !student?.id || contactsLoaded) return
@@ -53,7 +58,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
   }
 
   const assignedItems = assignments
-    .filter(a => a.status === 'assigned')
+    .filter(a => a.status === 'assigned' || a.status === 'submitted' || a.status === 'reviewed')
     .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
 
   const completedItems = assignments
@@ -124,8 +129,37 @@ export default function StudentView({ student, assignments, sessions, problems, 
     email: (isPreview ? student?.email : account?.email) || '',
   }
 
+  function triggerSubmitUpload(assignmentId) {
+    pendingSubmitId.current = assignmentId
+    submitInputRef.current?.click()
+  }
+
+  async function handleSubmitFileChange(e) {
+    const file = e.target.files?.[0]
+    const assignmentId = pendingSubmitId.current
+    e.target.value = ''
+    if (!file || !assignmentId || isPreview) return
+    setSubmitError(null)
+    setSubmittingId(assignmentId)
+    try {
+      const url = await uploadSubmission(student.id, assignmentId, file)
+      await notifySubmission(assignmentId, url)
+    } catch (err) {
+      setSubmitError(err.message)
+    } finally {
+      setSubmittingId(null)
+    }
+  }
+
   return (
     <div className="student-portal">
+      <input
+        ref={submitInputRef}
+        type="file"
+        accept="image/*,application/pdf"
+        style={{ display: 'none' }}
+        onChange={handleSubmitFileChange}
+      />
       <div className="sp-header">
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
           <div>
@@ -289,6 +323,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
         </div>
       ) : (
         <div className="assigned-list">
+          {submitError && (
+            <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 8 }}>{submitError}</div>
+          )}
           {tabItems.map(a => {
             const p = problemById(a.problem_id)
             if (!p) return null
@@ -303,7 +340,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
             return (
               <div key={a.id} className="assigned-row">
                 <span className={`status-badge ${a.status}`}>
-                  {a.status === 'assigned' ? '→ Assigned' : '✓ Completed'}
+                  {a.status === 'assigned' ? '→ Assigned'
+                    : a.status === 'submitted' ? '⬆ Submitted'
+                    : a.status === 'reviewed' ? '◎ Reviewed'
+                    : '✓ Completed'}
                 </span>
                 <div className="assigned-problem-info">
                   <span className="p-label">{p.contest}{!isResource ? ` ${p.year} ${p.label}` : ''}</span>
@@ -312,8 +352,24 @@ export default function StudentView({ student, assignments, sessions, problems, 
                   <span className="p-date">{dueLabel || dateLabel}</span>
                 </div>
                 <div className="assigned-row-links">
-                  <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>
+                  {p.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
+                  {a.submission_url && (
+                    <a href={a.submission_url} target="_blank" rel="noreferrer">Submission ↗</a>
+                  )}
+                  {a.feedback_url && (
+                    <a href={a.feedback_url} target="_blank" rel="noreferrer">Feedback ↗</a>
+                  )}
+                  {a.status === 'assigned' && !isPreview && (
+                    <button
+                      className="sm"
+                      style={{ fontSize: 11, padding: '1px 6px' }}
+                      disabled={submittingId === a.id}
+                      onClick={() => triggerSubmitUpload(a.id)}
+                    >
+                      {submittingId === a.id ? 'Uploading…' : 'Submit'}
+                    </button>
+                  )}
                 </div>
               </div>
             )

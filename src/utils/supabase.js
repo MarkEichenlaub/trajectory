@@ -419,6 +419,78 @@ export async function fetchHandoutsPublic() {
   return data || []
 }
 
+// ── Submissions (student uploads work; admin uploads feedback) ────────────────
+
+// Upload a student's submission file and return the public URL.
+export async function uploadSubmission(studentId, assignmentId, file) {
+  const ext = file.name.split('.').pop() || 'bin'
+  const path = `${studentId}/${assignmentId}.${ext}`
+  const { error } = await supabase.storage
+    .from('submissions')
+    .upload(path, file, { upsert: true, contentType: file.type })
+  if (error) throw new Error(error.message)
+  const { data } = supabase.storage.from('submissions').getPublicUrl(path)
+  return data.publicUrl
+}
+
+// After uploading, call the notify-submission edge function to update status
+// and email Mark. Uses the student's active session automatically.
+export async function notifySubmission(assignmentId, submissionUrl) {
+  const { data, error } = await supabase.functions.invoke('notify-submission', {
+    body: { assignment_id: assignmentId, submission_url: submissionUrl },
+  })
+  if (error) throw new Error(error.message || String(error))
+  return data
+}
+
+// Admin: upload feedback for an assignment and return the public URL.
+export async function uploadFeedback(studentId, assignmentId, file) {
+  const ext = file.name.split('.').pop() || 'bin'
+  const path = `${studentId}/${assignmentId}.${ext}`
+  const { error } = await supabase.storage
+    .from('feedback')
+    .upload(path, file, { upsert: true, contentType: file.type })
+  if (error) throw new Error(error.message)
+  const { data } = supabase.storage.from('feedback').getPublicUrl(path)
+  return data.publicUrl
+}
+
+// Admin: mark assignment as reviewed + email the student's contacts.
+export async function publishFeedback(assignment, feedbackUrl, studentName, problemLabel) {
+  const { error } = await supabase.from('assignments').update({
+    status: 'reviewed',
+    feedback_url: feedbackUrl,
+    feedback_at: new Date().toISOString(),
+  }).eq('id', assignment.id)
+  if (error) throw new Error(error.message)
+
+  // Notify contacts who opted into assignment emails
+  const { data: contacts } = await supabase
+    .from('student_contacts')
+    .select('email')
+    .eq('student_id', assignment.student_id)
+    .eq('receives_assignments', true)
+    .eq('verified', true)
+    .eq('bounced', false)
+  const emails = (contacts || []).map(c => c.email).filter(Boolean)
+  if (!emails.length) return
+
+  await supabase.functions.invoke('send-email', {
+    body: {
+      to: emails,
+      subject: `Feedback ready for ${studentName}: ${problemLabel}`,
+      body: [
+        `Hi,`,
+        '',
+        `Feedback is now available for ${studentName}'s submission of:`,
+        `  ${problemLabel}`,
+        '',
+        `View feedback and your progress at: https://portal.eichenlaubphysics.com/`,
+      ].join('\n'),
+    },
+  })
+}
+
 export async function markMyProblemCompleted(studentId, problemId) {
   const date = new Date().toISOString().slice(0, 10)
   const { data: existing } = await supabase
