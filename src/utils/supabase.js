@@ -311,10 +311,48 @@ export async function resolveMyAccount() {
 export async function fetchStudentSessions() {
   const { data, error } = await supabase
     .from('sessions')
-    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, cal_booking_id, cal_uid, end_time, created_at, summary, tags')
+    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags')
     .order('scheduled_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
+}
+
+// ── Direct scheduling (Google Calendar-backed) ────────────────────────────────
+
+export async function getAvailability(from, to) {
+  const { data, error } = await supabase.functions.invoke('get-availability', {
+    body: { from, to },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data?.slots || []
+}
+
+export async function bookSession(slot) {
+  const { data, error } = await supabase.functions.invoke('book-session', {
+    body: { slot },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
+export async function rescheduleSession(sessionId, newSlot) {
+  const { data, error } = await supabase.functions.invoke('reschedule-session', {
+    body: { session_id: sessionId, new_slot: newSlot },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
+export async function cancelSession(sessionId, message) {
+  const { data, error } = await supabase.functions.invoke('cancel-session', {
+    body: { session_id: sessionId, ...(message ? { message } : {}) },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data
 }
 
 export async function fetchMyInvoices() {

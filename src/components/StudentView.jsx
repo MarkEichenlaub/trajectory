@@ -9,6 +9,7 @@ import {
   createInvite, setStudentStatus, cancelUpcomingSessions,
   markMyProblemCompleted,
   uploadSubmission, notifySubmission,
+  getAvailability, bookSession, rescheduleSession, cancelSession,
 } from '../utils/supabase'
 import FilterSidebar from './FilterSidebar'
 
@@ -195,7 +196,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
       {tab === 'progress-plan' ? (
         <ProgressAndPlanTab studentId={student.id} />
       ) : tab === 'scheduling' ? (
-        <SchedulingTab prefill={schedulePrefill} sessions={sortedSessions} formatDate={formatDate} />
+        <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} />
       ) : tab === 'invoices' ? (
         <InvoicesTab invoices={invoices} setInvoices={setInvoices} isAdmin={isPreview} />
       ) : tab === 'account' ? (
@@ -1016,21 +1017,67 @@ function InvoicesTab({ invoices, setInvoices, isAdmin }) {
   )
 }
 
-const CAL_LINK = 'markeichenlaub'
-
-function SchedulingTab({ prefill, sessions, formatDate }) {
+function SchedulingTab({ sessions, formatDate, student, isPreview }) {
   const nowIso = new Date().toISOString()
+
+  // Local session mutations (avoid needing to re-fetch from parent after actions)
+  const [localAdded, setLocalAdded] = useState([])
+  const [canceledIds, setCanceledIds] = useState(new Set())
+  const [updatedSessions, setUpdatedSessions] = useState({})
+
+  const effectiveSessions = useMemo(() => {
+    return [...(sessions || []), ...localAdded]
+      .filter(s => !canceledIds.has(s.id))
+      .map(s => updatedSessions[s.id] ? { ...s, ...updatedSessions[s.id] } : s)
+  }, [sessions, localAdded, canceledIds, updatedSessions])
+
   const upcoming = useMemo(() =>
-    (sessions || [])
+    effectiveSessions
       .filter(s => s.scheduled_at > nowIso)
       .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at)),
-    [sessions] // eslint-disable-line react-hooks/exhaustive-deps
+    [effectiveSessions, nowIso]
   )
 
-  const [viewDate, setViewDate] = useState(() => {
-    const d = new Date(); d.setDate(1); return d
-  })
+  const [viewDate, setViewDate] = useState(() => { const d = new Date(); d.setDate(1); return d })
+  const viewYear = viewDate.getFullYear()
+  const viewMonth = viewDate.getMonth()
+
+  // Availability slots by Pacific date
+  const [slotsByDate, setSlotsByDate] = useState({})
+  const [slotsLoading, setSlotsLoading] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  // UI state
   const [selectedSession, setSelectedSession] = useState(null)
+  const [selectedDay, setSelectedDay] = useState(null) // YYYY-MM-DD for booking
+  const [reschedulingId, setReschedulingId] = useState(null) // session.id being rescheduled
+  const [pendingSlot, setPendingSlot] = useState(null) // ISO slot being confirmed
+  const [cancelingSession, setCancelingSession] = useState(null)
+  const [cancelMsg, setCancelMsg] = useState('')
+  const [working, setWorking] = useState(false)
+  const [actionError, setActionError] = useState(null)
+  const [successMsg, setSuccessMsg] = useState(null)
+
+  // Fetch availability for the visible month
+  useEffect(() => {
+    if (isPreview || !student?.id) return
+    setSlotsLoading(true)
+    setSlotsByDate({})
+    const from = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-CA')
+    const to = new Date(viewYear, viewMonth + 1, 0).toLocaleDateString('en-CA')
+    getAvailability(from, to)
+      .then(slots => {
+        const byDate = {}
+        slots.forEach(iso => {
+          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' })
+          if (!byDate[key]) byDate[key] = []
+          byDate[key].push(iso)
+        })
+        setSlotsByDate(byDate)
+      })
+      .catch(e => { console.error('Availability fetch failed:', e); setSlotsByDate({}) })
+      .finally(() => setSlotsLoading(false))
+  }, [viewYear, viewMonth, student?.id, isPreview, refreshKey])
 
   const sessionsByDate = useMemo(() => {
     const map = {}
@@ -1042,27 +1089,270 @@ function SchedulingTab({ prefill, sessions, formatDate }) {
     return map
   }, [upcoming])
 
-  const year = viewDate.getFullYear()
-  const month = viewDate.getMonth()
-  const firstDow = new Date(year, month, 1).getDay()
-  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const firstDow = new Date(viewYear, viewMonth, 1).getDay()
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
   const totalCells = Math.ceil((firstDow + daysInMonth) / 7) * 7
   const todayKey = new Date().toLocaleDateString('en-CA')
   const monthLabel = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
 
-  function prevMonth() { setViewDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1)) }
-  function nextMonth() { setViewDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1)) }
+  function prevMonth() {
+    setViewDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))
+    clearAction()
+  }
+  function nextMonth() {
+    setViewDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))
+    clearAction()
+  }
+  function clearAction() {
+    setSelectedSession(null); setSelectedDay(null); setReschedulingId(null)
+    setPendingSlot(null); setCancelingSession(null); setCancelMsg('')
+    setActionError(null); setSuccessMsg(null)
+  }
 
-  const selectedKey = selectedSession
-    ? new Date(selectedSession.scheduled_at).toLocaleDateString('en-CA')
-    : null
+  function handleDayClick(key, daySessions, daySlots) {
+    setActionError(null); setSuccessMsg(null)
+    if (reschedulingId) {
+      // In reschedule mode: show slots for any day
+      if (daySlots.length) { setSelectedDay(key); setSelectedSession(null) }
+      return
+    }
+    if (daySessions.length) {
+      setSelectedSession(daySessions[0]); setSelectedDay(null)
+    } else if (daySlots.length) {
+      setSelectedDay(key); setSelectedSession(null)
+    }
+  }
+
+  async function handleBook(slot) {
+    if (!student || isPreview) return
+    setPendingSlot(slot)
+  }
+
+  async function confirmBook() {
+    if (!pendingSlot || working) return
+    setWorking(true); setActionError(null)
+    try {
+      const result = await bookSession(pendingSlot)
+      setLocalAdded(prev => [...prev, {
+        id: result.session_id,
+        student_id: student.id,
+        scheduled_at: result.scheduled_at,
+        end_time: result.end_time,
+        miro_board_url: result.miro_board_url,
+        miro_board_id: result.miro_board_id,
+        gcal_event_id: result.gcal_event_id,
+      }])
+      setSuccessMsg(result.miro_board_url
+        ? `Session booked! Your Miro whiteboard: ${result.miro_board_url}`
+        : 'Session booked! Check your email for the confirmation.')
+      setRefreshKey(k => k + 1)
+      clearAction()
+    } catch (e) {
+      setActionError(e.message)
+    } finally {
+      setWorking(false)
+    }
+  }
+
+  async function confirmReschedule() {
+    if (!pendingSlot || !reschedulingId || working) return
+    setWorking(true); setActionError(null)
+    try {
+      const result = await rescheduleSession(reschedulingId, pendingSlot)
+      setUpdatedSessions(prev => ({ ...prev, [reschedulingId]: {
+        scheduled_at: result.scheduled_at,
+        end_time: result.end_time,
+      }}))
+      setSuccessMsg('Session rescheduled! Check your email for the updated calendar invite.')
+      setRefreshKey(k => k + 1)
+      clearAction()
+    } catch (e) {
+      setActionError(e.message)
+    } finally {
+      setWorking(false)
+    }
+  }
+
+  async function confirmCancel() {
+    if (!cancelingSession || working) return
+    setWorking(true); setActionError(null)
+    try {
+      await cancelSession(cancelingSession.id, cancelMsg || undefined)
+      setCanceledIds(prev => new Set([...prev, cancelingSession.id]))
+      setSuccessMsg('Session cancelled. A confirmation has been sent to your email.')
+      setRefreshKey(k => k + 1)
+      clearAction()
+    } catch (e) {
+      setActionError(e.message)
+    } finally {
+      setWorking(false)
+    }
+  }
+
+  // Determine panel mode
+  const inRescheduleSlotPick = reschedulingId && !pendingSlot
+  const daySlots = (selectedDay ? slotsByDate[selectedDay] : null) || []
+
+  // Right panel content
+  function renderPanel() {
+    if (successMsg) {
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
+          <div style={{ fontSize: 13, color: 'var(--green)', marginBottom: 10 }}>{successMsg}</div>
+          <button className="sm" onClick={clearAction}>Close</button>
+        </div>
+      )
+    }
+
+    if (cancelingSession) {
+      const when = formatDate(cancelingSession.scheduled_at)
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>Cancel session?</div>
+          <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>{when}</div>
+          <input
+            placeholder="Optional message to Mark…"
+            value={cancelMsg}
+            onChange={e => setCancelMsg(e.target.value)}
+            style={{ fontSize: 12 }}
+          />
+          {actionError && <div style={{ fontSize: 12, color: 'var(--red)' }}>{actionError}</div>}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="sm danger" disabled={working} onClick={confirmCancel}>
+              {working ? 'Cancelling…' : 'Confirm cancel'}
+            </button>
+            <button className="sm" disabled={working} onClick={clearAction}>Nevermind</button>
+          </div>
+        </div>
+      )
+    }
+
+    if (pendingSlot) {
+      const when = new Date(pendingSlot).toLocaleString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric',
+        hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+      }) + ' Pacific'
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>
+            {reschedulingId ? 'Reschedule to this time?' : 'Book this session?'}
+          </div>
+          <div style={{ fontSize: 13 }}>{when}</div>
+          {actionError && <div style={{ fontSize: 12, color: 'var(--red)' }}>{actionError}</div>}
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="sm primary" disabled={working} onClick={reschedulingId ? confirmReschedule : confirmBook}>
+              {working ? 'Working…' : 'Confirm'}
+            </button>
+            <button className="sm" disabled={working} onClick={() => setPendingSlot(null)}>Back</button>
+          </div>
+        </div>
+      )
+    }
+
+    if (selectedDay && daySlots.length > 0) {
+      const dateLabel = new Date(`${selectedDay}T12:00:00Z`).toLocaleDateString('en-US', {
+        weekday: 'long', month: 'long', day: 'numeric',
+      })
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>
+              {inRescheduleSlotPick ? 'Pick new time' : 'Available times'} — {dateLabel}
+            </div>
+            <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {daySlots.map(slot => (
+              <button key={slot} className="sm" style={{ fontSize: 12 }}
+                onClick={() => setPendingSlot(slot)}>
+                {new Date(slot).toLocaleTimeString('en-US', {
+                  hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+                })}
+              </button>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times Pacific</div>
+        </div>
+      )
+    }
+
+    if (selectedDay && daySlots.length === 0 && !slotsLoading) {
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>No available times on this day.</div>
+          <button className="sm" onClick={clearAction}>Back</button>
+        </div>
+      )
+    }
+
+    if (selectedSession) {
+      const canReschedule = !!selectedSession.gcal_event_id
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>{formatDate(selectedSession.scheduled_at)}</div>
+              {selectedSession.end_time && (
+                <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
+                  Ends {new Date(selectedSession.end_time).toLocaleTimeString('en-US', {
+                    hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+                  })} Pacific
+                </div>
+              )}
+            </div>
+            <button className="sm" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={clearAction}>✕</button>
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+            {selectedSession.miro_board_url && (
+              <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
+            )}
+            {!isPreview && canReschedule && (
+              <button className="sm" onClick={() => {
+                setReschedulingId(selectedSession.id)
+                setSelectedSession(null)
+                setSelectedDay(null)
+              }}>
+                Reschedule
+              </button>
+            )}
+            {!isPreview && (
+              <button className="sm danger" style={{ fontSize: 11 }} onClick={() => {
+                setCancelingSession(selectedSession)
+                setSelectedSession(null)
+              }}>
+                Cancel session
+              </button>
+            )}
+          </div>
+          {actionError && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 8 }}>{actionError}</div>}
+        </div>
+      )
+    }
+
+    if (inRescheduleSlotPick) {
+      return (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>Rescheduling — pick a new day</div>
+          <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Click any highlighted day to see available times.</div>
+          <button className="sm" style={{ alignSelf: 'flex-start' }} onClick={clearAction}>Cancel</button>
+        </div>
+      )
+    }
+
+    if (upcoming.length === 0 && !slotsLoading) {
+      return <div className="empty-state" style={{ padding: '20px 0' }}>No upcoming sessions scheduled.</div>
+    }
+
+    return null
+  }
 
   return (
-    <div style={{ maxWidth: 500, display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div style={{ maxWidth: 520, display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <button className="sm" onClick={prevMonth}>‹</button>
         <span style={{ fontSize: 15, fontWeight: 600, flex: 1, textAlign: 'center' }}>{monthLabel}</span>
         <button className="sm" onClick={nextMonth}>›</button>
+        {slotsLoading && <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Loading…</span>}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
@@ -1072,76 +1362,68 @@ function SchedulingTab({ prefill, sessions, formatDate }) {
         {Array.from({ length: totalCells }, (_, i) => {
           const dayNum = i - firstDow + 1
           if (dayNum < 1 || dayNum > daysInMonth) return <div key={i} />
-          const key = new Date(year, month, dayNum).toLocaleDateString('en-CA')
+          const key = new Date(viewYear, viewMonth, dayNum).toLocaleDateString('en-CA')
           const daySessions = sessionsByDate[key] || []
-          const hasSessions = daySessions.length > 0
+          const daySlotList = slotsByDate[key] || []
+          const hasSession = daySessions.length > 0
+          const hasSlots = daySlotList.length > 0
           const isToday = key === todayKey
-          const isSelected = key === selectedKey
+          const isSelected = (selectedSession && new Date(selectedSession.scheduled_at).toLocaleDateString('en-CA') === key)
+            || selectedDay === key
+
+          const clickable = hasSession || hasSlots
+          let bg = 'transparent'
+          if (isSelected) bg = 'var(--accent)'
+          else if (hasSession) bg = 'var(--accent-dim)'
+          else if (hasSlots) bg = 'var(--surface)'
+
           return (
             <div
               key={key}
-              onClick={() => hasSessions ? setSelectedSession(daySessions[0]) : setSelectedSession(null)}
+              onClick={clickable ? () => handleDayClick(key, daySessions, daySlotList) : undefined}
               style={{
                 padding: '6px 2px',
                 borderRadius: 6,
-                cursor: hasSessions ? 'pointer' : 'default',
-                background: isSelected ? 'var(--accent)' : hasSessions ? 'var(--accent-dim)' : 'transparent',
-                border: `1px solid ${isToday ? 'var(--border)' : 'transparent'}`,
+                cursor: clickable ? 'pointer' : 'default',
+                background: bg,
+                border: `1px solid ${isToday ? 'var(--border)' : hasSlots && !hasSession && !isSelected ? 'var(--border)' : 'transparent'}`,
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
                 minHeight: 44,
               }}
             >
               <span style={{
                 fontSize: 13,
-                fontWeight: hasSessions ? 600 : 400,
-                color: isSelected ? 'white' : hasSessions ? 'var(--accent)' : isToday ? 'var(--text)' : 'var(--text-dim)',
+                fontWeight: hasSession || hasSlots ? 500 : 400,
+                color: isSelected ? 'white'
+                  : hasSession ? 'var(--accent)'
+                  : hasSlots ? 'var(--text)'
+                  : isToday ? 'var(--text)'
+                  : 'var(--text-dim)',
               }}>
                 {dayNum}
               </span>
-              {hasSessions && (
+              {hasSession && (
                 <span style={{ width: 5, height: 5, borderRadius: '50%', background: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--accent)' }} />
+              )}
+              {!hasSession && hasSlots && (
+                <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--text-dim)', opacity: 0.4 }} />
               )}
             </div>
           )
         })}
       </div>
 
-      {selectedSession ? (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 600 }}>{formatDate(selectedSession.scheduled_at)}</div>
-              {selectedSession.end_time && (
-                <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
-                  Ends {new Date(selectedSession.end_time).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                </div>
-              )}
-            </div>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexShrink: 0, flexWrap: 'wrap' }}>
-              {selectedSession.miro_board_url && (
-                <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
-              )}
-              {selectedSession.cal_uid && (
-                <a href={`https://cal.com/reschedule/${selectedSession.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
-              )}
-              <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={() => setSelectedSession(null)}>✕</button>
-            </div>
+      {renderPanel()}
+
+      {!isPreview && (
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+          <div style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.5 }}>
+            {slotsLoading
+              ? 'Checking availability…'
+              : 'Filled days ● have sessions · bordered days have available times · all times Pacific'}
           </div>
         </div>
-      ) : upcoming.length === 0 ? (
-        <div className="empty-state">No upcoming sessions scheduled.</div>
-      ) : null}
-
-      <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16 }}>
-        <a
-          href={`https://cal.com/${CAL_LINK}/1-hr-session`}
-          target="_blank"
-          rel="noreferrer"
-          style={{ fontSize: 13, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}
-        >
-          + Book a new session ↗
-        </a>
-      </div>
+      )}
     </div>
   )
 }
