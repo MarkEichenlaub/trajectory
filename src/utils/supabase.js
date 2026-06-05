@@ -167,6 +167,26 @@ export async function fetchHandouts() {
   return data || []
 }
 
+// Homework sets — admin-curated bundles compiled into one PDF (RLS scopes rows:
+// admin sees all, a student sees only their own via the linked-read policy).
+export async function fetchHomeworkSets(studentId) {
+  let q = adminClient().from('homework_sets').select('*').order('created_at', { ascending: false })
+  if (studentId) q = q.eq('student_id', studentId)
+  const { data, error } = await q
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function insertHomeworkSet(row) {
+  const { error } = await adminClient().from('homework_sets').insert(row)
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteHomeworkSet(id) {
+  const { error } = await adminClient().from('homework_sets').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function saveHandout(handout) {
   const { error } = await adminClient()
     .from('handouts').upsert(handout, { onConflict: 'id' })
@@ -290,6 +310,14 @@ export async function fetchMyProgressReports() {
 export async function fetchStudentAssignments() {
   const { data, error } = await supabase
     .from('assignments').select('*, assignment_submissions(*)').order('assigned_date', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+// Student-facing: RLS returns only the caller's own homework sets.
+export async function fetchStudentHomeworkSets() {
+  const { data, error } = await supabase
+    .from('homework_sets').select('*').order('created_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
 }

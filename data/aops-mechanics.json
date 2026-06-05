@@ -1,0 +1,3891 @@
+[
+  {
+    "id": "fef8653e-eeed-4927-b82d-a33749f06fd7",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "In addition to this homework set, don't forget that there is a prereading to do before…",
+    "desc": "In addition to this homework set, don't forget that there is a prereading to do before the next class (and there will be one before all the remaining classes in this course). It's important to do the prereading to be prepared for class. You can find it on the class homepage.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "reading",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43541",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "f07ffcc8-e5a4-4692-8de9-fb9c2d0dacd6",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "You're not going to understand everything right away. Please ask your questions on our…",
+    "desc": "You're not going to understand everything right away. Please ask your questions on our class message board! When you ask questions, other students benefit when they read and participate in the conversation. Instructors can also teach better when you ask questions, since it shows ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43543",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "477342e9-b79c-469e-8fa0-256ddc8328b5",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "One of the core skills physicists learn is to decide how much complexity to put in their…",
+    "desc": "One of the core skills physicists learn is to decide how much complexity to put in their models. They decide this based on the type of problem they're working on and the accuracy they need. In this problem, we'll practice thinking about when we can productively use the most basic",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43555",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0d4c56c1-abe9-4cbc-8a93-28a0e40ad54a",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "On hot days you can sometimes see __mirages__.",
+    "desc": "On hot days you can sometimes see __mirages__. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/01_hw_mirage_walk.gif) PhysicsStuff.com The reflection of people walking can make it look like there's a puddle of water on the ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43554",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b99b5aee-f350-4483-9ad1-0a58537176fe",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "We will use __normalized scientific notation__ for both large and small numbers. In this…",
+    "desc": "We will use __normalized scientific notation__ for both large and small numbers. In this notation, any number can be represented by a number (called the \"coefficient\") greater than $1.0$ and less than $10,$ multiplied by ten to some power. For example, here are some numbers writt",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43542",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4ef99097-a397-4b74-8450-59f1153a3099",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "This question is to help make the message boards useful for the entire class by…",
+    "desc": "This question is to help make the message boards useful for the entire class by practicing writing titles for questions. The better the titles we use, the more everyone can gain by browsing the message boards. ------------------ On AoPS message boards, if you ask a question, you'",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43540",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "397d3d0e-bed2-4919-a673-6ea067a48e26",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "This problem is practice with the ideas of speed, distance, and time.",
+    "desc": "This problem is practice with the ideas of speed, distance, and time. --------------- Suppose two cars begin driving towards each other from $150 \\;\\mathrm{mi}$ apart. The first car drives at $40 \\;\\mathrm{mi/h}$ and the second car drives at $60 \\;\\mathrm{mi/h}.$ How long will it",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43552",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "94caeeb3-4d80-4b87-a6c7-904f2754b95d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "This problem is more practice with the mathematical relation between speed, distance, and…",
+    "desc": "This problem is more practice with the mathematical relation between speed, distance, and time. A driver wants to complete a $60.0 \\;\\mathrm{mi}$ trip at an average of $60.0 \\;\\mathrm{mi/h}.$ They've already completed the first $30.0 \\;\\mathrm{mi}$ at an average of $70.0 \\;\\mathr",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43553",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8e3d9fb0-81e9-4d8d-ac59-338248cc8e5d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "In this problem, you'll practice __estimation__ and __unit conversions__. These are both…",
+    "desc": "In this problem, you'll practice __estimation__ and __unit conversions__. These are both essential skills that we'll use throughout the course. Estimate the average speed at which human hair grows in miles per hour. There is no one answer to this question - different hairs grow a",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43254",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "fe59c760-84a3-4c89-bc86-db8a33ec1a99",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "In this problem, you'll practice the notation and interpretation of speed and velocity.",
+    "desc": "In this problem, you'll practice the notation and interpretation of speed and velocity. ------------------------- Below is a sketch of an __Atwood machine__, an 18th century invention intended to measure the strength of gravity. The device consists of a pulley (a circular ring th",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43532",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "42e30de6-6973-42e9-8421-fb96bf62b734",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "This problem will help you practice the relationship between velocity and distance…",
+    "desc": "This problem will help you practice the relationship between velocity and distance traveled when the velocity changes and is represented on a graph. ------------------------ Ayesha McGowan is a professional road racing cyclist. ![](http://cdn.artofproblemsolving.com/school/crypt/",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43544",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a73c4c99-12b2-44a8-8a19-b765c4618fdc",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "name": "Take a look at the following dot diagram. The dots were made $1 \\;\\mathrm{s}$ apart, and…",
+    "desc": "Take a look at the following dot diagram. The dots were made $1 \\;\\mathrm{s}$ apart, and the scale is $1:1,$ so the dots' distance apart on your computer monitor is their distance apart in real life. The dots should display the correct distance apart on most computers. However, i",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43614",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "670ab7f6-c801-4020-8900-dcd6468ad364",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "The first three problems on this set are quick reviews to make sure you remember the…",
+    "desc": "The first three problems on this set are quick reviews to make sure you remember the terminology introduced in class. They are quick problems, and after those three, you'll dive into applying the physics to real situations. If you are unsure on these, you could check the transcri",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45990",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "67767644-38fd-493a-bc16-adcc1b78c56d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "Match the concept to our mathematical notation for it. Assume we are using $x$ as a…",
+    "desc": "Match the concept to our mathematical notation for it. Assume we are using $x$ as a coordinate. The matching is one-to-one. a coordinate for position allowsMultipleConnections:",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46176",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9f604821-69c5-46ca-9214-df44c83366ca",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "An object is moving, and we use the coordinate $z$ to track its motion.",
+    "desc": "An object is moving, and we use the coordinate $z$ to track its motion. Create equations for the displacement, velocity, and acceleration of the object. Each should use at least one $\\Delta.$ mathjax: \\begin{align*} \\text{displacement} & = \\drag\\drag\\\\ {} \\\\ \\text{velocity} & = \\",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45992",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "2e01b13c-cd60-4e62-a3bd-22243e164c53",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "This problem asks you to think qualitatively about acceleration and free fall. You'll…",
+    "desc": "This problem asks you to think qualitatively about acceleration and free fall. You'll visualize acceleration using a free falling stick. ------------------------------- There is a challenge that many people find surprising: hold a dollar bill vertically and invite a friend to put",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43640",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "66297267-89df-4d90-aa0b-2f86f168700a",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "On their wedding day, a couple jumped off a cliff into water below. (As a celebration…",
+    "desc": "On their wedding day, a couple jumped off a cliff into water below. (As a celebration, not out of despair.) ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/02_hw_wedding_jump.jpg) Zvonimir Barisin There's another photo take",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43632",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "31e1bc46-9a72-4732-910c-12e8afcfbe98",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "This problem gives you some more practice conceptualizing what acceleration is, as used…",
+    "desc": "This problem gives you some more practice conceptualizing what acceleration is, as used in physics, and interpreting it in an everyday scenario. This problem isn't focused on positive and negative aspects, just how large the acceleration is. That's why it asks about the magnitude",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43636",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b7dca758-2dd4-4e60-b563-b554e1d0209f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "This question is quantitative, but doesn't ask you to use any formulas. Instead, you…",
+    "desc": "This question is quantitative, but doesn't ask you to use any formulas. Instead, you should think about how accelerations are measured and calculated and answer this question based on that process, rather than by plugging any particular numbers into a formula. -------------------",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43641",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "76ae1759-1d0c-487e-986e-4459d9debe91",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "MCH02 Problem 8",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9dd79fa8-eb94-4eb0-8595-34757a7eaeff",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH02: Acceleration",
+    "label": "MCH02",
+    "name": "MCH02 Problem 9",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH02"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "fef496a1-c3a2-4ac4-8aef-5a834137993c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "This problem asks you to start applying ideas you learned about projectile motion and…",
+    "desc": "This problem asks you to start applying ideas you learned about projectile motion and reference frames in a qualitative setting. ---------------------- Suppose you are walking along, holding an empty bottle in your hand. You see a recycling bin at ground level, and want to drop t",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43711",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "7300e7b8-4329-4c8c-80b6-e3ef294a5427",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "The next two problems on the set review core concepts about projectiles while letting you…",
+    "desc": "The next two problems on the set review core concepts about projectiles while letting you practice with terminology and notation for motion. Fill in the blank below with the single best choice. The variables are: $\\begin{array}{c|l} \\text{variable} & \\text{meaning} \\\\ \\hline v & ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46007",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "69ed0f36-6408-4db1-96e6-18226ca1f13c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "A projectile is launched from ground height and travels along a parabola from left to…",
+    "desc": "A projectile is launched from ground height and travels along a parabola from left to right, landing at the same height it was launched from. The trajectory can be divided into two halves. Below, the first half is in blue and the second half is in red. Set the vertical coordinate",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46008",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5c75113f-761a-44cf-8a97-43815bc1b7b5",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "Here, you'll practice looking at a drawing and working backwards to figure out what the…",
+    "desc": "Here, you'll practice looking at a drawing and working backwards to figure out what the drawing means in terms of basic physical quantities, but you won't have to do any calculations. ---------------------- Three projectiles are fired from ground level. Their trajectories are sho",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43736",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "be41220e-3050-455d-84c3-41c5c0ff714d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "This is our first quantitative problem on this homework set. It is a good chance to…",
+    "desc": "This is our first quantitative problem on this homework set. It is a good chance to practice proportional reasoning and analyzing horizontal and vertical motions separately, then using information from one analysis in the other. -------------------- Two projectiles are fired from",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43737",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "f2d02a11-b7b6-4373-ad8f-4cddee4f9798",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "MCH03 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ae3b59f6-5c81-42ad-94b9-ece1465d54d0",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "This problem is qualitative, and explores an application of projectile motion. The…",
+    "desc": "This problem is qualitative, and explores an application of projectile motion. The challenge is in figuring out what all the different pieces of the problem mean, not in doing a complicated calculation. ------------------ In principle, we can find square roots of numbers by dropp",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43740",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "89f545a1-5b35-440a-8312-ab5e279244f6",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "NASA trains astronauts to experience weightlessness with an airplane which flies in a…",
+    "desc": "NASA trains astronauts to experience weightlessness with an airplane which flies in a parabolic arc with constant acceleration $g$ toward the ground. Similar planes can be used for civilian purposes, such as this music video: ![](http://cdn.artofproblemsolving.com/school/crypt/00",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43751",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "3117ffff-38b8-4822-92b9-63a60ed10aab",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "This problem lets you use quantitative skills in multiple steps, and think about special…",
+    "desc": "This problem lets you use quantitative skills in multiple steps, and think about special triangles. You may want to remember the $30^\\circ-60^\\circ-90^\\circ$ special triangle. ---------------------------- A spring-loaded launcher can shoot a projectile to a height $h$ if launched",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43757",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d3aa904e-e988-49b8-bc97-06ccd877e85b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "This challenging quantitative problem asks you to combine what you've learned about…",
+    "desc": "This challenging quantitative problem asks you to combine what you've learned about acceleration with ideas about horizontal and vertical velocities for trajectories. -------------------------- You plan to drop a ball off a cliff. The ball will fall straight down for some distanc",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43749",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ed281cb5-6168-46d6-a082-9848b5510e23",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH03: Projectile Motion",
+    "label": "MCH03",
+    "name": "In the ancient Greek poem __The Odyssey__, the hero Odysseus has to shoot an arrow…",
+    "desc": "In the ancient Greek poem __The Odyssey__, the hero Odysseus has to shoot an arrow through a series of twelve axes set up in a row. (There are holes in the axes for an arrow to go through.) In 2019, the TV show __MythBusters Jr.__ replicated the feat. ![](http://cdn.artofproblems",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH03"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43756",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b8c0b41f-23bc-47d7-8ee4-81920172c3ac",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "This problem is for quick practice with the definition of kinetic energy, $K = \\dfrac12…",
+    "desc": "This problem is for quick practice with the definition of kinetic energy, $K = \\dfrac12 mv^2.$ ------------------------------ There are two objects, $A$ and $B.$ Object $B$ has half the mass of object $A,$ but moves twice as fast. Neither object is at rest. Which object has more ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43965",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c167b19f-2ca6-4692-bd61-9380764cd72f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "Objects $A$ and $B$ are each dropped and fall to the ground. Object $A$ has twice the…",
+    "desc": "Objects $A$ and $B$ are each dropped and fall to the ground. Object $A$ has twice the mass of object $B.$ If object $B$ is dropped from a height of $1 \\;\\mathrm{m},$ from how high should object $A$ be dropped in order to hit the ground at the same speed? Assume air drag is neglig",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43966",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "67d6b679-0a76-45b3-b42f-dde72984874f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "From the top of a high cliff, a ball is thrown horizontally with initial speed $v_0$ at…",
+    "desc": "From the top of a high cliff, a ball is thrown horizontally with initial speed $v_0$ at time $t = 0.$ Which of the following graphs best represents the ball's kinetic energy $KE$ as a function of time $t?$ Ignore air resistance for this problem.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43774",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ad607a78-ad8e-4572-b311-a0d09d120432",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "Rank the Atwood machines below in order of the magnitude of acceleration of the blocks…",
+    "desc": "Rank the Atwood machines below in order of the magnitude of acceleration of the blocks, from highest to lowest. Ignore friction and the mass of the pulley and rope in this problem. mathjax: \\begin{align*} \\text{highest magnitude of acceleration: } & \\drag \\\\ \\text{ } & \\drag \\\\ \\",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43859",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5ab7637c-7f01-44fc-b1da-6d723fc1b69d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "Some students build two ramps. Each is a height $d,$ and each is on a table a height $h$…",
+    "desc": "Some students build two ramps. Each is a height $d,$ and each is on a table a height $h$ above the ground. They hold a block at the top of each ramp. The blocks are released simultaneously. Each slides down its incline and shoots horizontally off the edge of its table. Which bloc",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43858",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8160ee8b-3790-4719-a705-f7a035eec856",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "Here you can practice more with quantitative applications of potential energy, kinetic…",
+    "desc": "Here you can practice more with quantitative applications of potential energy, kinetic energy, and energy conservation. You throw a ball straight upward with initial speed $v_0.$ It rises to a height $h$ above the point where you threw it. When the ball has risen a distance $h/2$",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43857",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8930a5c9-0885-4a88-9787-165cff4d5ae1",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "This problem is for practice with two different skills. First, there's a lot of…",
+    "desc": "This problem is for practice with two different skills. First, there's a lot of interpreting the meaning of different mathematical notation. Second, there's understanding what scientific hypothesis mean, and when two differently stated hypotheses are actually the same thing. In c",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43871",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "92152e79-b1fd-4802-9a00-d4c3b1ed6489",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "When a ball bounces off the ground, it loses some kinetic energy, so if the vertical…",
+    "desc": "When a ball bounces off the ground, it loses some kinetic energy, so if the vertical component of the ball's velocity is $v_{y0}$ just before hitting the ground and $v_{yb}$ just after bouncing, then $v_{yb} < -v_{y0}.$ $v_y$ is positive in the upward direction, so $v_{y0} < 0,$ ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "short",
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43967",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b222ba33-33ab-4927-b931-9a09bb70e690",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "MCH04 Problem 9",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "313d659c-f5f9-45e6-a3fd-7e2ea2bc270d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH04: Energy Conservation",
+    "label": "MCH04",
+    "name": "MCH04 Problem 10",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH04"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5bf33439-c5e9-42dd-84c5-e5387b5c97ce",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH05: Forms of Energy",
+    "label": "MCH05",
+    "name": "This conceptual problem should give you a chance to think about when we can and cannot…",
+    "desc": "This conceptual problem should give you a chance to think about when we can and cannot apply energy conservation to a system. A famous demonstration in physics involves a bowling ball hung from the ceiling by a long rope. A physicist pulls the bowling ball back a long way, storin",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH05"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44086",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "1e2d9948-d49b-4db3-b5e1-ceb65743792f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH05: Forms of Energy",
+    "label": "MCH05",
+    "name": "MCH05 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH05"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ec612c1b-4eeb-4f5c-aebb-85015e6c9580",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH05: Forms of Energy",
+    "label": "MCH05",
+    "name": "MCH05 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH05"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "62337854-834b-47f5-9dcc-9143d159e19d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH05: Forms of Energy",
+    "label": "MCH05",
+    "name": "MCH05 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH05"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9c73f0df-0a70-4800-bd6d-340b9246b3bd",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "How many stable equilibrium points does the kitty skater have in the skate park below?",
+    "desc": "How many stable equilibrium points does the kitty skater have in the skate park below? The red dots have no special significance; they're artifacts of how the simulation builds custom tracks. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46031",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "3fd8d214-aa1c-4099-bc33-19e1253b000c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "Two massless rods are attached to frictionless pivots, with their ends touching. Mass…",
+    "desc": "Two massless rods are attached to frictionless pivots, with their ends touching. Mass $m_1$ and $m_2$ are put on top of the rods, each at one end. The distance between the pivot points and the endpoints of the rods are shown below. What should $m_2$ be to put this system in equil",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44179",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "328b29e9-73b9-49a8-a51d-7d62e15fe357",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "In the balance below, what should mass $m_3$ be to achieve equilibrium, assuming there is…",
+    "desc": "In the balance below, what should mass $m_3$ be to achieve equilibrium, assuming there is no friction? mathjax: $m_3 = \\dfrac{\\drag\\drag - \\drag\\drag}{\\drag}$ outputDisplayFormat: contentInEachDropArea",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44168",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "89e980fa-f3e5-4bb2-a3f5-3313a8ef432c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "A chain hanging under its own weight takes a shape called a __catenary__:",
+    "desc": "A chain hanging under its own weight takes a shape called a __catenary__: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/06_hw_chain.jpg) By Kamel15 - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44185",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "63989760-3586-4836-888c-3613c75e09b9",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "A __Roberval balance__ is a device with six pivots as shown.",
+    "desc": "A __Roberval balance__ is a device with six pivots as shown. The bars cannot change length, and the device is rigid except at the pivots. The top and bottom horizontal bars are each single pieces, not two pieces coming together at the pivot. The Roberval balance has only a single",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44169",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9ca31189-d056-483c-926d-50f02d808b27",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "MCH06 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "dbcb0b8e-fa6d-4fad-a67d-ec8ad7787393",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH06: Simple Machines",
+    "label": "MCH06",
+    "name": "MCH06 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH06"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d17bccf8-61ad-478f-9c50-609876938159",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "What's the conversion factor between $\\mathrm{rpm}$ (revolutions per minute) and…",
+    "desc": "What's the conversion factor between $\\mathrm{rpm}$ (revolutions per minute) and $\\mathrm{Hz}$ (hertz)? Remember the hertz is defined by $1 \\;\\mathrm{Hz} = 1 \\;\\mathrm{s}^{-1}$ Enter your answer as a decimal to three decimal places. mathjax: $ 1 \\;\\mathrm{rpm} = \\blank \\;\\mathrm{",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44227",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "099bcd4c-d044-4f00-b4e0-dde25a78db4f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "MCH07 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b0cb4a4e-831a-4521-9f4c-b22585026f1f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "An object of mass $M$ sits on a frictionless table. It is attached to a string. The…",
+    "desc": "An object of mass $M$ sits on a frictionless table. It is attached to a string. The string goes through a hole in the center of the table, and the other side of the string is attached to an object of mass $m,$ which hangs in the air. The object $M$ moves in uniform circular motio",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44228",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4e4c7180-554b-4ae7-afec-d29f3a919fac",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "MCH07 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0d675958-8a99-48ad-b083-04254b0fe5e0",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "MCH07 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c27cbc64-d6c4-4b77-aaed-0ac3148e30eb",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH07: Circular Motion",
+    "label": "MCH07",
+    "name": "In this demo, a physicist releases a pendulum, which swings back and forth.",
+    "desc": "In this demo, a physicist releases a pendulum, which swings back and forth. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/07_hw_pendulum.gif) The video has been edited to point out that the pendulum rises to the same heig",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH07"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44233",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "67d5fd7c-8f79-4d83-b999-9d5e9da08251",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "Boxes (A) and (B) are connected to ideal springs and can oscillate without friction.",
+    "desc": "Boxes (A) and (B) are connected to ideal springs and can oscillate without friction. Systems (A) and (B) are identical, except that there are two identical springs in (B) and only one in (A). The masses of the boxes are the same. If the period of system (A) is $T_A = 1.0 \\;\\mathr",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46117",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8590fced-b6ef-4a00-bdb3-610c3c992f53",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "In each of the setups below, the mass can oscillate in simple harmonic motion. The mass…",
+    "desc": "In each of the setups below, the mass can oscillate in simple harmonic motion. The mass is the same in all cases, and all the springs are identical. There is no friction or air drag. In drawing (D), there are two identical springs connected end-to-end. Rank the setups in order of",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44330",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c876c452-85d6-4ad9-917e-2fc2a139a851",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "MCH08 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "006fe75b-17a8-4849-8263-8b83d2d2440e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "In class, we practiced looking at new situations, finding the energy, and using the…",
+    "desc": "In class, we practiced looking at new situations, finding the energy, and using the coefficients in the equations of kinetic and potential energies to find oscillation periods. Here, we'll practice that same idea in a completely new context. ----------------------------------- Ra",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44329",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a7834854-15f9-482a-ba4d-4146d7fa6edd",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "MCH08 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a33ea152-c373-4acb-8632-1a0293f4be28",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "A mass is connected to a spring on a frictionless horizontal surface. The mass is pulled…",
+    "desc": "A mass is connected to a spring on a frictionless horizontal surface. The mass is pulled to the right a distance $A$ and released at time $t = 0.$ The spring is ideal, so the mass undergoes simple harmonic motion. Below are some plots potentially showing the kinetic energy of the",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44335",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "91a090b8-f3b0-4908-9360-4a22b10ee4ba",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH08: Simple Harmonic Motion",
+    "label": "MCH08",
+    "name": "MCH08 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH08"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "fdb4e711-a7eb-4b98-bb0f-106337ebc15e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "MCH09 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d82d9098-adc4-42db-a7af-db238750a6a9",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "In a Ferris wheel, you sit in a pod on a giant wheel which rotates. The pod hangs from…",
+    "desc": "In a Ferris wheel, you sit in a pod on a giant wheel which rotates. The pod hangs from the wheel so that it always stays vertical. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_hw_ferris2.gif) Assuming the wheel has co",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44405",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d5713a2a-1fee-4ea2-af85-dba7c48b026e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "MCH09 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "e6e471c4-3fa5-48e5-a0cd-39cff2a03e2d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "Suppose that a disk starts at rest and begins spinning about its center with constant…",
+    "desc": "Suppose that a disk starts at rest and begins spinning about its center with constant angular acceleration $\\alpha.$ Find $\\Delta \\theta,$ the angle through which the disk rotates, beginning at the moment the angular speed reaches $\\omega_1$ and ending at the moment it reaches $\\",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44404",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a6adfb8b-541f-4a36-8a8f-59b2026d2a43",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "Suppose that, in some experiment, a disk begins with $\\omega = 0$ and its angular…",
+    "desc": "Suppose that, in some experiment, a disk begins with $\\omega = 0$ and its angular acceleration is increasing linearly in time starting at $\\alpha = 0$ at time $t = 0.$ Between time $t = 0$ and $t = t_1,$ the disk has a total angular displacement of $\\theta_1.$ At what time $t_c$ ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44489",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "941eb572-2d84-4c21-8c2f-c8d4b4cc863d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "MCH09 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "40d922eb-c77b-404f-9c0e-bf8acd43a16c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "A wheel can roll along the ground all by itself:",
+    "desc": "A wheel can roll along the ground all by itself: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_hw_loose-tire-rolling.gif) https://media.tenor.com/bnB5uH0qF8gAAAAC/loose-tire-rolling.gif The wheel in this gif bounces a ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44410",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6e5ec000-5799-4279-8a68-526760fb02d2",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "A heavy stack of books can roll easily over a row of round pencils:",
+    "desc": "A heavy stack of books can roll easily over a row of round pencils: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_script_roll_pencils.gif) This same method can be used to move heavy boulders, and may have been used by ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44409",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "738943a8-3259-41c2-b8f1-01d2bf6a6ef5",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "MCH09 Problem 9",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "624e94cc-7c4c-4120-b1a6-596905759188",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH09: Rotational Kinematics",
+    "label": "MCH09",
+    "name": "MCH09 Problem 10",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH09"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "34450b8b-ef40-4549-bb6f-a279445b757c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "moment of inertia",
+    "desc": "moment of inertia rotational kinetic energy translational kinetic energy axis of rotation energy something has due to a spinning motion energy something has due to the motion of the entire object, or motion of its center an imaginary line that is attached to an object, but doesn'",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44559",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9b409152-642e-45a4-a72d-883a6aa52e77",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "MCH10 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4987bfb5-16c6-4339-9767-96ebe712c06f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "The Earth has __rotational__ kinetic energy due to its rotation about its own center. It…",
+    "desc": "The Earth has __rotational__ kinetic energy due to its rotation about its own center. It also has __translational__ kinetic energy due to its motion through space as it orbits the sun. In a reference frame where the sun is stationary, which of these energies is significantly grea",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44563",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "fe93431d-11c5-4c4a-946c-9ce1c1419363",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "The Earth is not the same density all the way through. Here is a plot of the density of…",
+    "desc": "The Earth is not the same density all the way through. Here is a plot of the density of Earth versus its radius. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_earth_density.jpg) https://upload.wikimedia.org/wikipedi",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44564",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b421edf7-e2de-4f91-8955-20e2f3bd0560",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "A flywheel is a heavy disk that spins, storing kinetic energy.",
+    "desc": "A flywheel is a heavy disk that spins, storing kinetic energy. Below is a flywheel from an 1802 steam locomotive: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_flywheel.jpg) By Birmingham Museums Trust - Birmingham ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44566",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5506e24d-7be3-40e5-ab56-3baf0c1acfbf",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "MCH10 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0b668270-413f-4b59-93bd-c9bf725359c3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "MCH10 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "957cf3d5-afd3-4266-b394-a5e183140be3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH10: Rotational Dynamics",
+    "label": "MCH10",
+    "name": "MCH10 Problem 8",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH10"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "cfdcb8ca-8d43-4203-a5dc-23e2373ccc4d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "MCH11 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44633",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a7cfb04d-a1c1-4978-b161-eb2bb4998d62",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "Match the process (left column) to a description of how you might compute it using arrows…",
+    "desc": "Match the process (left column) to a description of how you might compute it using arrows on a piece of paper (right column) There should be a complete one-to-one matching. find a component of a vector find the magnitude of a vector perform vector addition multiply vector by a co",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46216",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a0f78259-0e5c-4698-a095-42cbca292ccb",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "Below is the vector $\\vec{a} = 3 \\hat{x} - 2 \\hat{y}.$",
+    "desc": "Below is the vector $\\vec{a} = 3 \\hat{x} - 2 \\hat{y}.$ Find the angle $\\theta_a$ between $\\vec{a}$ and the $x$ axis. Give your answer in radians. Give an answer whose absolute value is less than $\\pi.$ The angle is signed. Counterclockwise rotations from the $x$ axis are positive",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "46215",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "31bcbc9d-c563-46ac-8155-a4a92ea1e9d9",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "Find the angle between the vectors $\\begin{aligned} \\vec{a} &= 3 \\hat{x} - 2 \\hat{y} \\\\…",
+    "desc": "Find the angle between the vectors $\\begin{aligned} \\vec{a} &= 3 \\hat{x} - 2 \\hat{y} \\\\ \\vec{b} &= -2 \\hat{x} + 6 \\hat{y} \\end{aligned}$ Give your answer as a number of radians between zero and $\\pi.$ You should be within $0.02$ of the correct answer. mathjax: $ \\theta = \\blank $",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44643",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "48c7ab20-b2f4-4b57-bbce-d5ee1a8bafa6",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "Consider the vectors",
+    "desc": "Consider the vectors $\\begin{aligned} \\vec{a} &= \\hat{x} + \\hat{y} \\\\ \\vec{b} &= 2\\hat{x} - \\hat{y} \\\\ \\vec{c} &= -\\hat{x} + 7 \\hat{y} \\end{aligned}$ Find a combination of numbers $\\alpha$ and $\\beta$ such that $ \\alpha \\vec{a} + \\beta \\vec{b} = \\vec{c} $ Give your answers as dec",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44644",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "f02eb1d4-e9ad-4d43-ad7c-c5e76b7ddfe7",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "Conveyor belts often move heavy loads uphill.",
+    "desc": "Conveyor belts often move heavy loads uphill. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/11_hw_belt.gif) https://www.dreamstime.com/conveyor-belt-coal-shooting-slow-motion-close-up-there-coal-belt-conveyor-conveyor-bel",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44639",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "38decf6e-85af-4369-a605-b09d333e4c09",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "MCH11 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "e8332335-0b85-4952-bbd1-64149d1a5ac2",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "A projectile is fired from ground height at speed $v = 8 \\;\\mathrm{m/s}$ and initial…",
+    "desc": "A projectile is fired from ground height at speed $v = 8 \\;\\mathrm{m/s}$ and initial angle $\\theta = 15^\\circ$ above the horizontal. Find the distance $d$ that the projectile travels horizontally before hitting the ground again. Ignore air resistance and model the ground as flat,",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44663",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "e3c47ac8-4e4d-4aac-9d9f-88b1099ef0d1",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "MCH11 Problem 9",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9266f9e4-59ec-4624-85ec-1530cfb68f78",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH11: Vectors",
+    "label": "MCH11",
+    "name": "In this writing problem, we'll examine a half-Atwood machine.",
+    "desc": "In this writing problem, we'll examine a half-Atwood machine. Explain your reasoning using equations, diagrams, and words. You may use complete sentences, but don't need to, as long as the grader is easily able to follow your reasoning. A series of equations without any explanati",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH11"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44645",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6b9095cf-84f4-451a-8063-6119f9331f29",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "MCH12 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0f1b2b8c-c0ef-421c-99ee-3134b3f73651",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "MCH12 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "29c5b3bf-138a-4911-8e90-b8192fce86fe",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "MCH12 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "eca0f5d4-7967-4558-be96-97f4c96e6c0e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "Below is a swing supported by springs, sitting on a sled.",
+    "desc": "Below is a swing supported by springs, sitting on a sled. The swing is damped so that it never swings back and forth much; if released from an angle, it quickly falls back down and stays vertical (at least as long as the sled is stationary). Grogg sits on the swing in five differ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44743",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "077cd00a-d5d2-4ea9-9cfb-80cd0229f4cc",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "MCH12 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0078174f-e317-4e8d-99ee-541b995cb10a",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH12: 2D and 3D Kinematics",
+    "label": "MCH12",
+    "name": "MCH12 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH12"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "dbb965cc-341e-49d5-b722-7fb5b37dd0a3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "MCH13 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "841ec481-da58-4c59-9325-273cf71d04ae",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "Consider three different possible motions of a solid sphere:",
+    "desc": "Consider three different possible motions of a solid sphere: (a) The sphere slides over a frictionless surface at speed $v.$ There is no rotation. (b) The sphere spins in place at angular speed $\\omega = \\dfrac{v}{r}.$ (c) The sphere rolls without slipping, a combination of motio",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44817",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6e7c8ced-fbf2-43a3-b328-a535cd415925",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "Below are a few different situations. In each, we could imagine trying to use momentum…",
+    "desc": "Below are a few different situations. In each, we could imagine trying to use momentum conservation to make predictions, but momentum conservation only holds when no momentum enters or leaves the system of study. Each situation defines a system, then \"inputs\", meaning measurement",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44818",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4bca737f-6e85-48de-9e0a-ba020c9f1b1b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "Two identical particles are moving towards each other with speeds $v_1 > v_2.$",
+    "desc": "Two identical particles are moving towards each other with speeds $v_1 > v_2.$ When they collide, they stick together, and $\\dfrac34$ the kinetic energy of the system is lost to thermal energy. What is the ratio $\\dfrac{v_1}{v_2}?$ Give your answer as a decimal to the nearest hun",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44805",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a1797a97-dbd5-4745-9ea4-547e903dc9de",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "MCH13 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5a80a48b-102f-420d-82d1-5fc05de2bd10",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "MCH13 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9ecece88-bb37-4f33-bbd6-83818a4f7246",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH13: Momentum",
+    "label": "MCH13",
+    "name": "MCH13 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH13"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0fc71b96-1e87-4f03-9d2a-10c91a3414b3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH14: Collisions",
+    "label": "MCH14",
+    "name": "MCH14 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH14"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "09daed11-15a0-4ea5-8e5c-6aeee7a836ec",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH14: Collisions",
+    "label": "MCH14",
+    "name": "MCH14 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH14"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "fd524287-8e88-4814-ab9c-656293c456d0",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH14: Collisions",
+    "label": "MCH14",
+    "name": "MCH14 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH14"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4a0dfd8a-7548-4567-ba3b-7ba169eaff20",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH14: Collisions",
+    "label": "MCH14",
+    "name": "For a simple home collision demonstration, stack a tennis ball on top a basketball and…",
+    "desc": "For a simple home collision demonstration, stack a tennis ball on top a basketball and drop them. The tennis ball can bounce much higher than it was dropped from: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/14_hw_galile",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH14"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44868",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "3fc96ffb-4680-460e-8c40-cf0430d08e52",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "As a safety feature, cars have air bags.",
+    "desc": "As a safety feature, cars have air bags. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_crash_test.gif) ToyotaSubaruCrashTests, \"Airbags\", https://youtu.be/Bw0Ps8-KDlQ Why do airbags make cars safer? Select all that ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44896",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9809f11d-a773-455e-908b-56f34b685c55",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "The sport of bungee jumping is based on __Gol,__ the land-diving ritual of the people of…",
+    "desc": "The sport of bungee jumping is based on __Gol,__ the land-diving ritual of the people of Pentecost Island, Vanuatu. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_vine_dive.gif) National Geographic, \"Jump with the or",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44897",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ba74765d-f8e2-4aaf-9504-84cb44335c92",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "MCH15 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "27085f53-4490-4a44-ab1c-f15b883033ca",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "Engineers designed a machine that swings two bats around in an attempt to hit a baseball…",
+    "desc": "Engineers designed a machine that swings two bats around in an attempt to hit a baseball a very long way. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_bat.gif) SmarterEveryDay, \"World's Longest Home Run\", https://y",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44899",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "15374a5f-6407-4afa-af52-3eb7648ac9af",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "MCH15 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6f9bea2d-5010-4b02-b52d-9afbfc842d2f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "Below is a Crookes radiometer.",
+    "desc": "Below is a Crookes radiometer. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_radiometer.jpg) By The original uploader was Timeline at English Wikipedia. - Transferred from en.wikipedia to Commons. Transfer was state",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44901",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "3fbb93d0-a294-4d30-b67e-f9572f00eff7",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH15: Forces via Momentum",
+    "label": "MCH15",
+    "name": "Consider an Atwood machine in which each mass is attached to a spring.",
+    "desc": "Consider an Atwood machine in which each mass is attached to a spring. We will assume that $m_B > m_A.$ The springs are identical. The more force a spring has to exert on a box it's attached to, the more it will have to stretch to do it. __Hooke's law__ states that $\\Delta \\ell,$",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH15"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44905",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b76e5be9-483b-41f5-a42b-a9851470aae7",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH16: Forces via Energy",
+    "label": "MCH16",
+    "name": "The fictional AoPM (Art of Problem Making) students had a question about two boxes, each…",
+    "desc": "The fictional AoPM (Art of Problem Making) students had a question about two boxes, each pushed by a constant force. They gave the question to the chatbot ChatGPT. ChatGPT is very good at writing complete, coherent sentences, but its understanding of physics is sometimes a bit sh",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH16"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44915",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d037e069-bd39-4839-83c3-158c3e4b46bf",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH16: Forces via Energy",
+    "label": "MCH16",
+    "name": "MCH16 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH16"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6024f61c-7eef-4712-b491-756cfbf4e5cb",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH16: Forces via Energy",
+    "label": "MCH16",
+    "name": "MCH16 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH16"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "de91dc86-50c4-4ff9-a790-a78225cbb02e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH16: Forces via Energy",
+    "label": "MCH16",
+    "name": "Particle physicists use large colliders to smash particles into each other, creating new…",
+    "desc": "Particle physicists use large colliders to smash particles into each other, creating new particles. Large detectors are able to follow the paths that the newly-created particles take for a short time. Below is the ATLAS detector at CERN. ![](http://cdn.artofproblemsolving.com/sch",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH16"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44928",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "814d496d-c9ca-4d19-b640-3526bcb55475",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH16: Forces via Energy",
+    "label": "MCH16",
+    "name": "MCH16 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH16"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "bf622bf7-5a0c-4836-94ef-91792e4e39f9",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "Two $100 \\;\\mathrm{N}$ weights are attached to a spring scale as shown. (This scale…",
+    "desc": "Two $100 \\;\\mathrm{N}$ weights are attached to a spring scale as shown. (This scale measures weight by finding how far the spring is stretched. It is designed to show the correct weight when one side is attached to the ceiling and a weight is hung from the other side.) ![](http:/",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44978",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6236815a-a51e-4c42-9a51-cff623ecfab3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "A strongman has a book weighing $10 \\;\\mathrm{lbs}$ hanging from a rope.",
+    "desc": "A strongman has a book weighing $10 \\;\\mathrm{lbs}$ hanging from a rope. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/17_hw_strongman.jpg) Epstein, Lewis Carroll. __Thinking physics: Understandable practical reality.__ (",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44979",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "93a22b90-720e-4ea9-a706-3100a5a5e9ad",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "tightly stretched",
+    "desc": "tightly stretched they're equally likely to break",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44987",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4fda7848-5b94-40de-bcfc-8c2477857b73",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "MCH17 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "54831322-f550-4a4e-a85b-15882eddf236",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "MCH17 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c6feb053-6f7d-49b5-9da0-48a320e3133c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "You are pushing a couch across the floor. Since the couch is fairly low, you're leaning…",
+    "desc": "You are pushing a couch across the floor. Since the couch is fairly low, you're leaning into it and pushing downward in addition to forward. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/17_hw_push_couch.jpg) Getty Images",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44990",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "672df046-e05d-46ca-a790-8a10b17e3642",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "MCH17 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "f1ad1925-3ab3-4c58-acba-45ce15563d36",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "Now try Wangari's experiment for yourself.",
+    "desc": "Now try Wangari's experiment for yourself. You can choose how many objects you want to test, but if you share your results on the discussion board, we'll be able to get the benefit of testing many different objects by comparing results across many different students in the class.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44993",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "de4e6960-be4d-4a7b-9fd8-4f5d3681f6a2",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH17: Statics",
+    "label": "MCH17",
+    "name": "What should the masses $m_1$ and $m_2$ be in the system illustrated below to achieve…",
+    "desc": "What should the masses $m_1$ and $m_2$ be in the system illustrated below to achieve static equilibrium? The pulleys are frictionless. Use our standard model for ropes. Use the values \\begin{aligned} m & = 1 \\;\\mathrm{kg} \\\\ \\theta_1 & = 15^\\circ\\\\ \\theta_2 & = 40^\\circ \\end{alig",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH17"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "44988",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "06e870c8-33ef-4961-99eb-726836c87ae3",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "Our phrasing of Newton's three laws was:",
+    "desc": "Our phrasing of Newton's three laws was: First Law: If there are no external forces on a system, then the velocity of its center of mass will not change. Second Law: The acceleration of the center of mass of a system and the net force on a system are related by $\\vec{F}_{\\rm net}",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45003",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "95881cfa-8a68-4f3c-bc8a-268a1401bc8b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "A tractor-trailer truck is traveling down the road.",
+    "desc": "A tractor-trailer truck is traveling down the road. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_tractor_trailer.png) College Board The mass of the trailer is 4 times the mass of the tractor. If the tractor acceler",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45039",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b997fa78-a964-4b25-8487-16cd99a84c2f",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "Physicist Tatiana Erukhimova sets an egg on top a toilet paper roll on top a plate on top…",
+    "desc": "Physicist Tatiana Erukhimova sets an egg on top a toilet paper roll on top a plate on top a cup of water. The egg is directly above the cup of water. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_egg_drop.jpg) Tatia",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45037",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0ef5776c-0a2a-476e-bc25-02949786c76e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "In another demonstration, Erukhimova presents a question about a knife, a potato, and a…",
+    "desc": "In another demonstration, Erukhimova presents a question about a knife, a potato, and a hammer: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_hit_potato.gif) Tatiana Erukhimova, TikTok Make two selections: - either ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45036",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "12252f5b-c4d4-4efb-a1cf-f3b64e862e2e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "When their truck got stuck in the mud, these people tried to push it out:",
+    "desc": "When their truck got stuck in the mud, these people tried to push it out: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_truck_push.gif) ral365, reddit Which one of the following descriptions does __not__ match Newto",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45038",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0a913d58-cf5b-4389-b137-08a146f9788b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "MCH18 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "cefafb04-f2df-4452-8793-723eaf701778",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "Below is a small toy electric car, called a __constant velocity car__.",
+    "desc": "Below is a small toy electric car, called a __constant velocity car__. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_cv_car.jpg) Arbor Scientific The car is very simple. It has a battery and an electric motor. There",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45047",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "aa0d3694-ea0c-485c-9e14-521c749e268c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH18: Newton's Laws of Motion",
+    "label": "MCH18",
+    "name": "MCH18 Problem 8",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH18"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "13b4cf89-4ead-4cd3-9d98-f22de4f95ed5",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "MCH19 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b8dd03ca-0013-4e4a-9ac8-afb195e49756",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "MCH19 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "609dd2a9-28a0-4088-87dc-214106912010",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "MCH19 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "527eb955-aadb-45ee-a6db-9c77ffb2161d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "MCH19 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "30cafb48-57ff-4483-9322-70cbf0546f88",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "An example of slip-stick motion you may be able to reproduce at home is a __glass harp__.",
+    "desc": "An example of slip-stick motion you may be able to reproduce at home is a __glass harp__. Take a clean wine glass, and make sure your hands are clean as well. Wet your index finger and rub in a steady circle around the rim of a wine glass. With some practice, you should be able t",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45172",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d00d4289-8a99-42f2-9ee0-1cd35085ce8d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH19: Problem Solving with Forces",
+    "label": "MCH19",
+    "name": "MCH19 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH19"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c200c519-27dc-4981-bbcf-73bd5c7fcc5e",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "When we studied acceleration, you depending on individual choices your instructor made in…",
+    "desc": "When we studied acceleration, you depending on individual choices your instructor made in that lesson analyzed the vertical jump of Josh Imatorbhebhe: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/02_script_jump.gif) What",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45249",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5adddbba-50e4-40fe-906a-49a7128a4ddf",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "MCH20 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9f26348c-af68-4a61-94ef-46f6e1ae141b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "MCH20 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "bbc81771-6aee-45eb-902c-06d6b4664c78",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "Saturn's largest moon is Titan. Jupiter's largest moon is Ganymede. For these moons, the…",
+    "desc": "Saturn's largest moon is Titan. Jupiter's largest moon is Ganymede. For these moons, the periods and semi-major axes are: $\\begin{aligned} \\textsl{a}_{\\rm Titan} & = 1.22187 \\times 10^9 \\;\\mathrm{m} \\\\ T_{\\rm Titan} & = 15.945 \\;\\mathrm{d} \\\\ \\textsl{a}_{\\rm Ganymede} & = 1.0704 ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45188",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "663c0a09-3b97-4540-92e6-3b63a7e4f7ca",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "MCH20 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a36bd58e-f0dc-459b-a995-adb4025feacc",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH20: Newton's Gravitational Law",
+    "label": "MCH20",
+    "name": "MCH20 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH20"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "53efa4e4-01a1-4385-bbe8-1b163ca4acd1",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "Match the term related to angular dynamics to its description.",
+    "desc": "Match the term related to angular dynamics to its description. There is a one-to-one mapping for this question. moment of inertia parallel component of force perpendicular component of force the part of a force that points directly toward or away from the chosen reference point t",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45408",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "84190f64-ea49-499c-b58a-4e0f0dc4999a",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "Consider a few solutions to everyday problems.",
+    "desc": "Consider a few solutions to everyday problems. (a) Aadya is trying to loosen a nut that is stuck on a bolt. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/21_hw_wrench.jpg) https://home.howstuffworks.com/how-to-use-adjusta",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45374",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4d13058e-85df-482f-80f1-1716d1ecbd8c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "MCH21 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "205e7e3f-8250-40b1-96f9-aaeb76e342eb",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "MCH21 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "15321c2d-22a9-4a31-93f4-ec509f42d07b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "This image shows Polish mountain biker Maja Włoszczowska descending a steep ramp.",
+    "desc": "This image shows Polish mountain biker Maja Włoszczowska descending a steep ramp. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/21_hw_maja_bike.jpg) Getty Images On steep descents, there's a danger of the bike flipping fo",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45297",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b9d6c264-063c-4902-b78c-585f51bb6a06",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "MCH21 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "2a476335-0b35-4f27-9377-1d4f82f6dd85",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "There is some force $\\vec{F}_{p \\to r}$ from the pivot to the rod. It acts at an angle…",
+    "desc": "There is some force $\\vec{F}_{p \\to r}$ from the pivot to the rod. It acts at an angle $\\phi$ from the vertical. There are three possibilities: - $\\phi < \\theta$ - $\\phi = \\theta$ - $\\phi > \\theta$ The first is illustrated below. Which case describes $\\phi?$ $\\phi < \\theta$ $\\phi",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45301",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ead5fcd8-de09-4bfb-9e68-5373bab4c381",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "In a previous homework set, we studied the Ikaros light sail, which can control what…",
+    "desc": "In a previous homework set, we studied the Ikaros light sail, which can control what direction it is facing by changing its reflectivity. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/13_hw_lcd_ikaros.jpg) As a simple mod",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45312",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "53656677-95e1-408b-ac05-fb27549e1b59",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH21: Torque",
+    "label": "MCH21",
+    "name": "This week's lab requires a yoyo. An inexpensive one sold in toy stores should be…",
+    "desc": "This week's lab requires a yoyo. An inexpensive one sold in toy stores should be sufficient. If you can't find a yoyo, you could use a toilet paper roll, making this experiment similar to the one from our rotational dynamics lesson, but with a different analysis and final goal. I",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH21"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45304",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "539cef0b-abc4-4208-ac67-9d08e9a0abe8",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "Match the terms related to rotational motion and dynamics to their closest linear analog.",
+    "desc": "Match the terms related to rotational motion and dynamics to their closest linear analog. There is a one-to-one matching for this question. Rotational Motion angular momentum angular acceleration moment of inertia angular velocity allowsMultipleConnections:",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45407",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "86a5e50d-8690-4fcb-8f43-d0e6143609c4",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "MCH22 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "543480e9-b517-4ec9-a682-422849b98082",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "A bucket partially full of water spins about a vertical axis through its center at a…",
+    "desc": "A bucket partially full of water spins about a vertical axis through its center at a steady angular speed $\\omega_0.$ The bucket spins for long enough that all the water rotates about the center at angular speed $\\omega_0$ as well. ![](http://cdn.artofproblemsolving.com/school/cr",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45406",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c7ab0781-73ab-4af7-8c4b-e13b2df58589",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "If a cyclist is cycling along a flat section of ground and suddenly hits a rock, their…",
+    "desc": "If a cyclist is cycling along a flat section of ground and suddenly hits a rock, their bike can flip up off the ground and send the cyclist topping over the handlebars. We'll imagine that the front wheel hits the rock and stops. We'll model the rock as a point at the bottom of th",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45298",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "37af3e64-e42f-4430-a7cc-2945c0962540",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "MCH22 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "7038e90f-b3a1-4f82-85f5-80dbae414d3b",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "MCH22 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "dc94e7af-ff54-4bee-b9b4-c526e5662e58",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH22: Angular Momentum",
+    "label": "MCH22",
+    "name": "Earlier in this problem set, we estimated how the Earth's angular speed would change if…",
+    "desc": "Earlier in this problem set, we estimated how the Earth's angular speed would change if people started moving in the same direction around the equator. The effect was minuscule. Earth's rotational period does change, though. For example, earthquakes can move the mass of Earth aro",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH22"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45373",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0b5c1bfc-9b8f-436c-ad2b-ed1a30d99939",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "incompressible fluid",
+    "desc": "incompressible fluid Archimedes' principle the mass of a system per unit volume a floating object displaces a volume of water whose mass is equal to the object's own mass the pressure at the top layer of a fluid a force per unit area a model in which the density of a fluid cannot",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45635",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "cb5462ab-3934-485c-9551-385ac2076b29",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "MCH23 Problem 2",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "283ad68b-6cee-4d71-9b38-d13c1054c52a",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "On a local news station in Toledo, the crew set up two balloons inside a car.",
+    "desc": "On a local news station in Toledo, the crew set up two balloons inside a car. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/23_hw_balloons_car.jpg) Imagination Station Toledo The orange balloon (left) is filled with heliu",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45640",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "3eeb3a8b-1146-4cf7-876e-b9f35311958c",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "In a discussion problem last week, we found that the moon gets gradually further away…",
+    "desc": "In a discussion problem last week, we found that the moon gets gradually further away from the Earth due to tidal interactions. Here, we explore this idea a little further. We've delayed this problem one week to avoid spoiling last week's writing problem. The inverse square law f",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "discussion",
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45452",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ce33363f-414d-42dc-89b0-91151d605596",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "MCH23 Problem 5",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "eaa0331d-4845-4661-8875-8d1d747533cc",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "MCH23 Problem 6",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "4c5ad3ef-60a2-4c96-a303-c459ebb93a2d",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "MCH23 Problem 7",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8941dfa9-033e-4e46-abb7-958df2e380b1",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH23: Fluid Statics",
+    "label": "MCH23",
+    "name": "This is the final writing problem in the course. It's a short lab writeup. Although this…",
+    "desc": "This is the final writing problem in the course. It's a short lab writeup. Although this problem is about Archimedes's principle, the goal is to give you practice __designing__ experiments, not to confirm a specific physics model. Archimedes's principle says that if a floating bo",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "#graded_writing",
+      "MCH23"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45641",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d8375785-f48e-4ad4-af2e-a9cee8ac9061",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH24: Fluid Dynamics",
+    "label": "MCH24",
+    "name": "MCH24 Problem 1",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH24"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ee356ba4-e7e1-4ffd-bae8-8c5094688624",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH24: Fluid Dynamics",
+    "label": "MCH24",
+    "name": "A scientist has a closed tank of water. A floating ball $F$ sits on the surface of the…",
+    "desc": "A scientist has a closed tank of water. A floating ball $F$ sits on the surface of the water, and a sinking ball ${}S$ sits at the bottom of the tank. The tank is equipped with a board that shakes up and down to make waves. The scientist sets the board oscillating, making waves t",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "motor",
+      "MCH24"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "45695",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d765c09e-efc7-488f-9c2e-66a75567bfc2",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH24: Fluid Dynamics",
+    "label": "MCH24",
+    "name": "MCH24 Problem 3",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH24"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b9432703-c652-4e30-987a-13b79887cb60",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS",
+    "lesson": "MCH24: Fluid Dynamics",
+    "label": "MCH24",
+    "name": "MCH24 Problem 4",
+    "desc": "",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "MCH24"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  }
+]

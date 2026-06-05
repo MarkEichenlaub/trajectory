@@ -16,7 +16,7 @@ import FilterSidebar from './FilterSidebar'
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
 
-export default function StudentView({ student, assignments, sessions, problems, accessibleSources, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
+export default function StudentView({ student, assignments, sessions, homeworkSets = [], problems, accessibleSources, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
   // billing-capable roles. A logged-in student sees study info only. In admin
   // preview the role is chosen via previewRole, so Mark can see exactly what a
@@ -344,14 +344,35 @@ export default function StudentView({ student, assignments, sessions, problems, 
             </div>
           </div>
         )
-      ) : tabItems.length === 0 ? (
-        <div className="empty-state">
-          {tab === 'assigned' ? 'No problems currently assigned.'
-            : 'No completed problems yet.'}
-        </div>
       ) : (
-        <div className="assigned-list">
-          {submitError && (
+        <>
+          {tab === 'assigned' && homeworkSets.length > 0 && (
+            <div className="assigned-list" style={{ marginBottom: 16 }}>
+              {homeworkSets.map(h => (
+                <div key={h.id} className="assigned-row">
+                  <span className="status-badge assigned">▤ Homework Set</span>
+                  <div className="assigned-problem-info">
+                    <span className="p-label">{h.lesson || 'Mechanics'}</span>
+                    <span className="p-name">{h.title}</span>
+                    <span className="p-date">{h.due_date ? `Due ${h.due_date}` : `Assigned ${h.assigned_date}`}</span>
+                  </div>
+                  <div className="assigned-row-links">
+                    {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">Download PDF ↗</a>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {tabItems.length === 0 ? (
+            (tab === 'assigned' && homeworkSets.length > 0) ? null : (
+              <div className="empty-state">
+                {tab === 'assigned' ? 'No problems currently assigned.'
+                  : 'No completed problems yet.'}
+              </div>
+            )
+          ) : (
+            <div className="assigned-list">
+              {submitError && (
             <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 8 }}>{submitError}</div>
           )}
           {tabItems.map(a => {
@@ -406,7 +427,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
               </div>
             )
           })}
-        </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   )

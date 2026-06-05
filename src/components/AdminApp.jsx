@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -23,6 +23,7 @@ const DEFAULT_FILTERS = {
   contests: new Set(),
   types: new Set(),
   topics: new Set(),
+  lessons: new Set(),
   statuses: new Set(),
   selectedTags: new Set(),
   textSearch: '',
@@ -31,6 +32,7 @@ const DEFAULT_FILTERS = {
 
 export default function AdminApp() {
   const [problems, setProblems] = useState([])
+  const [aopsProblems, setAopsProblems] = useState([])
   const [handouts, setHandouts] = useState([])
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
@@ -54,11 +56,13 @@ export default function AdminApp() {
   const [sortDir, setSortDir] = useState('desc')
   const [emailDraft, setEmailDraft] = useState(null)
   const [requiresSubmission, setRequiresSubmission] = useState(false)
+  const [homeworkModal, setHomeworkModal] = useState(null)
 
   useEffect(() => {
     async function load() {
       const p = await fetchJSON('data/problems.json').catch(() => [])
       setProblems(p)
+      fetchJSON('data/aops-mechanics.json').then(setAopsProblems).catch(() => setAopsProblems([]))
       setLoading(false)
       try {
         const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
@@ -96,6 +100,7 @@ export default function AdminApp() {
 
   const allProblems = useMemo(() => [
     ...problems,
+    ...aopsProblems,
     ...handouts.map(h => ({
       id: h.id,
       contest: h.source,
@@ -110,7 +115,7 @@ export default function AdminApp() {
       problemUrl: h.pdf_url || '',
       solutionUrl: h.solution_url || null,
     })),
-  ], [problems, handouts])
+  ], [problems, aopsProblems, handouts])
 
   const allSources = useMemo(() =>
     [...new Set(allProblems.map(p => p.contest))].sort(),
@@ -136,6 +141,7 @@ export default function AdminApp() {
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
     if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
+    if (filters.lessons.size > 0 && !filters.lessons.has(p.lesson)) return false
     if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
     if (filters.statuses.size > 0) {
       const pStatus = statusMap[p.id] || 'not-started'
@@ -195,6 +201,41 @@ export default function AdminApp() {
   function clearSelection() { setSelected(new Set()) }
 
   const selectedProblems = allProblems.filter(p => selected.has(p.id))
+  // AoPS problems in selection, kept in the table's current display order so the
+  // homework PDF follows the order Mark sees on screen.
+  const selectedAopsProblems = sorted.filter(p => selected.has(p.id) && p.type === 'AoPS')
+
+  function openHomeworkModal() {
+    if (selectedAopsProblems.length === 0) return
+    const lessonsInSel = [...new Set(selectedAopsProblems.map(p => p.lesson).filter(Boolean))]
+    const lesson = lessonsInSel.length === 1 ? lessonsInSel[0] : ''
+    const defaultTitle = lesson || 'Mechanics Homework'
+    setHomeworkModal({ title: defaultTitle, lesson, dueDate: '' })
+  }
+
+  async function handleCreateHomeworkSet() {
+    if (!homeworkModal || !activeStudent || selectedAopsProblems.length === 0) return
+    const today = new Date().toISOString().slice(0, 10)
+    const row = {
+      id: `hw-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      student_id: activeStudent.id,
+      title: homeworkModal.title.trim() || 'Mechanics Homework',
+      lesson: homeworkModal.lesson || null,
+      problem_ids: selectedAopsProblems.map(p => p.id),
+      assigned_date: today,
+      due_date: homeworkModal.dueDate || null,
+      pdf_url: null,
+      status: 'draft',
+    }
+    try {
+      await insertHomeworkSet(row)
+      setHomeworkModal(null)
+      setSelected(new Set())
+      showToast(`Created homework set "${row.title}" for ${activeStudent.name} (${row.problem_ids.length} problems). Build the PDF locally with build_homework_set.py ${row.id}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
 
   async function handleAssign() {
     if (!activeStudent || selected.size === 0) return
@@ -515,6 +556,11 @@ export default function AdminApp() {
                     />
                     Submission
                   </label>
+                  {selectedAopsProblems.length > 0 && (
+                    <button className="sm" onClick={openHomeworkModal} title="Compile the selected AoPS problems into one PDF homework set">
+                      Create homework set ({selectedAopsProblems.length})
+                    </button>
+                  )}
                   <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>
@@ -626,6 +672,35 @@ export default function AdminApp() {
           }}
           onClose={() => setEmailDraft(null)}
         />
+      )}
+
+      {homeworkModal && (
+        <div className="modal-overlay" onClick={() => setHomeworkModal(null)}>
+          <div className="modal" style={{ maxWidth: 460 }} onClick={e => e.stopPropagation()}>
+            <h3 style={{ marginTop: 0 }}>Create homework set</h3>
+            <p style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: -4 }}>
+              {selectedAopsProblems.length} problem{selectedAopsProblems.length !== 1 ? 's' : ''} for {activeStudent?.name}
+            </p>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Title</label>
+            <input
+              style={{ width: '100%', marginBottom: 12, padding: '6px 8px' }}
+              value={homeworkModal.title}
+              onChange={e => setHomeworkModal(m => ({ ...m, title: e.target.value }))}
+              autoFocus
+            />
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Due date (optional)</label>
+            <input
+              type="date"
+              style={{ width: '100%', marginBottom: 16, padding: '6px 8px' }}
+              value={homeworkModal.dueDate}
+              onChange={e => setHomeworkModal(m => ({ ...m, dueDate: e.target.value }))}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+              <button className="sm" onClick={() => setHomeworkModal(null)}>Cancel</button>
+              <button className="sm primary" onClick={handleCreateHomeworkSet}>Create</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
