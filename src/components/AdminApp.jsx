@@ -49,6 +49,7 @@ export default function AdminApp() {
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
   const [emailDraft, setEmailDraft] = useState(null)
+  const [requiresSubmission, setRequiresSubmission] = useState(true)
 
   useEffect(() => {
     async function load() {
@@ -204,6 +205,7 @@ export default function AdminApp() {
         status: 'assigned',
         assigned_date: date,
         completed_date: null,
+        requires_submission: requiresSubmission,
       })
       if (activeStudent.id !== MARK_STUDENT_ID && !markStatusMap[pid]) {
         toAdd.push({
@@ -213,6 +215,7 @@ export default function AdminApp() {
           status: 'assigned',
           assigned_date: date,
           completed_date: null,
+          requires_submission: requiresSubmission,
         })
       }
     }
@@ -475,6 +478,15 @@ export default function AdminApp() {
                   <button className="sm" onClick={selectAll}>Select all {sorted.length}</button>
                   <div className="spacer" />
                   <button className="sm" onClick={handleCopyUrls}>Copy URLs</button>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, cursor: 'pointer', userSelect: 'none' }}>
+                    <input
+                      type="checkbox"
+                      checked={requiresSubmission}
+                      onChange={e => setRequiresSubmission(e.target.checked)}
+                      style={{ accentColor: 'var(--accent)' }}
+                    />
+                    Submission
+                  </label>
                   <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>

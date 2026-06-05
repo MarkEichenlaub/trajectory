@@ -361,7 +361,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
                   {a.feedback_url && (
                     <a href={a.feedback_url} target="_blank" rel="noreferrer">Feedback ↗</a>
                   )}
-                  {a.status === 'assigned' && !isPreview && (
+                  {a.status === 'assigned' && !isPreview && a.requires_submission !== false && (
                     <button
                       className="sm"
                       style={{ fontSize: 11, padding: '1px 6px' }}
