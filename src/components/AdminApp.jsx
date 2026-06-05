@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
@@ -37,6 +38,9 @@ export default function AdminApp() {
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [view, setView] = useState(VIEWS.BROWSER)
   const [activeStudentId, setActiveStudentId] = useState('borna')
@@ -80,6 +84,15 @@ export default function AdminApp() {
       .then(setPreviewAccessibleSources)
       .catch(() => setPreviewAccessibleSources([]))
   }, [previewStudentId])
+
+  // Keep previewStudentId in sync with the URL slug (/:firstNameSlug/:tab?)
+  useEffect(() => {
+    const slug = location.pathname.split('/').filter(Boolean)[0]
+    if (!slug) { setPreviewStudentId(null); return }
+    if (!students.length) return
+    const match = students.find(s => (s.first_name || '').toLowerCase() === slug.toLowerCase())
+    setPreviewStudentId(match?.id || null)
+  }, [location.pathname, students])
 
   const allProblems = useMemo(() => [
     ...problems,
@@ -315,7 +328,7 @@ export default function AdminApp() {
     const recipients = contacts.filter(c => c.receives_assignments && c.verified && !c.bounced).map(c => c.email)
     if (recipients.length === 0 && activeStudent.email) recipients.push(activeStudent.email)
 
-    const firstName = activeStudent.first_name || activeStudent.name.split(' ')[0]
+    const firstName = activeStudent.first_name || activeStudent.name.split(' ')[0] || ''
     const dateStr = new Date().toISOString().slice(0, 10)
     setEmailDraft({
       to: recipients.join(', '),
@@ -403,7 +416,7 @@ export default function AdminApp() {
             ))}
           </div>
           <div className="spacer" />
-          <button className="sm" style={{ marginRight: 16 }} onClick={() => setPreviewStudentId(null)}>← Back to admin</button>
+          <button className="sm" style={{ marginRight: 16 }} onClick={() => navigate('/')}>← Back to admin</button>
         </div>
         <div className="content">
           <StudentView
@@ -449,7 +462,11 @@ export default function AdminApp() {
           <select value={activeStudentId} onChange={e => { setActiveStudentId(e.target.value); setSelected(new Set()) }}>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
-          <button className="sm" style={{ marginLeft: 6, padding: '2px 8px', whiteSpace: 'nowrap' }} title="Preview student portal" onClick={() => setPreviewStudentId(activeStudentId)}>↗ preview</button>
+          <button className="sm" style={{ marginLeft: 6, padding: '2px 8px', whiteSpace: 'nowrap' }} title="Preview student portal" onClick={() => {
+              const s = students.find(st => st.id === activeStudentId)
+              const slug = (s?.first_name || '').toLowerCase()
+              navigate(slug ? '/' + slug : '/')
+            }}>↗ preview</button>
         </div>
       </div>
 

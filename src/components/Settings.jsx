@@ -16,11 +16,13 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
   }
 
   async function handleAdd() {
-    const name = prompt('Student full name?')
+    const name = prompt('Student full name (first and last)?')
     if (!name) return
-    const id = name.toLowerCase().replace(/\s+/g, '-')
-    const first_name = name.split(' ')[0]
-    const newStudent = { id, name, first_name, email: '', notes: '' }
+    const parts = name.trim().split(/\s+/)
+    const first_name = parts[0]
+    const last_name = parts.slice(1).join(' ')
+    const id = name.trim().toLowerCase().replace(/\s+/g, '-')
+    const newStudent = { id, name: name.trim(), first_name, last_name, email: '', notes: '' }
     await onSaveStudent(newStudent)
   }
 
@@ -79,7 +81,15 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
   }
 
   function set(field, value) {
-    setDraft(d => ({ ...d, [field]: value }))
+    setDraft(d => {
+      const next = { ...d, [field]: value }
+      if (field === 'first_name' || field === 'last_name') {
+        const fn = field === 'first_name' ? value : d.first_name
+        const ln = field === 'last_name' ? value : d.last_name
+        next.name = [fn, ln].filter(Boolean).join(' ')
+      }
+      return next
+    })
   }
 
   async function handleToggleStatus() {
@@ -101,8 +111,8 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
   return (
     <div className="student-card">
       <div className="student-card-row">
-        <label>Name</label>
-        <input value={draft.name} onChange={e => set('name', e.target.value)} />
+        <label>First name</label>
+        <input value={draft.first_name || ''} onChange={e => set('first_name', e.target.value)} />
         <button
           className="sm"
           style={{ color: status === 'active' ? 'var(--green)' : 'var(--text-dim)' }}
@@ -115,8 +125,8 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         <button className="sm danger" onClick={() => onRemove(student)}>Remove</button>
       </div>
       <div className="student-card-row">
-        <label>First name</label>
-        <input value={draft.first_name || ''} onChange={e => set('first_name', e.target.value)} placeholder="Used in emails to student" />
+        <label>Last name</label>
+        <input value={draft.last_name || ''} onChange={e => set('last_name', e.target.value)} />
       </div>
       <div className="student-card-row">
         <label>Email</label>

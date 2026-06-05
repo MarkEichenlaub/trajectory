@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   supabase,
   fetchMyContacts, fetchMyContactsView, addMyContact, updateMyContact, deleteMyContact,
@@ -13,6 +14,8 @@ import {
 } from '../utils/supabase'
 import FilterSidebar from './FilterSidebar'
 
+const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
+
 export default function StudentView({ student, assignments, sessions, problems, accessibleSources, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
   // billing-capable roles. A logged-in student sees study info only. In admin
@@ -23,7 +26,25 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const canBill = role === 'parent' || role === 'adult'
   const isStudentRole = role === 'student'
 
-  const [tab, setTab] = useState('assigned')
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // Derive tab from URL. Student/parent: /:tab?  Admin preview: /:slug/:tab?
+  const pathSegs = location.pathname.split('/').filter(Boolean)
+  const tab = (() => {
+    const raw = isPreview ? pathSegs[1] : pathSegs[0]
+    return VALID_TABS.has(raw) ? raw : 'assigned'
+  })()
+
+  const studentSlug = isPreview ? (student?.first_name || '').toLowerCase() : null
+
+  function setTab(key) {
+    if (!isPreview) {
+      navigate(key === 'assigned' ? '/' : '/' + key)
+    } else if (studentSlug) {
+      navigate('/' + studentSlug + '/' + key)
+    }
+  }
   const [selectedTags, setSelectedTags] = useState(new Set())
   const [tagSort, setTagSort] = useState('freq')
   const [tagSearch, setTagSearch] = useState('')
