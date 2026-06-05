@@ -16,10 +16,11 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
   }
 
   async function handleAdd() {
-    const name = prompt('Student name?')
+    const name = prompt('Student full name?')
     if (!name) return
     const id = name.toLowerCase().replace(/\s+/g, '-')
-    const newStudent = { id, name, email: '', notes: '' }
+    const first_name = name.split(' ')[0]
+    const newStudent = { id, name, first_name, email: '', notes: '' }
     await onSaveStudent(newStudent)
   }
 
@@ -112,6 +113,10 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
           {togglingStatus ? '…' : status === 'active' ? '● active' : '○ inactive'}
         </button>
         <button className="sm danger" onClick={() => onRemove(student)}>Remove</button>
+      </div>
+      <div className="student-card-row">
+        <label>First name</label>
+        <input value={draft.first_name || ''} onChange={e => set('first_name', e.target.value)} placeholder="Used in emails to student" />
       </div>
       <div className="student-card-row">
         <label>Email</label>

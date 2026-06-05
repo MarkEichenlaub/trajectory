@@ -11,7 +11,7 @@ function resourceLabel(p) {
 
 export function buildEmailBody(student, problems) {
   const lines = [
-    `Hi ${student.name},`,
+    `Hi ${student.first_name || student.name.split(' ')[0]},`,
     '',
     `Here are some problems for you to work on:`,
     '',

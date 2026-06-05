@@ -315,7 +315,7 @@ export default function AdminApp() {
     const recipients = contacts.filter(c => c.receives_assignments && c.verified && !c.bounced).map(c => c.email)
     if (recipients.length === 0 && activeStudent.email) recipients.push(activeStudent.email)
 
-    const firstName = activeStudent.name.split(' ')[0]
+    const firstName = activeStudent.first_name || activeStudent.name.split(' ')[0]
     const dateStr = new Date().toISOString().slice(0, 10)
     setEmailDraft({
       to: recipients.join(', '),

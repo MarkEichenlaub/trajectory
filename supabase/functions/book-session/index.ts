@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
   const { data: student } = await admin
-    .from('students').select('id, name, email').eq('user_id', user.id).maybeSingle()
+    .from('students').select('id, name, first_name, email').eq('user_id', user.id).maybeSingle()
   if (!student) return json({ error: 'no student record' }, 403)
 
   const { slot } = await req.json() as { slot: string }
@@ -272,7 +272,7 @@ Deno.serve(async (req) => {
   })
 
   const confirmText = [
-    `Hi ${(student.name as string).split(' ')[0]},`,
+    `Hi ${(student.first_name as string | undefined) || (student.name as string).split(' ')[0]},`,
     '',
     `Your physics session is confirmed for:`,
     `  ${when}`,
