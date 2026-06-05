@@ -1,0 +1,562 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{custom}
+
+% color boxes
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{theorems}
+\newtcbtheorem{psexample}{Example}{colback=green!10,colframe=green!40!black,fonttitle=\bfseries,breakable,enhanced}{ex}
+\newtcbtheorem{psidea}{Idea}{colback=blue!10,colframe=blue!40!black,fonttitle=\bfseries,breakable,enhanced}{id}
+\newtcbtheorem{psremark}{Remark}{colback=purple!10,colframe=purple!40!black,fonttitle=\bfseries,breakable,enhanced}{rm}
+\newtcbtheorem{pssolution}{Solution}{colback=orange!10,colframe=orange!40!black,fonttitle=\bfseries,breakable,enhanced}{sn}
+\tcbset{noparskip/.style={before={\par\pagebreak[0]\medskip\parindent=0pt},
+after={\par\medskip}}}
+
+% code for totaling up points
+\usepackage{totcount}
+\newtotcounter{tpts}
+\newtotcounter{cpts}
+\newtotcounter{endpts}
+\newcommand{\clearpts}{\addtocounter{tpts}{\value{cpts}} \setcounter{cpts}{0}}
+\newcommand{\pts}[1]{\clearpts \setcounter{cpts}{#1}}
+\newcommand{\totpts}{\setcounter{endpts}{\totvalue{tpts} + \totvalue{cpts}}\arabic{endpts}}
+
+% formatting for problems and solutions
+\definecolor{ptred}{rgb}{0.7,0.1,0.1}
+\newcommand{\ptfmt}[1]{\textbf{\color{ptred}#1\color{black}}}
+\definecolor{advblue}{rgb}{0.1,0.1,0.7}
+\newcommand{\advanced}{\!\textbf{\color{advblue}[A]\color{black}}\ }
+
+\newtheorem*{solution}{Solution}
+\newtheorem*{answer}{Answer}
+
+\makeatletter
+\newtheoremstyle{mystyle}
+{\topsep}               % space above
+{\topsep}               % space below
+{}                      % bodyfont
+{}                      % indent
+{\bfseries}             % headfont
+{}                      % punctuation
+{0.6em}                 % space after head
+{\llap{[\ptfmt{\arabic{cpts}}]\hspace{.6em}}\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont{ (#3)}}{\bfseries .}}  %theoremheadspec
+\theoremstyle{mystyle}
+\newtheorem{pproblem}{Problem}
+\makeatother
+
+% clocks for time limits
+\usepackage{clock}
+\ClockFrametrue\ClockStyle=1
+
+% headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Units \& Dimensions}
+\chead{}
+\rhead{Electromagnetism: Circuits}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\newcommand{\psettitle}[1]{
+    \begin{center}
+    \huge \textbf{#1}
+    \end{center}
+}
+
+\linespread{1.03} % give a little extra room
+\setlength{\parindent}{0.2in} % reduce paragraph indent a bit
+
+% shorthand for SI base units used throughout
+\newcommand{\V}{\text{V}}
+\newcommand{\A}{\text{A}}
+\newcommand{\s}{\text{s}}
+\newcommand{\m}{\text{m}}
+\newcommand{\Ohm}{\Omega}
+\newcommand{\units}[1]{\,[\,#1\,]}
+
+% uncomment to hide solutions
+% \usepackage{environ}
+% \NewEnviron{hide}{}
+% \let\solution\hide
+% \let\endsolution\endhide
+
+\begin{document}
+
+\psettitle{Units and Dimensions in Electromagnetism}
+\begin{center}
+\large A circuits-focused dimensional toolkit
+\end{center}
+
+\noindent
+The goal of this handout is speed: by the end you should be able to glance at any
+combination of $R$, $L$, $C$, $\omega$, $q$, $B$, $\varepsilon_0$, $\mu_0$, $\sigma$
+and instantly name what kind of quantity it is. The text states the essential facts;
+the points are won in the problems. There is a total of \ptfmt{\totpts} points.
+Problems marked \advanced are harder.
+
+\section{The Currency of a Circuit}
+
+\begin{psidea}{Three units run every circuit}{}
+Every electrical quantity in a lumped circuit is built from just three SI units:
+the \textbf{volt} $\V$, the \textbf{amp} $\A$, and the \textbf{second} $\s$.
+The defining relations $V=IR$, $Q=CV$, $V=L\,dI/dt$, and $I=dQ/dt$ fix the rest:
+\[
+[R]=\frac{\V}{\A},\qquad
+[C]=\frac{\A\,\s}{\V},\qquad
+[L]=\frac{\V\,\s}{\A},\qquad
+[Q]=\A\,\s,\qquad
+[\Phi]=\V\,\s,
+\]
+\[
+[\text{power}]=\V\A,\qquad
+[\text{energy}]=\V\A\,\s.
+\]
+Notice the pleasing symmetry between $C$ and $L$: capacitance is ``amp-seconds per
+volt'' and inductance is ``volt-seconds per amp''. They are mirror images, and that
+mirror is the key to almost everything below.
+\end{psidea}
+
+\begin{psremark*}{}{}
+A capacitor \emph{hoards charge}: $C=Q/V$ tells you how many amp-seconds it banks per
+volt. An inductor \emph{hoards flux}: $L=\Phi/I$ tells you how many volt-seconds it
+banks per amp. ``Flux'' $\Phi=\int V\,dt$ is just volt-seconds---an inductor is to
+current what a capacitor is to voltage.
+\end{psremark*}
+
+\pts{7}
+\begin{pproblem}
+Express the SI unit of each quantity using only volts $\V$, amps $\A$, and seconds $\s$:
+\begin{subpart}
+\item resistance $R$
+\item capacitance $C$
+\item inductance $L$
+\item charge $Q$
+\item magnetic flux $\Phi$
+\item power $P$
+\item energy $U$
+\end{subpart}
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+A reactance is the ``effective resistance'' of an inductor or capacitor to AC.
+Show on dimensional grounds that the inductive reactance $\omega L$ and the
+capacitive reactance $1/(\omega C)$ both come out in ohms, so it makes sense to add
+them to $R$ when forming an impedance.
+\end{pproblem}
+
+\section{Why \texorpdfstring{$RC$}{RC}, \texorpdfstring{$L/R$}{L/R}, and \texorpdfstring{$1/\sqrt{LC}$}{1/sqrt(LC)} Are All Times}
+
+\begin{psidea}{Read the time off the defining relation}{}
+You never need to memorize that $RC$ and $L/R$ are times---each falls out of one
+physical sentence.
+
+\textbf{$RC$.} A capacitor holds charge $Q=CV$. A resistor drains it at a current
+$I=V/R$. The draining time is
+\[
+\tau \sim \frac{\text{charge stored}}{\text{rate of draining}}
+   = \frac{CV}{V/R}=RC .
+\]
+``How much you store'' over ``how fast you remove it'' is always a time.
+
+\textbf{$L/R$.} An inductor carries current $I$; the resistor needs a voltage $IR$
+to push against the inductor's $V=L\,dI/dt$. Balancing them,
+$L\,dI/dt\sim IR$, so $I$ changes on the timescale
+\[
+\tau \sim \frac{L}{R}.
+\]
+\end{psidea}
+
+\begin{psidea}{One formula to rule them all}{}
+Every decay constant in a passive circuit is
+\[
+\boxed{\;\tau = \frac{\text{energy stored}}{\text{power dissipated}}\;}
+\]
+which is manifestly a time (joules over watts). For the capacitor,
+$\tau = \tfrac12 CV^2 \big/ (V^2/R) = \tfrac12 RC$. For the inductor,
+$\tau = \tfrac12 LI^2 \big/ (I^2R) = \tfrac12\,L/R$. The numerical factor depends on
+your definition; the \emph{units} never lie.
+\end{psidea}
+
+\begin{psidea}{$\sqrt{LC}$ is the geometric mean of the other two times}{}
+The cleanest reason $\sqrt{LC}$ is a time requires no new physics at all:
+\[
+LC = \Big(\tfrac{L}{R}\Big)\big(RC\big)
+\quad\Longrightarrow\quad
+\sqrt{LC} = \sqrt{\tfrac{L}{R}\cdot RC}.
+\]
+The right side is the geometric mean of two times, hence a time. The resistance
+$R$ cancels---it appears once on top (in $L/R$) and once on the bottom (in $RC$)---
+which is exactly why the LC resonant period doesn't care about the resistor. $R$
+only damps the oscillation; it cannot set its frequency.
+\end{psidea}
+
+\begin{psexample}{Energy-balance derivation of $\sqrt{LC}$}{}
+Forget the geometric mean and rebuild $\sqrt{LC}$ from energy. In an LC oscillation
+energy sloshes back and forth, so at peak the capacitor's $\tfrac12 Q^2/C$ equals the
+inductor's $\tfrac12 LI^2$. Over one quarter-period $\tau$ the current $I$ delivers a
+charge $Q\sim I\tau$. Substituting,
+\[
+\frac{(I\tau)^2}{C}\sim L I^2
+\quad\Longrightarrow\quad
+\tau \sim \sqrt{LC}.
+\]
+The same answer, now seen as the time for current to refill the capacitor's charge.
+\end{psexample}
+
+\pts{3}
+\begin{pproblem}
+Using only a resistor $R$ and capacitor $C$, prove that the \emph{only} power-law
+combination $R^aC^b$ with units of time is $RC$ itself (i.e.\ $a=b=1$). Do the same
+to show $L/R$ is the unique time built from $L$ and $R$.
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+The geometric-mean argument says $\sqrt{LC}=\sqrt{(L/R)(RC)}$ for \emph{any} $R$.
+Pick two wildly different resistors, $R_1=1\,\Omega$ and $R_2=10^6\,\Omega$, in a
+circuit with $L=1\,\text{mH}$ and $C=1\,\text{nF}$. Compute $L/R$ and $RC$ for each,
+verify their product is the same, and state in one sentence why this had to happen.
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem} \clock{0}{6}
+The five formulas below have each been garbled. Use dimensions alone to spot the
+error and write the corrected form (numerical prefactors don't matter):
+\begin{subpart}
+\item resonant frequency $\omega_0 = \dfrac{1}{LC}$
+\item RC decay time $\tau = RC^2$
+\item energy in a capacitor $U = \tfrac12 CV$
+\item series-RLC quality factor $Q = R\sqrt{L/C}$
+\item skin depth $\delta = \dfrac{1}{\mu_0\sigma\omega}$
+\end{subpart}
+\end{pproblem}
+
+\section{$\sqrt{L/C}$ Is a Resistance}
+
+\begin{psidea}{The other combination of $L$ and $C$}{}
+If $\sqrt{LC}$ is a time, what is $\sqrt{L/C}$? Dividing instead of multiplying,
+\[
+\frac{L}{C}=\frac{\V\s/\A}{\A\s/\V}=\frac{\V^2}{\A^2}
+\quad\Longrightarrow\quad
+\sqrt{\frac{L}{C}}=\frac{\V}{\A}=\text{ohms.}
+\]
+This is the \textbf{characteristic impedance} $Z_0=\sqrt{L/C}$. So from $L$ and $C$
+you can build exactly two things: a time $\sqrt{LC}$ and a resistance $\sqrt{L/C}$.
+At resonance the inductor's reactance $\omega_0 L$ and the capacitor's $1/(\omega_0 C)$
+both equal this same $Z_0$.
+\end{psidea}
+
+\pts{4}
+\begin{pproblem}
+A coaxial cable has inductance $L = 250\,\text{nH/m}$ and capacitance
+$C = 100\,\text{pF/m}$ per unit length.
+\begin{subpart}
+\item Show $\sqrt{L/C}$ is the same number whether you use the per-metre values or the
+totals for any fixed length, and compute the cable's characteristic impedance.
+\item For a wave on the line, show that $1/\sqrt{L_\ell C_\ell}$ (subscript $\ell$ =
+``per unit length'') is a \emph{speed}, and explain why it must be, given that
+$\sqrt{LC}$ is a time.
+\end{subpart}
+\end{pproblem}
+
+\pts{3}
+\begin{pproblem}
+Show that the impedance of free space $\sqrt{\mu_0/\varepsilon_0}$ is a resistance,
+and that $1/\sqrt{\mu_0\varepsilon_0}$ is a speed. Evaluate both
+($\mu_0 = 4\pi\times10^{-7}$, $\varepsilon_0 = 8.85\times10^{-12}$ SI) and identify the
+speed.
+\end{pproblem}
+
+\section{The Quality Factor}
+
+\begin{psidea}{$Q$ is a ratio of two times, hence dimensionless}{}
+The quality factor measures how many oscillations a resonator rings out before its
+energy decays. Its universal definition is
+\[
+Q = \omega_0 \times \frac{\text{energy stored}}{\text{power dissipated}}
+  = \omega_0 \,\tau_{\text{decay}} ,
+\]
+a (frequency)$\times$(time), so dimensionless. For a series RLC the energy decay time
+is $\tau = L/R$, giving
+\[
+Q = \omega_0\frac{L}{R} = \frac{L/R}{\sqrt{LC}} = \frac{1}{R}\sqrt{\frac{L}{C}}
+  = \frac{Z_0}{R}.
+\]
+Read the middle expression out loud: $Q$ is the \emph{decay time divided by the
+oscillation time}---roughly the number of radians the circuit swings through before
+it dies. For a parallel RLC the dissipation flips and $Q = \omega_0 RC = R/Z_0$.
+\end{psidea}
+
+\begin{psremark*}{}{}
+The series and parallel results are reciprocals, $Q_{\text{series}}=Z_0/R$ versus
+$Q_{\text{parallel}}=R/Z_0$. Either way $Q$ compares the resistor to the one natural
+resistance in the problem, $Z_0=\sqrt{L/C}$. High $Q$ means $R$ is far from $Z_0$.
+\end{psremark*}
+
+\pts{4}
+\begin{pproblem}
+Show in three independent ways that the series-RLC quality factor is dimensionless:
+(a) from $Q=\omega_0 L/R$, (b) from $Q=(1/R)\sqrt{L/C}$, and (c) from
+$Q=\omega_0\tau$ with $\tau$ the energy-decay time $L/R$. Confirm all three are the
+same combination.
+\end{pproblem}
+
+\pts{5}
+\begin{pproblem}
+An LC tank has $L = 2\,\text{mH}$ and $C = 5\,\text{nF}$.
+\begin{subpart}
+\item Find the resonant frequency $f_0$ and the characteristic impedance $Z_0$.
+\item A resistor $R = 10\,\Omega$ is placed in series. Find $Q$ without computing any
+energies---just use $Z_0$.
+\item Roughly how many oscillations does the circuit ring through before its energy
+falls by $1/e$?
+\end{subpart}
+\end{pproblem}
+
+\section{Field Quantities and Material Constants}
+
+\begin{psidea}{Fields, flux, and energy density}{}
+Push past circuit elements into the fields themselves:
+\[
+[\Phi]=\V\s\ (\text{weber}),\quad
+[B]=\frac{\V\s}{\m^2}\ (\text{tesla}),\quad
+[E]=\frac{\V}{\m},\quad
+[\varepsilon_0]=\frac{\A\s}{\V\m},\quad
+[\mu_0]=\frac{\V\s}{\A\m}.
+\]
+The combinations to recognize on sight:
+\[
+\varepsilon_0 E^2 \ \text{and}\ \frac{B^2}{\mu_0}\ \text{are energy densities }
+\Big(\tfrac{\text{J}}{\m^3}\Big),\qquad
+\frac{EB}{\mu_0}\ \text{is the Poynting flux }\Big(\tfrac{\text{W}}{\m^2}\Big).
+\]
+And the master identity $\varepsilon_0\mu_0 = 1/c^2$ is forced by units: their product
+is $\s^2/\m^2$.
+\end{psidea}
+
+\begin{psidea}{Material constants hide more times and lengths}{}
+Resistivity $\rho$ (units $\Ohm\,\m$) and conductivity $\sigma=1/\rho$ generate their
+own scales:
+\[
+\varepsilon_0\rho = \frac{\varepsilon_0}{\sigma}\ \text{is a time}
+\ (\text{charge-relaxation time}),\qquad
+\mu_0\sigma a^2\ \text{is a time}\ (\text{magnetic-diffusion time, size } a),
+\]
+\[
+\frac{1}{\mu_0\sigma\omega}\ \text{is an area}
+\ \Longrightarrow\ \delta\sim\sqrt{\tfrac{2}{\mu_0\sigma\omega}}\ \text{is the skin depth.}
+\]
+\end{psidea}
+
+\pts{3}
+\begin{pproblem}
+Show that $\varepsilon_0\rho$ has units of time. Estimate it for copper
+($\rho = 1.7\times10^{-8}\,\Omega\,\m$) and comment on what such a fast time means
+physically for free charge dumped inside a metal.
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+Show that $\mu_0\sigma a^2$ is a time, where $a$ is a length. This is the time for
+eddy currents (and the trapped field) to decay in a conductor of size $a$. Estimate it
+for a copper sphere of radius $a = 10\,\text{cm}$ ($\sigma_{\text{Cu}}=5.9\times10^{7}\,
+\text{S/m}$).
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+From the permeability $\mu_0$, the conductivity $\sigma$, and a driving angular
+frequency $\omega$, construct---by dimensions alone---the unique length scale you can
+form. Confirm it is the skin depth and explain why higher frequency makes it smaller.
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+Verify both EM energy densities and the Poynting flux:
+\begin{subpart}
+\item $\varepsilon_0 E^2$ has units of $\text{J}/\m^3$,
+\item $B^2/\mu_0$ has units of $\text{J}/\m^3$,
+\item $EB/\mu_0$ has units of $\text{W}/\m^2$.
+\end{subpart}
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+Two important frequencies of charged-particle motion:
+\begin{subpart}
+\item Show the cyclotron frequency $qB/m$ is a frequency. (Use $[B]=\text{kg}/(\A\s^2)$.)
+\item Show the plasma frequency $\sqrt{ne^2/(\varepsilon_0 m)}$ is a frequency, where
+$n$ is a number density.
+\end{subpart}
+\end{pproblem}
+
+\pts{4}
+\begin{pproblem}
+Classify each combination as a \textbf{time}, \textbf{frequency}, \textbf{resistance},
+or \textbf{dimensionless} number:
+\[
+RC,\quad \frac{L}{R},\quad \sqrt{LC},\quad \frac{1}{\sqrt{LC}},\quad
+\sqrt{\frac{L}{C}},\quad \omega L,\quad \frac{1}{\omega C},\quad
+\omega RC,\quad \frac{R}{\omega L},\quad \omega^2 LC,\quad
+\frac{\omega L}{R},\quad \frac{R^2C}{L}.
+\]
+\end{pproblem}
+
+\pts{5}
+\begin{pproblem} \advanced
+Show that the fine-structure constant $\alpha = \dfrac{e^2}{4\pi\varepsilon_0\hbar c}$
+is dimensionless. (Hint: show $e^2/\varepsilon_0$ has units of energy$\times$length,
+and so does $\hbar c$.) This is why $\alpha\approx 1/137$ is the same pure number in
+every unit system.
+\end{pproblem}
+
+\newpage
+\section{Solutions}
+
+Throughout, $\V$, $\A$, $\s$, $\m$ denote volt, amp, second, metre, and
+$[X]$ means ``the units of $X$.''
+
+\begin{enumerate}
+
+\item Straight from the defining relations.
+$[R]=\V/\A$;\;
+$[C]=[Q]/[V]=\A\s/\V$;\;
+$[L]=[V]/[dI/dt]=\V\s/\A$;\;
+$[Q]=\A\s$;\;
+$[\Phi]=[LI]=\V\s$ (equivalently $\int V\,dt$);\;
+$[P]=[VI]=\V\A$;\;
+$[U]=[Pt]=\V\A\s$.
+
+\item $[\omega L]=\dfrac{1}{\s}\cdot\dfrac{\V\s}{\A}=\dfrac{\V}{\A}=\Ohm$, and
+$\left[\dfrac{1}{\omega C}\right]=\dfrac{1}{(1/\s)(\A\s/\V)}=\dfrac{\V}{\A}=\Ohm$.
+Both are ohms, so $R$, $\omega L$, and $1/(\omega C)$ live on the same footing and can
+be combined (in quadrature) into an impedance.
+
+\item Write $R^aC^b=(\V/\A)^a(\A\s/\V)^b=\V^{a-b}\,\A^{b-a}\,\s^{b}$. For this to be a
+pure time we need the volt exponent $a-b=0$, the amp exponent $b-a=0$, and the second
+exponent $b=1$. Hence $b=1$ and $a=1$: only $RC$. Similarly
+$L^aR^b=(\V\s/\A)^a(\V/\A)^b=\V^{a+b}\A^{-a-b}\s^{a}$; a time needs $a+b=0$ and $a=1$,
+so $b=-1$: only $L/R$.
+
+\item For $R_1=1\,\Omega$: $L/R=10^{-3}/1=10^{-3}\,\s$ and
+$RC=1\cdot10^{-9}=10^{-9}\,\s$; product $=10^{-12}\,\s^2$.
+For $R_2=10^{6}\,\Omega$: $L/R=10^{-3}/10^{6}=10^{-9}\,\s$ and
+$RC=10^{6}\cdot10^{-9}=10^{-3}\,\s$; product $=10^{-12}\,\s^2$.
+Same product because $(L/R)(RC)=LC$, which has no $R$ in it. (And indeed
+$\sqrt{LC}=10^{-6}\,\s$.) Changing $R$ just trades one time for the other while keeping
+their product---the resonant period---fixed.
+
+\item
+(a) $1/(LC)$ has units $1/\s^2$, a frequency \emph{squared}; the resonant frequency is
+$\omega_0 = 1/\sqrt{LC}$.
+(b) $RC^2$ is $(\s)(\A\s/\V)=$ time$\times$capacitance, not a time; should be $RC$.
+(c) $CV$ is $(\A\s/\V)(\V)=\A\s=$ charge, not energy; should be $\tfrac12 CV^2$.
+(d) $R\sqrt{L/C}=\Ohm\cdot\Ohm=\Ohm^2$, not dimensionless; the series-RLC factor is
+$Q=(1/R)\sqrt{L/C}$.
+(e) $1/(\mu_0\sigma\omega)$ is an \emph{area} (see Problem 13), not a length; the skin
+depth is $\delta\sim\sqrt{2/(\mu_0\sigma\omega)}$.
+
+\item
+(a) $\sqrt{L/C}$ taken from per-metre values is $\sqrt{(L_\ell x)/(C_\ell x)}$ for any
+length $x$; the $x$ cancels, so the impedance is a property of the cable, not its
+length. Numerically $Z_0=\sqrt{250\times10^{-9}/100\times10^{-12}}
+=\sqrt{2500}=50\,\Omega$.
+(b) $[1/\sqrt{L_\ell C_\ell}]$: per-length $L_\ell$ and $C_\ell$ carry an extra
+$1/\m$ each, so $L_\ell C_\ell=(LC)/\m^2$, i.e.\ time$^2$/length$^2$, and its inverse
+square root is $\m/\s$, a speed. It must be a speed because $\sqrt{LC}$ is a time and
+the only way to get a speed from a time is to divide by length---which is exactly what
+``per unit length'' supplies.
+
+\item $\left[\sqrt{\mu_0/\varepsilon_0}\right]=\sqrt{\dfrac{\V\s/(\A\m)}{\A\s/(\V\m)}}
+=\sqrt{\V^2/\A^2}=\V/\A=\Ohm$, giving
+$\sqrt{4\pi\times10^{-7}/8.85\times10^{-12}}\approx 377\,\Omega$.
+$\left[1/\sqrt{\mu_0\varepsilon_0}\right]$: the product $\mu_0\varepsilon_0$ has units
+$\s^2/\m^2$, so its inverse square root is $\m/\s$, and numerically
+$1/\sqrt{4\pi\times10^{-7}\cdot8.85\times10^{-12}}\approx 3.0\times10^{8}\,\text{m/s}=c$,
+the speed of light.
+
+\item
+(a) $\omega_0 L/R = (1/\s)(\V\s/\A)/(\V/\A) = 1$.
+(b) $(1/R)\sqrt{L/C}=(\A/\V)(\V/\A)=1$.
+(c) $\omega_0\tau=(1/\s)(\s)=1$. All equal because
+$\omega_0(L/R)=\frac{1}{\sqrt{LC}}\frac{L}{R}=\frac{1}{R}\sqrt{L/C}$---the same
+combination written three ways.
+
+\item
+(a) $\omega_0=1/\sqrt{LC}=1/\sqrt{(2\times10^{-3})(5\times10^{-9})}
+=1/\sqrt{10^{-11}}\approx 3.16\times10^{5}\,\text{rad/s}$, so
+$f_0=\omega_0/2\pi\approx 50.3\,\text{kHz}$. And
+$Z_0=\sqrt{L/C}=\sqrt{(2\times10^{-3})/(5\times10^{-9})}=\sqrt{4\times10^{5}}
+\approx 632\,\Omega$.
+(b) $Q=Z_0/R=632/10\approx 63$.
+(c) The energy falls by $1/e$ in $\tau=L/R$, and $Q=\omega_0\tau$ is the number of
+radians in that time, so the number of full cycles is $Q/2\pi\approx 63/6.28\approx 10$.
+
+\item $[\varepsilon_0\rho]=\dfrac{\A\s}{\V\m}\cdot\dfrac{\V\m}{\A}=\s$. For copper,
+$\tau=\varepsilon_0\rho=(8.85\times10^{-12})(1.7\times10^{-8})\approx1.5\times10^{-19}\,\s$.
+Such an astonishingly short time means that any free charge placed inside a good
+conductor neutralizes essentially instantly---the charge flees to the surface, leaving
+the interior neutral, which is why electrostatics treats conductors as having zero
+interior field.
+
+\item $[\mu_0\sigma a^2]=\dfrac{\V\s}{\A\m}\cdot\dfrac{\A}{\V\m}\cdot\m^2=\s$.
+For the copper sphere, $\tau=\mu_0\sigma a^2
+=(4\pi\times10^{-7})(5.9\times10^{7})(0.1)^2\approx 0.74\,\s$. (Geometry adds an
+$O(1)$ factor.) Currents induced in the metal coast for roughly this long before ohmic
+losses kill them.
+
+\item We want a length from $\mu_0\sigma$ (units
+$\frac{\V\s}{\A\m}\cdot\frac{\A}{\V\m}=\s/\m^2$) and $\omega$ (units $1/\s$). The
+product $\mu_0\sigma\omega$ has units $1/\m^2$, so its reciprocal is an area and
+$\delta\sim 1/\sqrt{\mu_0\sigma\omega}$ is the unique length---the skin depth (the
+standard prefactor is $\sqrt{2}$). Higher $\omega$ puts a larger number in the
+denominator, shrinking $\delta$: fast-changing fields are expelled to a thinner surface
+layer.
+
+\item
+(a) $[\varepsilon_0 E^2]=\dfrac{\A\s}{\V\m}\Big(\dfrac{\V}{\m}\Big)^2
+=\dfrac{\A\s\,\V}{\m^3}=\dfrac{\V\A\s}{\m^3}=\dfrac{\text{J}}{\m^3}$.
+(b) $[B^2/\mu_0]=\dfrac{(\V\s/\m^2)^2}{\V\s/(\A\m)}
+=\dfrac{\V\A\s}{\m^3}=\dfrac{\text{J}}{\m^3}$.
+(c) $[EB/\mu_0]=\dfrac{(\V/\m)(\V\s/\m^2)}{\V\s/(\A\m)}=\dfrac{\V\A}{\m^2}
+=\dfrac{\text{W}}{\m^2}$.
+
+\item
+(a) With $[B]=\text{kg}/(\A\s^2)$,
+$[qB/m]=(\A\s)\dfrac{\text{kg}/(\A\s^2)}{\text{kg}}=\dfrac{1}{\s}$, a frequency.
+(b) $\left[\dfrac{ne^2}{\varepsilon_0 m}\right]
+=\dfrac{1}{\m^3}\cdot\dfrac{(\A\s)^2}{[\varepsilon_0]\,\text{kg}}
+=\dfrac{1}{\m^3}\cdot\dfrac{\A^2\s^2\,\V\m}{\A\s\,\text{kg}}
+=\dfrac{\A\s\,\V}{\m^2\,\text{kg}}$. Since $\A\V=\text{W}=\text{kg}\,\m^2/\s^3$, this
+is $\dfrac{\s\cdot\text{kg}\,\m^2/\s^3}{\m^2\,\text{kg}}=\dfrac{1}{\s^2}$, so the square
+root is a frequency.
+
+\item
+$RC=\s$ (time);\quad
+$L/R=\s$ (time);\quad
+$\sqrt{LC}=\s$ (time);\quad
+$1/\sqrt{LC}=1/\s$ (frequency);\quad
+$\sqrt{L/C}=\Ohm$ (resistance);\quad
+$\omega L=\Ohm$ (resistance);\quad
+$1/(\omega C)=\Ohm$ (resistance);\quad
+$\omega RC$: $(1/\s)(\s)=$ dimensionless;\quad
+$R/(\omega L)$: $\Ohm/\Ohm=$ dimensionless;\quad
+$\omega^2 LC$: $(1/\s^2)(\s^2)=$ dimensionless;\quad
+$\omega L/R$: $\Ohm/\Ohm=$ dimensionless ($=Q$);\quad
+$R^2C/L$: $\Ohm^2\cdot(\text{F}/\text{H})=\Ohm^2/\Ohm^2=$ dimensionless ($=1/Q^2$).
+
+\item $[e^2/\varepsilon_0]=\dfrac{(\A\s)^2}{\A\s/(\V\m)}=\A\s\cdot\V\m
+=(\V\A\s)\,\m=\text{J}\cdot\m$, energy$\times$length. Likewise $\hbar c$ has units
+$(\text{J}\,\s)(\m/\s)=\text{J}\cdot\m$. Their ratio
+$\dfrac{e^2}{4\pi\varepsilon_0\hbar c}$ is therefore a pure number, the same
+$\approx 1/137$ in any system of units.
+
+\end{enumerate}
+
+\end{document}
