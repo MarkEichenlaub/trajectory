@@ -8,8 +8,43 @@ const CAL_WEBHOOK_SECRET = Deno.env.get('CAL_WEBHOOK_SECRET') || ''
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID') || ''
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET') || ''
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN') || ''
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') || ''
+
+const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
+const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 
 type SupabaseClient = ReturnType<typeof createClient>
+
+async function warnMarkOverriddenDates(
+  supabase: SupabaseClient, studentId: string, studentName: string, context: string,
+) {
+  const { data: overridden } = await supabase
+    .from('assignments')
+    .select('problem_id, due_date')
+    .eq('student_id', studentId)
+    .eq('requires_submission', true)
+    .eq('due_date_overridden', true)
+    .in('status', ['assigned', 'submitted'])
+  if (!overridden?.length) return
+  const lines = overridden.map(a => `  - ${a.problem_id}: due ${a.due_date}`)
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+      to: [MARK_EMAIL],
+      subject: `Heads up: ${studentName}'s session ${context} — check assignment due dates`,
+      text: [
+        `${studentName}'s session was ${context}.`,
+        '',
+        'These assignments have manually-set due dates that were NOT auto-updated:',
+        ...lines,
+        '',
+        `Review them at: ${PORTAL_URL}`,
+      ].join('\n'),
+    }),
+  }).catch(e => console.error('Warning email failed:', e))
+}
 
 async function sendEmail(to: string | string[], subject: string, body: string) {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
@@ -320,6 +355,11 @@ async function handleBookingRescheduled(payload: Record<string, unknown>, supaba
     console.error('reschedule notice failed:', (e as Error).message)
   }
 
+  await warnMarkOverriddenDates(
+    supabase, session.student_id as string, studentName,
+    `rescheduled (${fmtWhen(oldWhen)} → ${fmtWhen(newStartTime)})`,
+  )
+
   return new Response(JSON.stringify({ ok: true, rescheduled: session.id }), {
     status: 200, headers: { 'Content-Type': 'application/json' },
   })
@@ -380,6 +420,11 @@ async function handleBookingCancelled(payload: Record<string, unknown>, supabase
   } catch (e) {
     console.error('cancel notice failed:', (e as Error).message)
   }
+
+  await warnMarkOverriddenDates(
+    supabase, session.student_id as string, studentName,
+    `cancelled (was ${fmtWhen(session.scheduled_at as string)})`,
+  )
 
   return new Response(JSON.stringify({ ok: true, cancelled: calBookingId }), {
     status: 200, headers: { 'Content-Type': 'application/json' },

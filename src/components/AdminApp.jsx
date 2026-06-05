@@ -53,7 +53,7 @@ export default function AdminApp() {
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
   const [emailDraft, setEmailDraft] = useState(null)
-  const [requiresSubmission, setRequiresSubmission] = useState(true)
+  const [requiresSubmission, setRequiresSubmission] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -275,6 +275,17 @@ export default function AdminApp() {
     try {
       await updateAssignment(assignmentId, { notes })
       setAssignments(prev => prev.map(a => a.id === assignmentId ? { ...a, notes } : a))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleUpdateDueDate(assignmentId, dueDate) {
+    try {
+      await updateAssignment(assignmentId, { due_date: dueDate, due_date_overridden: true })
+      setAssignments(prev => prev.map(a =>
+        a.id === assignmentId ? { ...a, due_date: dueDate, due_date_overridden: true } : a
+      ))
     } catch (e) {
       showToast(e.message, 'error')
     }
@@ -537,6 +548,7 @@ export default function AdminApp() {
             onUnassign={handleUnassign}
             onGenerateEmail={handleGenerateEmail}
             onUpdateNote={handleUpdateNote}
+            onUpdateDueDate={handleUpdateDueDate}
             onUploadFeedback={handleUploadFeedback}
           />
         )}

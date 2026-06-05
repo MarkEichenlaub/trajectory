@@ -45,10 +45,49 @@ function NoteField({ assignmentId, initialNote, onSave }) {
   )
 }
 
+function DueDateField({ assignmentId, dueDate, overridden, requiresSubmission, onSave }) {
+  const [editing, setEditing] = useState(false)
+  const [value, setValue] = useState(dueDate || '')
+
+  if (!requiresSubmission) return null
+
+  function handleBlur() {
+    setEditing(false)
+    if (value !== (dueDate || '')) onSave(assignmentId, value || null)
+  }
+
+  if (editing) {
+    return (
+      <input
+        type="date"
+        className="assignment-note-input"
+        value={value}
+        autoFocus
+        onChange={e => setValue(e.target.value)}
+        onBlur={handleBlur}
+        onKeyDown={e => { if (e.key === 'Enter') e.target.blur() }}
+        style={{ width: 120, fontSize: 11 }}
+      />
+    )
+  }
+
+  return (
+    <span
+      className="p-date"
+      onClick={() => { setValue(dueDate || ''); setEditing(true) }}
+      title="Click to set due date"
+      style={{ cursor: 'pointer' }}
+    >
+      {dueDate ? `Due ${dueDate}` : 'Set due date…'}
+      {overridden && <span style={{ marginLeft: 4, fontSize: 9, color: 'var(--text-dim)', fontStyle: 'italic' }}>manual</span>}
+    </span>
+  )
+}
+
 export default function AssignedView({
   student, assignments, problems,
   assignedOrder, onReorder,
-  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUploadFeedback,
+  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUpdateDueDate, onUploadFeedback,
 }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [dragId, setDragId] = useState(null)
@@ -220,6 +259,13 @@ export default function AssignedView({
                   {a.assigned_date && (
                     <span className="p-date">{a.assigned_date}</span>
                   )}
+                  <DueDateField
+                    assignmentId={a.id}
+                    dueDate={a.due_date}
+                    overridden={a.due_date_overridden}
+                    requiresSubmission={a.requires_submission}
+                    onSave={onUpdateDueDate}
+                  />
                   <NoteField
                     assignmentId={a.id}
                     initialNote={a.notes}
@@ -233,9 +279,11 @@ export default function AssignedView({
                     </a>
                   )}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
-                  {a.submission_url && (
-                    <a href={a.submission_url} target="_blank" rel="noreferrer">Submission ↗</a>
-                  )}
+                  {(a.assignment_submissions || []).map((s, i) => (
+                    <a key={s.id} href={s.file_url} target="_blank" rel="noreferrer">
+                      {(a.assignment_submissions.length === 1) ? 'Submission ↗' : `Sub ${i + 1} ↗`}
+                    </a>
+                  ))}
                   {a.status === 'submitted' && (
                     <button
                       className="sm"

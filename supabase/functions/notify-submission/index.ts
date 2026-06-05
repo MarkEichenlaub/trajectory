@@ -39,10 +39,11 @@ Deno.serve(async (req) => {
     .from('students').select('id, name').eq('user_id', user.id).maybeSingle()
   if (!student) return json({ error: 'no student found' }, 403)
 
-  const { assignment_id, submission_url } = await req.json() as {
-    assignment_id: string; submission_url: string
+  const { assignment_id, submissions } = await req.json() as {
+    assignment_id: string
+    submissions: Array<{ url: string; file_name: string }>
   }
-  if (!assignment_id || !submission_url) return json({ error: 'missing fields' }, 400)
+  if (!assignment_id || !submissions?.length) return json({ error: 'missing fields' }, 400)
 
   // Verify the assignment belongs to this student
   const { data: assignment } = await admin
@@ -52,15 +53,30 @@ Deno.serve(async (req) => {
     .eq('student_id', student.id)
     .maybeSingle()
   if (!assignment) return json({ error: 'assignment not found' }, 404)
-  if (assignment.status !== 'assigned') return json({ ok: true, skipped: 'already submitted' })
 
-  // Update to submitted
-  const { error: updateErr } = await admin.from('assignments').update({
-    status: 'submitted',
-    submission_url,
-    submission_at: new Date().toISOString(),
-  }).eq('id', assignment_id)
-  if (updateErr) return json({ error: updateErr.message }, 500)
+  // Gate: reject once reviewed or completed
+  if (assignment.status === 'reviewed' || assignment.status === 'completed') {
+    return json({ ok: true, skipped: 'assignment already reviewed or completed' })
+  }
+
+  // Insert each file into assignment_submissions
+  const { error: insertErr } = await admin.from('assignment_submissions').insert(
+    submissions.map(s => ({
+      assignment_id,
+      file_url: s.url,
+      file_name: s.file_name || null,
+    }))
+  )
+  if (insertErr) return json({ error: insertErr.message }, 500)
+
+  // Only flip status on first submission
+  if (assignment.status === 'assigned') {
+    const { error: updateErr } = await admin.from('assignments').update({
+      status: 'submitted',
+      submission_at: new Date().toISOString(),
+    }).eq('id', assignment_id)
+    if (updateErr) return json({ error: updateErr.message }, 500)
+  }
 
   // Fetch problem name for the email
   const { data: problem } = await admin
@@ -68,6 +84,8 @@ Deno.serve(async (req) => {
   const problemLabel = problem
     ? `${problem.contest} ${problem.year} ${problem.label} — ${problem.name}`
     : assignment.problem_id
+
+  const fileLinks = submissions.map(s => `  ${s.file_name || s.url}: ${s.url}`).join('\n')
 
   // Email Mark
   await fetch('https://api.resend.com/emails', {
@@ -78,10 +96,11 @@ Deno.serve(async (req) => {
       to: [MARK_EMAIL],
       subject: `${student.name} submitted a solution`,
       text: [
-        `${student.name} submitted a solution for:`,
+        `${student.name} submitted ${submissions.length === 1 ? 'a solution' : `${submissions.length} files`} for:`,
         `  ${problemLabel}`,
         '',
-        `View submission: ${submission_url}`,
+        'Files:',
+        fileLinks,
         '',
         `Upload feedback at: ${PORTAL_URL}`,
       ].join('\n'),

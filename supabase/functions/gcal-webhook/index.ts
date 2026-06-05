@@ -6,6 +6,10 @@ const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID')!
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET')!
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
 const WEBHOOK_SECRET = Deno.env.get('GCAL_WEBHOOK_SECRET')!
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') || ''
+
+const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
+const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 
 async function getGoogleAccessToken(): Promise<string> {
   const res = await fetch('https://oauth2.googleapis.com/token', {
@@ -117,7 +121,7 @@ Deno.serve(async (req) => {
 
     const { data: session } = await admin
       .from('sessions')
-      .select('id, scheduled_at, end_time, balance_decremented')
+      .select('id, student_id, scheduled_at, end_time, balance_decremented, students!inner(name)')
       .eq('gcal_event_id', event.id)
       .maybeSingle()
     if (!session) continue
@@ -143,6 +147,36 @@ Deno.serve(async (req) => {
         console.error(`Failed to update session ${session.id}:`, error.message)
       } else {
         console.log(`Session ${session.id}: ${session.scheduled_at} → ${newStart}`)
+
+        // Warn Mark if any overridden due dates exist for this student
+        const studentName = (session.students as { name: string }).name
+        const { data: overridden } = await admin
+          .from('assignments')
+          .select('problem_id, due_date')
+          .eq('student_id', session.student_id)
+          .eq('requires_submission', true)
+          .eq('due_date_overridden', true)
+          .in('status', ['assigned', 'submitted'])
+        if (overridden?.length) {
+          const lines = overridden.map(a => `  - ${a.problem_id}: due ${a.due_date}`)
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+              to: [MARK_EMAIL],
+              subject: `Heads up: ${studentName}'s session moved in Google Calendar — check assignment due dates`,
+              text: [
+                `${studentName}'s session was moved in Google Calendar (${session.scheduled_at} → ${newStart}).`,
+                '',
+                'These assignments have manually-set due dates that were NOT auto-updated:',
+                ...lines,
+                '',
+                `Review them at: ${PORTAL_URL}`,
+              ].join('\n'),
+            }),
+          }).catch(e => console.error('Warning email failed:', e))
+        }
       }
     }
   }

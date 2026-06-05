@@ -147,10 +147,40 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Delete DB session row (safety: only if not already billed)
+  // Delete DB session row — trigger clears non-overridden assignment due dates automatically
   const { error: dbErr } = await admin.from('sessions').delete()
     .eq('id', session_id).eq('balance_decremented', false)
   if (dbErr) return json({ error: 'DB delete failed', detail: dbErr.message }, 500)
+
+  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those)
+  const { data: overridden } = await admin
+    .from('assignments')
+    .select('problem_id, due_date')
+    .eq('student_id', student.id)
+    .eq('requires_submission', true)
+    .eq('due_date_overridden', true)
+    .in('status', ['assigned', 'submitted'])
+  if (overridden?.length) {
+    const cancelledWhen = fmtWhen(session.scheduled_at as string)
+    const lines = overridden.map(a => `  - ${a.problem_id}: due ${a.due_date}`)
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+        to: [MARK_EMAIL],
+        subject: `Heads up: ${student.name}'s session cancelled — check assignment due dates`,
+        text: [
+          `${student.name}'s session for ${cancelledWhen} was cancelled.`,
+          '',
+          'These assignments have manually-set due dates that were NOT auto-updated:',
+          ...lines,
+          '',
+          `Review them at: ${PORTAL_URL}`,
+        ].join('\n'),
+      }),
+    }).catch(e => console.error('Warning email failed:', e))
+  }
 
   // Get contact emails
   const { data: contacts } = await admin

@@ -157,15 +157,20 @@ export default function StudentView({ student, assignments, sessions, problems, 
   }
 
   async function handleSubmitFileChange(e) {
-    const file = e.target.files?.[0]
+    const files = Array.from(e.target.files || [])
     const assignmentId = pendingSubmitId.current
     e.target.value = ''
-    if (!file || !assignmentId || isPreview) return
+    if (!files.length || !assignmentId || isPreview) return
     setSubmitError(null)
     setSubmittingId(assignmentId)
     try {
-      const url = await uploadSubmission(student.id, assignmentId, file)
-      await notifySubmission(assignmentId, url)
+      const submissions = await Promise.all(
+        files.map(async file => {
+          const url = await uploadSubmission(student.id, assignmentId, file)
+          return { url, fileName: file.name }
+        })
+      )
+      await notifySubmission(assignmentId, submissions)
     } catch (err) {
       setSubmitError(err.message)
     } finally {
@@ -179,6 +184,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
         ref={submitInputRef}
         type="file"
         accept="image/*,application/pdf"
+        multiple
         style={{ display: 'none' }}
         onChange={handleSubmitFileChange}
       />
@@ -356,9 +362,11 @@ export default function StudentView({ student, assignments, sessions, problems, 
             const dateLabel = a.status === 'completed' && a.completed_date
               ? `Completed ${a.completed_date}`
               : `Assigned ${a.assigned_date}`
-            const dueLabel = a.status === 'assigned' && nextSession
-              ? `Due ${formatDate(nextSession.scheduled_at)}`
+            const dueLabel = a.requires_submission && a.due_date
+              ? `Due ${a.due_date}`
               : null
+            const subs = a.assignment_submissions || []
+            const canSubmit = (a.status === 'assigned' || a.status === 'submitted') && !isPreview && a.requires_submission
             return (
               <div key={a.id} className="assigned-row">
                 <span className={`status-badge ${a.status}`}>
@@ -376,20 +384,22 @@ export default function StudentView({ student, assignments, sessions, problems, 
                 <div className="assigned-row-links">
                   {p.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
-                  {a.submission_url && (
-                    <a href={a.submission_url} target="_blank" rel="noreferrer">Submission ↗</a>
-                  )}
+                  {subs.map((s, i) => (
+                    <a key={s.id} href={s.file_url} target="_blank" rel="noreferrer">
+                      {subs.length === 1 ? 'Submission ↗' : `Submission ${i + 1} ↗`}
+                    </a>
+                  ))}
                   {a.feedback_url && (
                     <a href={a.feedback_url} target="_blank" rel="noreferrer">Feedback ↗</a>
                   )}
-                  {a.status === 'assigned' && !isPreview && a.requires_submission !== false && (
+                  {canSubmit && (
                     <button
                       className="sm"
                       style={{ fontSize: 11, padding: '1px 6px' }}
                       disabled={submittingId === a.id}
                       onClick={() => triggerSubmitUpload(a.id)}
                     >
-                      {submittingId === a.id ? 'Uploading…' : 'Submit'}
+                      {submittingId === a.id ? 'Uploading…' : subs.length ? 'Add files' : 'Submit'}
                     </button>
                   )}
                 </div>
@@ -691,6 +701,7 @@ const CONTACT_TOGGLES = [
   ['receives_reports', 'Progress reports'],
   ['receives_invoices', 'Invoices'],
   ['receives_assignments', 'Assignments'],
+  ['receives_assignment_reminders', 'Assignment reminders'],
 ]
 
 export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill, isStudentRole, invoices, setInvoices }) {

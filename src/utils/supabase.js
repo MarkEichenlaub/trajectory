@@ -28,7 +28,7 @@ export async function fetchStudents() {
 
 export async function fetchAssignments() {
   const { data, error } = await adminClient()
-    .from('assignments').select('*').order('assigned_date', { ascending: false })
+    .from('assignments').select('*, assignment_submissions(*)').order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data
 }
@@ -289,7 +289,7 @@ export async function fetchMyProgressReports() {
 
 export async function fetchStudentAssignments() {
   const { data, error } = await supabase
-    .from('assignments').select('*').order('assigned_date', { ascending: false })
+    .from('assignments').select('*, assignment_submissions(*)').order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
 }
@@ -460,22 +460,24 @@ export async function fetchHandoutsPublic() {
 // ── Submissions (student uploads work; admin uploads feedback) ────────────────
 
 // Upload a student's submission file and return the public URL.
+// Each file gets a unique path so multiple submissions per assignment don't overwrite each other.
 export async function uploadSubmission(studentId, assignmentId, file) {
   const ext = file.name.split('.').pop() || 'bin'
-  const path = `${studentId}/${assignmentId}.${ext}`
+  const uniqueSuffix = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`
+  const path = `${studentId}/${assignmentId}-${uniqueSuffix}.${ext}`
   const { error } = await supabase.storage
     .from('submissions')
-    .upload(path, file, { upsert: true, contentType: file.type })
+    .upload(path, file, { contentType: file.type })
   if (error) throw new Error(error.message)
   const { data } = supabase.storage.from('submissions').getPublicUrl(path)
   return data.publicUrl
 }
 
-// After uploading, call the notify-submission edge function to update status
-// and email Mark. Uses the student's active session automatically.
-export async function notifySubmission(assignmentId, submissionUrl) {
+// After uploading all files, call notify-submission to record them and email Mark.
+// submissions: [{ url, fileName }]
+export async function notifySubmission(assignmentId, submissions) {
   const { data, error } = await supabase.functions.invoke('notify-submission', {
-    body: { assignment_id: assignmentId, submission_url: submissionUrl },
+    body: { assignment_id: assignmentId, submissions },
   })
   if (error) throw new Error(error.message || String(error))
   return data

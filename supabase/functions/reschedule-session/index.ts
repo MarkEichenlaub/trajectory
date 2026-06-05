@@ -201,12 +201,41 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Update DB
+  // Update DB (trigger recalcs non-overridden assignment due dates automatically)
   const { error: dbErr } = await admin.from('sessions').update({
     scheduled_at: newSlotDate.toISOString(),
     end_time: newEndDate.toISOString(),
   }).eq('id', session_id)
   if (dbErr) return json({ error: 'DB update failed', detail: dbErr.message }, 500)
+
+  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those)
+  const { data: overridden } = await admin
+    .from('assignments')
+    .select('problem_id, due_date')
+    .eq('student_id', student.id)
+    .eq('requires_submission', true)
+    .eq('due_date_overridden', true)
+    .in('status', ['assigned', 'submitted'])
+  if (overridden?.length) {
+    const lines = overridden.map(a => `  - ${a.problem_id}: due ${a.due_date}`)
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+        to: [MARK_EMAIL],
+        subject: `Heads up: ${student.name}'s session moved — check assignment due dates`,
+        text: [
+          `${student.name}'s session was rescheduled from ${oldWhen} to ${newWhen}.`,
+          '',
+          'These assignments have manually-set due dates that were NOT auto-updated:',
+          ...lines,
+          '',
+          `Review them at: ${PORTAL_URL}`,
+        ].join('\n'),
+      }),
+    }).catch(e => console.error('Warning email failed:', e))
+  }
 
   // Get contact emails
   const { data: contacts } = await admin
