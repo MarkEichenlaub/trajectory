@@ -136,9 +136,20 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
           type="number" min="0"
           value={draft.session_balance ?? 0}
           onChange={e => set('session_balance', parseInt(e.target.value, 10) || 0)}
-          style={{ width: 80 }}
+          style={{ width: 52, flex: 'none' }}
         />
-        <span style={{ fontSize: 12, color: 'var(--text-dim)', marginLeft: 4 }}>sessions</span>
+        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>sessions</span>
+        <button
+          className="sm"
+          disabled={saving}
+          title="Add 10 sessions (payment received)"
+          onClick={async () => {
+            const newBalance = (draft.session_balance ?? 0) + 10
+            const updated = { ...draft, session_balance: newBalance }
+            setDraft(updated)
+            await onSave(updated)
+          }}
+        >+10</button>
       </div>
       <div className="student-card-row">
         <label>Rate</label>

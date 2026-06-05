@@ -117,6 +117,63 @@ async function checkReportReminder(
     .eq('id', student.id)
 }
 
+async function sendVenmoReminder(
+  student: { id: string; name: string; first_name: string | null; billing_name: string | null },
+  cycleSessions: { id: string; scheduled_at: string; tags: string[] | null }[],
+) {
+  const count = cycleSessions.length
+  const sessionLines = cycleSessions.map(s => {
+    const d = new Date(s.scheduled_at)
+    const date = d.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', timeZone: 'America/New_York' })
+    const tags = (s.tags || []).join(', ')
+    return tags ? `${date}: ${tags}` : date
+  }).join('\n')
+
+  const firstName = student.first_name || student.name.split(' ')[0]
+  const billingName = student.billing_name || 'their parent'
+
+  await sendEmail(
+    MARK_EMAIL,
+    `Venmo invoice due for ${student.name}`,
+    `Hi Mark,\n\n${student.name} is due for a new invoice on Venmo to ${billingName}. She has 0 sessions of credit remaining.\n\nHere is a message for the Venmo request:\n\n${firstName} next ${count} physics sessions.\n\nLast cycle:\n${sessionLines}`,
+  )
+
+  const ids = cycleSessions.map(s => s.id)
+  await supabase.from('sessions')
+    .update({ venmo_invoiced: true })
+    .in('id', ids)
+}
+
+// Finds non-invoicing active students whose balance has hit 0 and who have
+// un-emailed sessions, then sends the Venmo reminder. Runs at the end of every
+// cron invocation so it also catches failures from prior runs.
+async function checkVenmoReminders() {
+  const { data: students } = await supabase
+    .from('students')
+    .select('id, name, first_name, billing_name')
+    .lte('session_balance', 0)
+    .eq('invoicing_enabled', false)
+    .eq('status', 'active')
+
+  for (const student of students || []) {
+    const { data: cycleSessions } = await supabase
+      .from('sessions')
+      .select('id, scheduled_at, tags')
+      .eq('student_id', student.id)
+      .eq('balance_decremented', true)
+      .eq('venmo_invoiced', false)
+      .order('scheduled_at', { ascending: true })
+
+    if (!cycleSessions?.length) continue
+
+    try {
+      await sendVenmoReminder(student, cycleSessions)
+    } catch (e) {
+      console.error('venmo reminder failed for', student.id, (e as Error).message)
+    }
+  }
+}
+
 Deno.serve(async (req) => {
   // Deployed --no-verify-jwt (the cron posts the publishable key, not a JWT, so the
   // gateway can't authenticate it). Auth is this shared-secret header instead.
@@ -143,6 +200,11 @@ Deno.serve(async (req) => {
   }
 
   if (!sessions?.length) {
+    try {
+      await checkVenmoReminders()
+    } catch (e) {
+      console.error('checkVenmoReminders failed:', (e as Error).message)
+    }
     return new Response(JSON.stringify({ processed: 0, invoicesSent: [] }), {
       headers: { 'Content-Type': 'application/json' },
     })
@@ -298,6 +360,15 @@ Deno.serve(async (req) => {
       console.error('bill-sessions error for', session.id, msg)
       errors.push(msg)
     }
+  }
+
+  // Send Venmo reminders for any non-invoicing students whose balance has hit 0.
+  // Runs after session processing so this-run decrements are included, and also
+  // catches emails that failed on a previous cron invocation.
+  try {
+    await checkVenmoReminders()
+  } catch (e) {
+    console.error('checkVenmoReminders failed:', (e as Error).message)
   }
 
   return new Response(JSON.stringify({ processed, invoicesSent, errors }), {
