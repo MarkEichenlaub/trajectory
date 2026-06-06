@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
@@ -43,9 +43,24 @@ export default function AdminApp() {
 
   const location = useLocation()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const [view, setView] = useState(VIEWS.BROWSER)
-  const [activeStudentId, setActiveStudentId] = useState('borna')
+  const [view, setViewState] = useState(() => {
+    const v = searchParams.get('view')
+    return Object.values(VIEWS).includes(v) ? v : VIEWS.BROWSER
+  })
+  const [activeStudentId, setActiveStudentIdState] = useState(
+    () => searchParams.get('student') || 'borna'
+  )
+
+  function setView(v) {
+    setViewState(v)
+    setSearchParams(p => { p.set('view', v); return p }, { replace: true })
+  }
+  function setActiveStudentId(id) {
+    setActiveStudentIdState(id)
+    setSearchParams(p => { p.set('student', id); return p }, { replace: true })
+  }
   const [previewStudentId, setPreviewStudentId] = useState(null)
   const [previewRole, setPreviewRole] = useState('student')
   const [previewAccessibleSources, setPreviewAccessibleSources] = useState([])
@@ -67,6 +82,9 @@ export default function AdminApp() {
       try {
         const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
         setStudents(s)
+        const urlStudent = searchParams.get('student')
+        const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || 'borna'
+        setActiveStudentIdState(resolved)
         setAssignments(a)
         setSessions(sess)
         setHandouts(hout)
@@ -456,6 +474,13 @@ export default function AdminApp() {
   if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
 
   // Student-portal preview (admin), rendered inline via state instead of a URL param.
+  // If the URL has a student slug but students haven't loaded yet, show a spinner
+  // so the admin panel doesn't flash before the preview takes over.
+  const pathSlug = location.pathname.split('/').filter(Boolean)[0]
+  if (pathSlug && !students.length) {
+    return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+  }
+
   if (previewStudentId) {
     const portalStudent = students.find(s => s.id === previewStudentId)
     const previewAssignments = assignments.filter(a => a.student_id === previewStudentId)
@@ -479,7 +504,7 @@ export default function AdminApp() {
             ))}
           </div>
           <div className="spacer" />
-          <button className="sm" style={{ marginRight: 16 }} onClick={() => navigate('/')}>← Back to admin</button>
+          <button className="sm" style={{ marginRight: 16 }} onClick={() => navigate('/' + location.search)}>← Back to admin</button>
         </div>
         <div className="content">
           <StudentView
