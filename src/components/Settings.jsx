@@ -415,32 +415,36 @@ function ContactsSection({ studentId, showToast }) {
         <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 8 }}>No contacts yet.</div>
       )}
       {contacts.map(c => (
-        <div key={c.id} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6, fontSize: 12 }}>
-          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>{c.email}</span>
-          {c.bounced ? (
-            <span title={c.bounce_reason || 'email bounced'} style={{ color: 'var(--red)', fontWeight: 600, fontSize: 10, flexShrink: 0 }}>bounced</span>
-          ) : c.verified ? (
-            <span style={{ color: 'var(--green)', fontSize: 10, flexShrink: 0 }}>verified</span>
-          ) : (
-            <button className="sm" style={{ fontSize: 10, padding: '0 5px', flexShrink: 0, color: 'var(--yellow)' }} title="unconfirmed — click to resend" onClick={() => handleResend(c)}>resend</button>
-          )}
-          <span style={{ color: 'var(--text-dim)', width: 50, flexShrink: 0, fontSize: 11 }}>{c.label}</span>
-          {CONTACT_TOGGLES.map(([field, label]) => {
-            const locked = toggleLocked(c, field)
-            return (
-              <label key={field} title={locked ? 'Active student must keep at least one recipient here' : undefined} style={{ display: 'flex', alignItems: 'center', gap: 3, cursor: locked ? 'default' : 'pointer', whiteSpace: 'nowrap', fontSize: 11, color: c[field] ? 'var(--accent)' : 'var(--text-dim)' }}>
-                <input
-                  type="checkbox"
-                  checked={!!c[field]}
-                  disabled={locked}
-                  onChange={e => handleToggle(c.id, field, e.target.checked)}
-                  style={{ accentColor: 'var(--accent)' }}
-                />
-                {label}
-              </label>
-            )
-          })}
-          <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} disabled={deleteLocked(c)} title={deleteLocked(c) ? 'Last required recipient for an active student' : undefined} onClick={() => handleDelete(c.id)}>✕</button>
+        <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 3, marginBottom: 8, fontSize: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>{c.email}</span>
+            {c.bounced ? (
+              <span title={c.bounce_reason || 'email bounced'} style={{ color: 'var(--red)', fontWeight: 600, fontSize: 10, flexShrink: 0 }}>bounced</span>
+            ) : c.verified ? (
+              <span style={{ color: 'var(--green)', fontSize: 10, flexShrink: 0 }}>verified</span>
+            ) : (
+              <button className="sm" style={{ fontSize: 10, padding: '0 5px', flexShrink: 0, color: 'var(--yellow)' }} title="unconfirmed — click to resend" onClick={() => handleResend(c)}>resend</button>
+            )}
+            <span style={{ color: 'var(--text-dim)', width: 50, flexShrink: 0, fontSize: 11 }}>{c.label}</span>
+            <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} disabled={deleteLocked(c)} title={deleteLocked(c) ? 'Last required recipient for an active student' : undefined} onClick={() => handleDelete(c.id)}>✕</button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {CONTACT_TOGGLES.map(([field, label]) => {
+              const locked = toggleLocked(c, field)
+              return (
+                <label key={field} title={locked ? 'Active student must keep at least one recipient here' : undefined} style={{ display: 'flex', alignItems: 'center', gap: 3, cursor: locked ? 'default' : 'pointer', whiteSpace: 'nowrap', fontSize: 11, color: c[field] ? 'var(--accent)' : 'var(--text-dim)' }}>
+                  <input
+                    type="checkbox"
+                    checked={!!c[field]}
+                    disabled={locked}
+                    onChange={e => handleToggle(c.id, field, e.target.checked)}
+                    style={{ accentColor: 'var(--accent)' }}
+                  />
+                  {label}
+                </label>
+              )
+            })}
+          </div>
         </div>
       ))}
       <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
