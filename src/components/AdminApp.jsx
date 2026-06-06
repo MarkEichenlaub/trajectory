@@ -332,6 +332,17 @@ export default function AdminApp() {
     }
   }
 
+  async function handleToggleRequiresSubmission(assignmentId, value) {
+    try {
+      await updateAssignment(assignmentId, { requires_submission: value })
+      setAssignments(prev => prev.map(a =>
+        a.id === assignmentId ? { ...a, requires_submission: value } : a
+      ))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleUploadFeedback(assignmentId, file) {
     const assignment = assignments.find(a => a.id === assignmentId)
     if (!assignment) return
@@ -596,6 +607,7 @@ export default function AdminApp() {
             onUpdateNote={handleUpdateNote}
             onUpdateDueDate={handleUpdateDueDate}
             onUploadFeedback={handleUploadFeedback}
+            onToggleRequiresSubmission={handleToggleRequiresSubmission}
           />
         )}
 

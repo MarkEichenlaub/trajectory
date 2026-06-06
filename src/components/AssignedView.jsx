@@ -87,7 +87,7 @@ function DueDateField({ assignmentId, dueDate, overridden, requiresSubmission, o
 export default function AssignedView({
   student, assignments, problems,
   assignedOrder, onReorder,
-  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUpdateDueDate, onUploadFeedback,
+  onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUpdateDueDate, onUploadFeedback, onToggleRequiresSubmission,
 }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [dragId, setDragId] = useState(null)
@@ -259,6 +259,14 @@ export default function AssignedView({
                   {a.assigned_date && (
                     <span className="p-date">{a.assigned_date}</span>
                   )}
+                  <span
+                    className="p-date"
+                    onClick={() => onToggleRequiresSubmission?.(a.id, !a.requires_submission)}
+                    title="Toggle submission requirement"
+                    style={{ cursor: 'pointer', color: a.requires_submission ? 'var(--accent)' : 'var(--text-dim)', userSelect: 'none' }}
+                  >
+                    {a.requires_submission ? '⬆ submission' : '⬆ no submission'}
+                  </span>
                   <DueDateField
                     assignmentId={a.id}
                     dueDate={a.due_date}

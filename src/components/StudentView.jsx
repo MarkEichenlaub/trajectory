@@ -387,7 +387,7 @@ export default function StudentView({ student, assignments, sessions, homeworkSe
               ? `Due ${a.due_date}`
               : null
             const subs = a.assignment_submissions || []
-            const canSubmit = (a.status === 'assigned' || a.status === 'submitted') && !isPreview && a.requires_submission
+            const canSubmit = (a.status === 'assigned' || a.status === 'submitted') && a.requires_submission
             return (
               <div key={a.id} className="assigned-row">
                 <span className={`status-badge ${a.status}`}>
@@ -417,8 +417,9 @@ export default function StudentView({ student, assignments, sessions, homeworkSe
                     <button
                       className="sm"
                       style={{ fontSize: 11, padding: '1px 6px' }}
-                      disabled={submittingId === a.id}
-                      onClick={() => triggerSubmitUpload(a.id)}
+                      disabled={submittingId === a.id || isPreview}
+                      onClick={() => !isPreview && triggerSubmitUpload(a.id)}
+                      title={isPreview ? 'Submit (disabled in preview)' : undefined}
                     >
                       {submittingId === a.id ? 'Uploading…' : subs.length ? 'Add files' : 'Submit'}
                     </button>
