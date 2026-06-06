@@ -1,6 +1,6 @@
 /* ============================================================
    Trajectory — Eichenlaub Physics student portal & admin
-   Unified brand re-skin. Warm cream + navy, Spectral / IBM Plex.
+   Unified brand re-skin. Cool blue-white + navy, Spectral / IBM Plex.
    Drop-in replacement for src/index.css — no component changes
    required (all original class names preserved).
    ============================================================ */
@@ -9,24 +9,24 @@
 
 :root {
   /* surfaces */
-  --bg:         #f4efe3;
-  --surface:    #fffdf7;
-  --surface2:   #f0e9da;
-  --surface3:   #e8dfcc;
-  --border:     #e2d8c4;
-  --border-strong: #d3c7af;
+  --bg:         #eef2f7;
+  --surface:    #f8fafd;
+  --surface2:   #e4ebf4;
+  --surface3:   #d8e3ef;
+  --border:     #cdd8e8;
+  --border-strong: #b8c9dd;
 
   /* brand */
   --accent:     #2a4a6d;
   --accent-hover: #1f3a5f;
   --accent-dim: #e4ebf2;   /* light tint used for active/selected fills */
-  --accent-ink: #fbf8f0;
+  --accent-ink: #f0f4f9;
 
   /* text */
   --text:       #1f3a5f;
   --text-strong:#16304f;
   --text-dim:   #5a6678;
-  --muted:      #837964;
+  --muted:      #7a8899;
 
   /* status — re-toned to sit on cream */
   --green:      #3a6b4d;
@@ -189,7 +189,7 @@ table { width: 100%; border-collapse: collapse; }
 thead { position: sticky; top: 0; z-index: 1; }
 th {
   text-align: left; padding: 10px 11px;
-  background: #efe7d6;
+  background: #dce6f0;
   font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
   letter-spacing: .08em; color: var(--muted); text-transform: uppercase;
   border-bottom: 1px solid var(--border-strong);
@@ -344,7 +344,7 @@ tr.assigned-row-tr td { background: color-mix(in srgb, var(--yellow-bg) 45%, tra
 /* ---- Toast --------------------------------------------------- */
 .toast {
   position: fixed; bottom: 24px; right: 24px;
-  background: var(--text-strong); color: #f3ecdc;
+  background: var(--text-strong); color: #edf2f8;
   border: none; border-radius: 100px; padding: 11px 18px;
   font-size: 13px; z-index: 200; box-shadow: var(--shadow-lg);
   animation: fadeIn .22s ease;
