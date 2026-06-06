@@ -374,6 +374,26 @@ export async function rescheduleSession(sessionId, newSlot) {
   return data
 }
 
+// ── Trial session booking (public, no auth required) ─────────────────────────
+
+export async function getTrialAvailability(from, to) {
+  const { data, error } = await supabase.functions.invoke('get-trial-availability', {
+    body: { from, to },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data?.slots || []
+}
+
+export async function bookTrial({ slot, name, email, notes }) {
+  const { data, error } = await supabase.functions.invoke('book-trial', {
+    body: { slot, name, email, notes },
+  })
+  if (error) throw new Error(error.message || String(error))
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
 export async function cancelSession(sessionId, message) {
   const { data, error } = await supabase.functions.invoke('cancel-session', {
     body: { session_id: sessionId, ...(message ? { message } : {}) },
