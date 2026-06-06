@@ -8,9 +8,11 @@ CREATE TABLE IF NOT EXISTS public.app_config (
 ALTER TABLE public.app_config ENABLE ROW LEVEL SECURITY;
 -- No public policies: only service role accesses this table.
 
--- Store the webhook secret so the pg_cron renewal job can use it
+-- Store the webhook secret so the pg_cron renewal job can use it.
+-- IMPORTANT: set this value manually in Supabase Dashboard → SQL Editor, or via
+-- a separate migration/script that is NOT checked into git. Do not hardcode secrets here.
 INSERT INTO public.app_config (key, value)
-VALUES ('gcal_webhook_secret', '2da561ee-268c-4da5-bea3-2e01a31a21db')
+VALUES ('gcal_webhook_secret', 'REPLACE_WITH_SECRET')
 ON CONFLICT (key) DO NOTHING;
 
 -- Schedule weekly channel renewal (Google watch channels last up to 30 days)
