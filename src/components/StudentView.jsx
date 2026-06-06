@@ -183,7 +183,7 @@ export default function StudentView({ student, assignments, sessions, homeworkSe
       <input
         ref={submitInputRef}
         type="file"
-        accept="image/*,application/pdf"
+        accept="image/jpeg,image/png,application/pdf"
         multiple
         style={{ display: 'none' }}
         onChange={handleSubmitFileChange}

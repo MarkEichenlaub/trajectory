@@ -287,7 +287,9 @@ export default function AssignedView({
                     </a>
                   )}
                   {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
-                  {(a.assignment_submissions || []).map((s, i) => (
+                  {a.submission_bundle_url ? (
+                    <a href={a.submission_bundle_url} target="_blank" rel="noreferrer" style={{ fontWeight: 500 }}>Bundle ↗</a>
+                  ) : (a.assignment_submissions || []).map((s, i) => (
                     <a key={s.id} href={s.file_url} target="_blank" rel="noreferrer">
                       {(a.assignment_submissions.length === 1) ? 'Submission ↗' : `Sub ${i + 1} ↗`}
                     </a>
