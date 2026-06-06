@@ -1073,7 +1073,7 @@ function InvoicesTab({ invoices, setInvoices, isAdmin }) {
   )
 }
 
-function SchedulingTab({ sessions, formatDate, student, isPreview }) {
+export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmin }) {
   const nowIso = new Date().toISOString()
 
   // Local session mutations (avoid needing to re-fetch from parent after actions)
@@ -1180,7 +1180,7 @@ function SchedulingTab({ sessions, formatDate, student, isPreview }) {
   }
 
   async function handleBook(slot) {
-    if (!student || isPreview) return
+    if (!student || isPreview || isAdmin) return
     setPendingSlot(slot)
   }
 
@@ -1318,7 +1318,11 @@ function SchedulingTab({ sessions, formatDate, student, isPreview }) {
             <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {daySlots.map(slot => (
+            {daySlots.map(slot => isAdmin ? (
+              <span key={slot} style={{ fontSize: 12, padding: '3px 10px', background: 'var(--surface2)', borderRadius: 6, color: 'var(--text-dim)' }}>
+                {new Date(slot).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' })}
+              </span>
+            ) : (
               <button key={slot} className="sm" style={{ fontSize: 12 }}
                 onClick={() => setPendingSlot(slot)}>
                 {new Date(slot).toLocaleTimeString('en-US', {
@@ -1327,7 +1331,7 @@ function SchedulingTab({ sessions, formatDate, student, isPreview }) {
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times Pacific</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? 'Available student slots — all times Pacific' : 'All times Pacific'}</div>
         </div>
       )
     }
@@ -1362,22 +1366,33 @@ function SchedulingTab({ sessions, formatDate, student, isPreview }) {
             {selectedSession.miro_board_url && (
               <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
             )}
-            {!isPreview && canReschedule && (
-              <button className="sm" onClick={() => {
-                setReschedulingId(selectedSession.id)
-                setSelectedSession(null)
-                setSelectedDay(null)
-              }}>
-                Reschedule
-              </button>
-            )}
-            {!isPreview && (
-              <button className="sm danger" style={{ fontSize: 11 }} onClick={() => {
-                setCancelingSession(selectedSession)
-                setSelectedSession(null)
-              }}>
-                Cancel session
-              </button>
+            {isAdmin ? (
+              selectedSession.cal_uid && (
+                <>
+                  <a href={`https://cal.com/reschedule/${selectedSession.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
+                  <a href={`https://cal.com/booking/${selectedSession.cal_uid}?cancel=true`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: 'var(--red)' }}>Cancel ↗</a>
+                </>
+              )
+            ) : (
+              <>
+                {!isPreview && canReschedule && (
+                  <button className="sm" onClick={() => {
+                    setReschedulingId(selectedSession.id)
+                    setSelectedSession(null)
+                    setSelectedDay(null)
+                  }}>
+                    Reschedule
+                  </button>
+                )}
+                {!isPreview && (
+                  <button className="sm danger" style={{ fontSize: 11 }} onClick={() => {
+                    setCancelingSession(selectedSession)
+                    setSelectedSession(null)
+                  }}>
+                    Cancel session
+                  </button>
+                )}
+              </>
             )}
           </div>
           {actionError && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 8 }}>{actionError}</div>}

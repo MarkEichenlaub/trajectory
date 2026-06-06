@@ -9,7 +9,7 @@ import ProblemTable from './ProblemTable'
 import AssignedView from './AssignedView'
 import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
-import StudentView, { ContactsTab } from './StudentView'
+import StudentView, { ContactsTab, SchedulingTab } from './StudentView'
 import AdminProgressPlanView from './AdminProgressPlanView'
 import AccountsView from './AccountsView'
 import Settings from './Settings'
@@ -745,44 +745,6 @@ export default function AdminApp() {
 
 // ── Admin scheduling tab ──────────────────────────────────────────────────────
 
-// Cal.com event type slug for recurring sessions booked from the admin side.
-// Create this event type at cal.com/event-types with "Recurring" enabled,
-// then duplicate any additional settings from the 1-hr-session type.
-const CAL_ADMIN_LINK = 'markeichenlaub/1-hr-recurring'
-const CAL_ADMIN_NS = 'admin-sched'
-const CAL_ADMIN_BRAND = '#2a4a6d'
-
-function loadCalApiAdmin() {
-  const C = window
-  const A = 'https://app.cal.com/embed/embed.js'
-  const L = 'init'
-  const p = (a, ar) => { a.q.push(ar) }
-  const d = C.document
-  C.Cal = C.Cal || function () {
-    const cal = C.Cal
-    const ar = arguments
-    if (!cal.loaded) {
-      cal.ns = {}
-      cal.q = cal.q || []
-      d.head.appendChild(d.createElement('script')).src = A
-      cal.loaded = true
-    }
-    if (ar[0] === L) {
-      const api = function () { p(api, arguments) }
-      const namespace = ar[1]
-      api.q = api.q || []
-      if (typeof namespace === 'string') {
-        cal.ns[namespace] = cal.ns[namespace] || api
-        p(cal.ns[namespace], ar)
-        p(cal, ['initNamespace', namespace])
-      } else p(cal, ar)
-      return
-    }
-    p(cal, ar)
-  }
-  return C.Cal
-}
-
 function AdminScheduleView({ student, sessions }) {
   const [contacts, setContacts] = useState([])
   const [loadingContacts, setLoadingContacts] = useState(true)
@@ -797,36 +759,6 @@ function AdminScheduleView({ student, sessions }) {
   }, [student?.id])
 
   const invited = contacts.filter(c => c.receives_schedule_changes && c.verified && !c.bounced)
-  const guestEmails = invited
-    .filter(c => c.email?.toLowerCase() !== student?.email?.toLowerCase())
-    .map(c => c.email)
-
-  // Init Cal.com embed after contacts load so guests are pre-populated correctly.
-  useEffect(() => {
-    if (!student || loadingContacts) return
-    if (window.Cal?.ns?.[CAL_ADMIN_NS]) delete window.Cal.ns[CAL_ADMIN_NS]
-    const Cal = loadCalApiAdmin()
-    Cal('init', CAL_ADMIN_NS, { origin: 'https://cal.com' })
-    const config = { layout: 'month_view' }
-    if (student.email) config.email = student.email
-    if (student.name) config.name = student.name
-    if (guestEmails.length > 0) config.guests = guestEmails
-    Cal.ns[CAL_ADMIN_NS]('inline', {
-      elementOrSelector: '#cal-inline-admin-sched',
-      calLink: CAL_ADMIN_LINK,
-      config,
-    })
-    Cal.ns[CAL_ADMIN_NS]('ui', {
-      cssVarsPerTheme: { light: { 'cal-brand': CAL_ADMIN_BRAND } },
-      hideEventTypeDetails: false,
-      layout: 'month_view',
-    })
-  }, [student?.id, loadingContacts])
-
-  const now = new Date().toISOString()
-  const upcoming = (sessions || [])
-    .filter(s => s.scheduled_at > now)
-    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
 
   function formatDate(iso) {
     return new Date(iso).toLocaleString('en-US', {
@@ -840,7 +772,7 @@ function AdminScheduleView({ student, sessions }) {
       <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>{student?.name} — Schedule</h2>
 
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 20 }}>
-        <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Booking invitees</div>
+        <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Schedule invitees</div>
         {loadingContacts ? (
           <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>Loading…</span>
         ) : contacts.length === 0 ? (
@@ -869,36 +801,12 @@ function AdminScheduleView({ student, sessions }) {
         )}
       </div>
 
-      {upcoming.length > 0 && (
-        <div style={{ marginBottom: 24 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 10px' }}>Upcoming sessions</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {upcoming.map(s => (
-              <div key={s.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 13, flex: 1, minWidth: 160 }}>{formatDate(s.scheduled_at)}</span>
-                {s.miro_board_url && (
-                  <a href={s.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
-                )}
-                {s.cal_uid ? (
-                  <>
-                    <a href={`https://cal.com/reschedule/${s.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
-                    <a href={`https://cal.com/booking/${s.cal_uid}?cancel=true`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: 'var(--red)' }}>Cancel ↗</a>
-                  </>
-                ) : (
-                  <span style={{ fontSize: 11, color: 'var(--text-dim)', flexShrink: 0 }}>manual</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 10px' }}>Book recurring sessions</h3>
-        {!loadingContacts && (
-          <div id="cal-inline-admin-sched" style={{ width: '100%', minHeight: 600, overflow: 'scroll' }} />
-        )}
-      </div>
+      <SchedulingTab
+        sessions={sessions}
+        formatDate={formatDate}
+        student={student}
+        isAdmin={true}
+      />
     </div>
   )
 }
