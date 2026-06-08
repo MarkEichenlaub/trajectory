@@ -1075,6 +1075,9 @@ function InvoicesTab({ invoices, setInvoices, isAdmin }) {
 
 export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmin }) {
   const nowIso = new Date().toISOString()
+  const tz = student?.timezone || 'America/New_York'
+  const tzAbbr = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short' })
+    .formatToParts(new Date()).find(p => p.type === 'timeZoneName')?.value || tz
 
   // Local session mutations (avoid needing to re-fetch from parent after actions)
   const [localAdded, setLocalAdded] = useState([])
@@ -1098,7 +1101,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
   const viewYear = viewDate.getFullYear()
   const viewMonth = viewDate.getMonth()
 
-  // Availability slots by Pacific date
+  // Availability slots by student timezone date
   const [slotsByDate, setSlotsByDate] = useState({})
   const [slotsLoading, setSlotsLoading] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -1125,7 +1128,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
       .then(slots => {
         const byDate = {}
         slots.forEach(iso => {
-          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' })
+          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: tz })
           if (!byDate[key]) byDate[key] = []
           byDate[key].push(iso)
         })
@@ -1286,8 +1289,8 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
     if (pendingSlot) {
       const when = new Date(pendingSlot).toLocaleString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
-        hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
-      }) + ' Pacific'
+        hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
+      })
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ fontSize: 14, fontWeight: 600 }}>
@@ -1320,18 +1323,18 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {daySlots.map(slot => isAdmin ? (
               <span key={slot} style={{ fontSize: 12, padding: '3px 10px', background: 'var(--surface2)', borderRadius: 6, color: 'var(--text-dim)' }}>
-                {new Date(slot).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles' })}
+                {new Date(slot).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })}
               </span>
             ) : (
               <button key={slot} className="sm" style={{ fontSize: 12 }}
                 onClick={() => setPendingSlot(slot)}>
                 {new Date(slot).toLocaleTimeString('en-US', {
-                  hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+                  hour: 'numeric', minute: '2-digit', timeZone: tz,
                 })}
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? 'Available student slots — all times Pacific' : 'All times Pacific'}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? `Available student slots — all times ${tzAbbr}` : `All times ${tzAbbr}`}</div>
         </div>
       )
     }
@@ -1355,8 +1358,8 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
               {selectedSession.end_time && (
                 <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
                   Ends {new Date(selectedSession.end_time).toLocaleTimeString('en-US', {
-                    hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
-                  })} Pacific
+                    hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
+                  })}
                 </div>
               )}
             </div>
@@ -1491,7 +1494,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
           <div style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.5 }}>
             {slotsLoading
               ? 'Checking availability…'
-              : 'Filled days ● have sessions · bordered days have available times · all times Pacific'}
+              : `Filled days ● have sessions · bordered days have available times · all times ${tzAbbr}`}
           </div>
         </div>
       )}

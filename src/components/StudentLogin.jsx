@@ -141,7 +141,7 @@ function TrialBookingWidget() {
       .then(slots => {
         const byDate = {}
         slots.forEach(iso => {
-          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' })
+          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
           if (!byDate[key]) byDate[key] = []
           byDate[key].push(iso)
         })
@@ -204,8 +204,8 @@ function TrialBookingWidget() {
     if (selectedSlot) {
       const when = new Date(selectedSlot).toLocaleString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
-        hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
-      }) + ' Pacific'
+        hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short',
+      })
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
@@ -282,12 +282,12 @@ function TrialBookingWidget() {
                 onClick={() => setSelectedSlot(slot)}
               >
                 {new Date(slot).toLocaleTimeString('en-US', {
-                  hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+                  hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York',
                 })}
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times Pacific · 30-minute sessions</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times Eastern · 30-minute sessions</div>
         </div>
       )
     }
@@ -369,7 +369,7 @@ function TrialBookingWidget() {
         <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           {slotsLoading
             ? 'Checking availability…'
-            : 'Highlighted days have available 30-minute slots · all times Pacific'}
+            : 'Highlighted days have available 30-minute slots · all times Eastern'}
         </div>
       </div>
     </div>
