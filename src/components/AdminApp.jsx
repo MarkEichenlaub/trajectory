@@ -259,7 +259,6 @@ export default function AdminApp() {
     if (!activeStudent || selected.size === 0) return
     const date = new Date().toISOString().slice(0, 10)
     const toAdd = []
-    let skipped = 0
 
     const markStatusMap = {}
     if (activeStudent.id !== MARK_STUDENT_ID) {
@@ -269,7 +268,6 @@ export default function AdminApp() {
     }
 
     for (const pid of selected) {
-      if (statusMap[pid]) { skipped++; continue }
       toAdd.push({
         id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
         student_id: activeStudent.id,
@@ -292,28 +290,20 @@ export default function AdminApp() {
       }
     }
 
-    if (toAdd.length === 0) {
-      showToast('All selected problems are already assigned or completed', 'error')
-      return
-    }
-
     try {
       await insertAssignments(toAdd)
       setAssignments(prev => [...prev, ...toAdd])
       setSelected(new Set())
       const studentAssigned = toAdd.filter(a => a.student_id === activeStudent.id).length
       const markCoAssigned = toAdd.filter(a => a.student_id === MARK_STUDENT_ID).length
-      const msg = skipped > 0
-        ? `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name} (${skipped} skipped)${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
-        : `Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name}${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`
-      showToast(msg)
+      showToast(`Assigned ${studentAssigned} problem${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name}${markCoAssigned > 0 ? `, ${markCoAssigned} also added for you` : ''}`)
     } catch (e) {
       showToast(e.message, 'error')
     }
   }
 
-  async function handleToggleStatus(problemId) {
-    const existing = assignments.find(a => a.student_id === activeStudentId && a.problem_id === problemId)
+  async function handleToggleStatus(assignmentId) {
+    const existing = assignments.find(a => a.id === assignmentId)
     if (!existing) return
 
     // completed → back to assigned; anything else → completed
@@ -381,10 +371,10 @@ export default function AdminApp() {
     }
   }
 
-  async function handleUnassign(problemId) {
+  async function handleUnassign(assignmentId) {
     try {
-      await deleteAssignment(activeStudentId, problemId)
-      setAssignments(prev => prev.filter(a => !(a.student_id === activeStudentId && a.problem_id === problemId)))
+      await deleteAssignment(assignmentId)
+      setAssignments(prev => prev.filter(a => a.id !== assignmentId))
       showToast('Problem removed from assigned list')
     } catch (e) {
       showToast(e.message, 'error')
@@ -398,10 +388,11 @@ export default function AdminApp() {
       return
     }
     const assignedProblems = assignedOrderForStudent
-      .map(id => {
-        const p = allProblems.find(p => p.id === id)
-        const a = activeAssignments.find(a => a.problem_id === id)
-        return p ? { ...p, assignmentNote: a?.notes || '' } : null
+      .map(assignmentId => {
+        const a = activeAssignments.find(a => a.id === assignmentId)
+        if (!a) return null
+        const p = allProblems.find(p => p.id === a.problem_id)
+        return p ? { ...p, assignmentNote: a.notes || '' } : null
       })
       .filter(Boolean)
 
@@ -457,7 +448,7 @@ export default function AdminApp() {
     const defaultOrder = assignments
       .filter(a => a.student_id === activeStudentId && a.status === 'assigned')
       .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
-      .map(a => a.problem_id)
+      .map(a => a.id)
     const override = assignedOrderOverrides[activeStudentId]
     if (!override) return defaultOrder
     const currentSet = new Set(defaultOrder)

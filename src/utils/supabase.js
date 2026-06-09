@@ -43,9 +43,9 @@ export async function updateAssignment(id, updates) {
   if (error) throw new Error(error.message)
 }
 
-export async function deleteAssignment(studentId, problemId) {
+export async function deleteAssignment(assignmentId) {
   const { error } = await adminClient().from('assignments')
-    .delete().eq('student_id', studentId).eq('problem_id', problemId)
+    .delete().eq('id', assignmentId)
   if (error) throw new Error(error.message)
 }
 
@@ -583,7 +583,7 @@ export async function markMyProblemCompleted(studentId, problemId) {
   const date = new Date().toISOString().slice(0, 10)
   const { data: existing } = await supabase
     .from('assignments').select('id, status').eq('student_id', studentId).eq('problem_id', problemId)
-    .maybeSingle()
+    .limit(1).maybeSingle()
   if (existing?.status === 'completed') return null
   if (existing) {
     const { error } = await supabase
