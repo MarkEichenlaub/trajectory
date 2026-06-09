@@ -97,40 +97,72 @@ async function getGoogleAccessToken(): Promise<string | null> {
   }
 }
 
-// Patches the Google Calendar event created by Cal.com to append the Miro URL
-// to its description. Best-effort: errors are logged but do not fail the webhook.
-async function appendMiroToCalendarEvent(
+type CalEventData = {
+  description?: string
+  hangoutLink?: string
+  conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> }
+}
+
+function readMeet(ev: CalEventData): string {
+  return ev.hangoutLink ||
+    ev.conferenceData?.entryPoints?.find(ep => ep.entryPointType === 'video')?.uri || ''
+}
+
+// Patches the Google Calendar event created by Cal.com to append the Miro URL to its
+// description, and ensures the event has a Google Meet link. Returns the Meet URL and
+// the gcal event id so they can be stored on the session. Best-effort: errors are
+// logged but do not fail the webhook.
+async function updateCalendarEvent(
   references: CalRef[], miroBoardUrl: string,
-): Promise<void> {
+): Promise<{ meetUrl: string; eventId: string }> {
   const calRef = references.find(r => r.type === 'google_calendar')
-  if (!calRef?.uid) return
+  if (!calRef?.uid) return { meetUrl: '', eventId: '' }
   const accessToken = await getGoogleAccessToken()
-  if (!accessToken) return
+  if (!accessToken) return { meetUrl: '', eventId: calRef.uid }
 
   const calendarId = encodeURIComponent(calRef.externalCalendarId || 'primary')
   const eventId = calRef.uid
+  let meetUrl = ''
 
   try {
     const getRes = await fetch(
       `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
       { headers: { 'Authorization': `Bearer ${accessToken}` } },
     )
-    const existing = getRes.ok ? (await getRes.json() as { description?: string }) : {}
+    const existing = getRes.ok ? (await getRes.json() as CalEventData) : {}
+    meetUrl = readMeet(existing)
     const base = existing.description ? existing.description.trimEnd() + '\n\n' : ''
+
+    // If Cal.com didn't attach a Meet, create one alongside the description patch.
+    const wantMeet = !meetUrl
     const patchRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}` +
+        (wantMeet ? '?conferenceDataVersion=1' : ''),
       {
         method: 'PATCH',
         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description: `${base}Miro whiteboard: ${miroBoardUrl}` }),
+        body: JSON.stringify({
+          description: `${base}Miro whiteboard: ${miroBoardUrl}`,
+          ...(wantMeet ? {
+            conferenceData: {
+              createRequest: {
+                requestId: `meet-${eventId}-${Date.now()}`,
+                conferenceSolutionKey: { type: 'hangoutsMeet' },
+              },
+            },
+          } : {}),
+        }),
       },
     )
-    if (!patchRes.ok) {
+    if (patchRes.ok) {
+      meetUrl = readMeet(await patchRes.json() as CalEventData) || meetUrl
+    } else {
       console.error('Google Calendar PATCH failed:', patchRes.status, await patchRes.text())
     }
   } catch (e) {
     console.error('Google Calendar update error:', e)
   }
+  return { meetUrl, eventId }
 }
 
 // ── Email helpers ─────────────────────────────────────────────────────────────
@@ -268,10 +300,17 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
     console.error('Miro fetch error:', e)
   }
 
-  // Patch the Google Calendar event Cal.com created to include the Miro URL.
+  // Patch the Google Calendar event Cal.com created to include the Miro URL, and
+  // capture (or create) its Google Meet link so the portal can show "Join video".
+  let meetUrl = ''
+  let gcalEventId = ''
   if (miroBoardUrl) {
     const refs = payload.references as CalRef[] | undefined
-    if (refs?.length) await appendMiroToCalendarEvent(refs, miroBoardUrl)
+    if (refs?.length) {
+      const r = await updateCalendarEvent(refs, miroBoardUrl)
+      meetUrl = r.meetUrl
+      gcalEventId = r.eventId
+    }
   }
 
   const sessionId = `cal-${calBookingId}-${student.id}`
@@ -283,6 +322,8 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
     notes: '',
     miro_board_id: miroBoardId,
     miro_board_url: miroBoardUrl,
+    meet_url: meetUrl || null,
+    gcal_event_id: gcalEventId || null,
     cal_booking_id: calBookingId,
     cal_uid: payload.uid ? String(payload.uid) : null,
   }, { onConflict: 'id' })

@@ -37,6 +37,49 @@ function toCompactUTC(iso: string): string {
   return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, '')
 }
 
+type CalEvent = {
+  id: string
+  summary?: string
+  description?: string
+  start: { dateTime?: string; date?: string }
+  end: { dateTime?: string; date?: string }
+  hangoutLink?: string
+  conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> }
+}
+
+// Return the event's existing Google Meet link, or create one and return it.
+async function ensureMeet(accessToken: string, event: CalEvent): Promise<string> {
+  const existing = event.hangoutLink ||
+    event.conferenceData?.entryPoints?.find((ep) => ep.entryPointType === 'video')?.uri || ''
+  if (existing) return existing
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${event.id}?conferenceDataVersion=1`,
+      {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          conferenceData: {
+            createRequest: {
+              requestId: `meet-${event.id}-${Date.now()}`,
+              conferenceSolutionKey: { type: 'hangoutsMeet' },
+            },
+          },
+        }),
+      },
+    )
+    if (res.ok) {
+      const data = await res.json() as CalEvent
+      return data.hangoutLink ||
+        data.conferenceData?.entryPoints?.find((ep) => ep.entryPointType === 'video')?.uri || ''
+    }
+    console.error('Meet create failed:', res.status, await res.text())
+  } catch (e) {
+    console.error('Meet create error:', e)
+  }
+  return ''
+}
+
 Deno.serve(async (req) => {
   // Accept either the cron secret (X-Cron-Secret) or the service key (Authorization),
   // so the daily cron and the real-time gcal-webhook can both trigger a sync.
@@ -82,14 +125,6 @@ Deno.serve(async (req) => {
     })
   }
 
-  type CalEvent = {
-    id: string
-    summary?: string
-    description?: string
-    start: { dateTime?: string; date?: string }
-    end: { dateTime?: string; date?: string }
-  }
-
   const calData = await calRes.json() as { items?: CalEvent[] }
   const events = (calData.items ?? []).filter(e =>
     (e.summary ?? '').toLowerCase().includes('borna')
@@ -113,12 +148,23 @@ Deno.serve(async (req) => {
     // Look up existing session by this canonical ID
     const { data: existing } = await supabase
       .from('sessions')
-      .select('id, miro_board_id, miro_board_url')
+      .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id')
       .eq('id', sessionId)
       .maybeSingle()
 
+    // Ensure a Google Meet link on every matched event (backfills existing + new).
+    const meetUrl = await ensureMeet(accessToken, event)
+
     if (existing?.miro_board_id) {
-      results.push({ eventId, date: dateStr, status: 'already_done' })
+      // Board already created on a prior run; backfill meet_url + gcal_event_id if missing.
+      const patch: Record<string, unknown> = {}
+      if (meetUrl && existing.meet_url !== meetUrl) patch.meet_url = meetUrl
+      if (existing.gcal_event_id !== eventId) patch.gcal_event_id = eventId
+      if (Object.keys(patch).length > 0) {
+        const { error } = await supabase.from('sessions').update(patch).eq('id', existing.id)
+        if (error) console.error('Session backfill error:', error)
+      }
+      results.push({ eventId, date: dateStr, status: patch.meet_url ? 'meet_backfilled' : 'already_done' })
       continue
     }
 
@@ -158,7 +204,7 @@ Deno.serve(async (req) => {
       // Session exists but was missing a Miro board — fill it in
       const { error } = await supabase
         .from('sessions')
-        .update({ miro_board_id: miroBoardId, miro_board_url: miroBoardUrl })
+        .update({ miro_board_id: miroBoardId, miro_board_url: miroBoardUrl, meet_url: meetUrl, gcal_event_id: eventId })
         .eq('id', existing.id)
       if (error) console.error('Session update error:', error)
     } else {
@@ -172,6 +218,8 @@ Deno.serve(async (req) => {
         notes: '',
         miro_board_id: miroBoardId,
         miro_board_url: miroBoardUrl,
+        meet_url: meetUrl,
+        gcal_event_id: eventId,
         balance_decremented: true,
       }, { onConflict: 'id' })
       if (error) {
@@ -231,6 +279,7 @@ Deno.serve(async (req) => {
     total: events.length,
     created: results.filter(r => r.status === 'created').length,
     miro_added: results.filter(r => r.status === 'miro_added').length,
+    meet_backfilled: results.filter(r => r.status === 'meet_backfilled').length,
     already_done: results.filter(r => r.status === 'already_done').length,
     orphans_deleted: results.filter(r => r.status === 'orphan_deleted').length,
     errors: results.filter(r => r.status.includes('error') || r.status.includes('failed')).length,

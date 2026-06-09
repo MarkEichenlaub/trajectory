@@ -45,12 +45,23 @@ async function getGoogleAccessToken(): Promise<string> {
   return data.access_token
 }
 
-function fmtWhen(iso: string): string {
+function fmtWhen(iso: string, tz: string = TIMEZONE): string {
   return new Date(iso).toLocaleString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
     hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-    timeZone: TIMEZONE,
+    timeZone: tz,
   })
+}
+
+// deno-lint-ignore no-explicit-any
+async function resolveSelfStudent(admin: any, userId: string) {
+  const { data: links } = await admin
+    .from('student_links').select('student_id, relationship').eq('account_id', userId)
+  const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
+  if (!link) return null
+  const { data: student } = await admin
+    .from('students').select('id, name, first_name, email, timezone').eq('id', link.student_id).maybeSingle()
+  return student
 }
 
 function toIcsDate(iso: string): string {
@@ -144,9 +155,9 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: 'unauthorized' }, 401)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const { data: student } = await admin
-    .from('students').select('id, name, first_name, email').eq('user_id', user.id).maybeSingle()
+  const student = await resolveSelfStudent(admin, user.id)
   if (!student) return json({ error: 'no student record' }, 403)
+  const tz = (student.timezone as string) || TIMEZONE
 
   const { slot } = await req.json() as { slot: string }
   if (!slot) return json({ error: 'slot required' }, 400)
@@ -170,18 +181,24 @@ Deno.serve(async (req) => {
   const busy = await fetchBusy(accessToken, slot, endDate.toISOString())
   if (overlapsAny(slotDate, busy)) return json({ error: 'slot is no longer available' }, 409)
 
-  // Create Google Calendar event
+  // Create Google Calendar event (with a Google Meet conference)
   const dateStr = slotDate.toLocaleDateString('en-US', {
-    month: 'short', day: 'numeric', year: 'numeric', timeZone: TIMEZONE,
+    month: 'short', day: 'numeric', year: 'numeric', timeZone: tz,
   })
-  const calRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+  const calRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1', {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       summary: `${student.name}/Mark Physics`,
       description: `Physics tutoring session\n\nPortal: ${PORTAL_URL}`,
-      start: { dateTime: slotDate.toISOString(), timeZone: TIMEZONE },
-      end: { dateTime: endDate.toISOString(), timeZone: TIMEZONE },
+      start: { dateTime: slotDate.toISOString(), timeZone: tz },
+      end: { dateTime: endDate.toISOString(), timeZone: tz },
+      conferenceData: {
+        createRequest: {
+          requestId: crypto.randomUUID(),
+          conferenceSolutionKey: { type: 'hangoutsMeet' },
+        },
+      },
     }),
   })
   if (!calRes.ok) {
@@ -189,8 +206,14 @@ Deno.serve(async (req) => {
     console.error('Google Calendar create failed:', calRes.status, text)
     return json({ error: 'Failed to create calendar event', detail: text }, 500)
   }
-  const calEvent = await calRes.json() as { id: string }
+  const calEvent = await calRes.json() as {
+    id: string; hangoutLink?: string
+    conferenceData?: { entryPoints?: { entryPointType?: string; uri?: string }[] }
+  }
   const gcalEventId = calEvent.id
+  const meetUrl = calEvent.hangoutLink
+    || calEvent.conferenceData?.entryPoints?.find(e => e.entryPointType === 'video')?.uri
+    || ''
 
   // Create Miro board
   let miroBoardUrl = ''
@@ -216,14 +239,19 @@ Deno.serve(async (req) => {
     console.error('Miro fetch error:', e)
   }
 
-  // Patch Google Calendar event description with Miro URL
+  // Patch Google Calendar event description with Miro + Meet URLs
   if (miroBoardUrl) {
+    const descLines = [
+      'Physics tutoring session',
+      '',
+      ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
+      ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
+      `Portal: ${PORTAL_URL}`,
+    ]
     await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${gcalEventId}`, {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        description: `Physics tutoring session\n\nMiro whiteboard: ${miroBoardUrl}\nPortal: ${PORTAL_URL}`,
-      }),
+      body: JSON.stringify({ description: descLines.join('\n') }),
     }).catch(e => console.error('Calendar PATCH error:', e))
   }
 
@@ -237,6 +265,7 @@ Deno.serve(async (req) => {
     notes: '',
     miro_board_id: miroBoardId,
     miro_board_url: miroBoardUrl,
+    meet_url: meetUrl,
     gcal_event_id: gcalEventId,
     balance_decremented: false,
   })
@@ -254,12 +283,14 @@ Deno.serve(async (req) => {
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
 
-  // Send ICS confirmation email
-  const when = fmtWhen(slotDate.toISOString())
+  // Send ICS confirmation email (formatted in the student's own timezone)
+  const when = fmtWhen(slotDate.toISOString(), tz)
   const icsUid = sessionId
-  const icsDescription = miroBoardUrl
-    ? `Miro whiteboard: ${miroBoardUrl}\nPortal: ${PORTAL_URL}`
-    : `Portal: ${PORTAL_URL}`
+  const icsDescription = [
+    ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
+    ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
+    `Portal: ${PORTAL_URL}`,
+  ].join('\n')
 
   const icsContent = buildIcs({
     uid: icsUid,
@@ -277,6 +308,7 @@ Deno.serve(async (req) => {
     `Your physics session is confirmed for:`,
     `  ${when}`,
     '',
+    ...(meetUrl ? [`Join by video (Google Meet): ${meetUrl}`, ''] : []),
     ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`, ''] : []),
     `See all your sessions at: ${PORTAL_URL}`,
     '',
@@ -306,6 +338,7 @@ Deno.serve(async (req) => {
     end_time: endDate.toISOString(),
     miro_board_url: miroBoardUrl,
     miro_board_id: miroBoardId,
+    meet_url: meetUrl,
     gcal_event_id: gcalEventId,
   })
 })

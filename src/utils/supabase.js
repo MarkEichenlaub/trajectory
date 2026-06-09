@@ -339,7 +339,7 @@ export async function resolveMyAccount() {
 export async function fetchStudentSessions() {
   const { data, error } = await supabase
     .from('sessions')
-    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags')
+    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags')
     .order('scheduled_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []

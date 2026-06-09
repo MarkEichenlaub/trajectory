@@ -6,6 +6,7 @@ const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID')!
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET')!
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
+const MIRO_ACCESS_TOKEN = Deno.env.get('MIRO_ACCESS_TOKEN') || ''
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 
 const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
@@ -44,12 +45,23 @@ async function getGoogleAccessToken(): Promise<string | null> {
   }
 }
 
-function fmtWhen(iso: string): string {
+function fmtWhen(iso: string, tz: string = TIMEZONE): string {
   return new Date(iso).toLocaleString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
     hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-    timeZone: TIMEZONE,
+    timeZone: tz,
   })
+}
+
+// deno-lint-ignore no-explicit-any
+async function resolveSelfStudent(admin: any, userId: string) {
+  const { data: links } = await admin
+    .from('student_links').select('student_id, relationship').eq('account_id', userId)
+  const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
+  if (!link) return null
+  const { data: student } = await admin
+    .from('students').select('id, name, email, timezone').eq('id', link.student_id).maybeSingle()
+  return student
 }
 
 function toIcsDate(iso: string): string {
@@ -115,9 +127,9 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: 'unauthorized' }, 401)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const { data: student } = await admin
-    .from('students').select('id, name, email').eq('user_id', user.id).maybeSingle()
+  const student = await resolveSelfStudent(admin, user.id)
   if (!student) return json({ error: 'no student record' }, 403)
+  const tz = (student.timezone as string) || TIMEZONE
 
   const { session_id, message } = await req.json() as { session_id: string; message?: string }
   if (!session_id) return json({ error: 'session_id required' }, 400)
@@ -125,7 +137,7 @@ Deno.serve(async (req) => {
   // Fetch session and verify ownership
   const { data: session } = await admin
     .from('sessions')
-    .select('id, student_id, scheduled_at, end_time, gcal_event_id, balance_decremented')
+    .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
     .eq('id', session_id).eq('student_id', student.id).maybeSingle()
   if (!session) return json({ error: 'session not found' }, 404)
   if (session.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
@@ -147,6 +159,21 @@ Deno.serve(async (req) => {
     }
   }
 
+  // Delete the Miro whiteboard so cancelled sessions don't leave orphan boards (best-effort)
+  if (session.miro_board_id && MIRO_ACCESS_TOKEN) {
+    try {
+      const miroRes = await fetch(`https://api.miro.com/v2/boards/${session.miro_board_id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${MIRO_ACCESS_TOKEN}`, Accept: 'application/json' },
+      })
+      if (!miroRes.ok && miroRes.status !== 404) {
+        console.error('Miro board DELETE failed:', miroRes.status, await miroRes.text())
+      }
+    } catch (e) {
+      console.error('Miro board DELETE error:', e)
+    }
+  }
+
   // Delete DB session row — trigger clears non-overridden assignment due dates automatically
   const { error: dbErr } = await admin.from('sessions').delete()
     .eq('id', session_id).eq('balance_decremented', false)
@@ -161,7 +188,7 @@ Deno.serve(async (req) => {
     .eq('due_date_overridden', true)
     .in('status', ['assigned', 'submitted'])
   if (overridden?.length) {
-    const cancelledWhen = fmtWhen(session.scheduled_at as string)
+    const cancelledWhen = fmtWhen(session.scheduled_at as string, tz)
     const lines = overridden.map(a => `  - ${a.problem_id}: due ${a.due_date}`)
     await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -191,7 +218,7 @@ Deno.serve(async (req) => {
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
 
-  const when = fmtWhen(session.scheduled_at as string)
+  const when = fmtWhen(session.scheduled_at as string, tz)
   const sessionEnd = session.end_time
     ? (session.end_time as string)
     : new Date(new Date(session.scheduled_at as string).getTime() + SESSION_DURATION_MIN * 60_000).toISOString()

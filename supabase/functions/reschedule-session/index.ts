@@ -43,12 +43,23 @@ async function getGoogleAccessToken(): Promise<string> {
   return data.access_token
 }
 
-function fmtWhen(iso: string): string {
+function fmtWhen(iso: string, tz: string = TIMEZONE): string {
   return new Date(iso).toLocaleString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
     hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-    timeZone: TIMEZONE,
+    timeZone: tz,
   })
+}
+
+// deno-lint-ignore no-explicit-any
+async function resolveSelfStudent(admin: any, userId: string) {
+  const { data: links } = await admin
+    .from('student_links').select('student_id, relationship').eq('account_id', userId)
+  const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
+  if (!link) return null
+  const { data: student } = await admin
+    .from('students').select('id, name, first_name, email, timezone').eq('id', link.student_id).maybeSingle()
+  return student
 }
 
 function toIcsDate(iso: string): string {
@@ -140,9 +151,9 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: 'unauthorized' }, 401)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const { data: student } = await admin
-    .from('students').select('id, name, first_name, email').eq('user_id', user.id).maybeSingle()
+  const student = await resolveSelfStudent(admin, user.id)
   if (!student) return json({ error: 'no student record' }, 403)
+  const tz = (student.timezone as string) || TIMEZONE
 
   const { session_id, new_slot } = await req.json() as { session_id: string; new_slot: string }
   if (!session_id || !new_slot) return json({ error: 'session_id and new_slot required' }, 400)
@@ -191,8 +202,8 @@ Deno.serve(async (req) => {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          start: { dateTime: newSlotDate.toISOString(), timeZone: TIMEZONE },
-          end: { dateTime: newEndDate.toISOString(), timeZone: TIMEZONE },
+          start: { dateTime: newSlotDate.toISOString(), timeZone: tz },
+          end: { dateTime: newEndDate.toISOString(), timeZone: tz },
         }),
       },
     )
@@ -207,6 +218,9 @@ Deno.serve(async (req) => {
     end_time: newEndDate.toISOString(),
   }).eq('id', session_id)
   if (dbErr) return json({ error: 'DB update failed', detail: dbErr.message }, 500)
+
+  const oldWhen = fmtWhen(session.scheduled_at as string, tz)
+  const newWhen = fmtWhen(newSlotDate.toISOString(), tz)
 
   // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those)
   const { data: overridden } = await admin
@@ -246,8 +260,6 @@ Deno.serve(async (req) => {
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
 
-  const oldWhen = fmtWhen(session.scheduled_at as string)
-  const newWhen = fmtWhen(newSlotDate.toISOString())
   const miroUrl = session.miro_board_url as string | undefined
   const icsContent = buildIcs({
     uid: session_id,

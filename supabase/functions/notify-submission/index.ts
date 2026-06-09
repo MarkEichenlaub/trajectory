@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { PDFDocument, degrees } from 'https://esm.sh/pdf-lib@1.17.1'
+import { PDFDocument, degrees } from 'npm:pdf-lib@1.17.1'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_ANON_KEY = Deno.env.get('SB_PUBLISHABLE_KEY')!
@@ -158,8 +158,12 @@ Deno.serve(async (req) => {
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
+  const { data: links } = await admin
+    .from('student_links').select('student_id, relationship').eq('account_id', user.id)
+  const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
+  if (!link) return json({ error: 'no student found' }, 403)
   const { data: student } = await admin
-    .from('students').select('id, name').eq('user_id', user.id).maybeSingle()
+    .from('students').select('id, name').eq('id', link.student_id).maybeSingle()
   if (!student) return json({ error: 'no student found' }, 403)
 
   const { assignment_id, submissions } = await req.json() as {

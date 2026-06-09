@@ -1199,11 +1199,10 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
         end_time: result.end_time,
         miro_board_url: result.miro_board_url,
         miro_board_id: result.miro_board_id,
+        meet_url: result.meet_url,
         gcal_event_id: result.gcal_event_id,
       }])
-      setSuccessMsg(result.miro_board_url
-        ? `Session booked! Your Miro whiteboard: ${result.miro_board_url}`
-        : 'Session booked! Check your email for the confirmation.')
+      setSuccessMsg('Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
       setRefreshKey(k => k + 1)
       clearAction()
     } catch (e) {
@@ -1355,17 +1354,21 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>{formatDate(selectedSession.scheduled_at)}</div>
-              {selectedSession.end_time && (
-                <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
-                  Ends {new Date(selectedSession.end_time).toLocaleTimeString('en-US', {
-                    hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
-                  })}
-                </div>
-              )}
+              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
+                {new Date(selectedSession.scheduled_at).toLocaleTimeString('en-US', {
+                  hour: 'numeric', minute: '2-digit', timeZone: tz,
+                })}
+                {selectedSession.end_time && ` – ${new Date(selectedSession.end_time).toLocaleTimeString('en-US', {
+                  hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
+                })}`}
+              </div>
             </div>
             <button className="sm" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={clearAction}>✕</button>
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+            {selectedSession.meet_url && (
+              <a href={selectedSession.meet_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Join video (Meet) ↗</a>
+            )}
             {selectedSession.miro_board_url && (
               <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
             )}
