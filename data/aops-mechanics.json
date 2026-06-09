@@ -344,7 +344,7 @@
     "set_number": 3,
     "set_label": "Script Problem 3",
     "name": "A skater rides back and forth on a curved ramp. We describe her location with a…",
-    "desc": "A skater rides back and forth on a curved ramp. We describe her location with a coordinate $x$ measured __along the track__ from the left edge. The simulation marks the track with evenly spaced dashes — $4$ dashes per meter — numbered starting from the left edge. __(a)__ At one i",
+    "desc": "A skater rides back and forth on a curved ramp. We describe her location with a coordinate $x$ measured __along the track__ from the left edge. The simulation marks the track with evenly spaced dashes — $4$ dashes per meter — numbered starting from the left edge. ![](http://cdn.a",
     "topics": [
       "Mechanics"
     ],
@@ -368,7 +368,7 @@
     "set_number": 4,
     "set_label": "Script Problem 4",
     "name": "In 1849 Hippolyte Fizeau measured the speed of light using a rapidly spinning toothed…",
-    "desc": "In 1849 Hippolyte Fizeau measured the speed of light using a rapidly spinning toothed wheel (a __cog__) and a distant mirror. Light passes through a gap between two teeth, travels to a mirror $8.0\\;\\mathrm{km}$ away, and reflects straight back toward the wheel. If the wheel turns",
+    "desc": "In 1849 Hippolyte Fizeau measured the speed of light using a rapidly spinning toothed wheel (a __cog__) and a distant mirror. Light passes through a gap between two teeth, travels to a mirror $8.0\\;\\mathrm{km}$ away, and reflects straight back toward the wheel. ![](http://cdn.art",
     "topics": [
       "Mechanics"
     ],
@@ -391,8 +391,8 @@
     "label": "MCH01",
     "set_number": 5,
     "set_label": "Script Problem 5",
-    "name": "Light travels more slowly through glass than through vacuum (in a typical glass, about…",
-    "desc": "Light travels more slowly through glass than through vacuum (in a typical glass, about $0.7c$). Consider a beam of light that goes from a point $A$ in vacuum to a point $B$ inside a glass block. It could follow many different paths; physicists model light as taking the __path of ",
+    "name": "Light travels more slowly through glass than through empty space. In a typical glass it…",
+    "desc": "Light travels more slowly through glass than through empty space. In a typical glass it moves at about $0.7c,$ where $c$ is the speed of light in vacuum (about $3\\times10^8\\;\\mathrm{m/s}$). ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d97",
     "topics": [
       "Mechanics"
     ],
@@ -416,7 +416,7 @@
     "set_number": 6,
     "set_label": "Script Problem 6",
     "name": "Astronomers find that essentially every distant galaxy is moving __away__ from us, and…",
-    "desc": "Astronomers find that essentially every distant galaxy is moving __away__ from us, and that a galaxy's recession speed $v$ is proportional to its distance $D$ from us: $v=H_0\\,D,$ where $H_0$ is a constant (the __Hubble constant__). To interpret this law, work a toy model with si",
+    "desc": "Astronomers find that essentially every distant galaxy is moving __away__ from us, and that a galaxy's recession speed $v$ is proportional to its distance $D$ from us: $v=H_0\\,D,$ where $H_0$ is a constant (the __Hubble constant__). The graph below shows this pattern — each point",
     "topics": [
       "Mechanics"
     ],
