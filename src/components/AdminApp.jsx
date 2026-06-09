@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank } from '../utils/problemBank'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet, fetchHomeworkSets, deleteHomeworkSet } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -38,7 +38,6 @@ export default function AdminApp() {
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
   const [sessions, setSessions] = useState([])
-  const [homeworkSets, setHomeworkSets] = useState([])
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -73,7 +72,6 @@ export default function AdminApp() {
   const [sortDir, setSortDir] = useState('desc')
   const [emailDraft, setEmailDraft] = useState(null)
   const [requiresSubmission, setRequiresSubmission] = useState(false)
-  const [homeworkModal, setHomeworkModal] = useState(null)
 
   useEffect(() => {
     async function load() {
@@ -82,7 +80,7 @@ export default function AdminApp() {
       fetchJSON('data/aops-mechanics.json').then(setAopsProblems).catch(() => setAopsProblems([]))
       setLoading(false)
       try {
-        const [s, a, sess, hout, hw] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => []), fetchHomeworkSets().catch(() => [])])
+        const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
         setStudents(s)
         const urlStudent = searchParams.get('student')
         const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || 'borna'
@@ -90,7 +88,6 @@ export default function AdminApp() {
         setAssignments(a)
         setSessions(sess)
         setHandouts(hout)
-        setHomeworkSets(hw)
       } catch (e) {
         setError(e.message)
       }
@@ -135,22 +132,6 @@ export default function AdminApp() {
   }
 
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
-
-  const studentHomeworkSets = useMemo(
-    () => homeworkSets.filter(h => h.student_id === activeStudentId),
-    [homeworkSets, activeStudentId]
-  )
-
-  async function handleDeleteHomeworkSet(id, title) {
-    if (!confirm(`Delete homework set "${title || id}"? This removes it from the student's portal.`)) return
-    try {
-      await deleteHomeworkSet(id)
-      setHomeworkSets(prev => prev.filter(h => h.id !== id))
-      showToast('Homework set deleted')
-    } catch (e) {
-      showToast(e.message, 'error')
-    }
-  }
 
   const statusMap = useMemo(() => {
     const map = {}
@@ -224,43 +205,6 @@ export default function AdminApp() {
   function clearSelection() { setSelected(new Set()) }
 
   const selectedProblems = allProblems.filter(p => selected.has(p.id))
-  // AoPS problems in selection, kept in the table's current display order so the
-  // homework PDF follows the order Mark sees on screen. Includes script-derived
-  // problems ("AoPS Script"), which resolve to EigenNode nodes the same way.
-  const selectedAopsProblems = sorted.filter(p => selected.has(p.id) && (p.type === 'AoPS' || p.type === 'AoPS Script'))
-
-  function openHomeworkModal() {
-    if (selectedAopsProblems.length === 0) return
-    const lessonsInSel = [...new Set(selectedAopsProblems.map(p => p.lesson).filter(Boolean))]
-    const lesson = lessonsInSel.length === 1 ? lessonsInSel[0] : ''
-    const defaultTitle = lesson || 'Mechanics Homework'
-    setHomeworkModal({ title: defaultTitle, lesson, dueDate: '' })
-  }
-
-  async function handleCreateHomeworkSet() {
-    if (!homeworkModal || !activeStudent || selectedAopsProblems.length === 0) return
-    const today = new Date().toISOString().slice(0, 10)
-    const row = {
-      id: `hw-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      student_id: activeStudent.id,
-      title: homeworkModal.title.trim() || 'Mechanics Homework',
-      lesson: homeworkModal.lesson || null,
-      problem_ids: selectedAopsProblems.map(p => p.id),
-      assigned_date: today,
-      due_date: homeworkModal.dueDate || null,
-      pdf_url: null,
-      status: 'draft',
-    }
-    try {
-      await insertHomeworkSet(row)
-      setHomeworkSets(prev => [{ ...row, created_at: new Date().toISOString() }, ...prev])
-      setHomeworkModal(null)
-      setSelected(new Set())
-      showToast(`Created homework set "${row.title}" for ${activeStudent.name} (${row.problem_ids.length} problems). Build the PDF locally with build_homework_set.py ${row.id}`)
-    } catch (e) {
-      showToast(e.message, 'error')
-    }
-  }
 
   async function handleAssign() {
     if (!activeStudent || selected.size === 0) return
@@ -590,11 +534,6 @@ export default function AdminApp() {
                     />
                     Submission
                   </label>
-                  {selectedAopsProblems.length > 0 && (
-                    <button className="sm" onClick={openHomeworkModal} title="Compile the selected AoPS problems into one PDF homework set">
-                      Create homework set ({selectedAopsProblems.length})
-                    </button>
-                  )}
                   <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>
@@ -615,34 +554,6 @@ export default function AdminApp() {
               />
             </div>
           </>
-        )}
-
-        {view === VIEWS.ASSIGNED && studentHomeworkSets.length > 0 && (
-          <div style={{ marginBottom: 18, border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px' }}>
-            <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
-              Homework Sets ({studentHomeworkSets.length})
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {studentHomeworkSets.map(h => (
-                <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
-                  <span className={`status-badge ${h.status === 'built' ? 'completed' : 'assigned'}`}>
-                    {h.status === 'built' ? '▤ Built' : h.status === 'sent' ? '✓ Sent' : '… Draft'}
-                  </span>
-                  <span style={{ flex: 1 }}>
-                    {h.title || 'Homework Set'}
-                    <span style={{ color: 'var(--text-dim)', marginLeft: 6 }}>
-                      {h.lesson ? `· ${h.lesson} ` : ''}· {(h.problem_ids || []).length} problems
-                      {h.assigned_date ? ` · ${h.assigned_date}` : ''}
-                    </span>
-                  </span>
-                  {h.pdf_url
-                    ? <a className="pdf-link" href={h.pdf_url} target="_blank" rel="noreferrer">PDF ↗</a>
-                    : <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>no PDF yet — run build_homework_set.py {h.id}</span>}
-                  <button className="sm" onClick={() => handleDeleteHomeworkSet(h.id, h.title)}>Delete</button>
-                </div>
-              ))}
-            </div>
-          </div>
         )}
 
         {view === VIEWS.ASSIGNED && (
@@ -737,34 +648,6 @@ export default function AdminApp() {
         />
       )}
 
-      {homeworkModal && (
-        <div className="modal-overlay" onClick={() => setHomeworkModal(null)}>
-          <div className="modal" style={{ maxWidth: 460 }} onClick={e => e.stopPropagation()}>
-            <h3 style={{ marginTop: 0 }}>Create homework set</h3>
-            <p style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: -4 }}>
-              {selectedAopsProblems.length} problem{selectedAopsProblems.length !== 1 ? 's' : ''} for {activeStudent?.name}
-            </p>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Title</label>
-            <input
-              style={{ width: '100%', marginBottom: 12, padding: '6px 8px' }}
-              value={homeworkModal.title}
-              onChange={e => setHomeworkModal(m => ({ ...m, title: e.target.value }))}
-              autoFocus
-            />
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Due date (optional)</label>
-            <input
-              type="date"
-              style={{ width: '100%', marginBottom: 16, padding: '6px 8px' }}
-              value={homeworkModal.dueDate}
-              onChange={e => setHomeworkModal(m => ({ ...m, dueDate: e.target.value }))}
-            />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
-              <button className="sm" onClick={() => setHomeworkModal(null)}>Cancel</button>
-              <button className="sm primary" onClick={handleCreateHomeworkSet}>Create</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

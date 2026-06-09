@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
-import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources, fetchStudentHomeworkSets } from '../utils/supabase'
+import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources } from '../utils/supabase'
 import StudentView from './StudentView'
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
@@ -17,7 +17,6 @@ export default function PortalApp({ account, onSignOut }) {
   const [assignments, setAssignments] = useState(null)
   const [sessions, setSessions] = useState([])
   const [accessibleSources, setAccessibleSources] = useState([])
-  const [homeworkSets, setHomeworkSets] = useState([])
   const [loadError, setLoadError] = useState(null)
 
   useEffect(() => {
@@ -27,18 +26,16 @@ export default function PortalApp({ account, onSignOut }) {
   useEffect(() => {
     async function load() {
       try {
-        const [a, sess, hout, sources, hw] = await Promise.all([
+        const [a, sess, hout, sources] = await Promise.all([
           fetchStudentAssignments(),
           fetchStudentSessions(),
           fetchHandoutsPublic().catch(() => []),
           fetchMyAccessibleSources().catch(() => []),
-          fetchStudentHomeworkSets().catch(() => []),
         ])
         setAssignments(a)
         setSessions(sess)
         setHandouts(hout)
         setAccessibleSources(sources)
-        setHomeworkSets(hw)
       } catch (e) {
         setLoadError(e.message)
       }
@@ -89,10 +86,6 @@ export default function PortalApp({ account, onSignOut }) {
     () => sessions.filter(s => s.student_id === activeStudent?.id),
     [sessions, activeStudent]
   )
-  const studentHomeworkSets = useMemo(
-    () => homeworkSets.filter(h => h.student_id === activeStudent?.id && h.pdf_url),
-    [homeworkSets, activeStudent]
-  )
 
   function handleMarkCompleted(updatedAssignment) {
     setAssignments(prev => {
@@ -128,7 +121,6 @@ export default function PortalApp({ account, onSignOut }) {
           student={activeStudent}
           assignments={studentAssignments}
           sessions={studentSessions}
-          homeworkSets={studentHomeworkSets}
           problems={allProblems}
           accessibleSources={accessibleSources}
           onMarkCompleted={handleMarkCompleted}
