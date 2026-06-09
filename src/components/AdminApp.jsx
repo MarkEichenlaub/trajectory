@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank } from '../utils/problemBank'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet, fetchHomeworkSets, deleteHomeworkSet } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import FilterSidebar from './FilterSidebar'
@@ -38,6 +38,7 @@ export default function AdminApp() {
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
   const [sessions, setSessions] = useState([])
+  const [homeworkSets, setHomeworkSets] = useState([])
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -81,7 +82,7 @@ export default function AdminApp() {
       fetchJSON('data/aops-mechanics.json').then(setAopsProblems).catch(() => setAopsProblems([]))
       setLoading(false)
       try {
-        const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
+        const [s, a, sess, hout, hw] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => []), fetchHomeworkSets().catch(() => [])])
         setStudents(s)
         const urlStudent = searchParams.get('student')
         const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || 'borna'
@@ -89,6 +90,7 @@ export default function AdminApp() {
         setAssignments(a)
         setSessions(sess)
         setHandouts(hout)
+        setHomeworkSets(hw)
       } catch (e) {
         setError(e.message)
       }
@@ -133,6 +135,22 @@ export default function AdminApp() {
   }
 
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
+
+  const studentHomeworkSets = useMemo(
+    () => homeworkSets.filter(h => h.student_id === activeStudentId),
+    [homeworkSets, activeStudentId]
+  )
+
+  async function handleDeleteHomeworkSet(id, title) {
+    if (!confirm(`Delete homework set "${title || id}"? This removes it from the student's portal.`)) return
+    try {
+      await deleteHomeworkSet(id)
+      setHomeworkSets(prev => prev.filter(h => h.id !== id))
+      showToast('Homework set deleted')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
 
   const statusMap = useMemo(() => {
     const map = {}
@@ -235,6 +253,7 @@ export default function AdminApp() {
     }
     try {
       await insertHomeworkSet(row)
+      setHomeworkSets(prev => [{ ...row, created_at: new Date().toISOString() }, ...prev])
       setHomeworkModal(null)
       setSelected(new Set())
       showToast(`Created homework set "${row.title}" for ${activeStudent.name} (${row.problem_ids.length} problems). Build the PDF locally with build_homework_set.py ${row.id}`)
@@ -596,6 +615,34 @@ export default function AdminApp() {
               />
             </div>
           </>
+        )}
+
+        {view === VIEWS.ASSIGNED && studentHomeworkSets.length > 0 && (
+          <div style={{ marginBottom: 18, border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px' }}>
+            <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+              Homework Sets ({studentHomeworkSets.length})
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {studentHomeworkSets.map(h => (
+                <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
+                  <span className={`status-badge ${h.status === 'built' ? 'completed' : 'assigned'}`}>
+                    {h.status === 'built' ? '▤ Built' : h.status === 'sent' ? '✓ Sent' : '… Draft'}
+                  </span>
+                  <span style={{ flex: 1 }}>
+                    {h.title || 'Homework Set'}
+                    <span style={{ color: 'var(--text-dim)', marginLeft: 6 }}>
+                      {h.lesson ? `· ${h.lesson} ` : ''}· {(h.problem_ids || []).length} problems
+                      {h.assigned_date ? ` · ${h.assigned_date}` : ''}
+                    </span>
+                  </span>
+                  {h.pdf_url
+                    ? <a className="pdf-link" href={h.pdf_url} target="_blank" rel="noreferrer">PDF ↗</a>
+                    : <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>no PDF yet — run build_homework_set.py {h.id}</span>}
+                  <button className="sm" onClick={() => handleDeleteHomeworkSet(h.id, h.title)}>Delete</button>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {view === VIEWS.ASSIGNED && (
