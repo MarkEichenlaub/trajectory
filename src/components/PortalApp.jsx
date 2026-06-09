@@ -46,6 +46,18 @@ export default function PortalApp({ account, onSignOut }) {
     load()
   }, [])
 
+  // A handout's solutions stay hidden until the active student's assignment for it
+  // is marked completed; only then does solutionUrl become non-null and the
+  // "Solution ↗" link appear.
+  const completedHandoutIds = useMemo(() => {
+    const sid = students.find(s => s.id === activeId)?.id || students[0]?.id || null
+    const set = new Set()
+    for (const a of (assignments || [])) {
+      if (a.student_id === sid && a.status === 'completed') set.add(a.problem_id)
+    }
+    return set
+  }, [assignments, students, activeId])
+
   const allProblems = useMemo(() => [
     ...problems,
     ...handouts.map(h => ({
@@ -60,9 +72,9 @@ export default function PortalApp({ account, onSignOut }) {
       label: '',
       country: '',
       problemUrl: h.pdf_url || '',
-      solutionUrl: null,
+      solutionUrl: completedHandoutIds.has(h.id) ? (h.solution_url || null) : null,
     })),
-  ], [problems, handouts])
+  ], [problems, handouts, completedHandoutIds])
 
   const activeStudent = useMemo(
     () => students.find(s => s.id === activeId) || students[0] || null,
