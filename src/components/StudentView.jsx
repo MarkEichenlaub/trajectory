@@ -404,7 +404,7 @@ export default function StudentView({ student, assignments, sessions, homeworkSe
                 </div>
                 <div className="assigned-row-links">
                   {p.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>}
-                  {p.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
+                  {p.solutionUrl && a.status === 'completed' && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                   {subs.map((s, i) => (
                     <a key={s.id} href={s.file_url} target="_blank" rel="noreferrer">
                       {subs.length === 1 ? 'Submission ↗' : `Submission ${i + 1} ↗`}
@@ -606,7 +606,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
                               {p.type === 'Exam' ? 'Exam ↗' : isResource ? 'PDF ↗' : 'Problem ↗'}
                             </a>
                           )}
-                          {p.solutionUrl && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
+                          {p.solutionUrl && isCompleted && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                         </div>
                       </td>
                       <td>
