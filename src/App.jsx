@@ -3,6 +3,7 @@ import { supabase, resolveMyAccount } from './utils/supabase'
 import StudentLogin from './components/StudentLogin'
 import AdminApp from './components/AdminApp'
 import PortalApp from './components/PortalApp'
+import SessionLauncher from './components/SessionLauncher'
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
 const PORTAL_ROLES = ['student', 'parent', 'adult']
@@ -48,7 +49,10 @@ export default function App() {
     return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
   }
 
-  if (account.role === 'admin') return <AdminApp />
+  if (account.role === 'admin') {
+    if (window.location.pathname.startsWith('/launch')) return <SessionLauncher />
+    return <AdminApp />
+  }
 
   if (PORTAL_ROLES.includes(account.role) && (account.students || []).length > 0) {
     return <PortalApp account={account} onSignOut={signOut} />

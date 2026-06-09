@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
+import { assembleProblemBank } from '../utils/problemBank'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, insertHomeworkSet } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
@@ -116,24 +117,10 @@ export default function AdminApp() {
     setPreviewStudentId(match?.id || null)
   }, [location.pathname, students])
 
-  const allProblems = useMemo(() => [
-    ...problems,
-    ...aopsProblems,
-    ...handouts.map(h => ({
-      id: h.id,
-      contest: h.source,
-      type: h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout',
-      name: h.name,
-      desc: h.description || '',
-      topics: h.topics || [],
-      tags: h.tags || [],
-      year: h.year || 0,
-      label: '',
-      country: '',
-      problemUrl: h.pdf_url || '',
-      solutionUrl: h.solution_url || null,
-    })),
-  ], [problems, aopsProblems, handouts])
+  const allProblems = useMemo(
+    () => assembleProblemBank({ problems, aopsProblems, handouts }),
+    [problems, aopsProblems, handouts]
+  )
 
   const allSources = useMemo(() =>
     [...new Set(allProblems.map(p => p.contest))].sort(),
