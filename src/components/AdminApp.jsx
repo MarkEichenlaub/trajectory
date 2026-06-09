@@ -207,8 +207,9 @@ export default function AdminApp() {
 
   const selectedProblems = allProblems.filter(p => selected.has(p.id))
   // AoPS problems in selection, kept in the table's current display order so the
-  // homework PDF follows the order Mark sees on screen.
-  const selectedAopsProblems = sorted.filter(p => selected.has(p.id) && p.type === 'AoPS')
+  // homework PDF follows the order Mark sees on screen. Includes script-derived
+  // problems ("AoPS Script"), which resolve to EigenNode nodes the same way.
+  const selectedAopsProblems = sorted.filter(p => selected.has(p.id) && (p.type === 'AoPS' || p.type === 'AoPS Script'))
 
   function openHomeworkModal() {
     if (selectedAopsProblems.length === 0) return
