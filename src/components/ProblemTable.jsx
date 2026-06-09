@@ -105,7 +105,16 @@ export default function ProblemTable({
                     }
                   </td>
                   <td>
-                    {p.type !== 'Handout' && p.type !== 'Book' && <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>}
+                    {p.type !== 'Handout' && p.type !== 'Book' && (
+                      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+                        <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>
+                        {p.set_label && (
+                          <span style={{ color: p.type === 'AoPS Script' ? 'var(--accent)' : 'var(--text-dim)', fontSize: 10, whiteSpace: 'nowrap' }}>
+                            {p.type === 'AoPS Script' ? `★ ${p.set_label}` : p.set_label}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </td>
                   <td>
                     <div className="problem-name">{p.name}</div>

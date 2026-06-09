@@ -5,6 +5,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "In addition to this homework set, don't forget that there is a prereading to do before…",
     "desc": "In addition to this homework set, don't forget that there is a prereading to do before the next class (and there will be one before all the remaining classes in this course). It's important to do the prereading to be prepared for class. You can find it on the class homepage.",
     "topics": [
@@ -27,6 +29,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "You're not going to understand everything right away. Please ask your questions on our…",
     "desc": "You're not going to understand everything right away. Please ask your questions on our class message board! When you ask questions, other students benefit when they read and participate in the conversation. Instructors can also teach better when you ask questions, since it shows ",
     "topics": [
@@ -49,6 +53,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "One of the core skills physicists learn is to decide how much complexity to put in their…",
     "desc": "One of the core skills physicists learn is to decide how much complexity to put in their models. They decide this based on the type of problem they're working on and the accuracy they need. In this problem, we'll practice thinking about when we can productively use the most basic",
     "topics": [
@@ -71,6 +77,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "On hot days you can sometimes see __mirages__.",
     "desc": "On hot days you can sometimes see __mirages__. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/01_hw_mirage_walk.gif) PhysicsStuff.com The reflection of people walking can make it look like there's a puddle of water on the ",
     "topics": [
@@ -93,6 +101,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "We will use __normalized scientific notation__ for both large and small numbers. In this…",
     "desc": "We will use __normalized scientific notation__ for both large and small numbers. In this notation, any number can be represented by a number (called the \"coefficient\") greater than $1.0$ and less than $10,$ multiplied by ten to some power. For example, here are some numbers writt",
     "topics": [
@@ -115,6 +125,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "This question is to help make the message boards useful for the entire class by…",
     "desc": "This question is to help make the message boards useful for the entire class by practicing writing titles for questions. The better the titles we use, the more everyone can gain by browsing the message boards. ------------------ On AoPS message boards, if you ask a question, you'",
     "topics": [
@@ -137,6 +149,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "This problem is practice with the ideas of speed, distance, and time.",
     "desc": "This problem is practice with the ideas of speed, distance, and time. --------------- Suppose two cars begin driving towards each other from $150 \\;\\mathrm{mi}$ apart. The first car drives at $40 \\;\\mathrm{mi/h}$ and the second car drives at $60 \\;\\mathrm{mi/h}.$ How long will it",
     "topics": [
@@ -159,6 +173,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "This problem is more practice with the mathematical relation between speed, distance, and…",
     "desc": "This problem is more practice with the mathematical relation between speed, distance, and time. A driver wants to complete a $60.0 \\;\\mathrm{mi}$ trip at an average of $60.0 \\;\\mathrm{mi/h}.$ They've already completed the first $30.0 \\;\\mathrm{mi}$ at an average of $70.0 \\;\\mathr",
     "topics": [
@@ -181,6 +197,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 9,
+    "set_label": "Problem 9",
     "name": "In this problem, you'll practice __estimation__ and __unit conversions__. These are both…",
     "desc": "In this problem, you'll practice __estimation__ and __unit conversions__. These are both essential skills that we'll use throughout the course. Estimate the average speed at which human hair grows in miles per hour. There is no one answer to this question - different hairs grow a",
     "topics": [
@@ -203,6 +221,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 10,
+    "set_label": "Problem 10",
     "name": "In this problem, you'll practice the notation and interpretation of speed and velocity.",
     "desc": "In this problem, you'll practice the notation and interpretation of speed and velocity. ------------------------- Below is a sketch of an __Atwood machine__, an 18th century invention intended to measure the strength of gravity. The device consists of a pulley (a circular ring th",
     "topics": [
@@ -225,6 +245,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 11,
+    "set_label": "Problem 11",
     "name": "This problem will help you practice the relationship between velocity and distance…",
     "desc": "This problem will help you practice the relationship between velocity and distance traveled when the velocity changes and is represented on a graph. ------------------------ Ayesha McGowan is a professional road racing cyclist. ![](http://cdn.artofproblemsolving.com/school/crypt/",
     "topics": [
@@ -247,6 +269,8 @@
     "type": "AoPS",
     "lesson": "MCH01: Velocity",
     "label": "MCH01",
+    "set_number": 12,
+    "set_label": "Problem 12",
     "name": "Take a look at the following dot diagram. The dots were made $1 \\;\\mathrm{s}$ apart, and…",
     "desc": "Take a look at the following dot diagram. The dots were made $1 \\;\\mathrm{s}$ apart, and the scale is $1:1,$ so the dots' distance apart on your computer monitor is their distance apart in real life. The dots should display the correct distance apart on most computers. However, i",
     "topics": [
@@ -264,11 +288,157 @@
     "solutionUrl": null
   },
   {
+    "id": "9eb32e35-8499-419d-b9ff-543d77293318",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 1,
+    "set_label": "Script Problem 1",
+    "name": "In August 2022, a woman in Vancouver rented a car for three days. When she returned it…",
+    "desc": "In August 2022, a woman in Vancouver rented a car for three days. When she returned it, the rental company billed her more than $\\$9{,}000.$ The company said its rate was $\\dfrac{\\$0.25}{\\mathrm{km}}$ and that she had driven $36{,}482\\;\\mathrm{km}$ during the rental. Show that th",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "092a929b-8e31-4ec5-8e1c-05a180e0f770",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 2,
+    "set_label": "Script Problem 2",
+    "name": "You want to measure a cyclist's speed from a video. The video plays at $20$ frames per…",
+    "desc": "You want to measure a cyclist's speed from a video. The video plays at $20$ frames per second. By comparing the bicycle to a known length — its __wheelbase__ of $0.977\\;\\mathrm{m}$ — you can turn pixel measurements in the video into real distances. In the video, the wheelbase mea",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b3b00663-ad76-4984-ab41-69ae12639023",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 3,
+    "set_label": "Script Problem 3",
+    "name": "A skater rides back and forth on a curved ramp. We describe her location with a…",
+    "desc": "A skater rides back and forth on a curved ramp. We describe her location with a coordinate $x$ measured __along the track__ from the left edge. The simulation marks the track with evenly spaced dashes — $4$ dashes per meter — numbered starting from the left edge. __(a)__ At one i",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "84191328-7bc6-43df-9220-5e8a2190ed40",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 4,
+    "set_label": "Script Problem 4",
+    "name": "In 1849 Hippolyte Fizeau measured the speed of light using a rapidly spinning toothed…",
+    "desc": "In 1849 Hippolyte Fizeau measured the speed of light using a rapidly spinning toothed wheel (a __cog__) and a distant mirror. Light passes through a gap between two teeth, travels to a mirror $8.0\\;\\mathrm{km}$ away, and reflects straight back toward the wheel. If the wheel turns",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "0d8abe8e-9401-4808-9b53-2852fdb8f281",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 5,
+    "set_label": "Script Problem 5",
+    "name": "Light travels more slowly through glass than through vacuum (in a typical glass, about…",
+    "desc": "Light travels more slowly through glass than through vacuum (in a typical glass, about $0.7c$). Consider a beam of light that goes from a point $A$ in vacuum to a point $B$ inside a glass block. It could follow many different paths; physicists model light as taking the __path of ",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "e4b5d40f-305d-423e-b85d-a04a6f741edb",
+    "contest": "Physics 1: Mechanics",
+    "type": "AoPS Script",
+    "lesson": "MCH01: Velocity",
+    "label": "MCH01",
+    "set_number": 6,
+    "set_label": "Script Problem 6",
+    "name": "Astronomers find that essentially every distant galaxy is moving __away__ from us, and…",
+    "desc": "Astronomers find that essentially every distant galaxy is moving __away__ from us, and that a galaxy's recession speed $v$ is proportional to its distance $D$ from us: $v=H_0\\,D,$ where $H_0$ is a constant (the __Hubble constant__). To interpret this law, work a toy model with si",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "script",
+      "MCH01"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
     "id": "670ab7f6-c801-4020-8900-dcd6468ad364",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "The first three problems on this set are quick reviews to make sure you remember the…",
     "desc": "The first three problems on this set are quick reviews to make sure you remember the terminology introduced in class. They are quick problems, and after those three, you'll dive into applying the physics to real situations. If you are unsure on these, you could check the transcri",
     "topics": [
@@ -291,6 +461,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Match the concept to our mathematical notation for it. Assume we are using $x$ as a…",
     "desc": "Match the concept to our mathematical notation for it. Assume we are using $x$ as a coordinate. The matching is one-to-one. a coordinate for position allowsMultipleConnections:",
     "topics": [
@@ -313,6 +485,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "An object is moving, and we use the coordinate $z$ to track its motion.",
     "desc": "An object is moving, and we use the coordinate $z$ to track its motion. Create equations for the displacement, velocity, and acceleration of the object. Each should use at least one $\\Delta.$ mathjax: \\begin{align*} \\text{displacement} & = \\drag\\drag\\\\ {} \\\\ \\text{velocity} & = \\",
     "topics": [
@@ -335,6 +509,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "This problem asks you to think qualitatively about acceleration and free fall. You'll…",
     "desc": "This problem asks you to think qualitatively about acceleration and free fall. You'll visualize acceleration using a free falling stick. ------------------------------- There is a challenge that many people find surprising: hold a dollar bill vertically and invite a friend to put",
     "topics": [
@@ -357,6 +533,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "On their wedding day, a couple jumped off a cliff into water below. (As a celebration…",
     "desc": "On their wedding day, a couple jumped off a cliff into water below. (As a celebration, not out of despair.) ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/02_hw_wedding_jump.jpg) Zvonimir Barisin There's another photo take",
     "topics": [
@@ -379,6 +557,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "This problem gives you some more practice conceptualizing what acceleration is, as used…",
     "desc": "This problem gives you some more practice conceptualizing what acceleration is, as used in physics, and interpreting it in an everyday scenario. This problem isn't focused on positive and negative aspects, just how large the acceleration is. That's why it asks about the magnitude",
     "topics": [
@@ -401,6 +581,8 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "This question is quantitative, but doesn't ask you to use any formulas. Instead, you…",
     "desc": "This question is quantitative, but doesn't ask you to use any formulas. Instead, you should think about how accelerations are measured and calculated and answer this question based on that process, rather than by plugging any particular numbers into a formula. -------------------",
     "topics": [
@@ -423,8 +605,10 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
-    "name": "MCH02 Problem 8",
-    "desc": "",
+    "set_number": 8,
+    "set_label": "Problem 8 (Parts A–B)",
+    "name": "In this multi-part problem, you'll build a model to understand the relative importance…",
+    "desc": "In this multi-part problem, you'll build a model to understand the relative importance between fast reaction time and safe speed when driving. The first part guides you on how to get a model ready for analysis, and the second part asks the question we're interested in about drivi",
     "topics": [
       "Mechanics"
     ],
@@ -444,8 +628,10 @@
     "type": "AoPS",
     "lesson": "MCH02: Acceleration",
     "label": "MCH02",
-    "name": "MCH02 Problem 9",
-    "desc": "",
+    "set_number": 9,
+    "set_label": "Problem 9 (Parts A–F)",
+    "name": "In this multi-part problem, you'll practice several stages of conducting an experiment…",
+    "desc": "In this multi-part problem, you'll practice several stages of conducting an experiment, including understanding what the experiment is for, building a model of what happens in the experiment, deciding what data to collect, deciding how to analyze that data, and drawing conclusion",
     "topics": [
       "Mechanics"
     ],
@@ -465,6 +651,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "This problem asks you to start applying ideas you learned about projectile motion and…",
     "desc": "This problem asks you to start applying ideas you learned about projectile motion and reference frames in a qualitative setting. ---------------------- Suppose you are walking along, holding an empty bottle in your hand. You see a recycling bin at ground level, and want to drop t",
     "topics": [
@@ -487,6 +675,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "The next two problems on the set review core concepts about projectiles while letting you…",
     "desc": "The next two problems on the set review core concepts about projectiles while letting you practice with terminology and notation for motion. Fill in the blank below with the single best choice. The variables are: $\\begin{array}{c|l} \\text{variable} & \\text{meaning} \\\\ \\hline v & ",
     "topics": [
@@ -509,6 +699,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "A projectile is launched from ground height and travels along a parabola from left to…",
     "desc": "A projectile is launched from ground height and travels along a parabola from left to right, landing at the same height it was launched from. The trajectory can be divided into two halves. Below, the first half is in blue and the second half is in red. Set the vertical coordinate",
     "topics": [
@@ -531,6 +723,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Here, you'll practice looking at a drawing and working backwards to figure out what the…",
     "desc": "Here, you'll practice looking at a drawing and working backwards to figure out what the drawing means in terms of basic physical quantities, but you won't have to do any calculations. ---------------------- Three projectiles are fired from ground level. Their trajectories are sho",
     "topics": [
@@ -553,6 +747,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "This is our first quantitative problem on this homework set. It is a good chance to…",
     "desc": "This is our first quantitative problem on this homework set. It is a good chance to practice proportional reasoning and analyzing horizontal and vertical motions separately, then using information from one analysis in the other. -------------------- Two projectiles are fired from",
     "topics": [
@@ -575,8 +771,10 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
-    "name": "MCH03 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–B)",
+    "name": "unsupported_type: DynamicGraph",
+    "desc": "unsupported_type: DynamicGraph",
     "topics": [
       "Mechanics"
     ],
@@ -596,6 +794,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "This problem is qualitative, and explores an application of projectile motion. The…",
     "desc": "This problem is qualitative, and explores an application of projectile motion. The challenge is in figuring out what all the different pieces of the problem mean, not in doing a complicated calculation. ------------------ In principle, we can find square roots of numbers by dropp",
     "topics": [
@@ -618,6 +818,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "NASA trains astronauts to experience weightlessness with an airplane which flies in a…",
     "desc": "NASA trains astronauts to experience weightlessness with an airplane which flies in a parabolic arc with constant acceleration $g$ toward the ground. Similar planes can be used for civilian purposes, such as this music video: ![](http://cdn.artofproblemsolving.com/school/crypt/00",
     "topics": [
@@ -640,6 +842,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 9,
+    "set_label": "Problem 9",
     "name": "This problem lets you use quantitative skills in multiple steps, and think about special…",
     "desc": "This problem lets you use quantitative skills in multiple steps, and think about special triangles. You may want to remember the $30^\\circ-60^\\circ-90^\\circ$ special triangle. ---------------------------- A spring-loaded launcher can shoot a projectile to a height $h$ if launched",
     "topics": [
@@ -662,6 +866,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 10,
+    "set_label": "Problem 10",
     "name": "This challenging quantitative problem asks you to combine what you've learned about…",
     "desc": "This challenging quantitative problem asks you to combine what you've learned about acceleration with ideas about horizontal and vertical velocities for trajectories. -------------------------- You plan to drop a ball off a cliff. The ball will fall straight down for some distanc",
     "topics": [
@@ -684,6 +890,8 @@
     "type": "AoPS",
     "lesson": "MCH03: Projectile Motion",
     "label": "MCH03",
+    "set_number": 11,
+    "set_label": "Problem 11",
     "name": "In the ancient Greek poem __The Odyssey__, the hero Odysseus has to shoot an arrow…",
     "desc": "In the ancient Greek poem __The Odyssey__, the hero Odysseus has to shoot an arrow through a series of twelve axes set up in a row. (There are holes in the axes for an arrow to go through.) In 2019, the TV show __MythBusters Jr.__ replicated the feat. ![](http://cdn.artofproblems",
     "topics": [
@@ -706,6 +914,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "This problem is for quick practice with the definition of kinetic energy, $K = \\dfrac12…",
     "desc": "This problem is for quick practice with the definition of kinetic energy, $K = \\dfrac12 mv^2.$ ------------------------------ There are two objects, $A$ and $B.$ Object $B$ has half the mass of object $A,$ but moves twice as fast. Neither object is at rest. Which object has more ",
     "topics": [
@@ -728,6 +938,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Objects $A$ and $B$ are each dropped and fall to the ground. Object $A$ has twice the…",
     "desc": "Objects $A$ and $B$ are each dropped and fall to the ground. Object $A$ has twice the mass of object $B.$ If object $B$ is dropped from a height of $1 \\;\\mathrm{m},$ from how high should object $A$ be dropped in order to hit the ground at the same speed? Assume air drag is neglig",
     "topics": [
@@ -750,6 +962,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "From the top of a high cliff, a ball is thrown horizontally with initial speed $v_0$ at…",
     "desc": "From the top of a high cliff, a ball is thrown horizontally with initial speed $v_0$ at time $t = 0.$ Which of the following graphs best represents the ball's kinetic energy $KE$ as a function of time $t?$ Ignore air resistance for this problem.",
     "topics": [
@@ -772,6 +986,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Rank the Atwood machines below in order of the magnitude of acceleration of the blocks…",
     "desc": "Rank the Atwood machines below in order of the magnitude of acceleration of the blocks, from highest to lowest. Ignore friction and the mass of the pulley and rope in this problem. mathjax: \\begin{align*} \\text{highest magnitude of acceleration: } & \\drag \\\\ \\text{ } & \\drag \\\\ \\",
     "topics": [
@@ -794,6 +1010,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "Some students build two ramps. Each is a height $d,$ and each is on a table a height $h$…",
     "desc": "Some students build two ramps. Each is a height $d,$ and each is on a table a height $h$ above the ground. They hold a block at the top of each ramp. The blocks are released simultaneously. Each slides down its incline and shoots horizontally off the edge of its table. Which bloc",
     "topics": [
@@ -816,6 +1034,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "Here you can practice more with quantitative applications of potential energy, kinetic…",
     "desc": "Here you can practice more with quantitative applications of potential energy, kinetic energy, and energy conservation. You throw a ball straight upward with initial speed $v_0.$ It rises to a height $h$ above the point where you threw it. When the ball has risen a distance $h/2$",
     "topics": [
@@ -838,6 +1058,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "This problem is for practice with two different skills. First, there's a lot of…",
     "desc": "This problem is for practice with two different skills. First, there's a lot of interpreting the meaning of different mathematical notation. Second, there's understanding what scientific hypothesis mean, and when two differently stated hypotheses are actually the same thing. In c",
     "topics": [
@@ -860,6 +1082,8 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "When a ball bounces off the ground, it loses some kinetic energy, so if the vertical…",
     "desc": "When a ball bounces off the ground, it loses some kinetic energy, so if the vertical component of the ball's velocity is $v_{y0}$ just before hitting the ground and $v_{yb}$ just after bouncing, then $v_{yb} < -v_{y0}.$ $v_y$ is positive in the upward direction, so $v_{y0} < 0,$ ",
     "topics": [
@@ -882,8 +1106,10 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
-    "name": "MCH04 Problem 9",
-    "desc": "",
+    "set_number": 9,
+    "set_label": "Problem 9 (Parts A–B)",
+    "name": "Below is a diagram of a modified Atwood machine, sometimes called a \"half-Atwood machine\".",
+    "desc": "Below is a diagram of a modified Atwood machine, sometimes called a \"half-Atwood machine\". Which sketch shows the The __magnitude__ of the acceleration is how far it is from zero. It's like the absolute value. of acceleration of the blocks in this half-Atwood machine as a functio",
     "topics": [
       "Mechanics"
     ],
@@ -903,8 +1129,10 @@
     "type": "AoPS",
     "lesson": "MCH04: Energy Conservation",
     "label": "MCH04",
-    "name": "MCH04 Problem 10",
-    "desc": "",
+    "set_number": 10,
+    "set_label": "Problem 10 (Parts A–C)",
+    "name": "This week, instead of doing an experiment that seeks to confirm or discover a scientific…",
+    "desc": "This week, instead of doing an experiment that seeks to confirm or discover a scientific law, we'll try to put what we've learned in practice to design something. Here's a gif of a toy car making a jump: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e",
     "topics": [
       "Mechanics"
     ],
@@ -924,6 +1152,8 @@
     "type": "AoPS",
     "lesson": "MCH05: Forms of Energy",
     "label": "MCH05",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "This conceptual problem should give you a chance to think about when we can and cannot…",
     "desc": "This conceptual problem should give you a chance to think about when we can and cannot apply energy conservation to a system. A famous demonstration in physics involves a bowling ball hung from the ceiling by a long rope. A physicist pulls the bowling ball back a long way, storin",
     "topics": [
@@ -946,8 +1176,10 @@
     "type": "AoPS",
     "lesson": "MCH05: Forms of Energy",
     "label": "MCH05",
-    "name": "MCH05 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–C)",
+    "name": "In this multi-part problem, we explore kinetic energy quantitatively, linking it back to…",
+    "desc": "In this multi-part problem, we explore kinetic energy quantitatively, linking it back to Professor John Dabiri's ideas about wind turbines. Our kinetic energy formula was $KE = \\dfrac12 mv^2$ When the wind blows at $5 \\;\\mathrm{m/s},$ each A __cubic meter__, or $\\mathrm{m}^3,$ is",
     "topics": [
       "Mechanics"
     ],
@@ -967,8 +1199,10 @@
     "type": "AoPS",
     "lesson": "MCH05: Forms of Energy",
     "label": "MCH05",
-    "name": "MCH05 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–D)",
+    "name": "This multi-part problem explores an important physics technology - a particle collider…",
+    "desc": "This multi-part problem explores an important physics technology - a particle collider. It lets you practice with energy conceptually without worrying about the details of calculations. However, it introduces lots of new context, and requires careful interpretation of the graphs ",
     "topics": [
       "Mechanics"
     ],
@@ -988,8 +1222,10 @@
     "type": "AoPS",
     "lesson": "MCH05: Forms of Energy",
     "label": "MCH05",
-    "name": "MCH05 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–D)",
+    "name": "Over this multi-part problem, we'll engage with a real scientific research project that…",
+    "desc": "Over this multi-part problem, we'll engage with a real scientific research project that used the physics concepts we've recently been studying. ------------------ The fastest animal in the world is the peregrine falcon. It hunts by flying high in the sky until it sees a small bir",
     "topics": [
       "Mechanics"
     ],
@@ -1009,6 +1245,8 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "How many stable equilibrium points does the kitty skater have in the skate park below?",
     "desc": "How many stable equilibrium points does the kitty skater have in the skate park below? The red dots have no special significance; they're artifacts of how the simulation builds custom tracks. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d",
     "topics": [
@@ -1031,6 +1269,8 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Two massless rods are attached to frictionless pivots, with their ends touching. Mass…",
     "desc": "Two massless rods are attached to frictionless pivots, with their ends touching. Mass $m_1$ and $m_2$ are put on top of the rods, each at one end. The distance between the pivot points and the endpoints of the rods are shown below. What should $m_2$ be to put this system in equil",
     "topics": [
@@ -1053,6 +1293,8 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "In the balance below, what should mass $m_3$ be to achieve equilibrium, assuming there is…",
     "desc": "In the balance below, what should mass $m_3$ be to achieve equilibrium, assuming there is no friction? mathjax: $m_3 = \\dfrac{\\drag\\drag - \\drag\\drag}{\\drag}$ outputDisplayFormat: contentInEachDropArea",
     "topics": [
@@ -1075,6 +1317,8 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "A chain hanging under its own weight takes a shape called a __catenary__:",
     "desc": "A chain hanging under its own weight takes a shape called a __catenary__: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/06_hw_chain.jpg) By Kamel15 - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid",
     "topics": [
@@ -1097,6 +1341,8 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "A __Roberval balance__ is a device with six pivots as shown.",
     "desc": "A __Roberval balance__ is a device with six pivots as shown. The bars cannot change length, and the device is rigid except at the pivots. The top and bottom horizontal bars are each single pieces, not two pieces coming together at the pivot. The Roberval balance has only a single",
     "topics": [
@@ -1119,8 +1365,10 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
-    "name": "MCH06 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–E)",
+    "name": "A mass $m$ is placed on top of a massless spring with spring constant $k.$ The mass can…",
+    "desc": "A mass $m$ is placed on top of a massless spring with spring constant $k.$ The mass can only move up or down; it can't tip over. Remember that the potential energy of a spring is $U_{\\rm el} = \\dfrac12 k (\\Delta \\ell)^2,$ where $\\Delta \\ell$ is the change in the length of the spr",
     "topics": [
       "Mechanics"
     ],
@@ -1140,8 +1388,10 @@
     "type": "AoPS",
     "lesson": "MCH06: Simple Machines",
     "label": "MCH06",
-    "name": "MCH06 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–D)",
+    "name": "A block of mass $M$ hangs from a string that goes over a pulley and is connected to a…",
+    "desc": "A block of mass $M$ hangs from a string that goes over a pulley and is connected to a wall. The horizontal stretch of string has length $L.$ Then a mass $m$ is attached to the horizontal section of string so that it can slide left or right without friction. The string will sag un",
     "topics": [
       "Mechanics"
     ],
@@ -1161,6 +1411,8 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "What's the conversion factor between $\\mathrm{rpm}$ (revolutions per minute) and…",
     "desc": "What's the conversion factor between $\\mathrm{rpm}$ (revolutions per minute) and $\\mathrm{Hz}$ (hertz)? Remember the hertz is defined by $1 \\;\\mathrm{Hz} = 1 \\;\\mathrm{s}^{-1}$ Enter your answer as a decimal to three decimal places. mathjax: $ 1 \\;\\mathrm{rpm} = \\blank \\;\\mathrm{",
     "topics": [
@@ -1183,8 +1435,10 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
-    "name": "MCH07 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–C)",
+    "name": "An __accelerometer__ is a device that measures its own acceleration. A student took an…",
+    "desc": "An __accelerometer__ is a device that measures its own acceleration. A student took an accelerometer on the \"Drop\" ride at an amusement park. This ride takes riders up a tall tower, then lets them free fall down the tower for a time. ![](http://cdn.artofproblemsolving.com/school/",
     "topics": [
       "Mechanics"
     ],
@@ -1204,6 +1458,8 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "An object of mass $M$ sits on a frictionless table. It is attached to a string. The…",
     "desc": "An object of mass $M$ sits on a frictionless table. It is attached to a string. The string goes through a hole in the center of the table, and the other side of the string is attached to an object of mass $m,$ which hangs in the air. The object $M$ moves in uniform circular motio",
     "topics": [
@@ -1226,8 +1482,10 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
-    "name": "MCH07 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–D)",
+    "name": "Earth's gravity pulls us downward at about $g \\approx 9.8 \\;\\mathrm{m/s^2},$ but this…",
+    "desc": "Earth's gravity pulls us downward at about $g \\approx 9.8 \\;\\mathrm{m/s^2},$ but this varies from place to place on Earth. One reason it varies is that Earth is spinning. We have a centripetal acceleration towards the On Earth, the axis of rotation is a line from the north pole t",
     "topics": [
       "Mechanics"
     ],
@@ -1247,8 +1505,10 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
-    "name": "MCH07 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–C)",
+    "name": "A car drives along a hilly road at constant speed. The elevation of the road is shown…",
+    "desc": "A car drives along a hilly road at constant speed. The elevation of the road is shown below. (It is a side view of the road; the road is straight in the horizontal direction and only varies vertically.) At each point, decide whether the driver feels they're heavier, the same as, ",
     "topics": [
       "Mechanics"
     ],
@@ -1268,6 +1528,8 @@
     "type": "AoPS",
     "lesson": "MCH07: Circular Motion",
     "label": "MCH07",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "In this demo, a physicist releases a pendulum, which swings back and forth.",
     "desc": "In this demo, a physicist releases a pendulum, which swings back and forth. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/07_hw_pendulum.gif) The video has been edited to point out that the pendulum rises to the same heig",
     "topics": [
@@ -1290,6 +1552,8 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "Boxes (A) and (B) are connected to ideal springs and can oscillate without friction.",
     "desc": "Boxes (A) and (B) are connected to ideal springs and can oscillate without friction. Systems (A) and (B) are identical, except that there are two identical springs in (B) and only one in (A). The masses of the boxes are the same. If the period of system (A) is $T_A = 1.0 \\;\\mathr",
     "topics": [
@@ -1312,6 +1576,8 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "In each of the setups below, the mass can oscillate in simple harmonic motion. The mass…",
     "desc": "In each of the setups below, the mass can oscillate in simple harmonic motion. The mass is the same in all cases, and all the springs are identical. There is no friction or air drag. In drawing (D), there are two identical springs connected end-to-end. Rank the setups in order of",
     "topics": [
@@ -1334,8 +1600,10 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
-    "name": "MCH08 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–C)",
+    "name": "There are two elevators, (A) and (B). Each has a box inside.",
+    "desc": "There are two elevators, (A) and (B). Each has a box inside. Elevator (A) is not accelerating. The box in this elevator has mass $2m.$ Elevator (B) is accelerating upward with acceleration $g.$ The box in this elevator has mass $m.$ Each box is placed on a scale. Which scale will",
     "topics": [
       "Mechanics"
     ],
@@ -1355,6 +1623,8 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "In class, we practiced looking at new situations, finding the energy, and using the…",
     "desc": "In class, we practiced looking at new situations, finding the energy, and using the coefficients in the equations of kinetic and potential energies to find oscillation periods. Here, we'll practice that same idea in a completely new context. ----------------------------------- Ra",
     "topics": [
@@ -1377,8 +1647,10 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
-    "name": "MCH08 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–D)",
+    "name": "You and your friend try to construct two identical pendulums, A and B. You each build one…",
+    "desc": "You and your friend try to construct two identical pendulums, A and B. You each build one in your own home. You do a video call with your friend and release your pendulums simultaneously. They appear to be in sync. Congrats! But after a short while, you notice that despite almost",
     "topics": [
       "Mechanics"
     ],
@@ -1398,6 +1670,8 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "A mass is connected to a spring on a frictionless horizontal surface. The mass is pulled…",
     "desc": "A mass is connected to a spring on a frictionless horizontal surface. The mass is pulled to the right a distance $A$ and released at time $t = 0.$ The spring is ideal, so the mass undergoes simple harmonic motion. Below are some plots potentially showing the kinetic energy of the",
     "topics": [
@@ -1420,8 +1694,10 @@
     "type": "AoPS",
     "lesson": "MCH08: Simple Harmonic Motion",
     "label": "MCH08",
-    "name": "MCH08 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–B)",
+    "name": "In week 5, we studied energy generated by wind turbines, and in the process we mentioned…",
+    "desc": "In week 5, we studied energy generated by wind turbines, and in the process we mentioned that fish leave trails of whirling patches of water behind them. The whirling patches of water are called __vortices__, and the phenomenon is called __vortex shedding__. (The entire pattern o",
     "topics": [
       "Mechanics"
     ],
@@ -1441,8 +1717,10 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
-    "name": "MCH09 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–B)",
+    "name": "In class, we saw a \"penny farthing\" bicycle.",
+    "desc": "In class, we saw a \"penny farthing\" bicycle. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_script_penny_farthing.jpg) The front wheel is the larger one. When someone rode this bicycle on level ground, which wheel had a",
     "topics": [
       "Mechanics"
     ],
@@ -1462,6 +1740,8 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "In a Ferris wheel, you sit in a pod on a giant wheel which rotates. The pod hangs from…",
     "desc": "In a Ferris wheel, you sit in a pod on a giant wheel which rotates. The pod hangs from the wheel so that it always stays vertical. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_hw_ferris2.gif) Assuming the wheel has co",
     "topics": [
@@ -1484,8 +1764,10 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
-    "name": "MCH09 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–B)",
+    "name": "In the handout on circular motion, we mentioned that the moon orbits the Earth in $27.32…",
+    "desc": "In the handout on circular motion, we mentioned that the moon orbits the Earth in $27.32 \\;\\mathrm{days},$ but the phases of the moon take $29.53 \\;\\mathrm{days}$ to advance a full cycle. Venus also experiences phases, as seen from Earth: ![](http://cdn.artofproblemsolving.com/sc",
     "topics": [
       "Mechanics"
     ],
@@ -1505,6 +1787,8 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Suppose that a disk starts at rest and begins spinning about its center with constant…",
     "desc": "Suppose that a disk starts at rest and begins spinning about its center with constant angular acceleration $\\alpha.$ Find $\\Delta \\theta,$ the angle through which the disk rotates, beginning at the moment the angular speed reaches $\\omega_1$ and ending at the moment it reaches $\\",
     "topics": [
@@ -1527,6 +1811,8 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "Suppose that, in some experiment, a disk begins with $\\omega = 0$ and its angular…",
     "desc": "Suppose that, in some experiment, a disk begins with $\\omega = 0$ and its angular acceleration is increasing linearly in time starting at $\\alpha = 0$ at time $t = 0.$ Between time $t = 0$ and $t = t_1,$ the disk has a total angular displacement of $\\theta_1.$ At what time $t_c$ ",
     "topics": [
@@ -1549,8 +1835,10 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
-    "name": "MCH09 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–B)",
+    "name": "A DVD is a disk used to store digital data. They're often used to hold movies or video…",
+    "desc": "A DVD is a disk used to store digital data. They're often used to hold movies or video games. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_dw_dvd_image.jpg) By Marcin Sochacki (Wanted) - Own work, CC BY-SA 3.0, https:",
     "topics": [
       "Mechanics"
     ],
@@ -1570,6 +1858,8 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "A wheel can roll along the ground all by itself:",
     "desc": "A wheel can roll along the ground all by itself: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_hw_loose-tire-rolling.gif) https://media.tenor.com/bnB5uH0qF8gAAAAC/loose-tire-rolling.gif The wheel in this gif bounces a ",
     "topics": [
@@ -1592,6 +1882,8 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "A heavy stack of books can roll easily over a row of round pencils:",
     "desc": "A heavy stack of books can roll easily over a row of round pencils: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_script_roll_pencils.gif) This same method can be used to move heavy boulders, and may have been used by ",
     "topics": [
@@ -1614,8 +1906,10 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
-    "name": "MCH09 Problem 9",
-    "desc": "",
+    "set_number": 9,
+    "set_label": "Problem 9 (Parts A–B)",
+    "name": "We've had several applications so far where we want to find the signed area between a…",
+    "desc": "We've had several applications so far where we want to find the signed area between a curve and the horizontal axis. For a graph that's a straight line, a semi-circle, or some other simple shapes, we can find this area with basic geometry. But if the graph plots some complicated ",
     "topics": [
       "Mechanics"
     ],
@@ -1635,8 +1929,10 @@
     "type": "AoPS",
     "lesson": "MCH09: Rotational Kinematics",
     "label": "MCH09",
-    "name": "MCH09 Problem 10",
-    "desc": "",
+    "set_number": 10,
+    "set_label": "Problem 10 (Parts A–C)",
+    "name": "This gif seems to show a helicopter taking off without spinning its blades:",
+    "desc": "This gif seems to show a helicopter taking off without spinning its blades: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/09_hw_helicopter_aliasing.gif) ViralHog, \"Helicopter Rises Without Moving Its Rotor\", https://www.y",
     "topics": [
       "Mechanics"
     ],
@@ -1656,6 +1952,8 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "moment of inertia",
     "desc": "moment of inertia rotational kinetic energy translational kinetic energy axis of rotation energy something has due to a spinning motion energy something has due to the motion of the entire object, or motion of its center an imaginary line that is attached to an object, but doesn'",
     "topics": [
@@ -1678,8 +1976,10 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
-    "name": "MCH10 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–B)",
+    "name": "A charming phenomenon with rotational motion is the __tippe top__, a small top that…",
+    "desc": "A charming phenomenon with rotational motion is the __tippe top__, a small top that changes its direction and flips upside down while spinning. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_Tippe-Top.gif) https://as",
     "topics": [
       "Mechanics"
     ],
@@ -1699,6 +1999,8 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "The Earth has __rotational__ kinetic energy due to its rotation about its own center. It…",
     "desc": "The Earth has __rotational__ kinetic energy due to its rotation about its own center. It also has __translational__ kinetic energy due to its motion through space as it orbits the sun. In a reference frame where the sun is stationary, which of these energies is significantly grea",
     "topics": [
@@ -1721,6 +2023,8 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "The Earth is not the same density all the way through. Here is a plot of the density of…",
     "desc": "The Earth is not the same density all the way through. Here is a plot of the density of Earth versus its radius. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_earth_density.jpg) https://upload.wikimedia.org/wikipedi",
     "topics": [
@@ -1743,6 +2047,8 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "A flywheel is a heavy disk that spins, storing kinetic energy.",
     "desc": "A flywheel is a heavy disk that spins, storing kinetic energy. Below is a flywheel from an 1802 steam locomotive: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_flywheel.jpg) By Birmingham Museums Trust - Birmingham ",
     "topics": [
@@ -1765,8 +2071,10 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
-    "name": "MCH10 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–B)",
+    "name": "Consider a variety of wheels, each connected to a spring at the top. Each wheel is free…",
+    "desc": "Consider a variety of wheels, each connected to a spring at the top. Each wheel is free to rotate but cannot translate. In each case, the wheel has radius $r$ and total mass $m.$ All the springs are identical. (A): A hoop-like wheel with almost all the mass at the rim; the center",
     "topics": [
       "Mechanics"
     ],
@@ -1786,8 +2094,10 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
-    "name": "MCH10 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–B)",
+    "name": "A solid sphere sits stationary on a flat table. The table begins accelerating to the…",
+    "desc": "A solid sphere sits stationary on a flat table. The table begins accelerating to the right with acceleration $a.$ What happens to the sphere? You can assume the sphere will not slip relative to the table. It may help to work in the reference frame of the table. However, you shoul",
     "topics": [
       "Mechanics"
     ],
@@ -1807,8 +2117,10 @@
     "type": "AoPS",
     "lesson": "MCH10: Rotational Dynamics",
     "label": "MCH10",
-    "name": "MCH10 Problem 8",
-    "desc": "",
+    "set_number": 8,
+    "set_label": "Problem 8 (Parts A–C)",
+    "name": "Let's consider two methods of dropping a roll of toilet paper.",
+    "desc": "Let's consider two methods of dropping a roll of toilet paper. In method 1, you simply let go of the roll and it drops. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/10_hw_drop_method1.png) In method 2, you hold on to the",
     "topics": [
       "Mechanics"
     ],
@@ -1828,6 +2140,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "MCH11 Problem 1",
     "desc": "",
     "topics": [
@@ -1850,6 +2164,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Match the process (left column) to a description of how you might compute it using arrows…",
     "desc": "Match the process (left column) to a description of how you might compute it using arrows on a piece of paper (right column) There should be a complete one-to-one matching. find a component of a vector find the magnitude of a vector perform vector addition multiply vector by a co",
     "topics": [
@@ -1872,6 +2188,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "Below is the vector $\\vec{a} = 3 \\hat{x} - 2 \\hat{y}.$",
     "desc": "Below is the vector $\\vec{a} = 3 \\hat{x} - 2 \\hat{y}.$ Find the angle $\\theta_a$ between $\\vec{a}$ and the $x$ axis. Give your answer in radians. Give an answer whose absolute value is less than $\\pi.$ The angle is signed. Counterclockwise rotations from the $x$ axis are positive",
     "topics": [
@@ -1894,6 +2212,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Find the angle between the vectors $\\begin{aligned} \\vec{a} &= 3 \\hat{x} - 2 \\hat{y} \\\\…",
     "desc": "Find the angle between the vectors $\\begin{aligned} \\vec{a} &= 3 \\hat{x} - 2 \\hat{y} \\\\ \\vec{b} &= -2 \\hat{x} + 6 \\hat{y} \\end{aligned}$ Give your answer as a number of radians between zero and $\\pi.$ You should be within $0.02$ of the correct answer. mathjax: $ \\theta = \\blank $",
     "topics": [
@@ -1916,6 +2236,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "Consider the vectors",
     "desc": "Consider the vectors $\\begin{aligned} \\vec{a} &= \\hat{x} + \\hat{y} \\\\ \\vec{b} &= 2\\hat{x} - \\hat{y} \\\\ \\vec{c} &= -\\hat{x} + 7 \\hat{y} \\end{aligned}$ Find a combination of numbers $\\alpha$ and $\\beta$ such that $ \\alpha \\vec{a} + \\beta \\vec{b} = \\vec{c} $ Give your answers as dec",
     "topics": [
@@ -1938,6 +2260,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "Conveyor belts often move heavy loads uphill.",
     "desc": "Conveyor belts often move heavy loads uphill. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/11_hw_belt.gif) https://www.dreamstime.com/conveyor-belt-coal-shooting-slow-motion-close-up-there-coal-belt-conveyor-conveyor-bel",
     "topics": [
@@ -1960,8 +2284,10 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
-    "name": "MCH11 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–D)",
+    "name": "A cyclist rides over the ground with the velocity",
+    "desc": "A cyclist rides over the ground with the velocity $\\vec{v} = 3 \\;\\mathrm{m/s} \\, \\hat{x} + 6 \\;\\mathrm{m/s} \\, \\hat{y}$ What is their speed? mathjax: $v = \\blank \\;\\mathrm{m/s}$ allowed: 1.023456789",
     "topics": [
       "Mechanics"
     ],
@@ -1981,6 +2307,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "A projectile is fired from ground height at speed $v = 8 \\;\\mathrm{m/s}$ and initial…",
     "desc": "A projectile is fired from ground height at speed $v = 8 \\;\\mathrm{m/s}$ and initial angle $\\theta = 15^\\circ$ above the horizontal. Find the distance $d$ that the projectile travels horizontally before hitting the ground again. Ignore air resistance and model the ground as flat,",
     "topics": [
@@ -2003,8 +2331,10 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
-    "name": "MCH11 Problem 9",
-    "desc": "",
+    "set_number": 9,
+    "set_label": "Problem 9 (Parts A–C)",
+    "name": "Steam engines needed to control how fast they spun. To do this, they used a __centrifugal…",
+    "desc": "Steam engines needed to control how fast they spun. To do this, they used a __centrifugal governor__. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/11_hw_governor_real.jpg) By Dr. Mirko Junge - Own work, CC BY 3.0, https:",
     "topics": [
       "Mechanics"
     ],
@@ -2024,6 +2354,8 @@
     "type": "AoPS",
     "lesson": "MCH11: Vectors",
     "label": "MCH11",
+    "set_number": 10,
+    "set_label": "Problem 10",
     "name": "In this writing problem, we'll examine a half-Atwood machine.",
     "desc": "In this writing problem, we'll examine a half-Atwood machine. Explain your reasoning using equations, diagrams, and words. You may use complete sentences, but don't need to, as long as the grader is easily able to follow your reasoning. A series of equations without any explanati",
     "topics": [
@@ -2046,8 +2378,10 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
-    "name": "MCH12 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–E)",
+    "name": "A uniform stick can be balanced at its center.",
+    "desc": "A uniform stick can be balanced at its center. You add some clay to the right hand side of the stick. How can the stick now be balanced? (Choose one.) ----------------------------------- (a) Move the support all the way to the left. (b) Move the support all the way to the right. ",
     "topics": [
       "Mechanics"
     ],
@@ -2067,8 +2401,10 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
-    "name": "MCH12 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–C)",
+    "name": "In projectile motion, we may want to solve the problem of finding the angle $\\theta$ that…",
+    "desc": "In projectile motion, we may want to solve the problem of finding the angle $\\theta$ that a projectile should be launched at in order to have it travel a horizontal distance $d$ before returning to the same height it was launched from. In this problem, we do not assume that the s",
     "topics": [
       "Mechanics"
     ],
@@ -2088,8 +2424,10 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
-    "name": "MCH12 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–B)",
+    "name": "Commercial airplanes can fly around $90\\%$ the speed of sound, which is around $300…",
+    "desc": "Commercial airplanes can fly around $90\\%$ the speed of sound, which is around $300 \\;\\mathrm{m/s}$ at $10 \\;\\mathrm{km}$ altitude. Most jets don't fly faster than about $90\\%$ the speed of sound because the aerodynamics of flight near the speed of sound are fundamentally differe",
     "topics": [
       "Mechanics"
     ],
@@ -2109,6 +2447,8 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Below is a swing supported by springs, sitting on a sled.",
     "desc": "Below is a swing supported by springs, sitting on a sled. The swing is damped so that it never swings back and forth much; if released from an angle, it quickly falls back down and stays vertical (at least as long as the sled is stationary). Grogg sits on the swing in five differ",
     "topics": [
@@ -2131,8 +2471,10 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
-    "name": "MCH12 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–F)",
+    "name": "In this multi-part problem, we'll explore a new mathematical fact related to the center…",
+    "desc": "In this multi-part problem, we'll explore a new mathematical fact related to the center of mass: Pappus' theorem. ---------------------------- Imagine taking a square with side lengths $s$ and rotating it one full rotation about an axis along one of the sides of the square. ![](h",
     "topics": [
       "Mechanics"
     ],
@@ -2152,8 +2494,10 @@
     "type": "AoPS",
     "lesson": "MCH12: 2D and 3D Kinematics",
     "label": "MCH12",
-    "name": "MCH12 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6",
+    "name": "Over this week, we've discussed several methods of finding the center of mass of a shape…",
+    "desc": "Over this week, we've discussed several methods of finding the center of mass of a shape, assuming that the shape is uniform. - Drawing a grid on the shape, measuring the position of each square on the grid, and applying the formula $\\vec{R} = \\dfrac{1}{M} \\sum_i m_i \\vec{r}_i$ -",
     "topics": [
       "Mechanics"
     ],
@@ -2173,8 +2517,10 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
-    "name": "MCH13 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–B)",
+    "name": "An astronaut in deep space has started floating gently away from their spaceship.",
+    "desc": "An astronaut in deep space has started floating gently away from their spaceship. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/13_hw_spacewalk.jpg) source: NASA The astronaut has a wrench, but they can't reach anything w",
     "topics": [
       "Mechanics"
     ],
@@ -2194,6 +2540,8 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Consider three different possible motions of a solid sphere:",
     "desc": "Consider three different possible motions of a solid sphere: (a) The sphere slides over a frictionless surface at speed $v.$ There is no rotation. (b) The sphere spins in place at angular speed $\\omega = \\dfrac{v}{r}.$ (c) The sphere rolls without slipping, a combination of motio",
     "topics": [
@@ -2216,6 +2564,8 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "Below are a few different situations. In each, we could imagine trying to use momentum…",
     "desc": "Below are a few different situations. In each, we could imagine trying to use momentum conservation to make predictions, but momentum conservation only holds when no momentum enters or leaves the system of study. Each situation defines a system, then \"inputs\", meaning measurement",
     "topics": [
@@ -2238,6 +2588,8 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Two identical particles are moving towards each other with speeds $v_1 > v_2.$",
     "desc": "Two identical particles are moving towards each other with speeds $v_1 > v_2.$ When they collide, they stick together, and $\\dfrac34$ the kinetic energy of the system is lost to thermal energy. What is the ratio $\\dfrac{v_1}{v_2}?$ Give your answer as a decimal to the nearest hun",
     "topics": [
@@ -2260,8 +2612,10 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
-    "name": "MCH13 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–B)",
+    "name": "Two particles are on ramps facing each other. They are held at heights $h_2 > h_1.$",
+    "desc": "Two particles are on ramps facing each other. They are held at heights $h_2 > h_1.$ When the particles are released, they will slide down the ramps and collide somewhere in the flat portion between the ramps. If the particles stick together and come to a complete stop when they c",
     "topics": [
       "Mechanics"
     ],
@@ -2281,8 +2635,10 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
-    "name": "MCH13 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–F)",
+    "name": "Light has no mass, but it still has momentum.",
+    "desc": "Light has no mass, but it still has momentum. The formula $p = mv$ for the momentum of a particle indicates that if the mass of the particle is zero, so is its momentum. However, physicists have found that the concept of momentum is more important than the specific formula for it",
     "topics": [
       "Mechanics"
     ],
@@ -2302,8 +2658,10 @@
     "type": "AoPS",
     "lesson": "MCH13: Momentum",
     "label": "MCH13",
-    "name": "MCH13 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–C)",
+    "name": "A spaceship of mass $M$ has ${}n$ small blocks, each of mass $m$ inside. (The total mass…",
+    "desc": "A spaceship of mass $M$ has ${}n$ small blocks, each of mass $m$ inside. (The total mass of the spaceship is therefore $M + n m$ originally.) Call the initial reference frame of the ship frame $S.$ When at rest with a full payload of blocks, the spaceship can launch a block out t",
     "topics": [
       "Mechanics"
     ],
@@ -2323,8 +2681,10 @@
     "type": "AoPS",
     "lesson": "MCH14: Collisions",
     "label": "MCH14",
-    "name": "MCH14 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–D)",
+    "name": "You throw a ball at a cart.",
+    "desc": "You throw a ball at a cart. We'll examine three possibilities: (a) The ball sticks to the cart. (b) The ball stops, so its velocity is zero relative to the ground after hitting the cart. (c) The ball bounces elastically off the back of the cart, so its velocity changes direction ",
     "topics": [
       "Mechanics"
     ],
@@ -2344,8 +2704,10 @@
     "type": "AoPS",
     "lesson": "MCH14: Collisions",
     "label": "MCH14",
-    "name": "MCH14 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–E)",
+    "name": "Two carts are on an air track. Collisions on an air track can be made extremely close to…",
+    "desc": "Two carts are on an air track. Collisions on an air track can be made extremely close to elastic by putting magnets in the carts and arranging the magnets to create a repulsive force. The carts will trade momentum and kinetic energy back and forth via magnetic interactions, but b",
     "topics": [
       "Mechanics"
     ],
@@ -2365,8 +2727,10 @@
     "type": "AoPS",
     "lesson": "MCH14: Collisions",
     "label": "MCH14",
-    "name": "MCH14 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–D)",
+    "name": "There is a famous physics toy called __Newton's cradle__. It was invented by Isaac…",
+    "desc": "There is a famous physics toy called __Newton's cradle__. It was invented by Isaac Newton's contemporary, French physicist Edme Mariotte. The toy consists of a series of five balls suspended from wires: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e2",
     "topics": [
       "Mechanics"
     ],
@@ -2386,6 +2750,8 @@
     "type": "AoPS",
     "lesson": "MCH14: Collisions",
     "label": "MCH14",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "For a simple home collision demonstration, stack a tennis ball on top a basketball and…",
     "desc": "For a simple home collision demonstration, stack a tennis ball on top a basketball and drop them. The tennis ball can bounce much higher than it was dropped from: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/14_hw_galile",
     "topics": [
@@ -2408,6 +2774,8 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "As a safety feature, cars have air bags.",
     "desc": "As a safety feature, cars have air bags. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_crash_test.gif) ToyotaSubaruCrashTests, \"Airbags\", https://youtu.be/Bw0Ps8-KDlQ Why do airbags make cars safer? Select all that ",
     "topics": [
@@ -2430,6 +2798,8 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "The sport of bungee jumping is based on __Gol,__ the land-diving ritual of the people of…",
     "desc": "The sport of bungee jumping is based on __Gol,__ the land-diving ritual of the people of Pentecost Island, Vanuatu. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_vine_dive.gif) National Geographic, \"Jump with the or",
     "topics": [
@@ -2452,8 +2822,10 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
-    "name": "MCH15 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–E)",
+    "name": "Here's a small steel ball bouncing off a hard surface:",
+    "desc": "Here's a small steel ball bouncing off a hard surface: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_bounce_hard.gif) Steve Mould, \"Weird metal that's also glass is insanely bouncy\", https://youtu.be/QpuCtzdvix4 Bec",
     "topics": [
       "Mechanics"
     ],
@@ -2473,6 +2845,8 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Engineers designed a machine that swings two bats around in an attempt to hit a baseball…",
     "desc": "Engineers designed a machine that swings two bats around in an attempt to hit a baseball a very long way. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_bat.gif) SmarterEveryDay, \"World's Longest Home Run\", https://y",
     "topics": [
@@ -2495,8 +2869,10 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
-    "name": "MCH15 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–E)",
+    "name": "A small cart has a fan mounted on it. It can roll with very little resistance.",
+    "desc": "A small cart has a fan mounted on it. It can roll with very little resistance. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_cart_fan.jpg) source: xmdemo The fan blows air to the right, taking air with no momentum, ",
     "topics": [
       "Mechanics"
     ],
@@ -2516,6 +2892,8 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "Below is a Crookes radiometer.",
     "desc": "Below is a Crookes radiometer. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/15_hw_radiometer.jpg) By The original uploader was Timeline at English Wikipedia. - Transferred from en.wikipedia to Commons. Transfer was state",
     "topics": [
@@ -2538,6 +2916,8 @@
     "type": "AoPS",
     "lesson": "MCH15: Forces via Momentum",
     "label": "MCH15",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "Consider an Atwood machine in which each mass is attached to a spring.",
     "desc": "Consider an Atwood machine in which each mass is attached to a spring. We will assume that $m_B > m_A.$ The springs are identical. The more force a spring has to exert on a box it's attached to, the more it will have to stretch to do it. __Hooke's law__ states that $\\Delta \\ell,$",
     "topics": [
@@ -2560,6 +2940,8 @@
     "type": "AoPS",
     "lesson": "MCH16: Forces via Energy",
     "label": "MCH16",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "The fictional AoPM (Art of Problem Making) students had a question about two boxes, each…",
     "desc": "The fictional AoPM (Art of Problem Making) students had a question about two boxes, each pushed by a constant force. They gave the question to the chatbot ChatGPT. ChatGPT is very good at writing complete, coherent sentences, but its understanding of physics is sometimes a bit sh",
     "topics": [
@@ -2582,8 +2964,10 @@
     "type": "AoPS",
     "lesson": "MCH16: Forces via Energy",
     "label": "MCH16",
-    "name": "MCH16 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–C)",
+    "name": "In the handout, we discussed lifting a book of mass $m$ a distance $\\Delta y.$",
+    "desc": "In the handout, we discussed lifting a book of mass $m$ a distance $\\Delta y.$ There, we imagined a portion of the lift during which the force we applied to the book was constant and we lifted the book at constant velocity $v.$ We'll call this \"gentle\" lifting, and give it the su",
     "topics": [
       "Mechanics"
     ],
@@ -2603,8 +2987,10 @@
     "type": "AoPS",
     "lesson": "MCH16: Forces via Energy",
     "label": "MCH16",
-    "name": "MCH16 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–C)",
+    "name": "Below is Olympic champion Jakob Ingebrigtsen running.",
+    "desc": "Below is Olympic champion Jakob Ingebrigtsen running. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/16_hw_ingebrigtsen_run_outside.jpg) https://www.facebook.com/ingebrigtsenjakob/photos/a.975757819230692/1380573998749070/",
     "topics": [
       "Mechanics"
     ],
@@ -2624,6 +3010,8 @@
     "type": "AoPS",
     "lesson": "MCH16: Forces via Energy",
     "label": "MCH16",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Particle physicists use large colliders to smash particles into each other, creating new…",
     "desc": "Particle physicists use large colliders to smash particles into each other, creating new particles. Large detectors are able to follow the paths that the newly-created particles take for a short time. Below is the ATLAS detector at CERN. ![](http://cdn.artofproblemsolving.com/sch",
     "topics": [
@@ -2646,8 +3034,10 @@
     "type": "AoPS",
     "lesson": "MCH16: Forces via Energy",
     "label": "MCH16",
-    "name": "MCH16 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–F)",
+    "name": "This problem extends the one we solved in class with a mass $m$ approaching a spring…",
+    "desc": "This problem extends the one we solved in class with a mass $m$ approaching a spring. Here, we modify the problem so that we can incorporate more ideas from earlier in the class as we solve it. Each part of this problem continues analysis of the situation described below. -------",
     "topics": [
       "Mechanics"
     ],
@@ -2667,6 +3057,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "Two $100 \\;\\mathrm{N}$ weights are attached to a spring scale as shown. (This scale…",
     "desc": "Two $100 \\;\\mathrm{N}$ weights are attached to a spring scale as shown. (This scale measures weight by finding how far the spring is stretched. It is designed to show the correct weight when one side is attached to the ceiling and a weight is hung from the other side.) ![](http:/",
     "topics": [
@@ -2689,6 +3081,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "A strongman has a book weighing $10 \\;\\mathrm{lbs}$ hanging from a rope.",
     "desc": "A strongman has a book weighing $10 \\;\\mathrm{lbs}$ hanging from a rope. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/17_hw_strongman.jpg) Epstein, Lewis Carroll. __Thinking physics: Understandable practical reality.__ (",
     "topics": [
@@ -2711,6 +3105,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "tightly stretched",
     "desc": "tightly stretched they're equally likely to break",
     "topics": [
@@ -2733,8 +3129,10 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
-    "name": "MCH17 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–C)",
+    "name": "A massless rope of length $L$ is hung vertically. Along the rope there are five beads…",
+    "desc": "A massless rope of length $L$ is hung vertically. Along the rope there are five beads spaced evenly as shown below. All the beads have the same mass as each other. The beads are small enough that their spatial extent (but not their mass) can be ignored. Use the coordinate $y$ for",
     "topics": [
       "Mechanics"
     ],
@@ -2754,8 +3152,10 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
-    "name": "MCH17 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–D)",
+    "name": "A box sits stationary and undisturbed on a table.",
+    "desc": "A box sits stationary and undisturbed on a table. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/17_hw_box_table.jpg) generated by StableDiffusion Svetlana is a student taking her first physics class. Although a box sittin",
     "topics": [
       "Mechanics"
     ],
@@ -2775,6 +3175,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 6,
+    "set_label": "Problem 6",
     "name": "You are pushing a couch across the floor. Since the couch is fairly low, you're leaning…",
     "desc": "You are pushing a couch across the floor. Since the couch is fairly low, you're leaning into it and pushing downward in addition to forward. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/17_hw_push_couch.jpg) Getty Images",
     "topics": [
@@ -2797,8 +3199,10 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
-    "name": "MCH17 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–C)",
+    "name": "In our experiment this week, we'll examine static and kinetic friction.",
+    "desc": "In our experiment this week, we'll examine static and kinetic friction. We have already done some work examining an object on an inclined plane. One of our conclusions was that the maximum angle the inclined plane can be tilted to before the object begins to slide obeys $\\tan \\th",
     "topics": [
       "Mechanics"
     ],
@@ -2818,6 +3222,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "Now try Wangari's experiment for yourself.",
     "desc": "Now try Wangari's experiment for yourself. You can choose how many objects you want to test, but if you share your results on the discussion board, we'll be able to get the benefit of testing many different objects by comparing results across many different students in the class.",
     "topics": [
@@ -2840,6 +3246,8 @@
     "type": "AoPS",
     "lesson": "MCH17: Statics",
     "label": "MCH17",
+    "set_number": 9,
+    "set_label": "Problem 9",
     "name": "What should the masses $m_1$ and $m_2$ be in the system illustrated below to achieve…",
     "desc": "What should the masses $m_1$ and $m_2$ be in the system illustrated below to achieve static equilibrium? The pulleys are frictionless. Use our standard model for ropes. Use the values \\begin{aligned} m & = 1 \\;\\mathrm{kg} \\\\ \\theta_1 & = 15^\\circ\\\\ \\theta_2 & = 40^\\circ \\end{alig",
     "topics": [
@@ -2862,6 +3270,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "Our phrasing of Newton's three laws was:",
     "desc": "Our phrasing of Newton's three laws was: First Law: If there are no external forces on a system, then the velocity of its center of mass will not change. Second Law: The acceleration of the center of mass of a system and the net force on a system are related by $\\vec{F}_{\\rm net}",
     "topics": [
@@ -2884,6 +3294,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "A tractor-trailer truck is traveling down the road.",
     "desc": "A tractor-trailer truck is traveling down the road. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_tractor_trailer.png) College Board The mass of the trailer is 4 times the mass of the tractor. If the tractor acceler",
     "topics": [
@@ -2906,6 +3318,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "Physicist Tatiana Erukhimova sets an egg on top a toilet paper roll on top a plate on top…",
     "desc": "Physicist Tatiana Erukhimova sets an egg on top a toilet paper roll on top a plate on top a cup of water. The egg is directly above the cup of water. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_egg_drop.jpg) Tatia",
     "topics": [
@@ -2928,6 +3342,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "In another demonstration, Erukhimova presents a question about a knife, a potato, and a…",
     "desc": "In another demonstration, Erukhimova presents a question about a knife, a potato, and a hammer: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_hit_potato.gif) Tatiana Erukhimova, TikTok Make two selections: - either ",
     "topics": [
@@ -2950,6 +3366,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "When their truck got stuck in the mud, these people tried to push it out:",
     "desc": "When their truck got stuck in the mud, these people tried to push it out: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_truck_push.gif) ral365, reddit Which one of the following descriptions does __not__ match Newto",
     "topics": [
@@ -2972,8 +3390,10 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
-    "name": "MCH18 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–D)",
+    "name": "Boxes $A$ and $B$ sit next to each other and are touching.",
+    "desc": "Boxes $A$ and $B$ sit next to each other and are touching. Their masses are $m_A = 5.0 \\;\\mathrm{kg}$ and $m_B = 3.0 \\;\\mathrm{kg}.$ There is no friction between the boxes and the ground. You push box $A$ to the right with your hand with a force $\\vec{F}_{H \\to A} = 24 \\;\\mathrm{",
     "topics": [
       "Mechanics"
     ],
@@ -2993,6 +3413,8 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "Below is a small toy electric car, called a __constant velocity car__.",
     "desc": "Below is a small toy electric car, called a __constant velocity car__. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_cv_car.jpg) Arbor Scientific The car is very simple. It has a battery and an electric motor. There",
     "topics": [
@@ -3015,8 +3437,10 @@
     "type": "AoPS",
     "lesson": "MCH18: Newton's Laws of Motion",
     "label": "MCH18",
-    "name": "MCH18 Problem 8",
-    "desc": "",
+    "set_number": 8,
+    "set_label": "Problem 8 (Parts A–D)",
+    "name": "This week, we'll work on the setup of an experiment to test Newton's second law. We'll…",
+    "desc": "This week, we'll work on the setup of an experiment to test Newton's second law. We'll conduct the experiment and analyze the results in next week's homework. ---------------- Below is a child's toy schoolbus. To use it, a child can pull it backward while keeping the wheels on th",
     "topics": [
       "Mechanics"
     ],
@@ -3036,8 +3460,10 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
-    "name": "MCH19 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–B)",
+    "name": "A parachutist is falling straight down. They have been falling long enough that they are…",
+    "desc": "A parachutist is falling straight down. They have been falling long enough that they are at terminal velocity, meaning their velocity is constant. Select the two significant forces on the parachutist. gravitational force from the Earth normal force from the ground drag from the a",
     "topics": [
       "Mechanics"
     ],
@@ -3057,8 +3483,10 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
-    "name": "MCH19 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–B)",
+    "name": "A ball of mass $m$ sits on a frictionless table. The ball is connected to a string of…",
+    "desc": "A ball of mass $m$ sits on a frictionless table. The ball is connected to a string of length $\\ell.$ The other side of the string is connected to the table and cannot move. The string is initially stretched tight with no slack. An external constant force $\\vec{F}$ is applied to t",
     "topics": [
       "Mechanics"
     ],
@@ -3078,8 +3506,10 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
-    "name": "MCH19 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–D)",
+    "name": "Last week, we looked at a toy bus powered by a spring inside.",
+    "desc": "Last week, we looked at a toy bus powered by a spring inside. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/18_hw_bus_go.gif) To test Newton's second law of motion, we repeated the following procedure: 1. Begin with the b",
     "topics": [
       "Mechanics"
     ],
@@ -3099,8 +3529,10 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
-    "name": "MCH19 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–C)",
+    "name": "A $2 \\;\\mathrm{kg}$ block is released from rest at the top of a curved incline in the…",
+    "desc": "A $2 \\;\\mathrm{kg}$ block is released from rest at the top of a curved incline in the shape of a quarter circle of radius $R.$ The block then slides onto a horizontal plane where it finally comes to rest $8 \\;\\mathrm{m}$ from the beginning of the plane. ![](http://cdn.artofproble",
     "topics": [
       "Mechanics"
     ],
@@ -3120,6 +3552,8 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "An example of slip-stick motion you may be able to reproduce at home is a __glass harp__.",
     "desc": "An example of slip-stick motion you may be able to reproduce at home is a __glass harp__. Take a clean wine glass, and make sure your hands are clean as well. Wet your index finger and rub in a steady circle around the rim of a wine glass. With some practice, you should be able t",
     "topics": [
@@ -3142,8 +3576,10 @@
     "type": "AoPS",
     "lesson": "MCH19: Problem Solving with Forces",
     "label": "MCH19",
-    "name": "MCH19 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6",
+    "name": "This gif shows a parachutist opening their parachute.",
+    "desc": "This gif shows a parachutist opening their parachute. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/19_hw_parachutist.gif) The camera operator was a second parachutist falling alongside the one in the clip. The camera ope",
     "topics": [
       "Mechanics"
     ],
@@ -3163,6 +3599,8 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "When we studied acceleration, you depending on individual choices your instructor made in…",
     "desc": "When we studied acceleration, you depending on individual choices your instructor made in that lesson analyzed the vertical jump of Josh Imatorbhebhe: ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/02_script_jump.gif) What",
     "topics": [
@@ -3185,8 +3623,10 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
-    "name": "MCH20 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–B)",
+    "name": "In 1774, a team of scientists led by British Astronomer Royal Nevil Maskelyne measured…",
+    "desc": "In 1774, a team of scientists led by British Astronomer Royal Nevil Maskelyne measured the gravitational influence exterted by Schiehallion, a mountain in Scotland, on pendulums suspended near the mountain. Ordinarily, a pendulum will hang straight down, but the pendulums near Sc",
     "topics": [
       "Mechanics"
     ],
@@ -3206,8 +3646,10 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
-    "name": "MCH20 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–C)",
+    "name": "Henry Cavendish made the first direct measurement of the gravitational force between two…",
+    "desc": "Henry Cavendish made the first direct measurement of the gravitational force between two spheres. He found the attractive force between two lead spheres of masses $\\begin{aligned} m_A & = 0.73 \\;\\mathrm{kg} \\\\ m_B & = 158 \\;\\mathrm{kg} \\end{aligned}$ Call the magnitude of the gra",
     "topics": [
       "Mechanics"
     ],
@@ -3227,6 +3669,8 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "Saturn's largest moon is Titan. Jupiter's largest moon is Ganymede. For these moons, the…",
     "desc": "Saturn's largest moon is Titan. Jupiter's largest moon is Ganymede. For these moons, the periods and semi-major axes are: $\\begin{aligned} \\textsl{a}_{\\rm Titan} & = 1.22187 \\times 10^9 \\;\\mathrm{m} \\\\ T_{\\rm Titan} & = 15.945 \\;\\mathrm{d} \\\\ \\textsl{a}_{\\rm Ganymede} & = 1.0704 ",
     "topics": [
@@ -3249,8 +3693,10 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
-    "name": "MCH20 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–F)",
+    "name": "We began this problem set imagining Josh Imatorbhebhe jumping on another planet.",
+    "desc": "We began this problem set imagining Josh Imatorbhebhe jumping on another planet. Asteroids have mass, and there's gravitational acceleration near their surface. However, asteroids are small enough that the gravity there is weak, meaning Imatorbhebhe could jump very high. If an as",
     "topics": [
       "Mechanics"
     ],
@@ -3270,8 +3716,10 @@
     "type": "AoPS",
     "lesson": "MCH20: Newton's Gravitational Law",
     "label": "MCH20",
-    "name": "MCH20 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6",
+    "name": "Kepler 452b is an exoplanet renowned for its similarity to Earth. It is about $1{,}800$…",
+    "desc": "Kepler 452b is an exoplanet renowned for its similarity to Earth. It is about $1{,}800$ light-years from Earth, in the constellation Cygnus. Its star is similar to the Sun, and it's distance from its star is similar to Earth's distance from the Sun. Although astronomers' estimate",
     "topics": [
       "Mechanics"
     ],
@@ -3291,6 +3739,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "Match the term related to angular dynamics to its description.",
     "desc": "Match the term related to angular dynamics to its description. There is a one-to-one mapping for this question. moment of inertia parallel component of force perpendicular component of force the part of a force that points directly toward or away from the chosen reference point t",
     "topics": [
@@ -3313,6 +3763,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "Consider a few solutions to everyday problems.",
     "desc": "Consider a few solutions to everyday problems. (a) Aadya is trying to loosen a nut that is stuck on a bolt. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/21_hw_wrench.jpg) https://home.howstuffworks.com/how-to-use-adjusta",
     "topics": [
@@ -3335,8 +3787,10 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
-    "name": "MCH21 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–C)",
+    "name": "Maya can touch her toes by keeping her legs straight and bending forward at the waist.",
+    "desc": "Maya can touch her toes by keeping her legs straight and bending forward at the waist. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/21_hw_touch_toes.png) https://www.wikihow.com/Touch-Your-Toes Jed can normally touch his",
     "topics": [
       "Mechanics"
     ],
@@ -3356,8 +3810,10 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
-    "name": "MCH21 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–C)",
+    "name": "A car is moving forward, but due to an emergency, the driver suddenly hits the brakes. As…",
+    "desc": "A car is moving forward, but due to an emergency, the driver suddenly hits the brakes. As the car is braking, it hits an oily patch of road, but only its tires on the left side are in the oil. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75",
     "topics": [
       "Mechanics"
     ],
@@ -3377,6 +3833,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 5,
+    "set_label": "Problem 5",
     "name": "This image shows Polish mountain biker Maja Włoszczowska descending a steep ramp.",
     "desc": "This image shows Polish mountain biker Maja Włoszczowska descending a steep ramp. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/21_hw_maja_bike.jpg) Getty Images On steep descents, there's a danger of the bike flipping fo",
     "topics": [
@@ -3399,8 +3857,10 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
-    "name": "MCH21 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–B)",
+    "name": "A rod of length $\\ell$ is connected to a wall by a pivot. This means the rod can rotate…",
+    "desc": "A rod of length $\\ell$ is connected to a wall by a pivot. This means the rod can rotate freely back and forth in the plane perpendicular to the wall. The pivot exerts whatever force is required to keep the end of the rod in place. A string is tied to the rod a distance ${}x$ from",
     "topics": [
       "Mechanics"
     ],
@@ -3420,6 +3880,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "There is some force $\\vec{F}_{p \\to r}$ from the pivot to the rod. It acts at an angle…",
     "desc": "There is some force $\\vec{F}_{p \\to r}$ from the pivot to the rod. It acts at an angle $\\phi$ from the vertical. There are three possibilities: - $\\phi < \\theta$ - $\\phi = \\theta$ - $\\phi > \\theta$ The first is illustrated below. Which case describes $\\phi?$ $\\phi < \\theta$ $\\phi",
     "topics": [
@@ -3442,6 +3904,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "In a previous homework set, we studied the Ikaros light sail, which can control what…",
     "desc": "In a previous homework set, we studied the Ikaros light sail, which can control what direction it is facing by changing its reflectivity. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/13_hw_lcd_ikaros.jpg) As a simple mod",
     "topics": [
@@ -3464,6 +3928,8 @@
     "type": "AoPS",
     "lesson": "MCH21: Torque",
     "label": "MCH21",
+    "set_number": 9,
+    "set_label": "Problem 9",
     "name": "This week's lab requires a yoyo. An inexpensive one sold in toy stores should be…",
     "desc": "This week's lab requires a yoyo. An inexpensive one sold in toy stores should be sufficient. If you can't find a yoyo, you could use a toilet paper roll, making this experiment similar to the one from our rotational dynamics lesson, but with a different analysis and final goal. I",
     "topics": [
@@ -3486,6 +3952,8 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "Match the terms related to rotational motion and dynamics to their closest linear analog.",
     "desc": "Match the terms related to rotational motion and dynamics to their closest linear analog. There is a one-to-one matching for this question. Rotational Motion angular momentum angular acceleration moment of inertia angular velocity allowsMultipleConnections:",
     "topics": [
@@ -3508,8 +3976,10 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
-    "name": "MCH22 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–D)",
+    "name": "A ball of mass $m$ sits on a frictionless table. The ball is connected to a string that…",
+    "desc": "A ball of mass $m$ sits on a frictionless table. The ball is connected to a string that goes through a hole in the center of the table. By holding the string under the table, you can create tension in the string. When the ball is given a push, it will go in a circular \"Orbit\" her",
     "topics": [
       "Mechanics"
     ],
@@ -3529,6 +3999,8 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "A bucket partially full of water spins about a vertical axis through its center at a…",
     "desc": "A bucket partially full of water spins about a vertical axis through its center at a steady angular speed $\\omega_0.$ The bucket spins for long enough that all the water rotates about the center at angular speed $\\omega_0$ as well. ![](http://cdn.artofproblemsolving.com/school/cr",
     "topics": [
@@ -3551,6 +4023,8 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "If a cyclist is cycling along a flat section of ground and suddenly hits a rock, their…",
     "desc": "If a cyclist is cycling along a flat section of ground and suddenly hits a rock, their bike can flip up off the ground and send the cyclist topping over the handlebars. We'll imagine that the front wheel hits the rock and stops. We'll model the rock as a point at the bottom of th",
     "topics": [
@@ -3573,8 +4047,10 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
-    "name": "MCH22 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–B)",
+    "name": "Imagine that every human on Earth gathered on the equator.",
+    "desc": "Imagine that every human on Earth gathered on the equator. Everyone syncs up their watches, and at a prescribed moment, everyone starts moving in the opposite direction as Earth's rotation (i.e. west) at $1.5 \\;\\mathrm{m/s}.$ Note that, due to Earth's rotation, as viewed from abo",
     "topics": [
       "Mechanics"
     ],
@@ -3594,8 +4070,10 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
-    "name": "MCH22 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–C)",
+    "name": "In 1967, scientists turned on the Interplanetary Scintillation Array, a radio telescope…",
+    "desc": "In 1967, scientists turned on the Interplanetary Scintillation Array, a radio telescope spanning about four acres of land. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/22_hw_array.jpg) https://collection.sciencemuseumgro",
     "topics": [
       "Mechanics"
     ],
@@ -3615,6 +4093,8 @@
     "type": "AoPS",
     "lesson": "MCH22: Angular Momentum",
     "label": "MCH22",
+    "set_number": 7,
+    "set_label": "Problem 7",
     "name": "Earlier in this problem set, we estimated how the Earth's angular speed would change if…",
     "desc": "Earlier in this problem set, we estimated how the Earth's angular speed would change if people started moving in the same direction around the equator. The effect was minuscule. Earth's rotational period does change, though. For example, earthquakes can move the mass of Earth aro",
     "topics": [
@@ -3637,6 +4117,8 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
+    "set_number": 1,
+    "set_label": "Problem 1",
     "name": "incompressible fluid",
     "desc": "incompressible fluid Archimedes' principle the mass of a system per unit volume a floating object displaces a volume of water whose mass is equal to the object's own mass the pressure at the top layer of a fluid a force per unit area a model in which the density of a fluid cannot",
     "topics": [
@@ -3659,8 +4141,10 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
-    "name": "MCH23 Problem 2",
-    "desc": "",
+    "set_number": 2,
+    "set_label": "Problem 2 (Parts A–B)",
+    "name": "$1 \\;\\mathrm{cm^3}$ of liquid with density $\\rho_1 = 1.0 \\;\\mathrm{g/cm^3}$ is added to…",
+    "desc": "$1 \\;\\mathrm{cm^3}$ of liquid with density $\\rho_1 = 1.0 \\;\\mathrm{g/cm^3}$ is added to $1 \\;\\mathrm{cm^3}$ of liquid with density $\\rho_2 = 2.0 \\;\\mathrm{g/cm^3}.$ What is the density $\\rho_{\\rm mix}$ of the mixture? Assume that volume and mass are conserved when the liquids mix",
     "topics": [
       "Mechanics"
     ],
@@ -3680,6 +4164,8 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
+    "set_number": 3,
+    "set_label": "Problem 3",
     "name": "On a local news station in Toledo, the crew set up two balloons inside a car.",
     "desc": "On a local news station in Toledo, the crew set up two balloons inside a car. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/23_hw_balloons_car.jpg) Imagination Station Toledo The orange balloon (left) is filled with heliu",
     "topics": [
@@ -3702,6 +4188,8 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
+    "set_number": 4,
+    "set_label": "Problem 4",
     "name": "In a discussion problem last week, we found that the moon gets gradually further away…",
     "desc": "In a discussion problem last week, we found that the moon gets gradually further away from the Earth due to tidal interactions. Here, we explore this idea a little further. We've delayed this problem one week to avoid spoiling last week's writing problem. The inverse square law f",
     "topics": [
@@ -3724,8 +4212,10 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
-    "name": "MCH23 Problem 5",
-    "desc": "",
+    "set_number": 5,
+    "set_label": "Problem 5 (Parts A–C)",
+    "name": "It's said that Archimedes was asked to figure out whether a smith had made a crown from…",
+    "desc": "It's said that Archimedes was asked to figure out whether a smith had made a crown from pure gold, or cheated by mixing the gold with silver to deliver a crown with the correct weight using less gold. The densities of gold and silver are $\\begin{aligned} \\rho_{G} & = 19.32 \\;\\mat",
     "topics": [
       "Mechanics"
     ],
@@ -3745,8 +4235,10 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
-    "name": "MCH23 Problem 6",
-    "desc": "",
+    "set_number": 6,
+    "set_label": "Problem 6 (Parts A–D)",
+    "name": "Kǒngmíng lanterns, or __sky lanterns__, are lanterns with a candle inside that can rise…",
+    "desc": "Kǒngmíng lanterns, or __sky lanterns__, are lanterns with a candle inside that can rise up into the air, like a hot air balloon. ![](http://cdn.artofproblemsolving.com/school/crypt/00405-36293f6558d60af76e24b26cd4d75d9753687fc0/files/23_hw_sky_lantern.jpg) (Sky lanterns are illeg",
     "topics": [
       "Mechanics"
     ],
@@ -3766,8 +4258,10 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
-    "name": "MCH23 Problem 7",
-    "desc": "",
+    "set_number": 7,
+    "set_label": "Problem 7 (Parts A–B)",
+    "name": "A wooden disk floats in water with a small fraction above the water.",
+    "desc": "A wooden disk floats in water with a small fraction above the water. You add salt to the water, increasing the water's density as the salt dissolves. (The salt does not affect the disk.) Assume the volume of salty water is equal to the original volume of fresh water. What happens",
     "topics": [
       "Mechanics"
     ],
@@ -3787,6 +4281,8 @@
     "type": "AoPS",
     "lesson": "MCH23: Fluid Statics",
     "label": "MCH23",
+    "set_number": 8,
+    "set_label": "Problem 8",
     "name": "This is the final writing problem in the course. It's a short lab writeup. Although this…",
     "desc": "This is the final writing problem in the course. It's a short lab writeup. Although this problem is about Archimedes's principle, the goal is to give you practice __designing__ experiments, not to confirm a specific physics model. Archimedes's principle says that if a floating bo",
     "topics": [
@@ -3809,8 +4305,10 @@
     "type": "AoPS",
     "lesson": "MCH24: Fluid Dynamics",
     "label": "MCH24",
-    "name": "MCH24 Problem 1",
-    "desc": "",
+    "set_number": 1,
+    "set_label": "Problem 1 (Parts A–C)",
+    "name": "Physicists have been interested in the circulatory system for a few reasons. One is for…",
+    "desc": "Physicists have been interested in the circulatory system for a few reasons. One is for medical applications - measurements of the speed and volume of blood flow through the circulatory system are important data for doctors treating or diagnosing issues such as cardiovascular dis",
     "topics": [
       "Mechanics"
     ],
@@ -3830,6 +4328,8 @@
     "type": "AoPS",
     "lesson": "MCH24: Fluid Dynamics",
     "label": "MCH24",
+    "set_number": 2,
+    "set_label": "Problem 2",
     "name": "A scientist has a closed tank of water. A floating ball $F$ sits on the surface of the…",
     "desc": "A scientist has a closed tank of water. A floating ball $F$ sits on the surface of the water, and a sinking ball ${}S$ sits at the bottom of the tank. The tank is equipped with a board that shakes up and down to make waves. The scientist sets the board oscillating, making waves t",
     "topics": [
@@ -3852,8 +4352,10 @@
     "type": "AoPS",
     "lesson": "MCH24: Fluid Dynamics",
     "label": "MCH24",
-    "name": "MCH24 Problem 3",
-    "desc": "",
+    "set_number": 3,
+    "set_label": "Problem 3 (Parts A–D)",
+    "name": "A cylinder of density $\\rho,$ cross-sectional area $A,$ and height ${}H$ floats in water…",
+    "desc": "A cylinder of density $\\rho,$ cross-sectional area $A,$ and height ${}H$ floats in water of density $\\rho_w.$ More than half the cylinder is underwater when it floats. The cylinder floats at some equilibrium position based on its density relative to water. We could apply a vertic",
     "topics": [
       "Mechanics"
     ],
@@ -3873,8 +4375,10 @@
     "type": "AoPS",
     "lesson": "MCH24: Fluid Dynamics",
     "label": "MCH24",
-    "name": "MCH24 Problem 4",
-    "desc": "",
+    "set_number": 4,
+    "set_label": "Problem 4 (Parts A–E)",
+    "name": "A water bottle has an open top. There is water in the bottle to height $h$ above the…",
+    "desc": "A water bottle has an open top. There is water in the bottle to height $h$ above the bottom of the bottle. You poke a hole in the side of the bottle at height $y.$ Water comes streaming horizontally out of the hole and follows a parabola to the ground. It hits the ground a distan",
     "topics": [
       "Mechanics"
     ],
