@@ -11,6 +11,16 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY') || ''
 const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 
+// Students whose sessions are mirrored from Google Calendar by a dedicated sync
+// function rather than booked through the portal. Their sessions are keyed by start
+// time (no gcal_event_id), so the per-event update loop below can't match them.
+// When one of their events changes, re-run the sync — it reconciles moves/cancels
+// (creates the new time, deletes the stale old row) in one pass.
+const CRON_SYNCED_STUDENTS = [
+  { summaryMatch: 'leo / mark physics', fn: 'sync-leo-sessions' },
+  { summaryMatch: 'borna', fn: 'sync-borna-sessions' },
+]
+
 async function getGoogleAccessToken(): Promise<string> {
   const res = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
@@ -31,6 +41,7 @@ async function getGoogleAccessToken(): Promise<string> {
 type CalEvent = {
   id?: string
   status?: string
+  summary?: string
   start?: { dateTime?: string }
   end?: { dateTime?: string }
 }
@@ -181,5 +192,35 @@ Deno.serve(async (req) => {
     }
   }
 
+  // Re-run the dedicated sync for any cron-mirrored student whose event changed, so
+  // moves/cancels reflect instantly instead of waiting for the daily cron. The sync
+  // lists the calendar fresh and reconciles, so duplicate/stale rows never linger.
+  // (Cancelled events arrive without a summary; those are caught by the daily cron.)
+  const toResync = new Set<string>()
+  for (const event of changedEvents) {
+    const summary = (event.summary ?? '').toLowerCase()
+    if (!summary) continue
+    for (const s of CRON_SYNCED_STUDENTS) {
+      if (summary.includes(s.summaryMatch)) toResync.add(s.fn)
+    }
+  }
+  for (const fn of toResync) {
+    const task = fetch(`${SUPABASE_URL}/functions/v1/${fn}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${SUPABASE_SERVICE_KEY}`, 'Content-Type': 'application/json' },
+      body: '{}',
+    })
+      .then(async (r) => {
+        if (!r.ok) console.error(`Resync ${fn} failed:`, r.status, await r.text())
+        else console.log(`Triggered ${fn} after calendar change`)
+      })
+      .catch((e) => console.error(`Resync ${fn} error:`, e))
+    // Run in the background so Google's notification is acked immediately
+    if (typeof EdgeRuntime !== 'undefined') EdgeRuntime.waitUntil(task)
+    else await task
+  }
+
   return new Response('ok', { status: 200 })
 })
+
+declare const EdgeRuntime: { waitUntil(p: Promise<unknown>): void } | undefined

@@ -226,7 +226,7 @@ Deno.serve(async (req) => {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify({ name: `Trial – ${trimmedName} – ${dateStr}`, teamId: MIRO_TEAM_ID }),
+      body: JSON.stringify({ name: `Trial – ${trimmedName} – ${dateStr}`, teamId: MIRO_TEAM_ID, sharingPolicy: { access: 'edit' } }),
     })
     if (miroRes.ok) {
       const d = await miroRes.json() as Record<string, unknown>

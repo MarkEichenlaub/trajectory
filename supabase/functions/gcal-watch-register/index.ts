@@ -6,6 +6,7 @@ const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID')!
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET')!
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
 const WEBHOOK_SECRET = Deno.env.get('GCAL_WEBHOOK_SECRET')!
+const CRON_SECRET = Deno.env.get('CRON_SECRET') || ''
 
 async function getGoogleAccessToken(): Promise<string> {
   const res = await fetch('https://oauth2.googleapis.com/token', {
@@ -27,8 +28,12 @@ async function getGoogleAccessToken(): Promise<string> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok')
 
-  const authHeader = req.headers.get('authorization') || ''
-  if (authHeader !== `Bearer ${WEBHOOK_SECRET}`) {
+  // Accept the webhook secret (manual call), the service key, or the cron secret
+  // (so a renewal cron can keep the watch channel alive without it expiring).
+  const bearer = (req.headers.get('authorization') || '').replace('Bearer ', '')
+  const cronHeader = req.headers.get('X-Cron-Secret')
+  if (bearer !== WEBHOOK_SECRET && bearer !== SUPABASE_SERVICE_KEY &&
+      (!CRON_SECRET || cronHeader !== CRON_SECRET)) {
     return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401 })
   }
 

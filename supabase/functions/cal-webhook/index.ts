@@ -254,6 +254,7 @@ async function handleBookingCreated(payload: Record<string, unknown>, supabase: 
       body: JSON.stringify({
         name: `${student.name} – ${dateStr}`,
         teamId: MIRO_TEAM_ID,
+        sharingPolicy: { access: 'edit' },
       }),
     })
     if (miroRes.ok) {

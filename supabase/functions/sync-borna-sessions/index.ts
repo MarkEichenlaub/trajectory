@@ -38,7 +38,11 @@ function toCompactUTC(iso: string): string {
 }
 
 Deno.serve(async (req) => {
-  if (req.headers.get('X-Cron-Secret') !== CRON_SECRET) {
+  // Accept either the cron secret (X-Cron-Secret) or the service key (Authorization),
+  // so the daily cron and the real-time gcal-webhook can both trigger a sync.
+  const cronHeader = req.headers.get('X-Cron-Secret')
+  const authHeader = req.headers.get('Authorization')?.replace('Bearer ', '')
+  if (cronHeader !== CRON_SECRET && authHeader !== SUPABASE_SERVICE_KEY) {
     return new Response(JSON.stringify({ error: 'forbidden' }), {
       status: 401, headers: { 'Content-Type': 'application/json' },
     })
@@ -198,12 +202,37 @@ Deno.serve(async (req) => {
     results.push({ eventId, date: dateStr, status: existing ? 'miro_added' : 'created' })
   }
 
+  // Reconcile moved/deleted events. Sessions are keyed by start time (gcal-borna-<UTC>),
+  // so moving an event makes the cron create a fresh session at the new time while the
+  // old row lingers — the student sees a duplicate. Delete any future gcal-borna-* session
+  // that no longer matches a current calendar event. (The due-date trigger then recomputes
+  // off the surviving session at the new time.)
+  const validIds = new Set(
+    events
+      .filter(e => e.start.dateTime)
+      .map(e => `gcal-borna-${toCompactUTC(e.start.dateTime!)}`),
+  )
+  const { data: futureSessions } = await supabase
+    .from('sessions')
+    .select('id')
+    .eq('student_id', STUDENT_ID)
+    .like('id', 'gcal-borna-%')
+    .gte('scheduled_at', now.toISOString())
+    .lte('scheduled_at', maxDate.toISOString())
+  for (const s of futureSessions ?? []) {
+    if (validIds.has(s.id)) continue
+    const { error } = await supabase.from('sessions').delete().eq('id', s.id)
+    if (error) console.error('Orphan session delete error:', error)
+    else results.push({ eventId: '', date: s.id, status: 'orphan_deleted' })
+  }
+
   const summary = {
     ok: true,
     total: events.length,
     created: results.filter(r => r.status === 'created').length,
     miro_added: results.filter(r => r.status === 'miro_added').length,
     already_done: results.filter(r => r.status === 'already_done').length,
+    orphans_deleted: results.filter(r => r.status === 'orphan_deleted').length,
     errors: results.filter(r => r.status.includes('error') || r.status.includes('failed')).length,
     results,
   }
