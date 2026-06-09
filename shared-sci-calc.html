@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shared Scientific Calculator</title>
+  <style>
+    html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; }
+    #bar {
+      height: 34px; display: flex; align-items: center; gap: 10px;
+      padding: 0 12px; background: #1f2937; color: #e5e7eb; font-size: 13px;
+    }
+    #bar b { color: #fff; }
+    #dot { width: 9px; height: 9px; border-radius: 50%; background: #f59e0b; }
+    #dot.live { background: #22c55e; }
+    #calc { position: absolute; top: 34px; left: 0; right: 0; bottom: 0; }
+    #room { color: #9ca3af; }
+  </style>
+</head>
+<body>
+  <div id="bar">
+    <span id="dot"></span>
+    <b>Shared Scientific Calculator</b>
+    <span id="room"></span>
+    <span id="status" style="margin-left:auto;color:#9ca3af">connecting…</span>
+  </div>
+  <div id="calc"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Desmos prototype/demo API key. For production, request a free key at https://www.desmos.com/api -->
+  <script src="https://www.desmos.com/api/v1.7/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <script>
+    const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_51M6zUC11pz8fIPkCvi4WQ_owCE99pB';
+
+    // Room = the shared token in the URL. Everyone with the same room shares the same
+    // keypad/history. Namespaced 'scicalc:' so it never collides with a graphing room.
+    const room = new URLSearchParams(location.search).get('room') || 'demo';
+    document.getElementById('room').textContent = 'room: ' + room;
+
+    const calc = Desmos.ScientificCalculator(document.getElementById('calc'), {
+      border: false,
+    });
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      realtime: { params: { eventsPerSecond: 10 } },
+    });
+
+    let applyingRemote = false;   // ignore change events we caused via setState
+    let debounce = null;
+
+    const channel = sb.channel('scicalc:' + room, {
+      config: { broadcast: { self: false } },
+    });
+
+    function pushState() {
+      channel.send({ type: 'broadcast', event: 'state', payload: { state: calc.getState() } });
+    }
+
+    function applyState(state) {
+      applyingRemote = true;
+      calc.setState(state, { allowUndo: true });
+      // setState is synchronous; release on the next tick so its change event is skipped.
+      setTimeout(() => { applyingRemote = false; }, 0);
+    }
+
+    channel
+      .on('broadcast', { event: 'state' }, ({ payload }) => {
+        if (payload && payload.state) applyState(payload.state);
+      })
+      // A newly-joined client asks whoever is present to send the current state.
+      .on('broadcast', { event: 'request' }, () => pushState())
+      .subscribe((s) => {
+        const dot = document.getElementById('dot');
+        const status = document.getElementById('status');
+        if (s === 'SUBSCRIBED') {
+          dot.classList.add('live');
+          status.textContent = 'live — edits sync in real time';
+          // Ask any existing peers for the current state so we don't clobber it.
+          channel.send({ type: 'broadcast', event: 'request', payload: {} });
+        } else {
+          dot.classList.remove('live');
+          status.textContent = s.toLowerCase();
+        }
+      });
+
+    // Broadcast local edits (debounced) — but not the ones we just applied remotely.
+    calc.observeEvent('change', () => {
+      if (applyingRemote) return;
+      clearTimeout(debounce);
+      debounce = setTimeout(pushState, 250);
+    });
+  </script>
+</body>
+</html>
