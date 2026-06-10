@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
+import { makeContactLocks } from '../utils/contacts'
 
 export default function Settings({ students, allSources, onSaveStudent, onStatusChange, onRefreshData, showToast }) {
   const [saving, setSaving] = useState(null)
@@ -423,16 +424,7 @@ function ContactsSection({ studentId, showToast }) {
     }
   }
 
-  const verifiedMeetIds = contacts.filter(c => c.verified && c.receives_meets).map(c => c.id)
-  const invoiceIds = contacts.filter(c => c.receives_invoices).map(c => c.id)
-  const loginIds = contacts.filter(c => c.can_login).map(c => c.id)
-  const isLastVerifiedMeet = (c) => verifiedMeetIds.length === 1 && verifiedMeetIds[0] === c.id
-  const isLastInvoice = (c) => invoiceIds.length === 1 && invoiceIds[0] === c.id
-  const isLastLogin = (c) => loginIds.length === 1 && loginIds[0] === c.id
-  const deleteLocked = (c) => isLastVerifiedMeet(c) || isLastInvoice(c) || isLastLogin(c)
-  const toggleLocked = (c, field) =>
-    (field === 'receives_meets' && isLastVerifiedMeet(c)) ||
-    (field === 'receives_invoices' && isLastInvoice(c))
+  const { deleteLocked, toggleLocked } = makeContactLocks(contacts)
 
   if (loading) {
     return <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '4px 0 4px 68px' }}>Loading…</div>
