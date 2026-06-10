@@ -863,7 +863,6 @@
       "script",
       "MCH02",
       "acceleration",
-      "acceleration",
       "motion diagrams",
       "proportional reasoning"
     ],
@@ -896,8 +895,7 @@
       "script",
       "MCH02",
       "acceleration",
-      "velocity-time graphs",
-      "acceleration"
+      "velocity-time graphs"
     ],
     "year": 0,
     "country": "",
@@ -964,8 +962,7 @@
       "script",
       "MCH02",
       "acceleration",
-      "free fall",
-      "acceleration"
+      "free fall"
     ],
     "year": 0,
     "country": "",
@@ -999,7 +996,6 @@
       "MCH02",
       "acceleration",
       "equivalence principle",
-      "acceleration",
       "area under curves"
     ],
     "year": 0,
@@ -1504,7 +1500,6 @@
       "script",
       "MCH03",
       "projectile motion",
-      "projectile motion",
       "independence of axes",
       "free fall"
     ],
@@ -1538,7 +1533,6 @@
     "tags": [
       "script",
       "MCH03",
-      "projectile motion",
       "projectile motion",
       "kinematics",
       "two-step problems"
@@ -1574,7 +1568,6 @@
       "script",
       "MCH03",
       "projectile motion",
-      "projectile motion",
       "independence of axes",
       "parabolas"
     ],
@@ -1608,7 +1601,6 @@
     "tags": [
       "script",
       "MCH03",
-      "projectile motion",
       "projectile motion",
       "proportional reasoning",
       "range"
@@ -1716,8 +1708,7 @@
       "MCH03",
       "projectile motion",
       "reference frames",
-      "free fall",
-      "projectile motion"
+      "free fall"
     ],
     "year": 0,
     "country": "",
@@ -1750,7 +1741,6 @@
     "tags": [
       "script",
       "MCH03",
-      "projectile motion",
       "projectile motion",
       "velocity components",
       "range",
@@ -2087,7 +2077,6 @@
       "script",
       "MCH04",
       "energy conservation",
-      "energy conservation",
       "projectile motion",
       "kinematics"
     ],
@@ -2122,7 +2111,6 @@
       "script",
       "MCH04",
       "energy conservation",
-      "energy conservation",
       "data analysis",
       "linearization"
     ],
@@ -2155,7 +2143,6 @@
       "script",
       "MCH04",
       "energy conservation",
-      "energy conservation",
       "modeling"
     ],
     "year": 0,
@@ -2187,7 +2174,6 @@
       "script",
       "MCH04",
       "energy conservation",
-      "energy conservation",
       "free fall"
     ],
     "year": 0,
@@ -2218,7 +2204,6 @@
     "tags": [
       "script",
       "MCH04",
-      "energy conservation",
       "energy conservation",
       "atwood machine",
       "acceleration"
@@ -2253,8 +2238,7 @@
       "MCH04",
       "energy conservation",
       "kinetic energy",
-      "potential energy",
-      "energy conservation"
+      "potential energy"
     ],
     "year": 0,
     "country": "",
@@ -2284,7 +2268,6 @@
     "tags": [
       "script",
       "MCH04",
-      "energy conservation",
       "energy conservation",
       "reference frames",
       "principle of relativity"
@@ -2970,8 +2953,7 @@
       "MCH06",
       "simple machines",
       "mechanical advantage",
-      "levers",
-      "simple machines"
+      "levers"
     ],
     "year": 0,
     "country": "",
@@ -3333,7 +3315,6 @@
       "script",
       "MCH07",
       "circular motion",
-      "circular motion",
       "centripetal acceleration",
       "dimensional analysis"
     ],
@@ -3365,7 +3346,6 @@
     "tags": [
       "script",
       "MCH07",
-      "circular motion",
       "circular motion",
       "artificial gravity",
       "centripetal acceleration"
@@ -3402,7 +3382,6 @@
       "script",
       "MCH07",
       "circular motion",
-      "circular motion",
       "artificial gravity",
       "friction",
       "frequency"
@@ -3437,7 +3416,6 @@
     "tags": [
       "script",
       "MCH07",
-      "circular motion",
       "circular motion",
       "energy conservation",
       "artificial gravity"
@@ -3475,7 +3453,6 @@
       "script",
       "MCH07",
       "circular motion",
-      "circular motion",
       "energy conservation",
       "g-force"
     ],
@@ -3510,7 +3487,6 @@
       "script",
       "MCH07",
       "circular motion",
-      "circular motion",
       "radius of curvature",
       "g-force",
       "energy conservation"
@@ -3543,7 +3519,6 @@
     "tags": [
       "script",
       "MCH07",
-      "circular motion",
       "circular motion",
       "projectile motion",
       "artificial gravity"
@@ -3798,7 +3773,6 @@
       "script",
       "MCH08",
       "simple harmonic motion",
-      "simple harmonic motion",
       "circular motion",
       "oscillation"
     ],
@@ -3832,7 +3806,6 @@
     "tags": [
       "script",
       "MCH08",
-      "simple harmonic motion",
       "simple harmonic motion",
       "oscillation period",
       "energy conservation",
@@ -3870,8 +3843,7 @@
       "MCH08",
       "simple harmonic motion",
       "mass and weight",
-      "oscillation period",
-      "simple harmonic motion"
+      "oscillation period"
     ],
     "year": 0,
     "country": "",
@@ -3971,8 +3943,7 @@
       "MCH08",
       "simple harmonic motion",
       "pendulum",
-      "energy method",
-      "simple harmonic motion"
+      "energy method"
     ],
     "year": 0,
     "country": "",
@@ -4575,7 +4546,6 @@
       "MCH09",
       "rotational kinematics",
       "angular acceleration",
-      "rotational kinematics",
       "working with variables"
     ],
     "year": 0,
@@ -5473,7 +5443,6 @@
       "script",
       "MCH11",
       "vectors",
-      "vectors",
       "scalars",
       "vector addition"
     ],
@@ -6320,7 +6289,6 @@
       "script",
       "MCH13",
       "momentum",
-      "momentum",
       "recoil",
       "center of mass"
     ],
@@ -6458,7 +6426,6 @@
       "MCH13",
       "momentum",
       "impulse",
-      "momentum",
       "collisions"
     ],
     "year": 0,
@@ -6491,7 +6458,6 @@
     "tags": [
       "script",
       "MCH13",
-      "momentum",
       "momentum",
       "kinetic energy",
       "collisions"
@@ -6691,7 +6657,6 @@
       "script",
       "MCH14",
       "collisions",
-      "collisions",
       "momentum conservation",
       "estimation"
     ],
@@ -6725,7 +6690,6 @@
     "tags": [
       "script",
       "MCH14",
-      "collisions",
       "collisions",
       "momentum conservation",
       "estimation"
@@ -6830,7 +6794,6 @@
       "script",
       "MCH14",
       "collisions",
-      "collisions",
       "momentum conservation",
       "vectors"
     ],
@@ -6864,7 +6827,6 @@
     "tags": [
       "script",
       "MCH14",
-      "collisions",
       "collisions",
       "energy conservation",
       "particle physics"
@@ -8095,7 +8057,6 @@
       "script",
       "MCH17",
       "statics",
-      "statics",
       "tension",
       "newton's third law",
       "free body diagrams"
@@ -8134,7 +8095,6 @@
       "statics",
       "tension",
       "newton's second law",
-      "statics",
       "models"
     ],
     "year": 0,
@@ -8207,7 +8167,6 @@
       "script",
       "MCH17",
       "statics",
-      "statics",
       "normal force",
       "inclines",
       "friction"
@@ -8245,8 +8204,7 @@
       "statics",
       "friction",
       "equivalence principle",
-      "inclines",
-      "statics"
+      "inclines"
     ],
     "year": 0,
     "country": "",
@@ -8314,7 +8272,6 @@
     "tags": [
       "script",
       "MCH17",
-      "statics",
       "statics",
       "tension",
       "vectors",
@@ -9915,7 +9872,6 @@
       "script",
       "MCH21",
       "torque",
-      "torque",
       "moment arm",
       "tension"
     ],
@@ -9947,7 +9903,6 @@
     "tags": [
       "script",
       "MCH21",
-      "torque",
       "torque",
       "rotational equilibrium",
       "sign conventions"
@@ -9983,7 +9938,6 @@
     "tags": [
       "script",
       "MCH21",
-      "torque",
       "torque",
       "normal force",
       "rotational equilibrium"
@@ -10021,7 +9975,6 @@
       "script",
       "MCH21",
       "torque",
-      "torque",
       "tipping",
       "friction"
     ],
@@ -10053,7 +10006,6 @@
     "tags": [
       "script",
       "MCH21",
-      "torque",
       "torque",
       "dimensional analysis",
       "units"
@@ -10089,7 +10041,6 @@
       "script",
       "MCH21",
       "torque",
-      "torque",
       "moment of inertia",
       "rotational kinematics"
     ],
@@ -10124,7 +10075,6 @@
       "script",
       "MCH21",
       "torque",
-      "torque",
       "moment of inertia",
       "center of mass"
     ],
@@ -10156,7 +10106,6 @@
     "tags": [
       "script",
       "MCH21",
-      "torque",
       "torque",
       "pendulum",
       "moment of inertia",
@@ -10410,7 +10359,6 @@
       "script",
       "MCH22",
       "angular momentum",
-      "angular momentum",
       "torque",
       "analogies"
     ],
@@ -10448,7 +10396,6 @@
       "script",
       "MCH22",
       "angular momentum",
-      "angular momentum",
       "conservation laws",
       "moment of inertia"
     ],
@@ -10485,7 +10432,6 @@
       "script",
       "MCH22",
       "angular momentum",
-      "angular momentum",
       "conservation laws",
       "non-rigid bodies"
     ],
@@ -10517,7 +10463,6 @@
     "tags": [
       "script",
       "MCH22",
-      "angular momentum",
       "angular momentum",
       "conservation laws",
       "moment of inertia"
@@ -10556,7 +10501,6 @@
       "MCH22",
       "angular momentum",
       "rotational kinetic energy",
-      "angular momentum",
       "energy dissipation"
     ],
     "year": 0,
@@ -10589,7 +10533,6 @@
     "tags": [
       "script",
       "MCH22",
-      "angular momentum",
       "angular momentum",
       "estimation",
       "moment of inertia"
@@ -10626,7 +10569,6 @@
       "MCH22",
       "angular momentum",
       "orbital angular momentum",
-      "angular momentum",
       "reference points"
     ],
     "year": 0,
@@ -10657,7 +10599,6 @@
     "tags": [
       "script",
       "MCH22",
-      "angular momentum",
       "angular momentum",
       "rolling",
       "friction"
@@ -11374,7 +11315,6 @@
       "script",
       "MCH24",
       "fluid dynamics",
-      "fluid dynamics",
       "bernoulli's equation",
       "continuity"
     ],
@@ -11412,8 +11352,7 @@
       "MCH24",
       "fluid dynamics",
       "coanda effect",
-      "bernoulli's principle",
-      "fluid dynamics"
+      "bernoulli's principle"
     ],
     "year": 0,
     "country": "",
@@ -11450,8 +11389,7 @@
       "MCH24",
       "fluid dynamics",
       "coanda effect",
-      "bernoulli's principle",
-      "fluid dynamics"
+      "bernoulli's principle"
     ],
     "year": 0,
     "country": "",
@@ -11485,8 +11423,7 @@
       "MCH24",
       "fluid dynamics",
       "bernoulli's equation",
-      "torricelli's law",
-      "fluid dynamics"
+      "torricelli's law"
     ],
     "year": 0,
     "country": "",
@@ -11518,8 +11455,7 @@
       "MCH24",
       "fluid dynamics",
       "bernoulli's equation",
-      "estimation",
-      "fluid dynamics"
+      "estimation"
     ],
     "year": 0,
     "country": "",
