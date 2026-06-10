@@ -1,0 +1,662 @@
+[
+  {
+    "id": "ea6db2e3-1e67-4a3b-92a3-c3196f2b6e52",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 1,
+    "set_label": "Problem 1",
+    "name": "Imagine that in a rain storm, all the raindrops fall straight down with constant velocity…",
+    "desc": "Imagine that in a rain storm, all the raindrops fall straight down with constant velocity $$v_{\\rm rain}$$ You need to go from building A to building B during the rain storm, but you don't have an umbrella. You want to know whether you should walk or run, assuming you want to…",
+    "statement": "Imagine that in a rain storm, all the raindrops fall straight down with constant velocity $$v_{\\rm rain}$$\n\nYou need to go from building A to building B during the rain storm, but you don't have an umbrella. You want to know whether you should walk or run, assuming you want to minimize the amount of rain that hits you as you go from building to building. (Assume that walking and running are the same except for how fast you go, so don't worry about limbs flailing around.) Your speed as you go from building to building is $$v_{\\rm you}.$$\n\nWhich **one** of the following scenarios is equivalent to this setup? Use Galilean relativity for this question.\n\nAnswer by submitting a single letter.\n\n**a**\n\nYou are stationary, the rain still falls vertically at speed $$v_{\\rm rain},$$ the buildings and ground move to the left at speed $$v_{\\rm you}.$$\n\n**b**\n\nYou are stationary, the rain falls down and to the left at speed $$\\sqrt{v_{\\rm rain}^2 + v_{\\rm you}^2},$$ and the buildings and ground move left at speed $$v_{\\rm you}.$$\n\n**c**\n\nThe rain is stationary, the buildings and ground are stationary, and you move right at speed $$v_{\\rm you}.$$\n\n**d**\n\nYou are stationary, the buildings and ground move left at speed $$v_{\\rm you},$$ and the rain moves purely left at speed $$v_{\\rm you}.$$",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43155",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "48793cb0-efc2-4aa1-8b60-2cb8bea7e713",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 2,
+    "set_label": "Problem 2",
+    "name": "In the previous problem, which one of the following would **not** count as an event?",
+    "desc": "In the previous problem, which one of the following would **not** count as an event? **a** A specific raindrop hits your head. **b** You walk from building A to building B. **c** A specific raindrop hits the ground. **d** You get hit by your 100th raindrop in the journey.",
+    "statement": "In the previous problem, which one of the following would **not** count as an event?\n\n**a**\n\nA specific raindrop hits your head.\n\n**b**\n\nYou walk from building A to building B.\n\n**c**\n\nA specific raindrop hits the ground.\n\n**d**\n\nYou get hit by your 100th raindrop in the journey.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43156",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "2a39e427-1bb5-45a2-9585-beb631b63d32",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 3,
+    "set_label": "Problem 3",
+    "name": "One of these is an invariant in Galilean relativity, but is not an invariant in special…",
+    "desc": "One of these is an invariant in Galilean relativity, but is not an invariant in special relativity. Which one? **a** The distance between events **b** The time between two events **c** The energy an object has due to its motion (kinetic energy) **d** The electric charge on a…",
+    "statement": "One of these is an invariant in Galilean relativity, but is not an invariant in special relativity. Which one?\n\n**a**\n\nThe distance between events\n\n**b**\n\nThe time between two events\n\n**c**\n\nThe energy an object has due to its motion (kinetic energy)\n\n**d**\n\nThe electric charge on a muon\n\n**e**\n\nWhether or not an object is moving",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43157",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "40c96993-a76b-49c3-9911-a9dee8e2a859",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 4,
+    "set_label": "Problem 4",
+    "name": "When a super bouncy ball is thrown against a hard wall at speed $$v,$$ it bounces off in…",
+    "desc": "When a super bouncy ball is thrown against a hard wall at speed $$v,$$ it bounces off in speed $$v$$ in the opposite direction. Suppose the super bouncy ball is stationary and the wall comes towards it at speed $$v.$$ What will the speed of the super bouncy ball be after the…",
+    "statement": "When a super bouncy ball is thrown against a hard wall at speed $$v,$$ it bounces off in speed $$v$$ in the opposite direction.\n\nSuppose the super bouncy ball is stationary and the wall comes towards it at speed $$v.$$ What will the speed of the super bouncy ball be after the collision?\n\nGive your answer in terms of $$v.$$ For example, if you think the super bouncy ball will bounce off the wall and have a speed of $$10 v,$$ enter \"10 v\" (without the quotation marks).\n\nUse Galilean relativity for this question.",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43158",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "6814cff7-b5dd-4aff-9ec5-fc32bf160d2c",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 5,
+    "set_label": "Problem 5",
+    "name": "In still air, the speed of sound is the same in all directions. Call this speed $$c_{\\rm…",
+    "desc": "In still air, the speed of sound is the same in all directions. Call this speed $$c_{\\rm air}.$$ If the wind is blowing at a steady speed (the same wind speed everywhere), and the wind is horizontal, what happens to the speed of sound in the air (measured relative to the Earth)?…",
+    "statement": "In still air, the speed of sound is the same in all directions. Call this speed $$c_{\\rm air}.$$\n\nIf the wind is blowing at a steady speed (the same wind speed everywhere), and the wind is horizontal, what happens to the speed of sound in the air (measured relative to the Earth)?\n\n**a**\n\nIt is still $$c_{\\rm air}$$ in all directions.\n\n**b**\n\nIt is faster than $$c_{\\rm air}$$ in the direction the wind is blowing and slower in the direction against the wind, but still $$c_{\\rm air}$$ in the directions perpendicular to the wind.\n\n**c**\n\nIt is faster than $$c_{\\rm air}$$ in the direction the wind is blowing and slower in the direction against the wind, and slower than $$c_{\\rm air}$$ in the directions perpendicular to the wind.\n\n**d**\n\nIt is faster than $$c_{\\rm air}$$ in the direction the wind is blowing and slower in the direction against the wind, and faster than $$c_{\\rm air}$$ in the directions perpendicular to the wind.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43163",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "ca2d94c3-54e8-4a07-a588-0756f3b13fdd",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 6,
+    "set_label": "Problem 6",
+    "name": "The binomial theorem can be used to show that, for $$x \\ll 1$$ ($$x$$ is much less than…",
+    "desc": "The binomial theorem can be used to show that, for $$x \\ll 1$$ ($$x$$ is much less than $$1),$$ $$ (1 + x)^n \\approx 1 + nx.$$ Use this fact to approximate $$\\gamma(v) - 1$$ for $$v \\ll c.$$ Give your answer using $$v$$ and $$c.$$ For example, if you find $$\\gamma(v) - 1 \\approx…",
+    "statement": "The binomial theorem can be used to show that, for $$x \\ll 1$$ ($$x$$ is much less than $$1),$$ $$ (1 + x)^n \\approx 1 + nx.$$\n\nUse this fact to approximate $$\\gamma(v) - 1$$ for $$v \\ll c.$$\n\nGive your answer using $$v$$ and $$c.$$\n\nFor example, if you find $$\\gamma(v) - 1 \\approx v^2 + c,$$ enter \"v^2 + c\".",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43164",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9b02c075-e008-4610-a8fd-bede168ee18b",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 7,
+    "set_label": "Problem 7",
+    "name": "Find the speed $$v$$ such that a clock moving at speed $$v$$ will fall behind one second…",
+    "desc": "Find the speed $$v$$ such that a clock moving at speed $$v$$ will fall behind one second per day. Give your answer in $$\\mathrm{m/s}.$$ For example, if your answer is one hundred meters per second, enter \"100 m/s\". Solving this problem using the exact formula for $$\\gamma(v)$$…",
+    "statement": "Find the speed $$v$$ such that a clock moving at speed $$v$$ will fall behind one second per day.\n\nGive your answer in $$\\mathrm{m/s}.$$ For example, if your answer is one hundred meters per second, enter \"100 m/s\".\n\nSolving this problem using the exact formula for $$\\gamma(v)$$ and round to the nearest one meter per second.\n\nRecall that $$\\gamma(v) = \\dfrac{1}{\\sqrt{1 - \\dfrac{v^2}{c^2}}}$$ and that $$c = 299{,}792{,}458 \\;\\mathrm{m/s}.$$\n\nConsider \"one day\" to be $$86{,}400 \\;\\mathrm{s}.$$",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43160",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "da848579-5042-494d-8bd4-bc226392b56c",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 8,
+    "set_label": "Problem 8",
+    "name": "Solve the same problem as the previous question, but use the approximation for…",
+    "desc": "Solve the same problem as the previous question, but use the approximation for $$\\gamma(v)$$ when $$v\\ll c$$ you found two questions ago. Give your answer to the nearest meter per second again.",
+    "statement": "Solve the same problem as the previous question, but use the approximation for $$\\gamma(v)$$ when $$v\\ll c$$ you found two questions ago.\n\nGive your answer to the nearest meter per second again.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43253",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "dbd9a726-7271-4f7f-a8cf-a7f657664a21",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 9,
+    "set_label": "Problem 9",
+    "name": "In Alex's frame, Lizzie moves to the right at speed $$0.6 c.$$",
+    "desc": "In Alex's frame, Lizzie moves to the right at speed $$0.6 c.$$ Lizzie passes just by Alex in a very close flyby. Alex waits $$10 \\;\\mathrm{s},$$ (as measured in his own frame) then shoots a flash of light to chase after Lizzie. In Lizzie's frame, how much time passes between the…",
+    "statement": "In Alex's frame, Lizzie moves to the right at speed $$0.6 c.$$\n\nLizzie passes just by Alex in a very close flyby. Alex waits $$10 \\;\\mathrm{s},$$ (as measured in his own frame) then shoots a flash of light to chase after Lizzie.\n\nIn Lizzie's frame, how much time passes between the flyby and the event where the light flash catches her?\n\nEnter your answer using \"s\" for seconds. For example, if your answer is two seconds, enter \"2 s\".\n\nRecall that $$\\gamma(v) = \\dfrac{1}{\\sqrt{1 - \\dfrac{v^2}{c^2}}}.$$",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43159",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "13769dfa-4385-46e6-84b5-939edeb2d0df",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 10,
+    "set_label": "Problem 10",
+    "name": "After Alex sends his first light flash chasing Lizzie, he waits one second and sends a…",
+    "desc": "After Alex sends his first light flash chasing Lizzie, he waits one second and sends a second light flash, then after one more second a third, etc. Once the first light flash reaches Lizzie, she will continually receive new light flashes from Alex. How long does Lizzie have to…",
+    "statement": "After Alex sends his first light flash chasing Lizzie, he waits one second and sends a second light flash, then after one more second a third, etc.\n\nOnce the first light flash reaches Lizzie, she will continually receive new light flashes from Alex. How long does Lizzie have to wait between light flashes arriving from Alex (as measured in her own frame)?\n\nGive your answer in seconds. For example, if your answer is half a second, enter \"0.5 s\".",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43161",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "7c271b41-803e-4283-a09f-1d98447d1865",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL01: Principle of Relativity, Speed of Light, and Time Dilation",
+    "label": "REL01",
+    "week": 1,
+    "set_number": 11,
+    "set_label": "Problem 11",
+    "name": "Suppose Alex is holding up a giant digital clock. From Lizzie's reference frame, Alex is…",
+    "desc": "Suppose Alex is holding up a giant digital clock. From Lizzie's reference frame, Alex is receding. In the previous two problems, Alex's speed in Lizzie's frame was $$0.6 c,$$ but in this problem let Alex's speed be given by the variable $$v.$$ Lizzie holds up a video camera and…",
+    "statement": "Suppose Alex is holding up a giant digital clock. From Lizzie's reference frame, Alex is receding. In the previous two problems, Alex's speed in Lizzie's frame was $$0.6 c,$$ but in this problem let Alex's speed be given by the variable $$v.$$\n\nLizzie holds up a video camera and records Alex as he flies away.\n\nWhen Lizzie watches the video later, by what factor does Alex's clock run slowly in the video?\n\nYou can use the symbols \"v\" and \"c\" in your answer. You can also use \"sqrt\" for the square root. For example, if your answer is $$v \\sqrt{vc},$$ enter \"v*sqrt(v*c)\".",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL01",
+      "principle of relativity, speed of light, and time dilation"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43162",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b2d53c67-1957-4639-a4b4-0cfc84afdae6",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 1,
+    "set_label": "Problem 1",
+    "name": "For this problem set, remember \\begin{aligned} \\gamma(v) & = \\dfrac{1}{\\sqrt{1 -…",
+    "desc": "For this problem set, remember \\begin{aligned} \\gamma(v) & = \\dfrac{1}{\\sqrt{1 - \\dfrac{v^2}{c^2}}} \\\\ \\text{rear clock ahead by} \\,\\, & \\quad \\dfrac{v \\ell}{c^2} \\\\ u_{L} & = \\dfrac{v + u}{1 + \\dfrac{v u}{c^2}} \\end{aligned}",
+    "statement": "For this problem set, remember \\begin{aligned} \\gamma(v) & = \\dfrac{1}{\\sqrt{1 - \\dfrac{v^2}{c^2}}} \\\\ \\text{rear clock ahead by} \\,\\, & \\quad \\dfrac{v \\ell}{c^2} \\\\ u_{L} & = \\dfrac{v + u}{1 + \\dfrac{v u}{c^2}} \\end{aligned}",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "reading",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43166",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "e3e74e9d-7c95-4f87-b9ce-c3a16fec3cf5",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 2,
+    "set_label": "Problem 2",
+    "name": "In class, we saw this picture showing length contraction of Lizzie's ship in Alex's frame:",
+    "desc": "In class, we saw this picture showing length contraction of Lizzie's ship in Alex's frame: What happens to Alex's ship as seen in Lizzie's frame? A Nothing - its length is the same as in Alex's frame. B Alex's ship is longer in Lizzie's frame than it was in his own frame. C…",
+    "statement": "In class, we saw this picture showing length contraction of Lizzie's ship in Alex's frame:\n\nWhat happens to Alex's ship as seen in Lizzie's frame?\n\nA Nothing - its length is the same as in Alex's frame.\n\nB Alex's ship is longer in Lizzie's frame than it was in his own frame.\n\nC Alex's ship is shorter in Lizzie's frame than it was in his own frame.",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43167",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b8029f5b-3ab2-4e6e-9a5d-2b7971b4e63f",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 3,
+    "set_label": "Problem 3",
+    "name": "A train sits on train tracks. The wheels of the train are a distance $$\\ell$$ apart, and…",
+    "desc": "A train sits on train tracks. The wheels of the train are a distance $$\\ell$$ apart, and the tracks are also a distance $$\\ell$$ apart so that the train sits on the tracks. When the train moves at $$v \\approx 0.87 c,$$ the Lorentz factor $$\\gamma = 2.$$ Select **two** of the…",
+    "statement": "A train sits on train tracks. The wheels of the train are a distance $$\\ell$$ apart, and the tracks are also a distance $$\\ell$$ apart so that the train sits on the tracks.\n\nWhen the train moves at $$v \\approx 0.87 c,$$ the Lorentz factor $$\\gamma = 2.$$\n\nSelect **two** of the following that are correct. Enter your answer as a list, e.g. \"A, C\"\n\nA Analyzing from the train frame, the tracks will be length-contracted so that the distance between them is $$\\dfrac{\\ell}{2}.$$ We conclude that the train will be too wide to fit on the tracks.\n\nB Analyzing from the track frame, the train will be length-contracted so that its wheels are a distance $$\\dfrac{\\ell}{2}$$ apart. We conclude that the train will be too narrow to fit on the tracks.\n\nC Length contraction only makes the tracks / train shorter depending on the reference frame, but in neither the train nor the track frame does length contraction change the distance between the tracks or train wheels.\n\nD If Grogg runs toward the train from the side, the train will be length-contracted so that the distance between the wheels decreases in his frame, but the tracks will be length-contracted by the same factor, so the train still fits on the tracks in his frame.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43178",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "b9870eda-361f-4a21-bd07-c73e33c1561c",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 4,
+    "set_label": "Problem 4",
+    "name": "Alex and Lizzie are in the same reference frame.",
+    "desc": "Alex and Lizzie are in the same reference frame. Grogg is between them and moving to the left, towards Alex, in this frame. Grogg is in a spaceship with two clocks: one on the left and one on the right. The clocks are synchronized in Grogg's frame. **Which is a correct…",
+    "statement": "Alex and Lizzie are in the same reference frame.\n\nGrogg is between them and moving to the left, towards Alex, in this frame. Grogg is in a spaceship with two clocks: one on the left and one on the right. The clocks are synchronized in Grogg's frame.\n\n**Which is a correct description of Grogg's clocks for Alex and Lizzie? Enter the letter of the correct choice.**\n\nWe have drawn the clocks both showing a time of zero, but do not assume the time shown on the clocks in the picture is accurate.\n\nDo not account for a delay of light to reach Alex and Lizzie from Grogg's clocks; answer based on the readings on Grogg's clock at simultaneous events in Alex / Lizzie's reference frame.\n\nA For Alex, Grogg's right clock is ahead of his left clock. For Lizzie, Grogg's left clock is ahead of his right clock.\n\nB For Alex, Grogg's left clock is ahead of his right clock. For Lizzie, Grogg's right clock is ahead of his left clock.\n\nC For both Alex and Lizzie, Grogg's right clock is ahead of his left clock.\n\nD For both Alex and Lizzie, Grogg's left clock is ahead of his right clock.\n\nE For both Alex and Lizzie, Grogg's clocks are synchronized.",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43179",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "9515b350-d6ba-4118-a1cc-fbd4245bd47a",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 5,
+    "set_label": "Problem 5",
+    "name": "This problem asks about the same situation as the previous one.",
+    "desc": "This problem asks about the same situation as the previous one. Alex takes a photograph of Grogg and his clocks as he approaches and Lizzie takes a photograph of Grogg and his clocks as he gets further away from her. Which statement is true about the time on Grogg's clocks in…",
+    "statement": "This problem asks about the same situation as the previous one.\n\nAlex takes a photograph of Grogg and his clocks as he approaches and Lizzie takes a photograph of Grogg and his clocks as he gets further away from her.\n\nWhich statement is true about the time on Grogg's clocks in the photographs?\n\nSince we're asking about photographs, we now __do__ want to account for the delay as light travels from Grogg's clocks to Alex or Lizzie.\n\nA In Alex's photograph, Grogg's right clock is ahead of his left clock. In Lizzie's photograph, Grogg's left clock is ahead of his right clock.\n\nB In Alex's photograph, Grogg's left clock is ahead of his right clock. In Lizzie's photograph, Grogg's right clock is ahead of his left clock.\n\nC In both Alex's and Lizzie's photographs, Grogg's right clock is ahead of his left clock.\n\nD In both Alex's and Lizzie's photographs, Grogg's left clock is ahead of his right clock.\n\nE In both Alex's and Lizzie's photographs, Grogg's clocks show the same time.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43180",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "8e4168b6-63ee-465d-a2f6-ac468194c476",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 6,
+    "set_label": "Problem 6",
+    "name": "In Alex's frame, Lizzie is moving to the right fast enough that $$\\gamma = 2.$$ In…",
+    "desc": "In Alex's frame, Lizzie is moving to the right fast enough that $$\\gamma = 2.$$ In Lizzie's frame, Grogg is moving to the right fast enough that $$\\gamma = 3.$$ Find $$\\gamma$$ for Grogg, from Alex's frame. (Alex and Lizzie's frame agree on which direction is \"to the right\".)…",
+    "statement": "In Alex's frame, Lizzie is moving to the right fast enough that $$\\gamma = 2.$$ In Lizzie's frame, Grogg is moving to the right fast enough that $$\\gamma = 3.$$\n\nFind $$\\gamma$$ for Grogg, from Alex's frame.\n\n(Alex and Lizzie's frame agree on which direction is \"to the right\".)\n\nGive your answer as a decimal approximation. For example, if your answer is $$\\gamma = \\sqrt{2},$$ enter \"1.4\".\n\nYour answer should be accurate to within $$0.1$$.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43165",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "a03be81e-e239-4449-aa62-b0bdbcd3fb81",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 7,
+    "set_label": "Problem 7",
+    "name": "In class, we analyzed this scenario:",
+    "desc": "In class, we analyzed this scenario: Let the distance between Alex and Lizzie be $$d$$ in this frame at this time. Then we drew this picture of Lizzie's frame at the event that Lizzie gets to the rightmost clock: Find the distance between Alex and Lizzie at this time in Lizzie's…",
+    "statement": "In class, we analyzed this scenario:\n\nLet the distance between Alex and Lizzie be $$d$$ in this frame at this time.\n\nThen we drew this picture of Lizzie's frame at the event that Lizzie gets to the rightmost clock:\n\nFind the distance between Alex and Lizzie at this time in Lizzie's frame as a function of $$v$$ and $$d.$$\n\nThen let $$v = 0.8 c$$ and $$d = 82 \\;\\mathrm{m}.$$ Find the distance of Alex from Lizzie at the moment shown and enter it as your answer. For example, if you find that Alex is $$6 \\;\\mathrm{m}$$ from Lizzie, enter \"6 m\".",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43168",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "c4e16499-de34-416d-bdc7-3a53a691956f",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 8,
+    "set_label": "Problem 8",
+    "name": "Alex travels at speed $$\\dfrac45 c$$ to the right relative to the ground. Lizzie travels…",
+    "desc": "Alex travels at speed $$\\dfrac45 c$$ to the right relative to the ground. Lizzie travels at speed $$\\dfrac35c$$ to the right relative to the ground. Grogg is between them. How fast should he travel to the right, relative to the ground, so that he sees Alex and Lizzie approaching…",
+    "statement": "Alex travels at speed $$\\dfrac45 c$$ to the right relative to the ground. Lizzie travels at speed $$\\dfrac35c$$ to the right relative to the ground.\n\nGrogg is between them. How fast should he travel to the right, relative to the ground, so that he sees Alex and Lizzie approaching him at the same speed?\n\nEnter your answer as a fraction of $$c.$$ For example, if your answer is $$\\dfrac45c,$$ enter \"4/5 c\".",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43170",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "5f31e512-5695-47cc-875f-92a9e116da9f",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 9,
+    "set_label": "Problem 9",
+    "name": "When we introduced time dilation, we did it with a light clock.",
+    "desc": "When we introduced time dilation, we did it with a light clock. Consider a light clock that moves in the same direction that the light moves as it bounces between the mirrors. Let the speed of the light clock be $$v$$ and the Lorentz factor be $$\\gamma.$$ Let the proper distance…",
+    "statement": "When we introduced time dilation, we did it with a light clock.\n\nConsider a light clock that moves in the same direction that the light moves as it bounces between the mirrors. Let the speed of the light clock be $$v$$ and the Lorentz factor be $$\\gamma.$$\n\nLet the proper distance between the mirrors of the light clock be $$\\ell.$$\n\nConsider three events:\n\n1) The light flash bounces off the bottom mirror of the light clock. 2) The light flash bounces off the top mirror of the light clock. 3) The light flash bounces off the bottom mirror of the light clock a second time.\n\nFind the time between events (1) and (2) in the frame shown in terms of $$\\ell, v, \\gamma,$$ and $$c.$$ For example, if your answer is that the time is $$\\ell \\cdot v + \\gamma \\cdot c,$$ enter \"ell v + gamma c\".",
+    "figures": [],
+    "has_asy": true,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43175",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "d0a31131-c165-4dc3-a583-15f47b796625",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 10,
+    "set_label": "Problem 10",
+    "name": "Now find the time between events (1) and (3) in this frame. Enter your answer the same…",
+    "desc": "Now find the time between events (1) and (3) in this frame. Enter your answer the same way as for the previous question.",
+    "statement": "Now find the time between events (1) and (3) in this frame. Enter your answer the same way as for the previous question.",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "short",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43176",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  },
+  {
+    "id": "f0e12ebe-fffd-4638-b48d-0aa2c671edde",
+    "contest": "Physics Seminar: Relativity",
+    "type": "AoPS",
+    "source": "homework",
+    "lesson": "REL02: Length Contraction, Simultaneity, and Paradoxes",
+    "label": "REL02",
+    "week": 2,
+    "set_number": 11,
+    "set_label": "Problem 11",
+    "name": "In the previous problem, you should have found that the light clock is subject to the…",
+    "desc": "In the previous problem, you should have found that the light clock is subject to the same time dilation as the light clock we analyzed in class. However, the times between events (1) and (2) and between events (2) and (3) are not the same. The light clock runs slowly, as…",
+    "statement": "In the previous problem, you should have found that the light clock is subject to the same time dilation as the light clock we analyzed in class.\n\nHowever, the times between events (1) and (2) and between events (2) and (3) are not the same. The light clock runs slowly, as expected, but its \"half ticks\" are uneven. Can you explain why?",
+    "figures": [],
+    "has_asy": false,
+    "topics": [
+      "Relativity"
+    ],
+    "tags": [
+      "discussion",
+      "REL02",
+      "length contraction, simultaneity, and paradoxes"
+    ],
+    "year": 0,
+    "country": "",
+    "aops_id": "43177",
+    "active": true,
+    "problemUrl": "",
+    "solutionUrl": null
+  }
+]
