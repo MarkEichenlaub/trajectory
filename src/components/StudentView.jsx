@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react'
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   supabase,
@@ -13,7 +13,9 @@ import {
   getAvailability, bookSession, rescheduleSession, cancelSession,
 } from '../utils/supabase'
 import FilterSidebar from './FilterSidebar'
-import { ProblemPreviewModal } from './ProblemTable'
+
+// Lazy so KaTeX (and its fonts) load on first preview click, not portal boot.
+const ProblemPreviewModal = lazy(() => import('./ProblemPreviewModal'))
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
 
@@ -652,7 +654,9 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
         )}
       </div>
       {previewProblem && (
-        <ProblemPreviewModal problem={previewProblem} onClose={() => setPreviewProblem(null)} />
+        <Suspense fallback={null}>
+          <ProblemPreviewModal problem={previewProblem} onClose={() => setPreviewProblem(null)} />
+        </Suspense>
       )}
     </div>
   )

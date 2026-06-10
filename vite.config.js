@@ -14,6 +14,17 @@ export default defineConfig({
         miroCalc: page('miro-calc/index.html'),
         miroCalcPanel: page('miro-calc/panel.html'),
       },
+      output: {
+        // Stable vendor chunk: app-code deploys don't invalidate the cached
+        // React/Supabase bytes.
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('katex')) return 'katex'
+            if (id.includes('mathjs')) return 'mathjs'
+            return 'vendor'
+          }
+        },
+      },
     },
   },
 })

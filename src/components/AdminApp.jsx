@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, useDeferredValue, useRef } from 'react'
+import { useState, useEffect, useCallback, useMemo, useDeferredValue, useRef, lazy, Suspense } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
@@ -15,10 +15,12 @@ import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
 import StudentView, { ContactsTab, SchedulingTab } from './StudentView'
 import AdminProgressPlanView from './AdminProgressPlanView'
-import AccountsView from './AccountsView'
-import Settings from './Settings'
-import TagOntologyView from './TagOntologyView'
 import Toast from './Toast'
+
+// Occasionally-used admin views load on first open, not at boot.
+const AccountsView = lazy(() => import('./AccountsView'))
+const Settings = lazy(() => import('./Settings'))
+const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
 const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', ACCOUNTS: 'accounts', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
@@ -756,7 +758,9 @@ export default function AdminApp({ userId }) {
         )}
 
         {view === VIEWS.TAGS && (
-          <TagOntologyView problems={allProblems} />
+          <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
+            <TagOntologyView problems={allProblems} />
+          </Suspense>
         )}
 
         {view === VIEWS.PROGRESS_PLAN && (
@@ -775,11 +779,14 @@ export default function AdminApp({ userId }) {
         )}
 
         {view === VIEWS.ACCOUNTS && (
-          <AccountsView students={students} showToast={showToast} />
+          <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
+            <AccountsView students={students} showToast={showToast} />
+          </Suspense>
         )}
 
         {view === VIEWS.SETTINGS && (
-          <Settings
+          <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
+            <Settings
             students={students}
             allSources={allSources}
             onSaveStudent={handleSaveStudent}
@@ -790,7 +797,8 @@ export default function AdminApp({ userId }) {
               setAopsProblems(ap)
             }}
             showToast={showToast}
-          />
+            />
+          </Suspense>
         )}
       </div>
 

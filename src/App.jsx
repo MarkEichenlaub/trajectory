@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { supabase, resolveMyAccount } from './utils/supabase'
 import { bootUserId, bootAccount, writeCachedAccount, clearCachedAccount } from './utils/boot'
 import { cacheClearUser } from './utils/cache'
 import StudentLogin from './components/StudentLogin'
-import AdminApp from './components/AdminApp'
 import PortalApp from './components/PortalApp'
-import SessionLauncher from './components/SessionLauncher'
+
+// Admin-only code (incl. the tag ontology and all manager views) stays out of
+// the student-facing bundle.
+const AdminApp = lazy(() => import('./components/AdminApp'))
+const SessionLauncher = lazy(() => import('./components/SessionLauncher'))
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
 const PORTAL_ROLES = ['student', 'parent', 'adult']
@@ -87,8 +90,11 @@ export default function App() {
   const effectiveUserId = userId ?? bootUserId
 
   if (account.role === 'admin') {
-    if (window.location.pathname.startsWith('/launch')) return <SessionLauncher />
-    return <AdminApp userId={effectiveUserId} />
+    const spinner = <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+    if (window.location.pathname.startsWith('/launch')) {
+      return <Suspense fallback={spinner}><SessionLauncher /></Suspense>
+    }
+    return <Suspense fallback={spinner}><AdminApp userId={effectiveUserId} /></Suspense>
   }
 
   if (PORTAL_ROLES.includes(account.role) && (account.students || []).length > 0) {
