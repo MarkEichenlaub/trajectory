@@ -47,7 +47,7 @@ export default function App() {
   const [hostSeen, setHostSeen] = useState(0)
   const [selfHosting, setSelfHosting] = useState(false)
   const [lastError, setLastError] = useState(null)
-  const [diag, setDiag] = useState(null)
+  const hostRef = useRef(null)
   const busRef = useRef(null)
   const inputRef = useRef(null)
   const refreshRef = useRef(() => {})
@@ -100,29 +100,13 @@ export default function App() {
           return next
         })
       }
-      // storage smoke test — shows the raw API behavior in the panel
-      try {
-        const col = miro.board.storage.collection('miro-calc')
-        const prev = await col.get('diag') // persisted from an earlier session?
-        const prevArr = await col.get('diagArr')
-        await col.set('diag', { ok: 1 })
-        await col.set('diagArr', [1, 2, 3])
-        const echo = await col.get('diag')
-        const echoArr = await col.get('diagArr')
-        const reg = await col.get('widgets')
-        setDiag(
-          `prev=${JSON.stringify(prev)} prevArr=${JSON.stringify(prevArr)} echo=${JSON.stringify(echo)} echoArr=${JSON.stringify(echoArr)} widgets=${JSON.stringify(reg)?.slice(0, 200) ?? 'undefined'}`
-        )
-      } catch (err) {
-        setDiag(`storage error: ${err.message ?? err}`)
-      }
       refreshRef.current = refresh
       await refresh()
       onRegistryChange(() => refresh())
       // The panel is a visible iframe, so its timers run at full speed — it
       // hosts the (preferred) engine. The headless iframe is throttled by
       // Chrome to ~1 tick/minute and only covers panel-closed periods.
-      await startHost({ priority: 2 })
+      hostRef.current = await startHost({ priority: 2 })
       setSelfHosting(true)
       setHostSeen(Date.now())
     })().catch((err) => setLastError(`panel init: ${err.message ?? err}`))
@@ -160,6 +144,7 @@ export default function App() {
     try {
       const desc = await createWidget()
       busRef.current?.send({ type: 'widgets-changed' })
+      await hostRef.current?.reloadWidgets() // own host picks it up immediately
       setSelected(desc.calcId)
       await refreshRef.current()
       setLastError(null)
@@ -182,7 +167,6 @@ export default function App() {
     <div style={S.wrap}>
       {!inMiro && <div style={S.error}>Not running inside Miro — calculator works, board features disabled.</div>}
       {lastError && <div style={S.error}>⚠ {lastError}</div>}
-      {diag && <div style={{ ...S.error, background: '#f0f9ff', color: '#075985', wordBreak: 'break-all' }}>{diag}</div>}
 
       <div style={S.section}>
         <div style={S.h}>Calculator ({angleMode})</div>

@@ -2,7 +2,7 @@
 // board-native calculator widgets for visitor input, evaluates, writes back.
 // Students never load any iframe — their side is 100% miro.com board content.
 /* global miro */
-import { createCalcEngine, createEstimateProblem } from '../engine/index.js'
+import { createCalcEngine, createEstimateProblem, preprocessInput } from '../engine/index.js'
 import { htmlToText, textToHtml, lastLine } from './normalize.js'
 import {
   COLORS,
@@ -108,6 +108,7 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
   }
 
   async function handleExpression(w, expr, rawText, eager) {
+    expr = preprocessInput(expr) // strip the trailing "=" etc. for display/history
     // a new expression abandons a pending estimate
     if (w.meta.phase === 'awaiting') {
       w.problem = null
@@ -152,6 +153,7 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
       w.meta = await setWidgetMeta(w.desc, { phase: 'idle', expr: '', attempts: 0 })
       w.input.clearAt = tickN + 1
       w.estimate.clearAt = tickN + 1
+      bus.send({ type: 'state', calcId: w.desc.calcId, phase: 'idle', attempts: 0 })
     } else if (r.revealed) {
       await writeText(w, 'answer', `= ${r.display} (revealed after 5 tries)`)
       await recordResult(w, w.meta.expr, { display: r.display, ascii: r.display }, { mode: 'estimate', revealed: true })
@@ -159,6 +161,7 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
       w.meta = await setWidgetMeta(w.desc, { phase: 'idle', expr: '', attempts: 0 })
       w.input.clearAt = tickN + 1
       w.estimate.clearAt = tickN + 1
+      bus.send({ type: 'state', calcId: w.desc.calcId, phase: 'idle', attempts: 0 })
     } else {
       const attempt = 5 - r.attemptsLeft
       await writeText(w, 'answer', `✗ ${r.hint} (attempt ${attempt}/5)`)
@@ -211,6 +214,11 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
         // student may just be pausing mid-thought); "=" always answers
         await handleExpression(w, expr, hit.text, hit.eager)
       }
+    }
+
+    // drain a pending estimate-box clear even after the problem is resolved
+    if (w.estimate.clearAt && !(w.meta.phase === 'awaiting' && w.problem)) {
+      await pollBox(w, 'estimate', [PLACEHOLDERS.estimateOn, PLACEHOLDERS.estimateOff])
     }
 
     if (w.meta.phase === 'awaiting' && w.problem) {
@@ -310,6 +318,7 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
         w.meta = await setWidgetMeta(w.desc, { phase: 'idle', expr: '', attempts: 0 })
         w.estimate.clearAt = tickN + 1
         w.input.clearAt = tickN + 1
+        bus.send({ type: 'state', calcId: w.desc.calcId, phase: 'idle', attempts: 0 })
       }
     }
   })
