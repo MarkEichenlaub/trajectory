@@ -45,9 +45,20 @@ export default function App() {
   const [boardHistory, setBoardHistory] = useState([])
   const [hostSeen, setHostSeen] = useState(0)
   const [selfHosting, setSelfHosting] = useState(false)
+  const [lastError, setLastError] = useState(null)
   const busRef = useRef(null)
   const inputRef = useRef(null)
   const refreshRef = useRef(() => {})
+
+  useEffect(() => {
+    const onErr = (e) => setLastError(String(e.reason ?? e.error ?? e.message ?? e))
+    window.addEventListener('error', onErr)
+    window.addEventListener('unhandledrejection', onErr)
+    return () => {
+      window.removeEventListener('error', onErr)
+      window.removeEventListener('unhandledrejection', onErr)
+    }
+  }, [])
 
   useEffect(() => {
     if (!inMiro) return
@@ -101,7 +112,7 @@ export default function App() {
       await startHost({ priority: 2 })
       setSelfHosting(true)
       setHostSeen(Date.now())
-    })()
+    })().catch((err) => setLastError(`panel init: ${err.message ?? err}`))
     return () => unsub()
   }, [])
 
@@ -133,10 +144,15 @@ export default function App() {
   }
 
   async function onInsertWidget() {
-    const desc = await createWidget()
-    busRef.current?.send({ type: 'widgets-changed' })
-    setSelected(desc.calcId)
-    await refreshRef.current()
+    try {
+      const desc = await createWidget()
+      busRef.current?.send({ type: 'widgets-changed' })
+      setSelected(desc.calcId)
+      await refreshRef.current()
+      setLastError(null)
+    } catch (err) {
+      setLastError(`insert: ${err.message ?? err}`)
+    }
   }
 
   async function toggleMode(desc) {
@@ -152,6 +168,7 @@ export default function App() {
   return (
     <div style={S.wrap}>
       {!inMiro && <div style={S.error}>Not running inside Miro — calculator works, board features disabled.</div>}
+      {lastError && <div style={S.error}>⚠ {lastError}</div>}
 
       <div style={S.section}>
         <div style={S.h}>Calculator ({angleMode})</div>
