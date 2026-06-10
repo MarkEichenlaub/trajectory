@@ -65,11 +65,9 @@ export default function App() {
   // still being confirmed; if auth turns out to be gone, the effects above
   // null the account and we fall back to the login screen.
   if (!account) {
-    if (session === undefined || resolving) {
-      return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
-    }
+    if (session === undefined || resolving) return <Splash />
     if (!session) return <StudentLogin />
-    return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+    return <Splash />
   }
 
   if (session === null) return <StudentLogin />
@@ -90,11 +88,10 @@ export default function App() {
   const effectiveUserId = userId ?? bootUserId
 
   if (account.role === 'admin') {
-    const spinner = <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
     if (window.location.pathname.startsWith('/launch')) {
-      return <Suspense fallback={spinner}><SessionLauncher /></Suspense>
+      return <Suspense fallback={<Splash />}><SessionLauncher /></Suspense>
     }
-    return <Suspense fallback={spinner}><AdminApp userId={effectiveUserId} /></Suspense>
+    return <Suspense fallback={<Splash />}><AdminApp userId={effectiveUserId} /></Suspense>
   }
 
   if (PORTAL_ROLES.includes(account.role) && (account.students || []).length > 0) {
@@ -102,6 +99,15 @@ export default function App() {
   }
 
   return <NoAccess email={session?.user?.email} />
+}
+
+function Splash() {
+  return (
+    <div className="splash">
+      <div className="splash-logo">Eichenlaub Physics</div>
+      <span className="spin" style={{ color: 'var(--text-dim)' }}>⟳</span>
+    </div>
+  )
 }
 
 function NoAccess({ email }) {

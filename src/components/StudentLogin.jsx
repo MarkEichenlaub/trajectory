@@ -113,6 +113,10 @@ function SignInCard({ studentName }) {
   )
 }
 
+// Show trial times in the visitor's own timezone (they may be anywhere).
+const VISITOR_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone
+const VISITOR_TZ_LABEL = new Date().toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ').pop()
+
 function TrialBookingWidget() {
   const [viewDate, setViewDate] = useState(() => { const d = new Date(); d.setDate(1); return d })
   const viewYear = viewDate.getFullYear()
@@ -120,6 +124,8 @@ function TrialBookingWidget() {
 
   const [slotsByDate, setSlotsByDate] = useState({})
   const [slotsLoading, setSlotsLoading] = useState(false)
+  const [slotsError, setSlotsError] = useState(null)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   const [selectedDay, setSelectedDay] = useState(null)
   const [selectedSlot, setSelectedSlot] = useState(null)
@@ -134,22 +140,30 @@ function TrialBookingWidget() {
 
   useEffect(() => {
     setSlotsLoading(true)
-    setSlotsByDate({})
+    setSlotsError(null)
     const from = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-CA')
     const to = new Date(viewYear, viewMonth + 1, 0).toLocaleDateString('en-CA')
     getTrialAvailability(from, to)
       .then(slots => {
         const byDate = {}
         slots.forEach(iso => {
-          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: 'America/New_York' })
+          const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: VISITOR_TZ })
           if (!byDate[key]) byDate[key] = []
           byDate[key].push(iso)
         })
-        setSlotsByDate(byDate)
+        // Replace this month's days, keep other months' cached days visible.
+        const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
+        setSlotsByDate(prev => {
+          const next = {}
+          for (const [day, isos] of Object.entries(prev)) {
+            if (!day.startsWith(monthPrefix)) next[day] = isos
+          }
+          return { ...next, ...byDate }
+        })
       })
-      .catch(e => console.error('Trial availability fetch failed:', e))
+      .catch(e => setSlotsError(e.message))
       .finally(() => setSlotsLoading(false))
-  }, [viewYear, viewMonth])
+  }, [viewYear, viewMonth, refreshKey])
 
   const firstDow = new Date(viewYear, viewMonth, 1).getDay()
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
@@ -204,7 +218,7 @@ function TrialBookingWidget() {
     if (selectedSlot) {
       const when = new Date(selectedSlot).toLocaleString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
-        hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York', timeZoneName: 'short',
+        hour: 'numeric', minute: '2-digit', timeZone: VISITOR_TZ, timeZoneName: 'short',
       })
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
@@ -282,12 +296,12 @@ function TrialBookingWidget() {
                 onClick={() => setSelectedSlot(slot)}
               >
                 {new Date(slot).toLocaleTimeString('en-US', {
-                  hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York',
+                  hour: 'numeric', minute: '2-digit', timeZone: VISITOR_TZ,
                 })}
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times Eastern · 30-minute sessions</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>All times {VISITOR_TZ_LABEL} (your local time) · 30-minute sessions</div>
         </div>
       )
     }
@@ -314,8 +328,15 @@ function TrialBookingWidget() {
         {slotsLoading && <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Loading…</span>}
       </div>
 
+      {slotsError && (
+        <div style={{ fontSize: 12, color: 'var(--red)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span>Couldn't load available times.</span>
+          <button className="sm" onClick={() => setRefreshKey(n => n + 1)}>Retry</button>
+        </div>
+      )}
+
       {/* Calendar grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, opacity: slotsLoading ? 0.6 : 1, transition: 'opacity 0.15s' }}>
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
           <div key={d} style={{
             fontSize: 10, fontWeight: 600, color: 'var(--text-dim)',

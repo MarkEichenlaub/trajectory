@@ -22,6 +22,7 @@ export default function PortalApp({ account, userId, onSignOut }) {
   const [sessions, setSessions] = useState([])
   const [accessibleSources, setAccessibleSources] = useState([])
   const [loadError, setLoadError] = useState(null)
+  const [retryKey, setRetryKey] = useState(0)
 
   // Which slices hold real data — guards the cache mirror effects below.
   const hydrated = useRef({})
@@ -53,7 +54,7 @@ export default function PortalApp({ account, userId, onSignOut }) {
       () => fetchHandoutsPublic().catch(() => []), setHandouts)
     apply('portalSources', k('sb', userId, 'portal', 'sources'),
       () => fetchMyAccessibleSources().catch(() => []), setAccessibleSources)
-  }, [])
+  }, [retryKey])
 
   // Mirror mutations (e.g. marking a problem completed) back into the cache.
   useEffect(() => { if (hydrated.current.portalAssignments && assignments) cacheSet(k('sb', userId, 'portal', 'assignments'), assignments) }, [assignments])
@@ -122,14 +123,31 @@ export default function PortalApp({ account, userId, onSignOut }) {
         <div className="content">
           <div className="student-portal">
             <div className="empty-state" style={{ color: 'var(--red)' }}>Error loading your portal: {loadError}</div>
+            <button style={{ margin: '12px auto 0', display: 'block' }} onClick={() => { setLoadError(null); setRetryKey(n => n + 1) }}>
+              Try again
+            </button>
           </div>
         </div>
       </div>
     )
   }
 
+  // First-ever visit (nothing cached yet): show the shell with skeleton rows
+  // instead of a blank spinner page while assignments load.
   if (assignments === null) {
-    return <div className="empty-state" style={{ marginTop: 80 }}>Loading your portal… <span className="spin">⟳</span></div>
+    return (
+      <div className="layout">
+        <PortalTopbar account={account} students={students} activeId={activeId} setActiveId={setActiveId} onSignOut={onSignOut} />
+        <div className="content">
+          <div className="student-portal" style={{ width: '100%', maxWidth: 760, margin: '24px auto' }}>
+            <div className="skeleton" style={{ width: 220, height: 22, marginBottom: 18 }} />
+            {[0, 1, 2, 3].map(i => (
+              <div key={i} className="skeleton" style={{ height: 52, marginBottom: 10 }} />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
