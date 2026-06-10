@@ -7,7 +7,7 @@ const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
 
 const MARK_GMAIL = 'mark.d.eichenlaub@gmail.com'
 const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
-const TIMEZONE = 'America/Los_Angeles'
+const TIMEZONE = 'America/New_York'
 const TRIAL_DURATION_MIN = 30
 const SLOT_INCREMENT_MIN = 30
 const MIN_NOTICE_HOURS = 24
@@ -50,8 +50,8 @@ async function getGoogleAccessToken(): Promise<string> {
   return data.access_token
 }
 
-function pacificToUtc(dateStr: string, hhmm: string): Date {
-  for (const offset of ['-07:00', '-08:00']) {
+function easternToUtc(dateStr: string, hhmm: string): Date {
+  for (const offset of ['-04:00', '-05:00']) {
     const candidate = new Date(`${dateStr}T${hhmm}:00${offset}`)
     const parts = new Intl.DateTimeFormat('en-CA', {
       timeZone: TIMEZONE,
@@ -64,17 +64,17 @@ function pacificToUtc(dateStr: string, hhmm: string): Date {
     const pacHour = d.hour === '24' ? '00' : d.hour
     if (pacDate === dateStr && `${pacHour}:${d.minute}` === hhmm) return candidate
   }
-  return new Date(`${dateStr}T${hhmm}:00-07:00`)
+  return new Date(`${dateStr}T${hhmm}:00-04:00`)
 }
 
-function pacificDow(dateStr: string): number {
+function easternDow(dateStr: string): number {
   const d = new Date(`${dateStr}T12:00:00Z`)
   const dow = new Intl.DateTimeFormat('en-US', { timeZone: TIMEZONE, weekday: 'short' }).format(d)
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(dow)
 }
 
 function generateSlots(dateStr: string): Date[] {
-  const dow = pacificDow(dateStr)
+  const dow = easternDow(dateStr)
   const windows = WORKING_HOURS[dow] ?? []
   const slots: Date[] = []
   for (const w of windows) {
@@ -82,7 +82,7 @@ function generateSlots(dateStr: string): Date[] {
     const [eh, em] = w.end.split(':').map(Number)
     const endMin = eh * 60 + em
     while (h * 60 + m + TRIAL_DURATION_MIN <= endMin) {
-      slots.push(pacificToUtc(dateStr, `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`))
+      slots.push(easternToUtc(dateStr, `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`))
       m += SLOT_INCREMENT_MIN
       h += Math.floor(m / 60)
       m %= 60
@@ -132,11 +132,11 @@ Deno.serve(async (req) => {
     return json({ error: 'Google auth failed', detail: String(e) }, 500)
   }
 
-  const timeMin = pacificToUtc(from, '00:00').toISOString()
+  const timeMin = easternToUtc(from, '00:00').toISOString()
   const afterTo = new Date(`${to}T12:00:00Z`)
   afterTo.setUTCDate(afterTo.getUTCDate() + 1)
   const toPlusOne = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE }).format(afterTo)
-  const timeMax = pacificToUtc(toPlusOne, '00:00').toISOString()
+  const timeMax = easternToUtc(toPlusOne, '00:00').toISOString()
 
   let busy: { start: string; end: string }[]
   try {

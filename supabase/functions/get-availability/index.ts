@@ -8,12 +8,12 @@ const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
 
 const MARK_GMAIL = 'mark.d.eichenlaub@gmail.com'
 const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
-const TIMEZONE = 'America/Los_Angeles'
+const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
 const SLOT_INCREMENT_MIN = 30
 const MIN_NOTICE_HOURS = 24
 
-// Working hours in Pacific time. Day 0 = Sunday, 6 = Saturday.
+// Working hours in Eastern time. Day 0 = Sunday, 6 = Saturday.
 const WORKING_HOURS: Record<number, { start: string; end: string }[]> = {
   0: [{ start: '20:30', end: '21:30' }],
   1: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '21:30' }],
@@ -52,9 +52,9 @@ async function getGoogleAccessToken(): Promise<string> {
   return data.access_token
 }
 
-// Convert a Pacific-date string (YYYY-MM-DD) + HH:MM to UTC Date, DST-safe.
-function pacificToUtc(dateStr: string, hhmm: string): Date {
-  for (const offset of ['-07:00', '-08:00']) {
+// Convert an Eastern-date string (YYYY-MM-DD) + HH:MM to UTC Date, DST-safe.
+function easternToUtc(dateStr: string, hhmm: string): Date {
+  for (const offset of ['-04:00', '-05:00']) {
     const candidate = new Date(`${dateStr}T${hhmm}:00${offset}`)
     const parts = new Intl.DateTimeFormat('en-CA', {
       timeZone: TIMEZONE,
@@ -67,19 +67,19 @@ function pacificToUtc(dateStr: string, hhmm: string): Date {
     const pacHour = d.hour === '24' ? '00' : d.hour
     if (pacDate === dateStr && `${pacHour}:${d.minute}` === hhmm) return candidate
   }
-  return new Date(`${dateStr}T${hhmm}:00-07:00`)
+  return new Date(`${dateStr}T${hhmm}:00-04:00`)
 }
 
-// Get Pacific day of week (0=Sun) for a Pacific calendar date string.
-function pacificDow(dateStr: string): number {
+// Get Eastern day of week (0=Sun) for an Eastern calendar date string.
+function easternDow(dateStr: string): number {
   const d = new Date(`${dateStr}T12:00:00Z`)
   const dow = new Intl.DateTimeFormat('en-US', { timeZone: TIMEZONE, weekday: 'short' }).format(d)
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(dow)
 }
 
-// Generate 1-hour slot UTC start times for a Pacific calendar date.
+// Generate 1-hour slot UTC start times for an Eastern calendar date.
 function generateSlots(dateStr: string): Date[] {
-  const dow = pacificDow(dateStr)
+  const dow = easternDow(dateStr)
   const windows = WORKING_HOURS[dow] ?? []
   const slots: Date[] = []
   for (const w of windows) {
@@ -87,7 +87,7 @@ function generateSlots(dateStr: string): Date[] {
     const [eh, em] = w.end.split(':').map(Number)
     const endMin = eh * 60 + em
     while (h * 60 + m + SESSION_DURATION_MIN <= endMin) {
-      slots.push(pacificToUtc(dateStr, `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`))
+      slots.push(easternToUtc(dateStr, `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`))
       m += SLOT_INCREMENT_MIN
       h += Math.floor(m / 60)
       m %= 60
@@ -145,12 +145,12 @@ Deno.serve(async (req) => {
     return json({ error: 'Google auth failed', detail: String(e) }, 500)
   }
 
-  // UTC bounds covering all working hours within the Pacific date range
-  const timeMin = pacificToUtc(from, '00:00').toISOString()
+  // UTC bounds covering all working hours within the Eastern date range
+  const timeMin = easternToUtc(from, '00:00').toISOString()
   const afterTo = new Date(`${to}T12:00:00Z`)
   afterTo.setUTCDate(afterTo.getUTCDate() + 1)
   const toPlusOne = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE }).format(afterTo)
-  const timeMax = pacificToUtc(toPlusOne, '00:00').toISOString()
+  const timeMax = easternToUtc(toPlusOne, '00:00').toISOString()
 
   let busy: { start: string; end: string }[]
   try {
@@ -163,7 +163,7 @@ Deno.serve(async (req) => {
   const minNoticeMs = MIN_NOTICE_HOURS * 3_600_000
   const slots: string[] = []
 
-  // Iterate Pacific calendar dates from `from` to `to` inclusive
+  // Iterate Eastern calendar dates from `from` to `to` inclusive
   const cur = new Date(`${from}T12:00:00Z`)
   const end = new Date(`${to}T12:00:00Z`)
   while (cur <= end) {

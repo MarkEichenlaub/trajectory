@@ -13,7 +13,7 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
-const TIMEZONE = 'America/Los_Angeles'
+const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
 const MIN_NOTICE_HOURS = 24
 
