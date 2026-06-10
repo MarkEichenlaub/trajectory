@@ -21,7 +21,7 @@ import { createLease, createBus } from './lease.js'
 const TICK_MS = 750
 const IDLE_TICKS = 2 // ~1.5 s of no typing triggers evaluation (besides "=")
 const REPAIR_EVERY = 7 // ~5 s
-const HEARTBEAT_EVERY = 80 // ~60 s
+const HEARTBEAT_MS = 50000 // wall-clock, not ticks — headless ticks are throttled
 
 function runtimeFor(desc) {
   return {
@@ -35,12 +35,16 @@ function runtimeFor(desc) {
   }
 }
 
-export async function startHost({ log = console.log } = {}) {
-  const lease = createLease()
+// priority 2 = panel (visible iframe, real 750 ms ticks). priority 1 =
+// headless sdkUri iframe — Chrome throttles its timers to ~1/minute, so it
+// only serves as a slow safety net while the panel is closed.
+export async function startHost({ log = console.log, priority = 1 } = {}) {
+  const lease = createLease(priority)
   const bus = await createBus()
   let widgets = []
   let tickN = 0
   let running = false
+  let lastBeat = 0
 
   async function reloadWidgets() {
     const { widgets: list, pruned } = await loadWidgets()
@@ -222,28 +226,37 @@ export async function startHost({ log = console.log } = {}) {
   }
 
   async function heartbeat(online) {
-    for (const w of widgets) {
-      try {
-        const dot = await miro.board.getById(w.desc.ids.status)
-        dot.style.fillColor = online ? COLORS.statusOnline : COLORS.statusOffline
-        await dot.sync()
-      } catch {
-        /* status dot deleted */
+    if (lease.isLeader()) {
+      for (const w of widgets) {
+        try {
+          const dot = await miro.board.getById(w.desc.ids.status)
+          dot.style.fillColor = online ? COLORS.statusOnline : COLORS.statusOffline
+          await dot.sync()
+        } catch {
+          /* status dot deleted */
+        }
       }
     }
     bus.send({
       type: 'host-state',
       sessionId: lease.sessionId,
+      priority,
       online,
+      leader: lease.isLeader(),
       widgets: widgets.map((w) => ({ calcId: w.desc.calcId, phase: w.meta?.phase, attempts: w.meta?.attempts })),
     })
   }
 
   async function tick() {
-    if (running || !lease.isLeader()) return
+    if (running) return
     running = true
     tickN++
     try {
+      if (Date.now() - lastBeat > HEARTBEAT_MS) {
+        lastBeat = Date.now()
+        await heartbeat(true)
+      }
+      if (!lease.isLeader()) return
       for (const w of widgets) await pollWidget(w)
       if (tickN % REPAIR_EVERY === 0) {
         for (const w of widgets) {
@@ -251,7 +264,6 @@ export async function startHost({ log = console.log } = {}) {
           await refreshMetaIfStale(w)
         }
       }
-      if (tickN % HEARTBEAT_EVERY === 1) await heartbeat(true)
     } catch (err) {
       log(`miro-calc tick error: ${err.message}`)
     } finally {
@@ -272,6 +284,10 @@ export async function startHost({ log = console.log } = {}) {
 
   bus.on(async (msg) => {
     if (!msg || typeof msg !== 'object') return
+    // a higher-priority host (the panel) is alive — yield the lease right away
+    if (msg.type === 'host-state' && msg.sessionId !== lease.sessionId && (msg.priority ?? 1) > priority) {
+      lease.demote()
+    }
     if (msg.type === 'widgets-changed') await reloadWidgets()
     if (msg.type === 'history-changed' && msg.source === 'panel') {
       const w = widgets.find((x) => x.desc.calcId === msg.calcId)

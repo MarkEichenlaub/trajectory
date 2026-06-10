@@ -6,9 +6,14 @@ import { STORAGE_COLLECTION } from './widget.js'
 
 const LEASE_KEY = 'lease'
 const RENEW_MS = 15000
-const STALE_MS = 45000
+// Headless (hidden cross-origin) iframes get their timers throttled by Chrome
+// to ~1/minute, so a headless leaseholder may renew that slowly — staleness
+// must be comfortably above one minute.
+const STALE_MS = 150000
 
-export function createLease() {
+// priority: 2 = panel host (visible iframe, fast ticks — preferred),
+//           1 = headless host (throttled safety net when the panel is closed).
+export function createLease(priority = 1) {
   const sessionId = Math.random().toString(36).slice(2, 12)
   let leader = false
   let stopped = false
@@ -26,9 +31,10 @@ export function createLease() {
     const now = Date.now()
     const mine = lease && lease.sessionId === sessionId
     const stale = !lease || !lease.ts || now - lease.ts > STALE_MS
-    if (mine || stale) {
+    const outranked = lease && (lease.priority ?? 1) < priority
+    if (mine || stale || outranked) {
       try {
-        await col.set(LEASE_KEY, { sessionId, ts: now })
+        await col.set(LEASE_KEY, { sessionId, ts: now, priority })
         leader = true
       } catch {
         leader = false
@@ -61,7 +67,13 @@ export function createLease() {
     start,
     release,
     isLeader: () => leader,
+    // a higher-priority host announced itself (via BroadcastChannel) — yield
+    // immediately instead of waiting for the next (possibly throttled) step
+    demote: () => {
+      leader = false
+    },
     sessionId,
+    priority,
   }
 }
 

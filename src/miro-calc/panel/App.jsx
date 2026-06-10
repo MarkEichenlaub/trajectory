@@ -13,6 +13,7 @@ import {
   applyEstimateMode,
 } from '../board/widget.js'
 import { createBus } from '../board/lease.js'
+import { startHost } from '../board/host.js'
 
 const inMiro = typeof miro !== 'undefined'
 
@@ -43,8 +44,10 @@ export default function App() {
   const [selected, setSelected] = useState(null)
   const [boardHistory, setBoardHistory] = useState([])
   const [hostSeen, setHostSeen] = useState(0)
+  const [selfHosting, setSelfHosting] = useState(false)
   const busRef = useRef(null)
   const inputRef = useRef(null)
+  const refreshRef = useRef(() => {})
 
   useEffect(() => {
     if (!inMiro) return
@@ -89,8 +92,15 @@ export default function App() {
           return next
         })
       }
+      refreshRef.current = refresh
       await refresh()
       onRegistryChange(() => refresh())
+      // The panel is a visible iframe, so its timers run at full speed — it
+      // hosts the (preferred) engine. The headless iframe is throttled by
+      // Chrome to ~1 tick/minute and only covers panel-closed periods.
+      await startHost({ priority: 2 })
+      setSelfHosting(true)
+      setHostSeen(Date.now())
     })()
     return () => unsub()
   }, [])
@@ -126,6 +136,7 @@ export default function App() {
     const desc = await createWidget()
     busRef.current?.send({ type: 'widgets-changed' })
     setSelected(desc.calcId)
+    await refreshRef.current()
   }
 
   async function toggleMode(desc) {
@@ -136,7 +147,7 @@ export default function App() {
   }
 
   const catalogHits = useMemo(() => (query.trim() ? searchCatalog(query).slice(0, 25) : []), [query])
-  const hostOnline = inMiro && Date.now() - hostSeen < 90000
+  const hostOnline = inMiro && (selfHosting || Date.now() - hostSeen < 90000)
 
   return (
     <div style={S.wrap}>

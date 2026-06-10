@@ -15,7 +15,7 @@ async function init() {
   })
 
   try {
-    await startHost()
+    await startHost({ priority: 1 })
   } catch (err) {
     console.error('miro-calc: host failed to start', err)
   }
