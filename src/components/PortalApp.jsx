@@ -1,7 +1,9 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, handoutSource, handoutLessonLabel } from '../utils/problemBank'
 import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources } from '../utils/supabase'
+import { bootEntry } from '../utils/boot'
+import { swr, k, cacheSet } from '../utils/cache'
 import StudentView from './StudentView'
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
@@ -10,7 +12,7 @@ const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
 // be linked to several students; a switcher picks the active one. All reads go
 // through the public client + RLS, so the rows returned are already scoped to
 // the accounts this login may see — we filter client-side by active student.
-export default function PortalApp({ account, onSignOut }) {
+export default function PortalApp({ account, userId, onSignOut }) {
   const students = account.students || []
   const [activeId, setActiveId] = useState(students[0]?.id || null)
   const [problems, setProblems] = useState([])
@@ -21,30 +23,41 @@ export default function PortalApp({ account, onSignOut }) {
   const [accessibleSources, setAccessibleSources] = useState([])
   const [loadError, setLoadError] = useState(null)
 
-  useEffect(() => {
-    fetchJSON('data/problems.json').then(setProblems).catch(() => setProblems([]))
-    fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
-  }, [])
+  // Which slices hold real data — guards the cache mirror effects below.
+  const hydrated = useRef({})
 
   useEffect(() => {
-    async function load() {
-      try {
-        const [a, sess, hout, sources] = await Promise.all([
-          fetchStudentAssignments(),
-          fetchStudentSessions(),
-          fetchHandoutsPublic().catch(() => []),
-          fetchMyAccessibleSources().catch(() => []),
-        ])
-        setAssignments(a)
-        setSessions(sess)
-        setHandouts(hout)
-        setAccessibleSources(sources)
-      } catch (e) {
-        setLoadError(e.message)
-      }
+    // Cached values (IndexedDB, written on the last visit) render in
+    // milliseconds; the network results replace them as they land. See
+    // utils/boot.js, which starts these fetches before React mounts.
+    function apply(name, key, fetcher, set, { onError } = {}) {
+      const entry = bootEntry(name, userId) || swr(key, fetcher)
+      let freshApplied = false
+      entry.cached.then(v => {
+        if (v !== undefined && !freshApplied) { hydrated.current[name] = true; set(v) }
+      })
+      entry.fresh.then(v => {
+        freshApplied = true
+        hydrated.current[name] = true
+        set(v)
+      }).catch(e => onError && onError(e))
     }
-    load()
+
+    apply('problems', k('gh', 'problems'), () => fetchJSON('data/problems.json'), setProblems)
+    apply('aops', k('gh', 'aops'), fetchAopsProblems, setAopsProblems)
+    apply('portalAssignments', k('sb', userId, 'portal', 'assignments'),
+      fetchStudentAssignments, setAssignments, { onError: e => setLoadError(e.message) })
+    apply('portalSessions', k('sb', userId, 'portal', 'sessions'),
+      fetchStudentSessions, setSessions, { onError: e => setLoadError(e.message) })
+    apply('portalHandouts', k('sb', userId, 'portal', 'handouts'),
+      () => fetchHandoutsPublic().catch(() => []), setHandouts)
+    apply('portalSources', k('sb', userId, 'portal', 'sources'),
+      () => fetchMyAccessibleSources().catch(() => []), setAccessibleSources)
   }, [])
+
+  // Mirror mutations (e.g. marking a problem completed) back into the cache.
+  useEffect(() => { if (hydrated.current.portalAssignments && assignments) cacheSet(k('sb', userId, 'portal', 'assignments'), assignments) }, [assignments])
+  useEffect(() => { if (hydrated.current.portalSessions) cacheSet(k('sb', userId, 'portal', 'sessions'), sessions) }, [sessions])
 
   // A handout's solutions stay hidden until the active student's assignment for it
   // is marked completed; only then does solutionUrl become non-null and the

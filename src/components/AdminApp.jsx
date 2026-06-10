@@ -1,7 +1,9 @@
-import { useState, useEffect, useCallback, useMemo, useDeferredValue } from 'react'
+import { useState, useEffect, useCallback, useMemo, useDeferredValue, useRef } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
-import { assembleProblemBank, fetchAopsProblems } from '../utils/problemBank'
+import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
+import { bootEntry } from '../utils/boot'
+import { swr, k, cacheSet } from '../utils/cache'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
@@ -34,7 +36,7 @@ const DEFAULT_FILTERS = {
   hideCompleted: false,
 }
 
-export default function AdminApp() {
+export default function AdminApp({ userId }) {
   const [problems, setProblems] = useState([])
   const [aopsProblems, setAopsProblems] = useState([])
   const [handouts, setHandouts] = useState([])
@@ -77,23 +79,59 @@ export default function AdminApp() {
   const [requiresSubmission, setRequiresSubmission] = useState(false)
   const [packetModalOpen, setPacketModalOpen] = useState(false)
 
+  // Which slices have received real (cached or fetched) data — guards the
+  // state→cache mirror effects below from writing initial empty state.
+  const hydrated = useRef({})
+
   useEffect(() => {
-    // Everything fires immediately and in parallel; each slice of state is
-    // applied as its fetch lands so no slow source delays the others.
-    fetchJSON('data/problems.json')
-      .then(setProblems).catch(() => setProblems([]))
-      .finally(() => setLoading(false))
-    fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
-    fetchStudents().then(s => {
+    // Each slice renders from the IndexedDB cache in milliseconds (when this
+    // user has visited before — utils/boot.js already has every fetch in
+    // flight), then the network result replaces it. Nothing waits on
+    // anything else.
+    function apply(name, key, fetcher, set, { onError } = {}) {
+      const entry = bootEntry(name, userId) || swr(key, fetcher)
+      let freshApplied = false
+      entry.cached.then(v => {
+        if (v !== undefined && !freshApplied) { hydrated.current[name] = true; set(v) }
+      })
+      entry.fresh.then(v => {
+        freshApplied = true
+        hydrated.current[name] = true
+        set(v)
+      }).catch(e => onError && onError(e))
+      return entry
+    }
+
+    const problemsEntry = apply('problems', k('gh', 'problems'),
+      () => fetchJSON('data/problems.json'), setProblems)
+    Promise.race([
+      problemsEntry.cached.then(v => (v === undefined ? problemsEntry.fresh : v)),
+      problemsEntry.fresh,
+    ]).catch(() => {}).finally(() => setLoading(false))
+
+    apply('aops', k('gh', 'aops'), fetchAopsProblems, setAopsProblems)
+    apply('students', k('sb', userId, 'students'), fetchStudents, s => {
       setStudents(s)
-      const urlStudent = searchParams.get('student')
-      const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || null
-      setActiveStudentIdState(resolved)
-    }).catch(e => setError(e.message))
-    fetchAssignments().then(setAssignments).catch(e => setError(e.message))
-    fetchSessions().then(setSessions).catch(e => setError(e.message))
-    fetchHandouts().then(setHandouts).catch(() => {})
+      setActiveStudentIdState(prev => {
+        const urlStudent = searchParams.get('student')
+        if (urlStudent && s.find(st => st.id === urlStudent)) return urlStudent
+        if (prev && s.find(st => st.id === prev)) return prev
+        return s[0]?.id || null
+      })
+    }, { onError: e => setError(e.message) })
+    apply('assignments', k('sb', userId, 'assignments'), fetchAssignments, setAssignments,
+      { onError: e => setError(e.message) })
+    apply('sessions', k('sb', userId, 'sessions'), () => fetchSessions(), setSessions,
+      { onError: e => setError(e.message) })
+    apply('handouts', k('sb', userId, 'handouts'), () => fetchHandouts().catch(() => []), setHandouts)
   }, [])
+
+  // Mirror state back into the cache so every mutation (assign, save student,
+  // edit session, …) survives a reload without touching the mutate helpers.
+  useEffect(() => { if (hydrated.current.students) cacheSet(k('sb', userId, 'students'), students) }, [students])
+  useEffect(() => { if (hydrated.current.assignments) cacheSet(k('sb', userId, 'assignments'), assignments) }, [assignments])
+  useEffect(() => { if (hydrated.current.sessions) cacheSet(k('sb', userId, 'sessions'), sessions) }, [sessions])
+  useEffect(() => { if (hydrated.current.handouts) cacheSet(k('sb', userId, 'handouts'), handouts) }, [handouts])
 
   const showToast = useCallback((msg, type = 'success') => {
     setToast({ msg, type })
@@ -746,6 +784,11 @@ export default function AdminApp() {
             allSources={allSources}
             onSaveStudent={handleSaveStudent}
             onStatusChange={(id, status) => setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s))}
+            onRefreshData={async () => {
+              const { problems: p, aopsProblems: ap } = await refreshProblemBank()
+              setProblems(p)
+              setAopsProblems(ap)
+            }}
             showToast={showToast}
           />
         )}

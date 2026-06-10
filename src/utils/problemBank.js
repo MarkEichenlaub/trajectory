@@ -1,5 +1,6 @@
 import { fetchJSON } from './github'
 import { fetchHandouts } from './supabase'
+import { swrFirst, k, cacheSet, getCachedUserId } from './cache'
 
 const COURSE_PREFIX_MAP = {
   MCH: 'Mechanics',
@@ -81,11 +82,31 @@ export async function fetchAopsProblems() {
 
 // Fetch all three sources and return the assembled bank. Used by the launcher;
 // AdminApp keeps its own state-backed copy but shares assembleProblemBank().
+// Cache-first: returns the last-seen bank instantly while refreshing behind
+// the scenes (same IndexedDB keys the main portal uses).
 export async function loadProblemBank() {
+  const uid = getCachedUserId()
   const [problems, aopsProblems, handouts] = await Promise.all([
-    fetchJSON('data/problems.json').catch(() => []),
-    fetchAopsProblems().catch(() => []),
-    fetchHandouts().catch(() => []),
+    swrFirst(k('gh', 'problems'), () => fetchJSON('data/problems.json')).catch(() => []),
+    swrFirst(k('gh', 'aops'), fetchAopsProblems).catch(() => []),
+    swrFirst(k('sb', uid, 'handouts'), fetchHandouts).catch(() => []),
   ])
   return assembleProblemBank({ problems, aopsProblems, handouts })
+}
+
+// Force-refetch the GitHub problem-bank JSON (cache-busted) and rewrite the
+// cache. Used by the Settings "Refresh data" button — e.g. right after a
+// script commits new problems and you don't want to wait out CDN caching.
+export async function refreshProblemBank() {
+  const [problems, index] = await Promise.all([
+    fetchJSON('data/problems.json', { bust: true }),
+    fetchJSON('data/aops-index.json', { bust: true }),
+  ])
+  const lists = await Promise.all(
+    (index.files || []).map(f => fetchJSON(`data/${f}`, { bust: true }).catch(() => []))
+  )
+  const aopsProblems = lists.flat()
+  cacheSet(k('gh', 'problems'), problems)
+  cacheSet(k('gh', 'aops'), aopsProblems)
+  return { problems, aopsProblems }
 }

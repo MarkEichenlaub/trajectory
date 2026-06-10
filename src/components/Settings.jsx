@@ -1,8 +1,21 @@
 import { useState, useEffect } from 'react'
 import { fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
 
-export default function Settings({ students, allSources, onSaveStudent, onStatusChange, showToast }) {
+export default function Settings({ students, allSources, onSaveStudent, onStatusChange, onRefreshData, showToast }) {
   const [saving, setSaving] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
+
+  async function handleRefreshData() {
+    setRefreshing(true)
+    try {
+      await onRefreshData()
+      showToast('Problem bank refreshed from GitHub')
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setRefreshing(false)
+    }
+  }
 
   async function handleSave(student) {
     setSaving(student.id)
@@ -46,6 +59,19 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
         ))}
         <button onClick={handleAdd} style={{ marginTop: 8 }}>+ Add Student</button>
       </div>
+
+      {onRefreshData && (
+        <div className="settings-section">
+          <h3>Data</h3>
+          <p style={{ fontSize: 12.5, color: 'var(--text-dim)', margin: '4px 0 10px' }}>
+            The problem bank is cached locally for instant loads and refreshed in the
+            background. Force a refetch if you just committed new problems.
+          </p>
+          <button onClick={handleRefreshData} disabled={refreshing}>
+            {refreshing ? 'Refreshing…' : 'Refresh problem bank'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

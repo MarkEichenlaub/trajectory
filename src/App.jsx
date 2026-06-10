@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase, resolveMyAccount } from './utils/supabase'
+import { bootUserId, bootAccount, writeCachedAccount, clearCachedAccount } from './utils/boot'
+import { cacheClearUser } from './utils/cache'
 import StudentLogin from './components/StudentLogin'
 import AdminApp from './components/AdminApp'
 import PortalApp from './components/PortalApp'
@@ -11,9 +13,14 @@ const PORTAL_ROLES = ['student', 'parent', 'adult']
 // Single entry point. The URL is always "/": who you are is decided by which
 // account you log in as, not a query param. After auth we resolve the account
 // once (which also grandfathers first-time logins) and route by role.
+//
+// Returning visits render instantly: the last-resolved account is cached in
+// localStorage (see utils/boot.js), so the role-appropriate app mounts without
+// waiting on auth or the resolve RPC — both still run and correct the state if
+// anything changed (sign-out elsewhere, role revoked, …).
 export default function App() {
   const [session, setSession] = useState(undefined) // undefined = loading
-  const [account, setAccount] = useState(null)
+  const [account, setAccount] = useState(() => bootAccount)
   const [resolving, setResolving] = useState(false)
 
   useEffect(() => {
@@ -29,36 +36,52 @@ export default function App() {
 
   useEffect(() => {
     if (userId === undefined) return
-    if (!userId) { setAccount(null); return }
-    setResolving(true)
+    if (!userId) {
+      setAccount(null)
+      // Signed out: drop this browser's cached account + data so another
+      // account on the same machine can't see it.
+      clearCachedAccount(bootUserId)
+      cacheClearUser(bootUserId)
+      return
+    }
+    // Only show the blocking spinner when there's no cached account to render.
+    if (!account) setResolving(true)
     resolveMyAccount()
-      .then(setAccount)
-      .catch(e => setAccount({ role: 'none', students: [], error: e.message }))
+      .then(acct => {
+        setAccount(acct)
+        writeCachedAccount(userId, acct)
+      })
+      .catch(e => setAccount(prev => prev || { role: 'none', students: [], error: e.message }))
       .finally(() => setResolving(false))
   }, [userId])
 
   const signOut = () => supabase.auth.signOut()
 
-  if (session === undefined) {
+  // With a cached account we render immediately, even while the session is
+  // still being confirmed; if auth turns out to be gone, the effects above
+  // null the account and we fall back to the login screen.
+  if (!account) {
+    if (session === undefined || resolving) {
+      return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
+    }
+    if (!session) return <StudentLogin />
     return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
   }
 
-  if (!session) return <StudentLogin />
+  if (session === null) return <StudentLogin />
 
-  if (resolving || !account) {
-    return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
-  }
+  const effectiveUserId = userId ?? bootUserId
 
   if (account.role === 'admin') {
     if (window.location.pathname.startsWith('/launch')) return <SessionLauncher />
-    return <AdminApp />
+    return <AdminApp userId={effectiveUserId} />
   }
 
   if (PORTAL_ROLES.includes(account.role) && (account.students || []).length > 0) {
-    return <PortalApp account={account} onSignOut={signOut} />
+    return <PortalApp account={account} userId={effectiveUserId} onSignOut={signOut} />
   }
 
-  return <NoAccess email={session.user?.email} />
+  return <NoAccess email={session?.user?.email} />
 }
 
 function NoAccess({ email }) {
