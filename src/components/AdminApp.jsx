@@ -156,6 +156,12 @@ export default function AdminApp({ userId }) {
     setPreviewStudentId(match?.id || null)
   }, [location.pathname, students])
 
+  // Refetch handouts whenever the Handouts tab is opened, so packet-draft
+  // statuses reflect what the build agent has done since the app loaded.
+  useEffect(() => {
+    if (view === VIEWS.HANDOUTS) refreshHandouts()
+  }, [view])
+
   const allProblems = useMemo(
     () => assembleProblemBank({ problems, aopsProblems, handouts }),
     [problems, aopsProblems, handouts]
