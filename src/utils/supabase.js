@@ -28,7 +28,7 @@ export async function fetchStudents() {
 
 export async function fetchAssignments() {
   const { data, error } = await adminClient()
-    .from('assignments').select('*, assignment_submissions(*)').order('assigned_date', { ascending: false })
+    .from('assignments').select('*, assignment_submissions(id, file_url)').order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data
 }
@@ -60,8 +60,13 @@ export async function removeStudent(id) {
   if (error) throw new Error(error.message)
 }
 
+// Explicit columns (the student-facing list + admin billing fields) and a row
+// cap keep this query fast — it runs on every admin boot.
+const ADMIN_SESSION_COLUMNS = 'id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags, paid, balance_decremented'
+
 export async function fetchSessions(studentId) {
-  let q = adminClient().from('sessions').select('*').order('scheduled_at', { ascending: false })
+  let q = adminClient().from('sessions').select(ADMIN_SESSION_COLUMNS)
+    .order('scheduled_at', { ascending: false }).limit(300)
   if (studentId) q = q.eq('student_id', studentId)
   const { data, error } = await q
   if (error) throw new Error(error.message)
@@ -296,7 +301,7 @@ export async function fetchMyProgressReports() {
 
 export async function fetchStudentAssignments() {
   const { data, error } = await supabase
-    .from('assignments').select('*, assignment_submissions(*)').order('assigned_date', { ascending: false })
+    .from('assignments').select('*, assignment_submissions(id, file_url)').order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
 }

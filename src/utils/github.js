@@ -18,8 +18,10 @@ export function setPAT(token) {
   localStorage.setItem('trajectory_pat', token)
 }
 
-export async function fetchJSON(path) {
-  const res = await fetch(rawUrl(path) + '?t=' + Date.now())
+// Normal fetches lean on HTTP caching (raw.githubusercontent serves
+// max-age=300). Pass { bust: true } only for explicit "refresh now" actions.
+export async function fetchJSON(path, { bust = false } = {}) {
+  const res = await fetch(rawUrl(path) + (bust ? '?t=' + Date.now() : ''))
   if (!res.ok) throw new Error(`Failed to fetch ${path}: ${res.status}`)
   return res.json()
 }

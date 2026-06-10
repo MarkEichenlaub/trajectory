@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useDeferredValue } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems } from '../utils/problemBank'
@@ -54,7 +54,7 @@ export default function AdminApp() {
     return Object.values(VIEWS).includes(v) ? v : VIEWS.BROWSER
   })
   const [activeStudentId, setActiveStudentIdState] = useState(
-    () => searchParams.get('student') || 'borna'
+    () => searchParams.get('student') || null
   )
 
   function setView(v) {
@@ -78,25 +78,21 @@ export default function AdminApp() {
   const [packetModalOpen, setPacketModalOpen] = useState(false)
 
   useEffect(() => {
-    async function load() {
-      const p = await fetchJSON('data/problems.json').catch(() => [])
-      setProblems(p)
-      fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
-      setLoading(false)
-      try {
-        const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
-        setStudents(s)
-        const urlStudent = searchParams.get('student')
-        const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || 'borna'
-        setActiveStudentIdState(resolved)
-        setAssignments(a)
-        setSessions(sess)
-        setHandouts(hout)
-      } catch (e) {
-        setError(e.message)
-      }
-    }
-    load()
+    // Everything fires immediately and in parallel; each slice of state is
+    // applied as its fetch lands so no slow source delays the others.
+    fetchJSON('data/problems.json')
+      .then(setProblems).catch(() => setProblems([]))
+      .finally(() => setLoading(false))
+    fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
+    fetchStudents().then(s => {
+      setStudents(s)
+      const urlStudent = searchParams.get('student')
+      const resolved = (urlStudent && s.find(st => st.id === urlStudent)) ? urlStudent : s[0]?.id || null
+      setActiveStudentIdState(resolved)
+    }).catch(e => setError(e.message))
+    fetchAssignments().then(setAssignments).catch(e => setError(e.message))
+    fetchSessions().then(setSessions).catch(e => setError(e.message))
+    fetchHandouts().then(setHandouts).catch(() => {})
   }, [])
 
   const showToast = useCallback((msg, type = 'success') => {
@@ -145,20 +141,24 @@ export default function AdminApp() {
     return map
   }, [assignments, activeStudentId])
 
+  // Filtering runs against a deferred copy of the filters so typing in the
+  // search box stays responsive even while thousands of rows re-filter.
+  const deferredFilters = useDeferredValue(filters)
+
   const preTagFilterProblems = useMemo(() => allProblems.filter(p => {
-    if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
-    if (filters.types.size > 0 && !filters.types.has(p.type)) return false
-    if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
-    if (filters.courses.size > 0 && !filters.courses.has(p.contest)) return false
-    if (filters.weeks.size > 0 && !filters.weeks.has(p.label)) return false
-    if (filters.sources.size > 0 && !filters.sources.has(p.source)) return false
-    if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
-    if (filters.statuses.size > 0) {
+    if (deferredFilters.contests.size > 0 && !deferredFilters.contests.has(p.contest)) return false
+    if (deferredFilters.types.size > 0 && !deferredFilters.types.has(p.type)) return false
+    if (deferredFilters.topics.size > 0 && !p.topics.some(t => deferredFilters.topics.has(t))) return false
+    if (deferredFilters.courses.size > 0 && !deferredFilters.courses.has(p.contest)) return false
+    if (deferredFilters.weeks.size > 0 && !deferredFilters.weeks.has(p.label)) return false
+    if (deferredFilters.sources.size > 0 && !deferredFilters.sources.has(p.source)) return false
+    if (deferredFilters.hideCompleted && statusMap[p.id] === 'completed') return false
+    if (deferredFilters.statuses.size > 0) {
       const pStatus = statusMap[p.id] || 'not-started'
-      if (!filters.statuses.has(pStatus)) return false
+      if (!deferredFilters.statuses.has(pStatus)) return false
     }
-    if (filters.textSearch) {
-      const q = filters.textSearch.toLowerCase()
+    if (deferredFilters.textSearch) {
+      const q = deferredFilters.textSearch.toLowerCase()
       if (
         !p.name.toLowerCase().includes(q) &&
         !p.desc.toLowerCase().includes(q) &&
@@ -168,14 +168,14 @@ export default function AdminApp() {
       ) return false
     }
     return true
-  }), [allProblems, filters, statusMap])
+  }), [allProblems, deferredFilters, statusMap])
 
   const filteredProblems = useMemo(() => {
-    if (filters.selectedTags.size === 0) return preTagFilterProblems
+    if (deferredFilters.selectedTags.size === 0) return preTagFilterProblems
     return preTagFilterProblems.filter(p =>
-      [...filters.selectedTags].every(tag => p.tags.includes(tag))
+      [...deferredFilters.selectedTags].every(tag => p.tags.includes(tag))
     )
-  }, [preTagFilterProblems, filters.selectedTags])
+  }, [preTagFilterProblems, deferredFilters.selectedTags])
 
   const sorted = useMemo(() => {
     const statusOrder = { assigned: 0, 'not-started': 1, completed: 2 }
@@ -602,7 +602,7 @@ export default function AdminApp() {
         <button className="sm" style={{ marginRight: 12, opacity: 0.5 }} onClick={() => supabase.auth.signOut()}>Sign out</button>
         <div className="student-selector">
           <label>Student</label>
-          <select value={activeStudentId} onChange={e => { setActiveStudentId(e.target.value); setSelected(new Set()) }}>
+          <select value={activeStudentId || ''} onChange={e => { setActiveStudentId(e.target.value); setSelected(new Set()) }}>
             {students.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
           <button className="sm" style={{ marginLeft: 6, padding: '2px 8px', whiteSpace: 'nowrap' }} title="Preview student portal" onClick={() => {

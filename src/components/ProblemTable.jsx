@@ -99,12 +99,19 @@ export function ProblemPreviewModal({ problem, onClose }) {
   )
 }
 
+const INITIAL_VISIBLE = 100
+
 export default function ProblemTable({
   problems, selected, statusMap, filters, setFilters,
   onToggle, onSelectAll, onClearAll,
   sortCol, sortDir, onSort,
 }) {
   const [previewProblem, setPreviewProblem] = useState(null)
+  // Rendering all ~900+ rows at once blocks the main thread for over a second,
+  // so only a slice is mounted; selection/sort still operate on the full list.
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE)
+  useEffect(() => { setVisibleCount(INITIAL_VISIBLE) }, [problems])
+  const visibleProblems = problems.length > visibleCount ? problems.slice(0, visibleCount) : problems
   const allSelected = problems.length > 0 && problems.every(p => selected.has(p.id))
 
   if (problems.length === 0) {
@@ -160,7 +167,7 @@ export default function ProblemTable({
             </tr>
           </thead>
           <tbody>
-            {problems.map(p => {
+            {visibleProblems.map(p => {
               const status = statusMap[p.id]
               const isSelected = selected.has(p.id)
               const isAssigned = status === 'assigned'
@@ -246,6 +253,13 @@ export default function ProblemTable({
             })}
           </tbody>
         </table>
+        {problems.length > visibleCount && (
+          <div className="table-show-more">
+            <span>Showing {visibleCount} of {problems.length}</span>
+            <button className="sm" onClick={() => setVisibleCount(c => c + 250)}>Show 250 more</button>
+            <button className="sm" onClick={() => setVisibleCount(problems.length)}>Show all</button>
+          </div>
+        )}
       </div>
       {previewProblem && (
         <ProblemPreviewModal problem={previewProblem} onClose={() => setPreviewProblem(null)} />
