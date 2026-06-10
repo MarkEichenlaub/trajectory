@@ -55,13 +55,18 @@ function handoutToProblem(h) {
 // Combine the three problem sources into the unified bank used everywhere.
 // Every record gets a normalized `source` ("homework"/"script" for AoPS rows,
 // "handout"/"summary"/"book"/"exam" for handouts-derived rows).
+// rawLesson keeps the original "MCH01: Velocity" code — the homework-packet
+// builder needs it, while `lesson` becomes the display string. Draft packets
+// (handouts still being built/reviewed) stay out of the bank until approved.
 export function assembleProblemBank({ problems = [], aopsProblems = [], handouts = [] }) {
   const normalizedAops = aopsProblems.map(p => ({
     ...p,
     lesson: formatLesson(p.lesson),
+    rawLesson: p.lesson,
     source: p.source || (p.type === 'AoPS Script' ? 'script' : 'homework'),
   }))
-  return [...problems, ...normalizedAops, ...handouts.map(handoutToProblem)]
+  const activeHandouts = handouts.filter(h => !h.status || h.status === 'active')
+  return [...problems, ...normalizedAops, ...activeHandouts.map(handoutToProblem)]
 }
 
 // Fetch every AoPS course file listed in the manifest and flatten the results.

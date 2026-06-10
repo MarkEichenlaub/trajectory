@@ -173,6 +173,13 @@ export async function saveHandout(handout) {
   if (error) throw new Error(error.message)
 }
 
+// Targeted column update (draft status transitions, review notes). Unlike
+// saveHandout's whole-row upsert, this never touches columns it isn't given.
+export async function updateHandout(id, updates) {
+  const { error } = await adminClient().from('handouts').update(updates).eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
 export async function deleteHandout(id) {
   const { error } = await adminClient().from('handouts').delete().eq('id', id)
   if (error) throw new Error(error.message)

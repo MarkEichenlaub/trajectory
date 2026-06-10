@@ -2,9 +2,10 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems } from '../utils/problemBank'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
+import CreatePacketModal from './CreatePacketModal'
 import FilterSidebar from './FilterSidebar'
 import ProblemTable from './ProblemTable'
 import AssignedView from './AssignedView'
@@ -74,6 +75,7 @@ export default function AdminApp() {
   const [sortDir, setSortDir] = useState('desc')
   const [emailDraft, setEmailDraft] = useState(null)
   const [requiresSubmission, setRequiresSubmission] = useState(false)
+  const [packetModalOpen, setPacketModalOpen] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -209,6 +211,113 @@ export default function AdminApp() {
   function clearSelection() { setSelected(new Set()) }
 
   const selectedProblems = allProblems.filter(p => selected.has(p.id))
+
+  // Selection in the table's current sort order (selected-but-filtered-out
+  // problems are appended) — this becomes the problem order in a built packet.
+  const orderedSelectedProblems = (() => {
+    const inTable = sorted.filter(p => selected.has(p.id))
+    const seen = new Set(inTable.map(p => p.id))
+    return [...inTable, ...selectedProblems.filter(p => !seen.has(p.id))]
+  })()
+
+  // Homework-packet drafts (built by the local /build-homework agent) vs. the
+  // ordinary active handouts shown in the Handouts manager and problem bank.
+  const draftHandouts = useMemo(
+    () => handouts.filter(h => h.status && h.status !== 'active'),
+    [handouts]
+  )
+  const activeHandoutRows = useMemo(
+    () => handouts.filter(h => !h.status || h.status === 'active'),
+    [handouts]
+  )
+
+  async function handleCreatePacket({ title, instructions, lesson }) {
+    if (!activeStudent || orderedSelectedProblems.length === 0) return
+    const lessonCode = (lesson.match(/^([A-Za-z][A-Za-z0-9]{0,4}\d{1,3})\b/) || [])[1] || ''
+    const topics = [...new Set(orderedSelectedProblems.flatMap(p => p.topics || []))]
+    try {
+      await saveHandout({
+        id: `hwset-${Date.now()}`,
+        name: title || `${lesson || 'Homework'} packet for ${activeStudent.name}`,
+        source: 'Eichenlaub Physics',
+        resource_type: 'handout',
+        description: '',
+        topics: topics.length ? topics : ['Mechanics'],
+        tags: lessonCode ? [lessonCode] : [],
+        pdf_url: '',
+        solution_url: '',
+        year: 0,
+        status: 'requested',
+        review_notes: '',
+        request: {
+          student_id: activeStudent.id,
+          student_name: activeStudent.name,
+          problem_ids: orderedSelectedProblems.map(p => p.id),
+          lesson,
+          title: title || null,
+          instructions,
+          requested_at: new Date().toISOString(),
+        },
+      })
+      await refreshHandouts()
+      setSelected(new Set())
+      setPacketModalOpen(false)
+      showToast('Build requested — run /build-homework in your terminal')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleDraftRequestChanges(handout, notes) {
+    try {
+      await updateHandout(handout.id, { review_notes: notes, status: 'revise' })
+      await refreshHandouts()
+      showToast('Change request saved — the build agent will pick it up')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleDraftApprove(handout) {
+    const req = handout.request || {}
+    if (!req.student_id) {
+      showToast('This draft has no student attached', 'error')
+      return
+    }
+    const date = new Date().toISOString().slice(0, 10)
+    const rows = [{
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${handout.id}`,
+      student_id: req.student_id,
+      problem_id: handout.id,
+      status: 'assigned',
+      assigned_date: date,
+      completed_date: null,
+      requires_submission: true,
+    }]
+    if (req.student_id !== MARK_STUDENT_ID
+        && !assignments.some(a => a.student_id === MARK_STUDENT_ID && a.problem_id === handout.id)) {
+      rows.push({ ...rows[0], id: `${Date.now()}-${Math.random().toString(36).slice(2)}-mark-${handout.id}`, student_id: MARK_STUDENT_ID })
+    }
+    try {
+      await updateHandout(handout.id, { status: 'active' })
+      await insertAssignments(rows)
+      setAssignments(prev => [...prev, ...rows])
+      await refreshHandouts()
+      showToast(`Packet assigned to ${req.student_name || req.student_id}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleDraftDiscard(handout) {
+    try {
+      await deleteHandout(handout.id)
+      await refreshHandouts()
+      showToast('Draft discarded')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
 
   async function handleAssign() {
     if (!activeStudent || selected.size === 0) return
@@ -529,6 +638,7 @@ export default function AdminApp() {
                   <button className="sm" onClick={selectAll}>Select all {sorted.length}</button>
                   <div className="spacer" />
                   <button className="sm" onClick={handleCopyUrls}>Copy URLs</button>
+                  <button className="sm" onClick={() => setPacketModalOpen(true)}>Create assignment…</button>
                   <label style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, cursor: 'pointer', userSelect: 'none' }}>
                     <input
                       type="checkbox"
@@ -597,7 +707,11 @@ export default function AdminApp() {
 
         {view === VIEWS.HANDOUTS && (
           <HandoutsManager
-            handouts={handouts}
+            handouts={activeHandoutRows}
+            drafts={draftHandouts}
+            onDraftRequestChanges={handleDraftRequestChanges}
+            onDraftApprove={handleDraftApprove}
+            onDraftDiscard={handleDraftDiscard}
             onHandoutsChange={refreshHandouts}
             showToast={showToast}
           />
@@ -638,6 +752,15 @@ export default function AdminApp() {
       </div>
 
       {toast && <Toast msg={toast.msg} type={toast.type} />}
+
+      {packetModalOpen && (
+        <CreatePacketModal
+          problems={orderedSelectedProblems}
+          student={activeStudent}
+          onSubmit={handleCreatePacket}
+          onClose={() => setPacketModalOpen(false)}
+        />
+      )}
 
       {emailDraft && (
         <SendEmailModal

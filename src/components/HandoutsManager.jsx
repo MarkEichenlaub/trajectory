@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { saveHandout, deleteHandout, uploadHandoutPDF, uploadHandoutSolutionPDF } from '../utils/supabase'
+import HomeworkDraftsPanel from './HomeworkDraftsPanel'
 
 const TOPIC_ORDER = [
   'Mechanics', 'Electromagnetism', 'Waves & Oscillations', 'Optics',
@@ -23,7 +24,7 @@ function handoutToForm(h) {
   }
 }
 
-export default function HandoutsManager({ handouts, onHandoutsChange, showToast }) {
+export default function HandoutsManager({ handouts, drafts = [], onDraftRequestChanges, onDraftApprove, onDraftDiscard, onHandoutsChange, showToast }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [editingId, setEditingId] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -114,6 +115,13 @@ export default function HandoutsManager({ handouts, onHandoutsChange, showToast 
 
   return (
     <div className="assigned-view">
+      <HomeworkDraftsPanel
+        drafts={drafts}
+        onRequestChanges={onDraftRequestChanges}
+        onApprove={onDraftApprove}
+        onDiscard={onDraftDiscard}
+      />
+
       <div className="assigned-header">
         <h2>{editingId ? 'Edit' : 'Add'} {typeLabel}</h2>
         <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{handouts.length} resource{handouts.length !== 1 ? 's' : ''}</span>
