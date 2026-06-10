@@ -107,11 +107,15 @@ export default function App() {
       // storage smoke test — shows the raw API behavior in the panel
       try {
         const col = miro.board.storage.collection('miro-calc')
+        const prev = await col.get('diag') // persisted from an earlier session?
+        const prevArr = await col.get('diagArr')
         await col.set('diag', { ok: 1 })
-        const back = await col.get('diag')
+        await col.set('diagArr', [1, 2, 3])
+        const echo = await col.get('diag')
+        const echoArr = await col.get('diagArr')
         const reg = await col.get('widgets')
         setDiag(
-          `storage=${typeof miro.board.storage} col.get=${typeof col.get} echo=${JSON.stringify(back)} widgets=${JSON.stringify(reg)?.slice(0, 300) ?? 'undefined'}`
+          `prev=${JSON.stringify(prev)} prevArr=${JSON.stringify(prevArr)} echo=${JSON.stringify(echo)} echoArr=${JSON.stringify(echoArr)} widgets=${JSON.stringify(reg)?.slice(0, 200) ?? 'undefined'}`
         )
       } catch (err) {
         setDiag(`storage error: ${err.message ?? err}`)

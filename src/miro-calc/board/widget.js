@@ -41,34 +41,40 @@ function storage() {
   return miro.board.storage.collection(STORAGE_COLLECTION)
 }
 
+// Miro board storage appears to handle plain objects more reliably than
+// bare arrays, so every stored list is wrapped as { list: [...] }.
+function unwrapList(value) {
+  if (value && Array.isArray(value.list)) return value.list
+  if (Array.isArray(value)) return value
+  return []
+}
+
 export async function getRegistry() {
-  const list = await storage().get(WIDGETS_KEY)
-  return Array.isArray(list) ? list : []
+  return unwrapList(await storage().get(WIDGETS_KEY))
 }
 
 export async function setRegistry(list) {
-  await storage().set(WIDGETS_KEY, list)
+  await storage().set(WIDGETS_KEY, { list })
 }
 
 export function onRegistryChange(cb) {
-  storage().onValue(WIDGETS_KEY, (value) => cb(Array.isArray(value) ? value : []))
+  storage().onValue(WIDGETS_KEY, (value) => cb(unwrapList(value)))
 }
 
 export async function getHistory(calcId) {
-  const list = await storage().get(`history:${calcId}`)
-  return Array.isArray(list) ? list : []
+  return unwrapList(await storage().get(`history:${calcId}`))
 }
 
 export async function appendHistory(calcId, entry) {
   const list = await getHistory(calcId)
   list.push(entry)
   while (list.length > 60) list.shift()
-  await storage().set(`history:${calcId}`, list)
+  await storage().set(`history:${calcId}`, { list })
   return list
 }
 
 export function onHistoryChange(calcId, cb) {
-  storage().onValue(`history:${calcId}`, (value) => cb(Array.isArray(value) ? value : []))
+  storage().onValue(`history:${calcId}`, (value) => cb(unwrapList(value)))
 }
 
 // ---------------------------------------------------------------------------
