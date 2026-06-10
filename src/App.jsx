@@ -22,6 +22,7 @@ export default function App() {
   const [session, setSession] = useState(undefined) // undefined = loading
   const [account, setAccount] = useState(() => bootAccount)
   const [resolving, setResolving] = useState(false)
+  const [retryKey, setRetryKey] = useState(0)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session))
@@ -51,9 +52,9 @@ export default function App() {
         setAccount(acct)
         writeCachedAccount(userId, acct)
       })
-      .catch(e => setAccount(prev => prev || { role: 'none', students: [], error: e.message }))
+      .catch(e => setAccount(prev => prev || { role: 'error', students: [], error: e.message }))
       .finally(() => setResolving(false))
-  }, [userId])
+  }, [userId, retryKey])
 
   const signOut = () => supabase.auth.signOut()
 
@@ -69,6 +70,19 @@ export default function App() {
   }
 
   if (session === null) return <StudentLogin />
+
+  // The resolve RPC failed (network blip, server hiccup) — distinct from
+  // "no account exists", which renders NoAccess below.
+  if (account.role === 'error') {
+    return (
+      <div className="empty-state" style={{ marginTop: 80 }}>
+        <p style={{ color: 'var(--red)' }}>Couldn't load your account: {account.error}</p>
+        <button style={{ marginTop: 12 }} onClick={() => { setAccount(null); setRetryKey(n => n + 1) }}>
+          Try again
+        </button>
+      </div>
+    )
+  }
 
   const effectiveUserId = userId ?? bootUserId
 

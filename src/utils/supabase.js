@@ -348,6 +348,7 @@ export async function bookSession(slot, studentId) {
   })
   if (error) throw new Error(error.message || String(error))
   if (data?.error) throw new Error(data.error)
+  if (!data?.session_id || !data?.scheduled_at) throw new Error('Unexpected response from booking service')
   return data
 }
 
@@ -357,6 +358,7 @@ export async function rescheduleSession(sessionId, newSlot) {
   })
   if (error) throw new Error(error.message || String(error))
   if (data?.error) throw new Error(data.error)
+  if (!data?.scheduled_at) throw new Error('Unexpected response from booking service')
   return data
 }
 

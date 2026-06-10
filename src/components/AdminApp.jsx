@@ -842,7 +842,7 @@ function AdminScheduleView({ student, sessions }) {
   function formatDate(iso) {
     return new Date(iso).toLocaleString('en-US', {
       weekday: 'short', month: 'short', day: 'numeric',
-      hour: 'numeric', minute: '2-digit', timeZone: 'America/Los_Angeles',
+      hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York',
     })
   }
 

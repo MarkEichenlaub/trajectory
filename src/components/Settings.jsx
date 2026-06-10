@@ -283,7 +283,7 @@ function InviteRow({ studentId, showToast }) {
 
   async function handleInvite() {
     const addr = email.trim().toLowerCase()
-    if (!addr) return
+    if (sending || !addr) return
     setSending(true)
     try {
       const relationship = kind === 'parent' ? 'parent' : 'self'
@@ -350,7 +350,7 @@ function ContactsSection({ studentId, showToast }) {
   const email = newEmail.trim().toLowerCase()
 
   async function handleAdd() {
-    if (!email) return
+    if (adding || !email) return
     setAdding(true)
     try {
       await saveStudentContact({
@@ -390,23 +390,26 @@ function ContactsSection({ studentId, showToast }) {
     }
   }
 
+  // Optimistic: flip immediately, roll back if the server rejects it.
   async function handleToggle(id, field, value) {
-    // Set the new invoice recipient ON before clearing others so the count
-    // never hits 0 and trips the DB invariant trigger.
-    if (field === 'receives_invoices' && value) {
-      await updateStudentContact(id, { receives_invoices: true })
-      for (const c of contacts) {
-        if (c.id !== id && c.receives_invoices) {
-          await updateStudentContact(c.id, { receives_invoices: false })
-        }
-      }
-      setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
-      return
-    }
+    const prevContacts = contacts
     try {
-      await updateStudentContact(id, { [field]: value })
+      // Set the new invoice recipient ON before clearing others so the count
+      // never hits 0 and trips the DB invariant trigger.
+      if (field === 'receives_invoices' && value) {
+        setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
+        await updateStudentContact(id, { receives_invoices: true })
+        for (const c of prevContacts) {
+          if (c.id !== id && c.receives_invoices) {
+            await updateStudentContact(c.id, { receives_invoices: false })
+          }
+        }
+        return
+      }
       setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
+      await updateStudentContact(id, { [field]: value })
     } catch (e) {
+      setContacts(prevContacts)
       showToast(e.message, 'error')
     }
   }

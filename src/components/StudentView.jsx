@@ -688,7 +688,7 @@ function AccountManagement({ student, relationship, isPreview }) {
 
   async function handleInvite() {
     const addr = inviteEmail.trim().toLowerCase()
-    if (!addr) return
+    if (sending || !addr) return
     setSending(true); setErr(null); setMsg(null)
     try {
       await createInvite({ student_id: student.id, email: addr, relationship: 'parent', account_type: 'parent' })
@@ -798,7 +798,7 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
   }
 
   async function handleAdd() {
-    if (!newEmail.trim()) return
+    if (adding || !newEmail.trim()) return
     setAdding(true)
     setErr(null)
     setNotice(null)
@@ -854,22 +854,30 @@ export function ContactsTab({ studentId, contacts, setContacts, isAdmin, canBill
     }
   }
 
+  // Optimistic: flip the checkbox immediately, roll back if the server says no.
   async function handleToggle(id, field, value) {
     const updateFn = isAdmin ? updateStudentContact : updateMyContact
-    // Invoice routing is exclusive. Set the new recipient ON before clearing the
-    // others so the count never momentarily hits 0 and trips the DB invariant.
-    if (field === 'receives_invoices' && value) {
-      await updateFn(id, { receives_invoices: true })
-      for (const c of contacts) {
-        if (c.id !== id && c.receives_invoices) {
-          await updateFn(c.id, { receives_invoices: false })
+    const prevContacts = contacts
+    setErr(null)
+    try {
+      // Invoice routing is exclusive. Set the new recipient ON before clearing
+      // the others so the count never momentarily hits 0 and trips the DB invariant.
+      if (field === 'receives_invoices' && value) {
+        setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
+        await updateFn(id, { receives_invoices: true })
+        for (const c of prevContacts) {
+          if (c.id !== id && c.receives_invoices) {
+            await updateFn(c.id, { receives_invoices: false })
+          }
         }
+        return
       }
-      setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
-      return
+      setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
+      await updateFn(id, { [field]: value })
+    } catch (e) {
+      setContacts(prevContacts)
+      setErr(e.message)
     }
-    await updateFn(id, { [field]: value })
-    setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
   }
 
   async function handleDelete(id) {
@@ -1129,6 +1137,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
   // Availability slots by student timezone date
   const [slotsByDate, setSlotsByDate] = useState({})
   const [slotsLoading, setSlotsLoading] = useState(false)
+  const [slotsError, setSlotsError] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
 
   // UI state
@@ -1142,11 +1151,13 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
   const [actionError, setActionError] = useState(null)
   const [successMsg, setSuccessMsg] = useState(null)
 
-  // Fetch availability for the visible month
+  // Fetch availability for the visible month. Previously-loaded days stay on
+  // screen (dimmed) while the new month loads — keys are full dates, so months
+  // never collide.
   useEffect(() => {
     if (isPreview || !student?.id) return
     setSlotsLoading(true)
-    setSlotsByDate({})
+    setSlotsError(null)
     const from = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-CA')
     const to = new Date(viewYear, viewMonth + 1, 0).toLocaleDateString('en-CA')
     getAvailability(from, to)
@@ -1157,11 +1168,20 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
           if (!byDate[key]) byDate[key] = []
           byDate[key].push(iso)
         })
-        setSlotsByDate(byDate)
+        // Replace this month's entries wholesale (a re-fetch must drop days
+        // whose slots were booked out) but keep other months' cached days.
+        const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
+        setSlotsByDate(prev => {
+          const next = {}
+          for (const [day, isos] of Object.entries(prev)) {
+            if (!day.startsWith(monthPrefix)) next[day] = isos
+          }
+          return { ...next, ...byDate }
+        })
       })
-      .catch(e => { console.error('Availability fetch failed:', e); setSlotsByDate({}) })
+      .catch(e => setSlotsError(e.message))
       .finally(() => setSlotsLoading(false))
-  }, [viewYear, viewMonth, student?.id, isPreview, refreshKey])
+  }, [viewYear, viewMonth, student?.id, isPreview, refreshKey, tz])
 
   const sessionsByDate = useMemo(() => {
     const map = {}
@@ -1458,7 +1478,14 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
         {slotsLoading && <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Loading…</span>}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
+      {slotsError && (
+        <div style={{ fontSize: 12, color: 'var(--red)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span>Couldn't load available times: {slotsError}</span>
+          <button className="sm" onClick={() => setRefreshKey(n => n + 1)}>Retry</button>
+        </div>
+      )}
+
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, opacity: slotsLoading ? 0.6 : 1, transition: 'opacity 0.15s' }}>
         {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
           <div key={d} style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-dim)', padding: '4px 0', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d}</div>
         ))}

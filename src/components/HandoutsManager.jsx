@@ -38,13 +38,22 @@ export default function HandoutsManager({ handouts, drafts = [], onDraftRequestC
     }))
   }
 
+  // True when the form differs from what it was seeded with (new vs editing).
+  function formDirty() {
+    const existing = editingId ? handouts.find(h => h.id === editingId) : null
+    const baseline = existing ? handoutToForm(existing) : EMPTY_FORM
+    return JSON.stringify(form) !== JSON.stringify(baseline)
+  }
+
   function startEdit(h) {
+    if (formDirty() && !confirm('Discard unsaved changes?')) return
     setForm(handoutToForm(h))
     setEditingId(h.id)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function cancelEdit() {
+    if (formDirty() && !confirm('Discard unsaved changes?')) return
     setForm(EMPTY_FORM)
     setEditingId(null)
   }
