@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { fetchJSON } from '../utils/github'
+import { assembleProblemBank, fetchAopsProblems, handoutSource, handoutLessonLabel } from '../utils/problemBank'
 import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources } from '../utils/supabase'
 import StudentView from './StudentView'
 
@@ -13,6 +14,7 @@ export default function PortalApp({ account, onSignOut }) {
   const students = account.students || []
   const [activeId, setActiveId] = useState(students[0]?.id || null)
   const [problems, setProblems] = useState([])
+  const [aopsProblems, setAopsProblems] = useState([])
   const [handouts, setHandouts] = useState([])
   const [assignments, setAssignments] = useState(null)
   const [sessions, setSessions] = useState([])
@@ -21,6 +23,7 @@ export default function PortalApp({ account, onSignOut }) {
 
   useEffect(() => {
     fetchJSON('data/problems.json').then(setProblems).catch(() => setProblems([]))
+    fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
   }, [])
 
   useEffect(() => {
@@ -56,22 +59,25 @@ export default function PortalApp({ account, onSignOut }) {
   }, [assignments, students, activeId])
 
   const allProblems = useMemo(() => [
-    ...problems,
+    ...assembleProblemBank({ problems, aopsProblems }),
+    // Handouts are mapped here (not via assembleProblemBank) because the portal
+    // gates each solution link on the active student's completion.
     ...handouts.map(h => ({
       id: h.id,
       contest: h.source,
       type: h.resource_type === 'book' ? 'Book' : 'Handout',
+      source: handoutSource(h),
       name: h.name,
       desc: h.description || '',
       topics: h.topics || [],
       tags: h.tags || [],
       year: 0,
-      label: '',
+      label: handoutLessonLabel(h),
       country: '',
       problemUrl: h.pdf_url || '',
       solutionUrl: completedHandoutIds.has(h.id) ? (h.solution_url || null) : null,
     })),
-  ], [problems, handouts, completedHandoutIds])
+  ], [problems, aopsProblems, handouts, completedHandoutIds])
 
   const activeStudent = useMemo(
     () => students.find(s => s.id === activeId) || students[0] || null,

@@ -13,6 +13,7 @@ import {
   getAvailability, bookSession, rescheduleSession, cancelSession,
 } from '../utils/supabase'
 import FilterSidebar from './FilterSidebar'
+import { ProblemPreviewModal } from './ProblemTable'
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
 
@@ -423,6 +424,9 @@ const DEFAULT_BANK_FILTERS = {
   contests: new Set(),
   types: new Set(),
   topics: new Set(),
+  courses: new Set(),
+  weeks: new Set(),
+  sources: new Set(),
   statuses: new Set(),
   selectedTags: new Set(),
   textSearch: '',
@@ -434,6 +438,7 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
   const [markingDoneId, setMarkingDoneId] = useState(null)
+  const [previewProblem, setPreviewProblem] = useState(null)
 
   const statusMap = useMemo(() => {
     const map = {}
@@ -445,6 +450,9 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
     if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
+    if (filters.courses.size > 0 && !filters.courses.has(p.contest)) return false
+    if (filters.weeks.size > 0 && !filters.weeks.has(p.label)) return false
+    if (filters.sources.size > 0 && !filters.sources.has(p.source)) return false
     if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
     if (filters.statuses.size > 0) {
       const s = statusMap[p.id] || 'not-started'
@@ -571,10 +579,41 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
                         }
                       </td>
                       <td>
-                        {!isResource && <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>}
+                        {!isResource && (
+                          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+                            <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.label}</span>
+                            {p.set_label && (
+                              <span style={{ color: p.type === 'AoPS Script' ? 'var(--accent)' : 'var(--text-dim)', fontSize: 10, whiteSpace: 'nowrap' }}>
+                                {p.type === 'AoPS Script' ? `★ ${p.set_label}` : p.set_label}
+                              </span>
+                            )}
+                            {(p.figures || []).length > 0 && (
+                              <span style={{ color: 'var(--text-dim)', fontSize: 10, whiteSpace: 'nowrap' }} title={`${p.figures.length} figure${p.figures.length !== 1 ? 's' : ''}`}>
+                                🖼 {p.figures.length}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </td>
                       <td>
-                        <div className="problem-name">{p.name}</div>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                          <div
+                            className="problem-name"
+                            style={p.statement ? { flex: 1, cursor: 'pointer' } : { flex: 1 }}
+                            title={p.statement ? 'Preview problem' : undefined}
+                            onClick={p.statement ? () => setPreviewProblem(p) : undefined}
+                          >
+                            {p.name}
+                          </div>
+                          {p.statement && (
+                            <button
+                              className="sm"
+                              style={{ fontSize: 11, padding: '0 5px', flexShrink: 0 }}
+                              title="Preview problem"
+                              onClick={() => setPreviewProblem(p)}
+                            >👁</button>
+                          )}
+                        </div>
                         {!isResource && <div className="problem-desc">{p.desc}</div>}
                       </td>
                       <td>
@@ -612,6 +651,9 @@ function ProblemBankBrowser({ bankProblems, assignments, student, onMarkComplete
           </div>
         )}
       </div>
+      {previewProblem && (
+        <ProblemPreviewModal problem={previewProblem} onClose={() => setPreviewProblem(null)} />
+      )}
     </div>
   )
 }

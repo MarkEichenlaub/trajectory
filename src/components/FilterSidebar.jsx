@@ -12,6 +12,17 @@ const STATUS_OPTIONS = [
   { key: 'completed', label: 'Completed' },
 ]
 
+// Display order for the normalized source filter; any extras get appended.
+const SOURCE_ORDER = ['homework', 'script', 'handout', 'summary', 'book', 'exam']
+
+function capitalize(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : s
+}
+
+function isAops(p) {
+  return p.type === 'AoPS' || p.type === 'AoPS Script'
+}
+
 function useCollapsed(key, defaultVal = false) {
   const [collapsed, setCollapsed] = useState(() => {
     try { return JSON.parse(localStorage.getItem('traj_collapsed_' + key)) ?? defaultVal }
@@ -43,16 +54,49 @@ function Section({ title, collapsed, onToggle, action, children }) {
 
 export default function FilterSidebar({ problems, filteredProblems, filters, setFilters, statusMap }) {
   const [contestCollapsed, toggleContest] = useCollapsed('contest')
+  const [courseCollapsed, toggleCourse_] = useCollapsed('course')
+  const [weekCollapsed, toggleWeek] = useCollapsed('week')
+  const [sourceCollapsed, toggleSource] = useCollapsed('psource', true)
   const [typeCollapsed, toggleType] = useCollapsed('type')
   const [topicCollapsed, toggleTopic] = useCollapsed('topic')
-  const [lessonCollapsed, toggleLesson] = useCollapsed('lesson', true)
   const [statusCollapsed, toggleStatus] = useCollapsed('status', true)
   const [tagCollapsed, toggleTag] = useCollapsed('tag', true)
   const [tagSearch, setTagSearch] = useState('')
 
   const contests = useMemo(() => [...new Set(problems.map(p => p.contest))].sort(), [problems])
   const types = useMemo(() => [...new Set(problems.map(p => p.type))].sort(), [problems])
-  const lessons = useMemo(() => [...new Set(problems.map(p => p.lesson).filter(Boolean))].sort(), [problems])
+
+  // AoPS courses in load (manifest) order — Sets preserve insertion order.
+  const courses = useMemo(() => {
+    const seen = new Set()
+    const out = []
+    problems.forEach(p => {
+      if (isAops(p) && p.contest && !seen.has(p.contest)) { seen.add(p.contest); out.push(p.contest) }
+    })
+    return out
+  }, [problems])
+
+  // Lessons ("weeks") for the selected courses, ordered by week number.
+  const weekOptions = useMemo(() => {
+    if (filters.courses.size === 0) return []
+    const byLabel = new Map()
+    problems.forEach(p => {
+      if (!isAops(p) || !filters.courses.has(p.contest) || !p.label) return
+      if (!byLabel.has(p.label)) {
+        const title = p.lesson ? (p.lesson.split(/:\s*/).slice(1).join(': ') || p.lesson) : ''
+        byLabel.set(p.label, { label: p.label, title, week: p.week ?? 0 })
+      }
+    })
+    return [...byLabel.values()].sort((a, b) => (a.week - b.week) || a.label.localeCompare(b.label))
+  }, [problems, filters.courses])
+
+  // Normalized source values present in the bank (homework / script / handout / …).
+  const sources = useMemo(() => {
+    const present = new Set(problems.map(p => p.source).filter(Boolean))
+    const ordered = SOURCE_ORDER.filter(s => present.has(s))
+    present.forEach(s => { if (!SOURCE_ORDER.includes(s)) ordered.push(s) })
+    return ordered
+  }, [problems])
 
   // Counts based on filteredProblems (after all filters except selectedTags)
   const contestCounts = useMemo(() => {
@@ -67,18 +111,24 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
     return counts
   }, [filteredProblems])
 
+  const weekCounts = useMemo(() => {
+    const counts = {}
+    filteredProblems.forEach(p => { if (p.label) counts[p.label] = (counts[p.label] || 0) + 1 })
+    return counts
+  }, [filteredProblems])
+
+  const sourceCounts = useMemo(() => {
+    const counts = {}
+    filteredProblems.forEach(p => { if (p.source) counts[p.source] = (counts[p.source] || 0) + 1 })
+    return counts
+  }, [filteredProblems])
+
   const topicCounts = useMemo(() => {
     const counts = {}
     TOPIC_ORDER.forEach(t => { counts[t] = 0 })
     filteredProblems.forEach(p => {
       p.topics.forEach(t => { if (counts[t] !== undefined) counts[t]++ })
     })
-    return counts
-  }, [filteredProblems])
-
-  const lessonCounts = useMemo(() => {
-    const counts = {}
-    filteredProblems.forEach(p => { if (p.lesson) counts[p.lesson] = (counts[p.lesson] || 0) + 1 })
     return counts
   }, [filteredProblems])
 
@@ -115,13 +165,30 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
     })
   }
 
+  // Toggling a course also prunes week selections that no longer belong to any
+  // selected course (otherwise stale labels would filter everything out).
+  function toggleCourse(course) {
+    setFilters(prev => {
+      const nextCourses = new Set(prev.courses)
+      if (nextCourses.has(course)) nextCourses.delete(course); else nextCourses.add(course)
+      const validLabels = new Set()
+      if (nextCourses.size > 0) {
+        problems.forEach(p => { if (isAops(p) && nextCourses.has(p.contest) && p.label) validLabels.add(p.label) })
+      }
+      const nextWeeks = new Set([...prev.weeks].filter(l => validLabels.has(l)))
+      return { ...prev, courses: nextCourses, weeks: nextWeeks }
+    })
+  }
+
   function clearAll() {
     setFilters(prev => ({
       ...prev,
       contests: new Set(),
       types: new Set(),
       topics: new Set(),
-      lessons: new Set(),
+      courses: new Set(),
+      weeks: new Set(),
+      sources: new Set(),
       statuses: new Set(),
       selectedTags: new Set(),
       hideCompleted: false,
@@ -129,7 +196,8 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
   }
 
   const hasAnyFilter = filters.contests.size > 0 || filters.types.size > 0 || filters.topics.size > 0
-    || filters.lessons.size > 0 || filters.statuses.size > 0 || filters.selectedTags.size > 0 || filters.hideCompleted
+    || filters.courses.size > 0 || filters.weeks.size > 0 || filters.sources.size > 0
+    || filters.statuses.size > 0 || filters.selectedTags.size > 0 || filters.hideCompleted
 
   return (
     <div className="sidebar">
@@ -144,7 +212,7 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
         <span>Hide completed</span>
       </div>
 
-      <Section title="Source" collapsed={contestCollapsed} onToggle={toggleContest}>
+      <Section title="Collection" collapsed={contestCollapsed} onToggle={toggleContest}>
         {contests.map(c => (
           <div key={c} className={`sidebar-item ${filters.contests.has(c) ? 'active' : ''}`} onClick={() => toggleSet('contests', c)}>
             <input type="checkbox" checked={filters.contests.has(c)} readOnly />
@@ -153,6 +221,67 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
           </div>
         ))}
       </Section>
+
+      {courses.length > 0 && (
+        <Section
+          title={`Course${filters.courses.size > 0 ? ` (${filters.courses.size})` : ''}`}
+          collapsed={courseCollapsed}
+          onToggle={toggleCourse_}
+          action={filters.courses.size > 0 && (
+            <button
+              className="sm"
+              style={{ fontSize: 11, padding: '1px 6px' }}
+              onClick={() => setFilters(f => ({ ...f, courses: new Set(), weeks: new Set() }))}
+            >Clear</button>
+          )}
+        >
+          {courses.map(c => (
+            <div key={c} className={`sidebar-item ${filters.courses.has(c) ? 'active' : ''}`} onClick={() => toggleCourse(c)}>
+              <input type="checkbox" checked={filters.courses.has(c)} readOnly />
+              <span style={{ flex: 1 }}>{c}</span>
+              <span className="sidebar-count">{contestCounts[c] || 0}</span>
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {filters.courses.size > 0 && weekOptions.length > 0 && (
+        <Section
+          title={`Week${filters.weeks.size > 0 ? ` (${filters.weeks.size})` : ''}`}
+          collapsed={weekCollapsed}
+          onToggle={toggleWeek}
+          action={filters.weeks.size > 0 && (
+            <button
+              className="sm"
+              style={{ fontSize: 11, padding: '1px 6px' }}
+              onClick={() => setFilters(f => ({ ...f, weeks: new Set() }))}
+            >Clear</button>
+          )}
+        >
+          {weekOptions.map(w => (
+            <div key={w.label} className={`sidebar-item ${filters.weeks.has(w.label) ? 'active' : ''}`} style={{ fontSize: 12 }} onClick={() => toggleSet('weeks', w.label)}>
+              <input type="checkbox" checked={filters.weeks.has(w.label)} readOnly />
+              <span style={{ flex: 1 }}>
+                <span style={{ color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', marginRight: 5 }}>{w.label}</span>
+                {w.title}
+              </span>
+              <span className="sidebar-count">{weekCounts[w.label] || 0}</span>
+            </div>
+          ))}
+        </Section>
+      )}
+
+      {sources.length > 0 && (
+        <Section title="Source" collapsed={sourceCollapsed} onToggle={toggleSource}>
+          {sources.map(s => (
+            <div key={s} className={`sidebar-item ${filters.sources.has(s) ? 'active' : ''}`} onClick={() => toggleSet('sources', s)}>
+              <input type="checkbox" checked={filters.sources.has(s)} readOnly />
+              <span>{capitalize(s)}</span>
+              <span className="sidebar-count">{sourceCounts[s] || 0}</span>
+            </div>
+          ))}
+        </Section>
+      )}
 
       <Section title="Type" collapsed={typeCollapsed} onToggle={toggleType}>
         {types.map(t => (
@@ -173,29 +302,6 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
           </div>
         ))}
       </Section>
-
-      {lessons.length > 0 && (
-        <Section
-          title={`Lesson${filters.lessons.size > 0 ? ` (${filters.lessons.size})` : ''}`}
-          collapsed={lessonCollapsed}
-          onToggle={toggleLesson}
-          action={filters.lessons.size > 0 && (
-            <button
-              className="sm"
-              style={{ fontSize: 11, padding: '1px 6px' }}
-              onClick={() => setFilters(f => ({ ...f, lessons: new Set() }))}
-            >Clear</button>
-          )}
-        >
-          {lessons.map(l => (
-            <div key={l} className={`sidebar-item ${filters.lessons.has(l) ? 'active' : ''}`} style={{ fontSize: 12 }} onClick={() => toggleSet('lessons', l)}>
-              <input type="checkbox" checked={filters.lessons.has(l)} readOnly />
-              <span style={{ flex: 1 }}>{l}</span>
-              <span className="sidebar-count">{lessonCounts[l] || 0}</span>
-            </div>
-          ))}
-        </Section>
-      )}
 
       <Section title="Status" collapsed={statusCollapsed} onToggle={toggleStatus}>
         {STATUS_OPTIONS.map(({ key, label }) => (

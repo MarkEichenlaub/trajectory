@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { fetchJSON } from '../utils/github'
-import { assembleProblemBank } from '../utils/problemBank'
+import { assembleProblemBank, fetchAopsProblems } from '../utils/problemBank'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
@@ -24,7 +24,9 @@ const DEFAULT_FILTERS = {
   contests: new Set(),
   types: new Set(),
   topics: new Set(),
-  lessons: new Set(),
+  courses: new Set(),
+  weeks: new Set(),
+  sources: new Set(),
   statuses: new Set(),
   selectedTags: new Set(),
   textSearch: '',
@@ -77,7 +79,7 @@ export default function AdminApp() {
     async function load() {
       const p = await fetchJSON('data/problems.json').catch(() => [])
       setProblems(p)
-      fetchJSON('data/aops-mechanics.json').then(setAopsProblems).catch(() => setAopsProblems([]))
+      fetchAopsProblems().then(setAopsProblems).catch(() => setAopsProblems([]))
       setLoading(false)
       try {
         const [s, a, sess, hout] = await Promise.all([fetchStudents(), fetchAssignments(), fetchSessions(), fetchHandouts().catch(() => [])])
@@ -145,7 +147,9 @@ export default function AdminApp() {
     if (filters.contests.size > 0 && !filters.contests.has(p.contest)) return false
     if (filters.types.size > 0 && !filters.types.has(p.type)) return false
     if (filters.topics.size > 0 && !p.topics.some(t => filters.topics.has(t))) return false
-    if (filters.lessons.size > 0 && !filters.lessons.has(p.lesson)) return false
+    if (filters.courses.size > 0 && !filters.courses.has(p.contest)) return false
+    if (filters.weeks.size > 0 && !filters.weeks.has(p.label)) return false
+    if (filters.sources.size > 0 && !filters.sources.has(p.source)) return false
     if (filters.hideCompleted && statusMap[p.id] === 'completed') return false
     if (filters.statuses.size > 0) {
       const pStatus = statusMap[p.id] || 'not-started'

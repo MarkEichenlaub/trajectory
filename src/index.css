@@ -315,6 +315,9 @@ tr.assigned-row-tr td { background: color-mix(in srgb, var(--yellow-bg) 45%, tra
 .modal-problem-item:last-child { border: none; }
 .modal textarea { width: 100%; min-height: 80px; resize: vertical; margin-top: 8px; }
 .modal label { font-size: 12px; color: var(--text-dim); display: block; margin-bottom: 4px; }
+.problem-preview-body { font-size: 14px; line-height: 1.65; }
+.problem-preview-body p { margin: 0 0 10px; }
+.problem-preview-body p:last-child { margin-bottom: 0; }
 
 /* ---- Student portal ------------------------------------------ */
 .student-portal { flex: 1; overflow-y: auto; padding: 34px 40px; max-width: 940px; }

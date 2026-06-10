@@ -1,0 +1,21 @@
+# Reference copy of the Miro app manifest (the real one lives in the Miro app
+# settings at https://miro.com/app/settings/user-profile/apps).
+# See src/miro-calc/README.md for setup steps.
+appName: Eichenlaub Physics Calculator
+sdkVersion: SDK_V2
+sdkUri: https://portal.eichenlaubphysics.com/miro-calc/index.html
+scopes:
+  - boards:read
+  - boards:write
+icons:
+  outline: |
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
+      <rect x="7" y="5" width="10" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="8.5" cy="13" r="1.2" fill="currentColor"/>
+      <circle cx="12" cy="13" r="1.2" fill="currentColor"/>
+      <circle cx="15.5" cy="13" r="1.2" fill="currentColor"/>
+      <circle cx="8.5" cy="17" r="1.2" fill="currentColor"/>
+      <circle cx="12" cy="17" r="1.2" fill="currentColor"/>
+      <circle cx="15.5" cy="17" r="1.2" fill="currentColor"/>
+    </svg>
