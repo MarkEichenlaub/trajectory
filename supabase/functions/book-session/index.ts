@@ -155,16 +155,33 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: 'unauthorized' }, 401)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const student = await resolveSelfStudent(admin, user.id)
+
+  const { slot, student_id: bookForId } = await req.json() as { slot: string; student_id?: string }
+  if (!slot) return json({ error: 'slot required' }, 400)
+
+  // A caller normally books for their own linked student. An admin may pass a
+  // student_id to book on that student's behalf (e.g. a parent emailed a time).
+  let isAdminCaller = false
+  let student
+  if (bookForId) {
+    const { data: prof } = await admin
+      .from('profiles').select('account_type').eq('id', user.id).maybeSingle()
+    isAdminCaller = prof?.account_type === 'admin'
+    if (!isAdminCaller) return json({ error: 'forbidden: admin only' }, 403)
+    const { data: s } = await admin
+      .from('students').select('id, name, first_name, email, timezone').eq('id', bookForId).maybeSingle()
+    student = s
+  } else {
+    student = await resolveSelfStudent(admin, user.id)
+  }
   if (!student) return json({ error: 'no student record' }, 403)
   const tz = (student.timezone as string) || TIMEZONE
 
-  const { slot } = await req.json() as { slot: string }
-  if (!slot) return json({ error: 'slot required' }, 400)
-
   const slotDate = new Date(slot)
   if (isNaN(slotDate.getTime())) return json({ error: 'invalid slot' }, 400)
-  if (slotDate.getTime() - Date.now() < MIN_NOTICE_HOURS * 3_600_000) {
+  // The 24h-notice rule is a guard rail for student self-booking; an admin
+  // booking on a family's behalf may schedule sooner.
+  if (!isAdminCaller && slotDate.getTime() - Date.now() < MIN_NOTICE_HOURS * 3_600_000) {
     return json({ error: 'slot is too soon (24h minimum notice required)' }, 400)
   }
 

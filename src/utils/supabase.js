@@ -328,9 +328,11 @@ export async function getAvailability(from, to) {
   return data?.slots || []
 }
 
-export async function bookSession(slot) {
+export async function bookSession(slot, studentId) {
+  // studentId is supplied only when an admin books on a student's behalf;
+  // otherwise the edge function books for the caller's own linked student.
   const { data, error } = await supabase.functions.invoke('book-session', {
-    body: { slot },
+    body: studentId ? { slot, student_id: studentId } : { slot },
   })
   if (error) throw new Error(error.message || String(error))
   if (data?.error) throw new Error(data.error)

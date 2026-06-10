@@ -1166,7 +1166,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
   }
 
   async function handleBook(slot) {
-    if (!student || isPreview || isAdmin) return
+    if (!student || isPreview) return
     setPendingSlot(slot)
   }
 
@@ -1174,7 +1174,8 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
     if (!pendingSlot || working) return
     setWorking(true); setActionError(null)
     try {
-      const result = await bookSession(pendingSlot)
+      // Admins book on the active student's behalf; students book for themselves.
+      const result = await bookSession(pendingSlot, isAdmin ? student.id : undefined)
       setLocalAdded(prev => [...prev, {
         id: result.session_id,
         student_id: student.id,
@@ -1185,7 +1186,9 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
         meet_url: result.meet_url,
         gcal_event_id: result.gcal_event_id,
       }])
-      setSuccessMsg('Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
+      setSuccessMsg(isAdmin
+        ? `Session booked for ${student?.first_name || student?.name}! The calendar invite, Google Meet link, and whiteboard have been emailed to the family.`
+        : 'Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
       setRefreshKey(k => k + 1)
       clearAction()
     } catch (e) {
@@ -1276,7 +1279,9 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ fontSize: 14, fontWeight: 600 }}>
-            {reschedulingId ? 'Reschedule to this time?' : 'Book this session?'}
+            {reschedulingId ? 'Reschedule to this time?'
+              : isAdmin ? `Book this session for ${student?.first_name || student?.name}?`
+              : 'Book this session?'}
           </div>
           <div style={{ fontSize: 13 }}>{when}</div>
           {actionError && <div style={{ fontSize: 12, color: 'var(--red)' }}>{actionError}</div>}
@@ -1303,11 +1308,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
             <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {daySlots.map(slot => isAdmin ? (
-              <span key={slot} style={{ fontSize: 12, padding: '3px 10px', background: 'var(--surface2)', borderRadius: 6, color: 'var(--text-dim)' }}>
-                {new Date(slot).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: tz })}
-              </span>
-            ) : (
+            {daySlots.map(slot => (
               <button key={slot} className="sm" style={{ fontSize: 12 }}
                 onClick={() => setPendingSlot(slot)}>
                 {new Date(slot).toLocaleTimeString('en-US', {
@@ -1316,7 +1317,7 @@ export function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmi
               </button>
             ))}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? `Available student slots — all times ${tzAbbr}` : `All times ${tzAbbr}`}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? `Click a time to book it for ${student?.first_name || student?.name || 'this student'} — all times ${tzAbbr}` : `All times ${tzAbbr}`}</div>
         </div>
       )
     }
