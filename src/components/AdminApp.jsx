@@ -432,7 +432,7 @@ export default function AdminApp() {
         <div className="topbar">
           <span className="logo" style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <span>Eichenlaub Physics</span>
-            <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', color: 'var(--muted)', fontWeight: 500, textTransform: 'uppercase' }}>Student Portal</span>
+            <span style={{ fontSize: 15, fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', color: 'var(--muted)', fontWeight: 500, textTransform: 'uppercase' }}>Student Portal</span>
           </span>
           <div style={{ marginLeft: 16, padding: '2px 10px', background: 'var(--yellow-bg)', color: 'var(--yellow)', border: '1px solid var(--yellow-line)', borderRadius: 4, fontSize: 12, fontWeight: 600 }}>
             Admin preview
@@ -467,7 +467,7 @@ export default function AdminApp() {
   return (
     <div className="layout">
       <div className="topbar">
-        <span className="logo">Trajectory <span style={{ fontSize: 11, opacity: 0.5, fontWeight: 400 }}>v2</span></span>
+        <span className="logo">Trajectory <span style={{ fontSize: 17, opacity: 0.5, fontWeight: 400 }}>v2</span></span>
         <nav>
           <button className={view === VIEWS.BROWSER ? 'active' : ''} onClick={() => setView(VIEWS.BROWSER)}>
             Problems

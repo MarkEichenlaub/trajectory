@@ -1,6 +1,20 @@
 import { fetchJSON } from './github'
 import { fetchHandouts } from './supabase'
 
+const COURSE_PREFIX_MAP = {
+  MCH: 'Mechanics',
+}
+
+function formatLesson(lesson) {
+  if (!lesson) return lesson
+  const m = lesson.match(/^([A-Z]+)(\d+):\s*(.*)$/)
+  if (!m) return lesson
+  const [, prefix, num, title] = m
+  const courseName = COURSE_PREFIX_MAP[prefix]
+  if (!courseName) return lesson
+  return `${courseName} ${parseInt(num)}: ${title}`
+}
+
 // Map a handouts-table row into the same shape as the static problem entries,
 // so handouts/books/exams sit alongside contest problems in one bank.
 function handoutToProblem(h) {
@@ -22,7 +36,10 @@ function handoutToProblem(h) {
 
 // Combine the three problem sources into the unified bank used everywhere.
 export function assembleProblemBank({ problems = [], aopsProblems = [], handouts = [] }) {
-  return [...problems, ...aopsProblems, ...handouts.map(handoutToProblem)]
+  const normalizedAops = aopsProblems.map(p =>
+    p.lesson ? { ...p, lesson: formatLesson(p.lesson) } : p
+  )
+  return [...problems, ...normalizedAops, ...handouts.map(handoutToProblem)]
 }
 
 // Fetch all three sources and return the assembled bank. Used by the launcher;

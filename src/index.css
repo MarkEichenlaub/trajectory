@@ -116,7 +116,7 @@ input[type=checkbox] { accent-color: var(--accent); }
 }
 .topbar .logo {
   font-family: var(--font-display);
-  font-weight: 600; font-size: 18px;
+  font-weight: 600; font-size: 27px;
   color: var(--text-strong); letter-spacing: -0.01em;
   margin-right: 6px;
 }

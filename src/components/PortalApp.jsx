@@ -136,7 +136,7 @@ function PortalTopbar({ account, students, activeId, setActiveId, onSignOut }) {
     <div className="topbar">
       <span className="logo" style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
         <span>Eichenlaub Physics</span>
-        <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', color: 'var(--muted)', fontWeight: 500, textTransform: 'uppercase' }}>
+        <span style={{ fontSize: 15, fontFamily: 'var(--font-mono)', letterSpacing: '0.12em', color: 'var(--muted)', fontWeight: 500, textTransform: 'uppercase' }}>
           {account.role === 'parent' ? 'Parent Portal' : account.role === 'adult' ? 'Portal' : 'Student Portal'}
         </span>
       </span>
