@@ -181,7 +181,9 @@ export async function createWidget() {
     }
   }
 
-  await frame.setMetadata(META_KEY, {
+  // NOTE: frame.setMetadata() is unsupported in the Web SDK ("The specified
+  // command is unsupported"), so widget state lives in board storage instead.
+  await storage().set(`meta:${calcId}`, {
     role: 'calc-root',
     calcId,
     estimateMode: false,
@@ -190,7 +192,11 @@ export async function createWidget() {
     attempts: 0,
   })
   for (const [role, item] of Object.entries(items)) {
-    await item.setMetadata(META_KEY, { role, calcId })
+    try {
+      await item.setMetadata(META_KEY, { role, calcId })
+    } catch {
+      /* metadata is best-effort tagging; storage is the source of truth */
+    }
   }
 
   // Reference snapshot for the repair routine. Re-read coordinates after
@@ -247,8 +253,7 @@ export async function loadWidgets() {
 
 export async function getWidgetMeta(desc) {
   try {
-    const frame = await miro.board.getById(desc.frameId)
-    const meta = await frame.getMetadata(META_KEY)
+    const meta = await storage().get(`meta:${desc.calcId}`)
     return meta && meta.role === 'calc-root' ? meta : null
   } catch {
     return null
@@ -256,10 +261,16 @@ export async function getWidgetMeta(desc) {
 }
 
 export async function setWidgetMeta(desc, patch) {
-  const frame = await miro.board.getById(desc.frameId)
-  const meta = (await frame.getMetadata(META_KEY)) || { role: 'calc-root', calcId: desc.calcId }
+  const meta = (await getWidgetMeta(desc)) || {
+    role: 'calc-root',
+    calcId: desc.calcId,
+    estimateMode: false,
+    phase: 'idle',
+    expr: '',
+    attempts: 0,
+  }
   const next = { ...meta, ...patch }
-  await frame.setMetadata(META_KEY, next)
+  await storage().set(`meta:${desc.calcId}`, next)
   return next
 }
 

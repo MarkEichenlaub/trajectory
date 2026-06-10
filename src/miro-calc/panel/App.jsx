@@ -11,6 +11,7 @@ import {
   appendHistory,
   createWidget,
   applyEstimateMode,
+  getWidgetMeta,
 } from '../board/widget.js'
 import { createBus } from '../board/lease.js'
 import { startHost } from '../board/host.js'
@@ -90,13 +91,8 @@ export default function App() {
         setSelected((s) => s ?? reg[0]?.calcId ?? null)
         const meta = {}
         for (const desc of reg) {
-          try {
-            const frame = await miro.board.getById(desc.frameId)
-            const m = await frame.getMetadata('calcwidget')
-            if (m) meta[desc.calcId] = { estimateMode: !!m.estimateMode, phase: m.phase, attempts: m.attempts }
-          } catch {
-            /* deleted */
-          }
+          const m = await getWidgetMeta(desc)
+          if (m) meta[desc.calcId] = { estimateMode: !!m.estimateMode, phase: m.phase, attempts: m.attempts }
         }
         setWidgetMeta((old) => {
           const next = { ...old }
