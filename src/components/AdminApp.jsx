@@ -853,7 +853,7 @@ function AdminScheduleView({ student, sessions }) {
       .finally(() => setLoadingContacts(false))
   }, [student?.id])
 
-  const invited = contacts.filter(c => c.receives_schedule_changes && c.verified && !c.bounced)
+  const invited = contacts.filter(c => c.receives_meets && c.verified && !c.bounced)
 
   function formatDate(iso) {
     return new Date(iso).toLocaleString('en-US', {
@@ -875,7 +875,7 @@ function AdminScheduleView({ student, sessions }) {
         ) : (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {contacts.map(c => {
-              const active = c.receives_schedule_changes && c.verified && !c.bounced
+              const active = c.receives_meets && c.verified && !c.bounced
               return (
                 <span key={c.id} style={{
                   fontSize: 12, padding: '3px 10px', borderRadius: 99,

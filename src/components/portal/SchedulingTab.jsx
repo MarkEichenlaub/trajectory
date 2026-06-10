@@ -180,7 +180,10 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
     try {
       await cancelSession(cancelingSession.id, cancelMsg || undefined)
       setCanceledIds(prev => new Set([...prev, cancelingSession.id]))
-      setSuccessMsg('Session cancelled. A confirmation has been sent to your email.')
+      setSuccessMsg(isAdmin
+        ? 'Session cancelled. A cancellation email has been sent to the family.'
+        : 'Session cancelled. A confirmation has been sent to your email.'
+      )
       setRefreshKey(k => k + 1)
       clearAction()
     } catch (e) {
@@ -212,7 +215,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
           <div style={{ fontSize: 14, fontWeight: 600 }}>Cancel session?</div>
           <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>{when}</div>
           <input
-            placeholder="Optional message to Mark…"
+            placeholder={isAdmin ? 'Optional explanation to include in cancellation email to family…' : 'Optional message to Mark…'}
             value={cancelMsg}
             onChange={e => setCancelMsg(e.target.value)}
             style={{ fontSize: 12 }}
@@ -314,12 +317,17 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
               <a href={selectedSession.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>
             )}
             {isAdmin ? (
-              selectedSession.cal_uid && (
-                <>
+              <>
+                {selectedSession.cal_uid && (
                   <a href={`https://cal.com/reschedule/${selectedSession.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
-                  <a href={`https://cal.com/booking/${selectedSession.cal_uid}?cancel=true`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: 'var(--red)' }}>Cancel ↗</a>
-                </>
-              )
+                )}
+                <button className="sm danger" style={{ fontSize: 11 }} onClick={() => {
+                  setCancelingSession(selectedSession)
+                  setSelectedSession(null)
+                }}>
+                  Cancel session
+                </button>
+              </>
             ) : (
               <>
                 {!isPreview && canReschedule && (

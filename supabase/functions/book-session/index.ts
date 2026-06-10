@@ -249,6 +249,16 @@ Deno.serve(async (req) => {
       const d = await miroRes.json() as Record<string, unknown>
       miroBoardId = d.id as string
       miroBoardUrl = (d.viewLink as string) ?? `https://miro.com/app/board/${miroBoardId}/`
+      // Belt-and-suspenders: explicitly set "Anyone with the link can edit"
+      await fetch(`https://api.miro.com/v2/boards/${miroBoardId}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${MIRO_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ sharingPolicy: { access: 'edit' } }),
+      }).catch(e => console.error('Miro PATCH sharing error:', e))
     } else {
       console.error('Miro API error:', miroRes.status, await miroRes.text())
     }
@@ -291,11 +301,11 @@ Deno.serve(async (req) => {
     return json({ error: 'DB insert failed', detail: dbErr.message }, 500)
   }
 
-  // Get student contact emails for schedule notifications
+  // Get student contact emails for schedule notifications (receives_meets = "Meet invites" checkbox)
   const { data: contacts } = await admin
     .from('student_contacts').select('email')
     .eq('student_id', student.id)
-    .eq('receives_schedule_changes', true)
+    .eq('receives_meets', true)
     .eq('verified', true).eq('bounced', false)
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)

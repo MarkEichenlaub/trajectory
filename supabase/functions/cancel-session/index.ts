@@ -127,23 +127,51 @@ Deno.serve(async (req) => {
   if (!user) return json({ error: 'unauthorized' }, 401)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
-  const student = await resolveSelfStudent(admin, user.id)
-  if (!student) return json({ error: 'no student record' }, 403)
-  const tz = (student.timezone as string) || TIMEZONE
+
+  const { data: callerProfile } = await admin
+    .from('profiles').select('account_type').eq('id', user.id).maybeSingle()
+  const isAdminCaller = callerProfile?.account_type === 'admin'
 
   const { session_id, message } = await req.json() as { session_id: string; message?: string }
   if (!session_id) return json({ error: 'session_id required' }, 400)
 
-  // Fetch session and verify ownership
-  const { data: session } = await admin
-    .from('sessions')
-    .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
-    .eq('id', session_id).eq('student_id', student.id).maybeSingle()
-  if (!session) return json({ error: 'session not found' }, 404)
-  if (session.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
-  if (session.end_time && new Date(session.end_time as string).getTime() < Date.now()) {
-    return json({ error: 'session has already ended' }, 400)
+  // deno-lint-ignore no-explicit-any
+  let student: any
+  // deno-lint-ignore no-explicit-any
+  let session: any
+
+  if (isAdminCaller) {
+    const { data: sess } = await admin
+      .from('sessions')
+      .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
+      .eq('id', session_id).maybeSingle()
+    if (!sess) return json({ error: 'session not found' }, 404)
+    if (sess.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
+    if (sess.end_time && new Date(sess.end_time as string).getTime() < Date.now()) {
+      return json({ error: 'session has already ended' }, 400)
+    }
+    session = sess
+    const { data: s } = await admin
+      .from('students').select('id, name, email, timezone').eq('id', sess.student_id).maybeSingle()
+    if (!s) return json({ error: 'student not found' }, 404)
+    student = s
+  } else {
+    const selfStudent = await resolveSelfStudent(admin, user.id)
+    if (!selfStudent) return json({ error: 'no student record' }, 403)
+    student = selfStudent
+    const { data: sess } = await admin
+      .from('sessions')
+      .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
+      .eq('id', session_id).eq('student_id', student.id).maybeSingle()
+    if (!sess) return json({ error: 'session not found' }, 404)
+    if (sess.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
+    if (sess.end_time && new Date(sess.end_time as string).getTime() < Date.now()) {
+      return json({ error: 'session has already ended' }, 400)
+    }
+    session = sess
   }
+
+  const tz = (student.timezone as string) || TIMEZONE
 
   // Delete Google Calendar event if we have the event ID (best-effort)
   if (session.gcal_event_id) {
@@ -209,11 +237,11 @@ Deno.serve(async (req) => {
     }).catch(e => console.error('Warning email failed:', e))
   }
 
-  // Get contact emails
+  // Get contact emails (use receives_meets — the "Meet invites" checkbox)
   const { data: contacts } = await admin
     .from('student_contacts').select('email')
     .eq('student_id', student.id)
-    .eq('receives_schedule_changes', true)
+    .eq('receives_meets', true)
     .eq('verified', true).eq('bounced', false)
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
@@ -246,12 +274,15 @@ Deno.serve(async (req) => {
       icsContent,
     })
   }
-  await sendIcsEmail({
-    to: [MARK_EMAIL],
-    subject: `Session cancelled: ${student.name} – ${when}`,
-    text: `${student.name} cancelled their session for ${when}.${message ? '\n\nMessage: ' + message : ''}`,
-    icsContent,
-  })
+  // Only notify Mark when a student self-cancels; Mark doesn't need a notice about their own cancellation
+  if (!isAdminCaller) {
+    await sendIcsEmail({
+      to: [MARK_EMAIL],
+      subject: `Session cancelled: ${student.name} – ${when}`,
+      text: `${student.name} cancelled their session for ${when}.${message ? '\n\nMessage: ' + message : ''}`,
+      icsContent,
+    })
+  }
 
   return json({ ok: true })
 })
