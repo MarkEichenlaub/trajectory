@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { fetchStudentContacts, saveStudentContact, updateStudentContact, deleteStudentContact, sendContactVerification, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
-import { makeContactLocks } from '../utils/contacts'
+import { fetchStudentContacts, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
+import ContactsPanel from './portal/ContactsPanel'
 
 export default function Settings({ students, allSources, onSaveStudent, onStatusChange, onRefreshData, showToast }) {
   const [saving, setSaving] = useState(null)
@@ -326,170 +326,31 @@ function InviteRow({ studentId, showToast }) {
   )
 }
 
-const CONTACT_TOGGLES = [
-  ['receives_meets', 'Meets'],
-  ['receives_reports', 'Reports'],
-  ['receives_invoices', 'Invoice'],
-  ['receives_assignments', 'Assignments'],
-  ['receives_assignment_reminders', 'Reminders'],
-]
-
+// Thin loader around the shared ContactsPanel (the same full contacts UI used
+// in Billing and the student portal) so the logic can't drift between views.
 function ContactsSection({ studentId, showToast }) {
-  const [contacts, setContacts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [newEmail, setNewEmail] = useState('')
-  const [newLabel, setNewLabel] = useState('parent')
-  const [adding, setAdding] = useState(false)
+  const [contacts, setContacts] = useState(null)
 
   useEffect(() => {
     fetchStudentContacts(studentId)
       .then(setContacts)
       .catch(e => showToast(e.message, 'error'))
-      .finally(() => setLoading(false))
   }, [studentId])
 
-  const email = newEmail.trim().toLowerCase()
-
-  async function handleAdd() {
-    if (adding || !email) return
-    setAdding(true)
-    try {
-      await saveStudentContact({
-        student_id: studentId,
-        email,
-        label: newLabel,
-        receives_meets: true,
-        receives_reports: true,
-        receives_invoices: false,
-        can_login: true,
-      })
-      const fresh = await fetchStudentContacts(studentId)
-      setContacts(fresh)
-      setNewEmail('')
-      const newId = fresh.find(c => c.email === email)?.id
-      if (newId) {
-        try {
-          await sendContactVerification(newId, true)
-          showToast('Contact added — confirmation email sent')
-        } catch (e) {
-          showToast(`Added, but confirmation email failed: ${e.message}`, 'error')
-        }
-      }
-    } catch (e) {
-      showToast(e.message, 'error')
-    } finally {
-      setAdding(false)
-    }
-  }
-
-  async function handleResend(c) {
-    try {
-      await sendContactVerification(c.id, true)
-      showToast(`Confirmation re-sent to ${c.email}`)
-    } catch (e) {
-      showToast(e.message, 'error')
-    }
-  }
-
-  // Optimistic: flip immediately, roll back if the server rejects it.
-  async function handleToggle(id, field, value) {
-    const prevContacts = contacts
-    try {
-      // Set the new invoice recipient ON before clearing others so the count
-      // never hits 0 and trips the DB invariant trigger.
-      if (field === 'receives_invoices' && value) {
-        setContacts(prev => prev.map(c => ({ ...c, receives_invoices: c.id === id })))
-        await updateStudentContact(id, { receives_invoices: true })
-        for (const c of prevContacts) {
-          if (c.id !== id && c.receives_invoices) {
-            await updateStudentContact(c.id, { receives_invoices: false })
-          }
-        }
-        return
-      }
-      setContacts(prev => prev.map(c => c.id === id ? { ...c, [field]: value } : c))
-      await updateStudentContact(id, { [field]: value })
-    } catch (e) {
-      setContacts(prevContacts)
-      showToast(e.message, 'error')
-    }
-  }
-
-  async function handleDelete(id) {
-    try {
-      await deleteStudentContact(id)
-      setContacts(prev => prev.filter(c => c.id !== id))
-    } catch (e) {
-      showToast(e.message, 'error')
-    }
-  }
-
-  const { deleteLocked, toggleLocked } = makeContactLocks(contacts)
-
-  if (loading) {
+  if (contacts === null) {
     return <div style={{ fontSize: 12, color: 'var(--text-dim)', padding: '4px 0 4px 68px' }}>Loading…</div>
   }
 
   return (
     <div style={{ paddingLeft: 68, paddingBottom: 4 }}>
-      {contacts.length === 0 && (
-        <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 8 }}>No contacts yet.</div>
-      )}
-      {contacts.map(c => (
-        <div key={c.id} style={{ display: 'flex', flexDirection: 'column', gap: 3, marginBottom: 8, fontSize: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0 }}>{c.email}</span>
-            {c.bounced ? (
-              <span title={c.bounce_reason || 'email bounced'} style={{ color: 'var(--red)', fontWeight: 600, fontSize: 10, flexShrink: 0 }}>bounced</span>
-            ) : c.verified ? (
-              <span style={{ color: 'var(--green)', fontSize: 10, flexShrink: 0 }}>verified</span>
-            ) : (
-              <button className="sm" style={{ fontSize: 10, padding: '0 5px', flexShrink: 0, color: 'var(--yellow)' }} title="unconfirmed — click to resend" onClick={() => handleResend(c)}>resend</button>
-            )}
-            <span style={{ color: 'var(--text-dim)', width: 50, flexShrink: 0, fontSize: 11 }}>{c.label}</span>
-            <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} disabled={deleteLocked(c)} title={deleteLocked(c) ? 'Last required recipient for an active student' : undefined} onClick={() => handleDelete(c.id)}>✕</button>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {CONTACT_TOGGLES.map(([field, label]) => {
-              const locked = toggleLocked(c, field)
-              return (
-                <label key={field} title={locked ? 'Active student must keep at least one recipient here' : undefined} style={{ display: 'flex', alignItems: 'center', gap: 3, cursor: locked ? 'default' : 'pointer', whiteSpace: 'nowrap', fontSize: 11, color: c[field] ? 'var(--accent)' : 'var(--text-dim)' }}>
-                  <input
-                    type="checkbox"
-                    checked={!!c[field]}
-                    disabled={locked}
-                    onChange={e => handleToggle(c.id, field, e.target.checked)}
-                    style={{ accentColor: 'var(--accent)' }}
-                  />
-                  {label}
-                </label>
-              )
-            })}
-          </div>
-        </div>
-      ))}
-      <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-        <input
-          type="email"
-          value={newEmail}
-          onChange={e => setNewEmail(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleAdd()}
-          placeholder="email@example.com"
-          style={{ flex: 1, fontSize: 12 }}
-        />
-        <select
-          value={newLabel}
-          onChange={e => setNewLabel(e.target.value)}
-          style={{ fontSize: 12, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '4px 6px' }}
-        >
-          <option value="parent">parent</option>
-          <option value="student">student</option>
-          <option value="other">other</option>
-        </select>
-        <button className="sm" onClick={handleAdd} disabled={adding || !newEmail.trim()}>
-          {adding ? '…' : 'Add'}
-        </button>
-      </div>
+      <ContactsPanel
+        studentId={studentId}
+        contacts={contacts}
+        setContacts={setContacts}
+        isAdmin={true}
+        canBill={true}
+        isStudentRole={false}
+      />
     </div>
   )
 }
