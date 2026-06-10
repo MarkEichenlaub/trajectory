@@ -46,6 +46,7 @@ export default function App() {
   const [hostSeen, setHostSeen] = useState(0)
   const [selfHosting, setSelfHosting] = useState(false)
   const [lastError, setLastError] = useState(null)
+  const [diag, setDiag] = useState(null)
   const busRef = useRef(null)
   const inputRef = useRef(null)
   const refreshRef = useRef(() => {})
@@ -102,6 +103,18 @@ export default function App() {
           for (const [k, v] of Object.entries(meta)) next[k] = { ...next[k], ...v }
           return next
         })
+      }
+      // storage smoke test — shows the raw API behavior in the panel
+      try {
+        const col = miro.board.storage.collection('miro-calc')
+        await col.set('diag', { ok: 1 })
+        const back = await col.get('diag')
+        const reg = await col.get('widgets')
+        setDiag(
+          `storage=${typeof miro.board.storage} col.get=${typeof col.get} echo=${JSON.stringify(back)} widgets=${JSON.stringify(reg)?.slice(0, 300) ?? 'undefined'}`
+        )
+      } catch (err) {
+        setDiag(`storage error: ${err.message ?? err}`)
       }
       refreshRef.current = refresh
       await refresh()
@@ -169,6 +182,7 @@ export default function App() {
     <div style={S.wrap}>
       {!inMiro && <div style={S.error}>Not running inside Miro — calculator works, board features disabled.</div>}
       {lastError && <div style={S.error}>⚠ {lastError}</div>}
+      {diag && <div style={{ ...S.error, background: '#f0f9ff', color: '#075985', wordBreak: 'break-all' }}>{diag}</div>}
 
       <div style={S.section}>
         <div style={S.h}>Calculator ({angleMode})</div>
