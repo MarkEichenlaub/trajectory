@@ -101,7 +101,15 @@ export default function SessionLauncher() {
     if (submission) links.push({ label: 'Submission ↗', url: submission })
   })
 
-  const openAll = () => links.forEach(l => window.open(l.url, '_blank', 'noopener'))
+  const openAll = () => links.forEach(l => {
+    const a = document.createElement('a')
+    a.href = l.url
+    a.target = '_blank'
+    a.rel = 'noopener noreferrer'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  })
 
   return (
     <div style={{ maxWidth: 560, margin: '40px auto', padding: '0 20px' }}>
