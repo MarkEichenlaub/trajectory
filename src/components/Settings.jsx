@@ -79,11 +79,11 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
 
 function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, saving, showToast }) {
   const [draft, setDraft] = useState({ ...student })
-  const [showContacts, setShowContacts] = useState(false)
   const [showBank, setShowBank] = useState(false)
   const [accessibleSources, setAccessibleSources] = useState(null)
   const [togglingStatus, setTogglingStatus] = useState(false)
   const dirty = JSON.stringify(draft) !== JSON.stringify(student)
+  // contacts always visible
   const status = student.status || 'active'
 
   useEffect(() => {
@@ -167,51 +167,6 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         <label>Notes</label>
         <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
       </div>
-      <div className="student-card-row">
-        <label>Balance</label>
-        <input
-          type="number" min="0"
-          value={draft.session_balance ?? 0}
-          onChange={e => set('session_balance', parseInt(e.target.value, 10) || 0)}
-          style={{ width: 52, flex: 'none' }}
-        />
-        <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>sessions</span>
-        <button
-          className="sm"
-          disabled={saving}
-          title="Add 10 sessions (payment received)"
-          onClick={async () => {
-            const newBalance = (draft.session_balance ?? 0) + 10
-            const updated = { ...draft, session_balance: newBalance }
-            setDraft(updated)
-            await onSave(updated)
-          }}
-        >+10</button>
-      </div>
-      <div className="student-card-row">
-        <label>Rate</label>
-        <input
-          type="number" min="0" step="1"
-          value={draft.hourly_rate ?? 0}
-          onChange={e => set('hourly_rate', parseFloat(e.target.value) || 0)}
-          style={{ width: 80 }}
-        />
-        <span style={{ fontSize: 12, color: 'var(--text-dim)', marginLeft: 4 }}>/session</span>
-      </div>
-      <div className="student-card-row">
-        <label>Invoicing</label>
-        <button
-          className="sm"
-          style={{ color: draft.invoicing_enabled ? 'var(--green)' : 'var(--text-dim)' }}
-          title={draft.invoicing_enabled ? 'Stripe invoicing on — click to disable' : 'Invoicing off — click to enable Stripe invoicing'}
-          onClick={() => set('invoicing_enabled', !draft.invoicing_enabled)}
-        >
-          {draft.invoicing_enabled ? '● on' : '○ off'}
-        </button>
-        <span style={{ fontSize: 11, color: 'var(--text-dim)', marginLeft: 6 }}>
-          {draft.invoicing_enabled ? 'auto-invoices via Stripe' : 'mark sessions paid/unpaid manually'}
-        </span>
-      </div>
       {dirty && (
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 4 }}>
           <button className="sm primary" onClick={() => onSave(draft)} disabled={saving}>
@@ -220,19 +175,7 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         </div>
       )}
       <InviteRow studentId={student.id} showToast={showToast} />
-      <div className="student-card-row" style={{ marginTop: 4 }}>
-        <label style={{ color: 'var(--text-dim)' }}>Contacts</label>
-        <button
-          className="sm"
-          style={{ fontSize: 11 }}
-          onClick={() => setShowContacts(v => !v)}
-        >
-          {showContacts ? 'Hide' : 'Manage'}
-        </button>
-      </div>
-      {showContacts && (
-        <ContactsSection studentId={student.id} showToast={showToast} />
-      )}
+      <ContactsSection studentId={student.id} showToast={showToast} />
       <div className="student-card-row" style={{ marginTop: 4 }}>
         <label style={{ color: 'var(--text-dim)' }}>Problem bank</label>
         <button

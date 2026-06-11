@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -14,7 +14,6 @@ import AssignedView from './AssignedView'
 import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
 import StudentView from './StudentView'
-import { ContactsTab } from './portal/ContactsPanel'
 import SchedulingTab from './portal/SchedulingTab'
 import AdminProgressPlanView from './AdminProgressPlanView'
 import Toast from './Toast'
@@ -24,7 +23,7 @@ const AccountsView = lazy(() => import('./AccountsView'))
 const Settings = lazy(() => import('./Settings'))
 const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', ACCOUNTS: 'accounts', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -643,7 +642,6 @@ export default function AdminApp({ userId }) {
           <button className={view === VIEWS.TAGS ? 'active' : ''} onClick={() => setView(VIEWS.TAGS)}>Tags</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress and Plan</button>
           <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
-          <button className={view === VIEWS.ACCOUNTS ? 'active' : ''} onClick={() => setView(VIEWS.ACCOUNTS)}>Accounts</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
         <div className="spacer" />
@@ -781,31 +779,28 @@ export default function AdminApp({ userId }) {
         {view === VIEWS.BILLING && (
           <BillingView
             key={activeStudentId}
-            studentId={activeStudentId}
-            studentName={activeStudent?.name || ''}
+            student={activeStudent}
+            sessions={sessions.filter(s => s.student_id === activeStudentId)}
+            onSaveStudent={handleSaveStudent}
+            showToast={showToast}
           />
-        )}
-
-        {view === VIEWS.ACCOUNTS && (
-          <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
-            <AccountsView students={students} showToast={showToast} />
-          </Suspense>
         )}
 
         {view === VIEWS.SETTINGS && (
           <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
             <Settings
-            students={students}
-            allSources={allSources}
-            onSaveStudent={handleSaveStudent}
-            onStatusChange={(id, status) => setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s))}
-            onRefreshData={async () => {
-              const { problems: p, aopsProblems: ap } = await refreshProblemBank()
-              setProblems(p)
-              setAopsProblems(ap)
-            }}
-            showToast={showToast}
+              students={students}
+              allSources={allSources}
+              onSaveStudent={handleSaveStudent}
+              onStatusChange={(id, status) => setStudents(prev => prev.map(s => s.id === id ? { ...s, status } : s))}
+              onRefreshData={async () => {
+                const { problems: p, aopsProblems: ap } = await refreshProblemBank()
+                setProblems(p)
+                setAopsProblems(ap)
+              }}
+              showToast={showToast}
             />
+            <AccountsView students={students} showToast={showToast} />
           </Suspense>
         )}
       </div>
@@ -906,38 +901,245 @@ function AdminScheduleView({ student, sessions }) {
   )
 }
 
-// Admin billing: manage all of a student's contacts (incl. invoice routing) and
-// review / send drafted invoices. Reuses ContactsTab in full-admin mode.
-function BillingView({ studentId, studentName }) {
-  const [contacts, setContacts] = useState([])
+// Admin billing: balance, rate, invoicing controls + invoice history with
+// per-invoice session breakdown. Contacts have moved to Settings.
+function BillingView({ student, sessions, onSaveStudent, showToast }) {
   const [invoices, setInvoices] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
+  const [draft, setDraft] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [sendingId, setSendingId] = useState(null)
+  const [expanded, setExpanded] = useState(new Set())
+
+  useEffect(() => { if (student) setDraft({ ...student }) }, [student])
 
   useEffect(() => {
+    if (!student?.id) return
     setLoading(true)
-    Promise.all([fetchStudentContacts(studentId), fetchInvoices(studentId)])
-      .then(([c, inv]) => { setContacts(c); setInvoices(inv) })
+    fetchInvoices(student.id)
+      .then(setInvoices)
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
-  }, [studentId])
+  }, [student?.id])
 
-  if (loading) return <div className="empty-state" style={{ marginTop: 40 }}>Loading billing… <span className="spin">⟳</span></div>
+  // All sessions for this student that have ended, oldest first.
+  const completedSessions = useMemo(() =>
+    (sessions || [])
+      .filter(s => s.end_time)
+      .sort((a, b) => a.end_time.localeCompare(b.end_time)),
+    [sessions]
+  )
+
+  // Invoices oldest→newest for period math, then reversed for display.
+  const sortedAsc = useMemo(() =>
+    [...invoices].sort((a, b) => a.created_at.localeCompare(b.created_at)),
+    [invoices]
+  )
+
+  // Each invoice gets the sessions that completed before it was created and
+  // after the previous invoice was created (approximate billing-period grouping).
+  const invoicesWithSessions = useMemo(() =>
+    sortedAsc.map((inv, i) => {
+      const periodStart = i > 0 ? sortedAsc[i - 1].created_at : null
+      const periodSessions = completedSessions.filter(s =>
+        (!periodStart || s.end_time > periodStart) && s.end_time <= inv.created_at
+      )
+      return { ...inv, periodSessions }
+    }).reverse(),
+    [sortedAsc, completedSessions]
+  )
+
+  // Sessions since the most recent invoice = "current block".
+  const currentBlockSessions = useMemo(() => {
+    const lastDate = sortedAsc.length ? sortedAsc[sortedAsc.length - 1].created_at : null
+    return completedSessions.filter(s => !lastDate || s.end_time > lastDate)
+  }, [completedSessions, sortedAsc])
+
+  function toggleExpand(id) {
+    setExpanded(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next })
+  }
+
+  async function saveDraft() {
+    if (!draft) return
+    setSaving(true)
+    try { await onSaveStudent({ ...student, ...draft }) } catch (e) { showToast(e.message, 'error') }
+    setSaving(false)
+  }
+
+  async function handleAddTen() {
+    const newBalance = (student.session_balance ?? 0) + 10
+    setSaving(true)
+    try { await onSaveStudent({ ...student, session_balance: newBalance }) } catch (e) { showToast(e.message, 'error') }
+    setSaving(false)
+  }
+
+  async function handleSendInvoice(inv) {
+    if (!confirm(`Send the invoice email to ${inv.staged_email_to}?`)) return
+    setSendingId(inv.id)
+    try {
+      await sendStagedInvoice(inv)
+      setInvoices(prev => prev.map(i => i.id === inv.id ? { ...i, status: 'sent' } : i))
+    } catch (e) { showToast(e.message, 'error') }
+    setSendingId(null)
+  }
+
+  function sessionDateStr(iso) {
+    return new Date(iso).toLocaleDateString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/New_York',
+    })
+  }
+
+  function invoiceStatusBadge(inv) {
+    let label, color
+    if (inv.status === 'paid') { label = 'paid'; color = 'var(--green)' }
+    else if (inv.status === 'sent' && inv.due_date && new Date(inv.due_date) < new Date()) { label = 'overdue'; color = 'var(--red)' }
+    else if (inv.status === 'sent') { label = 'due'; color = 'var(--yellow)' }
+    else { label = inv.status === 'draft' ? 'draft' : inv.status; color = 'var(--yellow)' }
+    return <span style={{ fontSize: 11, fontWeight: 600, color }}>{label}</span>
+  }
+
+  if (!student || !draft) return <div className="empty-state" style={{ marginTop: 40 }}>No student selected.</div>
   if (err) return <div className="empty-state" style={{ color: 'var(--red)', marginTop: 40 }}>{err}</div>
+
+  const isDirty = draft && (
+    draft.session_balance !== student.session_balance ||
+    draft.hourly_rate !== student.hourly_rate ||
+    draft.invoicing_enabled !== student.invoicing_enabled
+  )
+  const balance = student.session_balance ?? 0
 
   return (
     <div style={{ maxWidth: 900, width: '100%', margin: '0 auto', padding: '20px 0' }}>
-      <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>{studentName} — Billing</h2>
-      <ContactsTab
-        studentId={studentId}
-        contacts={contacts}
-        setContacts={setContacts}
-        isAdmin={true}
-        canBill={true}
-        isStudentRole={false}
-        invoices={invoices}
-        setInvoices={setInvoices}
-      />
+      <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 20 }}>{student.name} — Billing</h2>
+
+      {/* Balance / rate / invoicing controls */}
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 20px', marginBottom: 24 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Balance</label>
+            <input type="number" min="0"
+              value={draft.session_balance ?? 0}
+              onChange={e => setDraft(d => ({ ...d, session_balance: parseInt(e.target.value, 10) || 0 }))}
+              style={{ width: 52, flex: 'none' }}
+            />
+            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>sessions</span>
+            <button className="sm" disabled={saving} title="Add 10 sessions (payment received)" onClick={handleAddTen}>+10</button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Rate</label>
+            <input type="number" min="0" step="1"
+              value={draft.hourly_rate ?? 0}
+              onChange={e => setDraft(d => ({ ...d, hourly_rate: parseFloat(e.target.value) || 0 }))}
+              style={{ width: 80 }}
+            />
+            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>/session</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Invoicing</label>
+            <button className="sm"
+              style={{ color: draft.invoicing_enabled ? 'var(--green)' : 'var(--text-dim)' }}
+              title={draft.invoicing_enabled ? 'Stripe on — click to disable' : 'Off — click to enable Stripe'}
+              onClick={() => setDraft(d => ({ ...d, invoicing_enabled: !d.invoicing_enabled }))}>
+              {draft.invoicing_enabled ? '● on' : '○ off'}
+            </button>
+            <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+              {draft.invoicing_enabled ? 'auto-invoices via Stripe' : 'manual'}
+            </span>
+          </div>
+          {isDirty && (
+            <button className="sm primary" disabled={saving} onClick={saveDraft}>
+              {saving ? 'Saving…' : 'Save'}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Current block */}
+      <div style={{ marginBottom: 28 }}>
+        <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+          Current block — {balance} session{balance !== 1 ? 's' : ''} remaining
+          {currentBlockSessions.length > 0 && `, ${currentBlockSessions.length} completed`}
+        </div>
+        {loading ? (
+          <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Loading…</div>
+        ) : currentBlockSessions.length === 0 ? (
+          <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>No completed sessions in current block.</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {[...currentBlockSessions].reverse().map(s => (
+              <div key={s.id} style={{ fontSize: 12, display: 'flex', gap: 16, alignItems: 'center', padding: '3px 0' }}>
+                <span style={{ color: 'var(--text-dim)', width: 200, flexShrink: 0 }}>{sessionDateStr(s.end_time)}</span>
+                {(s.tags || []).length > 0 && <span style={{ color: 'var(--text)' }}>{s.tags.join(', ')}</span>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Invoice history */}
+      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>
+        Invoice History
+      </div>
+      {loading ? (
+        <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Loading…</div>
+      ) : invoicesWithSessions.length === 0 ? (
+        <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>No invoices on file.</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {invoicesWithSessions.map(inv => {
+            const isExp = expanded.has(inv.id)
+            const isActive = inv.status !== 'paid' && inv.status !== 'void'
+            return (
+              <div key={inv.id} style={{ background: 'var(--surface)', border: `1px solid ${isActive ? 'var(--accent)' : 'var(--border)'}`, borderRadius: 'var(--radius)' }}>
+                <div style={{ padding: '10px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <button
+                    className="sm"
+                    style={{ fontSize: 11, padding: '1px 6px', minWidth: 22 }}
+                    onClick={() => toggleExpand(inv.id)}
+                  >
+                    {isExp ? '▼' : '▶'}
+                  </button>
+                  <span style={{ fontSize: 12, color: 'var(--text-dim)', width: 100, flexShrink: 0 }}>
+                    {new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </span>
+                  <span style={{ fontSize: 13, flex: 1 }}>
+                    ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
+                  </span>
+                  {invoiceStatusBadge(inv)}
+                  {inv.stripe_invoice_url && (
+                    <a href={inv.stripe_invoice_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>
+                      {inv.status === 'draft' ? 'Open in Stripe ↗' : 'View ↗'}
+                    </a>
+                  )}
+                  {inv.status === 'draft' && inv.staged_email_body && (
+                    <button className="sm primary" style={{ fontSize: 11, flexShrink: 0 }}
+                      disabled={sendingId === inv.id} onClick={() => handleSendInvoice(inv)}>
+                      {sendingId === inv.id ? 'Sending…' : 'Send'}
+                    </button>
+                  )}
+                </div>
+                {isExp && (
+                  <div style={{ borderTop: '1px solid var(--border)', padding: '8px 48px 12px' }}>
+                    {inv.periodSessions.length === 0 ? (
+                      <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>No sessions recorded for this billing period.</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        {[...inv.periodSessions].reverse().map(s => (
+                          <div key={s.id} style={{ fontSize: 12, display: 'flex', gap: 16, alignItems: 'center', padding: '2px 0' }}>
+                            <span style={{ color: 'var(--text-dim)', width: 200, flexShrink: 0 }}>{sessionDateStr(s.end_time)}</span>
+                            {(s.tags || []).length > 0 && <span style={{ color: 'var(--text)' }}>{s.tags.join(', ')}</span>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

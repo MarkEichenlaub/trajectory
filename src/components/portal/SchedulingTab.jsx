@@ -50,7 +50,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
   // screen (dimmed) while the new month loads — keys are full dates, so months
   // never collide.
   useEffect(() => {
-    if (isPreview || !student?.id) return
+    if (!student?.id) return
     setSlotsLoading(true)
     setSlotsError(null)
     const from = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-CA')
