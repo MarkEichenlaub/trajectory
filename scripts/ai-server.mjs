@@ -1,9 +1,13 @@
 /**
- * Local AI server — analyzes Miro session whiteboards using the claude CLI.
+ * Local AI server — generates session summaries using the claude CLI.
  * Uses Mark's Claude subscription (not API credits).
  *
  * Start with:  npm run ai-server
- * Then click the ✨ AI button in the admin UI to generate session summaries.
+ *
+ * Two modes:
+ *   - HTTP button: POST /analyze {sessionId} → returns {summary, tags} (admin reviews before saving)
+ *   - Auto loop: every 30 min, finds sessions that ended without a summary and
+ *     auto-saves AI-generated content. Mark can edit afterwards in the admin UI.
  */
 import http from 'http'
 import { exec } from 'child_process'
@@ -30,7 +34,11 @@ const env = Object.fromEntries(
 const SERVICE_KEY = env.VITE_SUPABASE_SERVICE_KEY
 const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
 const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`
+const REST_URL = `${SUPABASE_URL}/rest/v1`
 const PORT = 3747
+const AUTO_INTERVAL_MS = 30 * 60 * 1000 // 30 minutes
+// Wait this long after session end_time before auto-processing (gives Miro time to sync)
+const SESSION_SETTLE_MINUTES = 20
 
 if (!SERVICE_KEY) {
   console.error('ERROR: VITE_SUPABASE_SERVICE_KEY not found in .env')
@@ -46,65 +54,138 @@ const SUMMARY_SCHEMA = JSON.stringify({
   required: ['summary', 'tags'],
 })
 
-function psEsc(s) {
-  // Escape single quotes for PowerShell single-quoted strings
-  return s.replace(/'/g, "''")
+const DB_HEADERS = {
+  apikey: SERVICE_KEY,
+  Authorization: `Bearer ${SERVICE_KEY}`,
 }
 
-async function runClaude(tmpFile) {
-  const prompt = [
-    `Read the tutoring session whiteboard PDF at ${tmpFile}.`,
-    'It is from a one-on-one physics and math tutoring session.',
-    'Summarize what was covered in 2-5 sentences: past tense, specific topics and key ideas discussed.',
-    'List 3-8 concise topic tags (for example: "Taylor series", "small-angle approximation", "energy conservation").',
-  ].join(' ')
+// ── Core analysis pipeline ────────────────────────────────────────────────────
 
-  const isWin = process.platform === 'win32'
-  let stdout
+async function getPdfUrl(sessionId) {
+  const res = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
+    method: 'POST',
+    headers: { ...DB_HEADERS, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId }),
+  })
+  const data = await res.json()
+  if (!res.ok) throw new Error(data.error || `Edge function error ${res.status}`)
+  if (!data.pdfUrl) throw new Error('No PDF available for this session')
+  return data.pdfUrl
+}
 
-  if (isWin) {
-    // PowerShell: single-quoted strings are fully literal (no variable expansion)
-    const cmd = `claude -p --allowedTools Read -y --json-schema '${psEsc(SUMMARY_SCHEMA)}' '${psEsc(prompt)}'`
-    ;({ stdout } = await execAsync(cmd, {
-      shell: 'pwsh.exe',
-      timeout: 120000,
-      cwd: ROOT,
-    }))
-  } else {
-    const cmd = `claude -p --allowedTools Read -y --json-schema '${psEsc(SUMMARY_SCHEMA)}' '${psEsc(prompt)}'`
-    ;({ stdout } = await execAsync(cmd, {
-      timeout: 120000,
-      cwd: ROOT,
-    }))
-  }
+async function analyzePdf(pdfUrl) {
+  const pdfRes = await fetch(pdfUrl)
+  if (!pdfRes.ok) throw new Error(`Could not download PDF: HTTP ${pdfRes.status}`)
+  const bytes = await pdfRes.arrayBuffer()
 
-  // --json-schema ensures the output is valid JSON; trim in case of trailing newline
-  const raw = stdout.trim()
+  const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}.pdf`)
+  await writeFile(tmpFile, Buffer.from(bytes))
+
   try {
-    return JSON.parse(raw)
-  } catch {
-    // Strip markdown fences if claude wrapped the output
-    const m = raw.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/)
-    if (m) return JSON.parse(m[1].trim())
-    throw new Error(`Unexpected AI output: ${raw.slice(0, 200)}`)
+    const prompt = [
+      `Read the tutoring session whiteboard PDF at ${tmpFile}.`,
+      'It is from a one-on-one physics and math tutoring session.',
+      'Summarize what was covered in 2-5 sentences: past tense, specific topics and key ideas discussed.',
+      'List 3-8 concise topic tags (for example: "Taylor series", "small-angle approximation", "energy conservation").',
+    ].join(' ')
+
+    const schema = SUMMARY_SCHEMA.replace(/'/g, "''")
+    const p = prompt.replace(/'/g, "''")
+    const isWin = process.platform === 'win32'
+    const cmd = `claude -p --allowedTools Read -y --json-schema '${schema}' '${p}'`
+
+    const { stdout } = await execAsync(cmd, {
+      shell: isWin ? 'pwsh.exe' : undefined,
+      timeout: 120000,
+      cwd: ROOT,
+    })
+
+    const raw = stdout.trim()
+    try {
+      return JSON.parse(raw)
+    } catch {
+      const m = raw.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/)
+      if (m) return JSON.parse(m[1].trim())
+      throw new Error(`Unexpected AI output: ${raw.slice(0, 200)}`)
+    }
+  } finally {
+    await unlink(tmpFile).catch(() => {})
   }
 }
+
+async function saveSessionSummary(sessionId, summary, tags) {
+  const res = await fetch(
+    `${REST_URL}/sessions?id=eq.${encodeURIComponent(sessionId)}`,
+    {
+      method: 'PATCH',
+      headers: { ...DB_HEADERS, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ summary, tags }),
+    }
+  )
+  if (!res.ok) throw new Error(`DB update failed: ${res.status}`)
+}
+
+// ── Auto-summarization loop ───────────────────────────────────────────────────
+
+let autoRunning = false
+
+async function runAutoSummarize() {
+  if (autoRunning) return
+  autoRunning = true
+  try {
+    // Find sessions that ended ≥20 min ago (settle time), have a Miro board,
+    // but no summary yet — limit to the last 45 days.
+    const before = new Date(Date.now() - SESSION_SETTLE_MINUTES * 60 * 1000).toISOString()
+    const since = new Date(Date.now() - 45 * 24 * 3600 * 1000).toISOString()
+
+    const qs = new URLSearchParams({
+      select: 'id,miro_board_id',
+      summary: 'is.null',
+      miro_board_id: 'not.is.null',
+      order: 'end_time.desc',
+      limit: '10',
+    })
+    const url = `${REST_URL}/sessions?${qs}&end_time=lt.${encodeURIComponent(before)}&end_time=gt.${encodeURIComponent(since)}`
+
+    const listRes = await fetch(url, { headers: DB_HEADERS })
+    if (!listRes.ok) {
+      console.error(`[auto] Failed to list sessions: ${listRes.status}`)
+      return
+    }
+    const sessions = await listRes.json()
+    if (!sessions.length) {
+      console.log('[auto] No sessions need summarizing.')
+      return
+    }
+
+    console.log(`[auto] Found ${sessions.length} session(s) to summarize.`)
+    for (const session of sessions) {
+      try {
+        console.log(`[auto] Processing ${session.id}...`)
+        const pdfUrl = await getPdfUrl(session.id)
+        const { summary, tags } = await analyzePdf(pdfUrl)
+        await saveSessionSummary(session.id, summary, tags)
+        console.log(`[auto] ✓ ${session.id} — tags: ${tags.join(', ')}`)
+      } catch (e) {
+        console.error(`[auto] ✗ ${session.id}: ${e.message}`)
+      }
+    }
+  } finally {
+    autoRunning = false
+  }
+}
+
+// ── HTTP handler (✨ AI button: returns result without saving) ─────────────────
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Headers', 'content-type')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
 
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204)
-    res.end()
-    return
-  }
+  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
 
   if (req.method !== 'POST' || req.url !== '/analyze') {
-    res.writeHead(404)
-    res.end(JSON.stringify({ error: 'not found' }))
-    return
+    res.writeHead(404); res.end(JSON.stringify({ error: 'not found' })); return
   }
 
   let body = ''
@@ -114,65 +195,30 @@ const server = http.createServer(async (req, res) => {
   try { sessionId = JSON.parse(body).sessionId } catch { /* handled below */ }
 
   if (!sessionId) {
-    res.writeHead(400)
-    res.end(JSON.stringify({ error: 'sessionId required' }))
-    return
+    res.writeHead(400); res.end(JSON.stringify({ error: 'sessionId required' })); return
   }
 
-  // Step 1: Call the summarize-session edge function with service key auth.
-  // It exports the Miro board to PDF (if not already done) and returns the URL.
-  let pdfUrl
   try {
-    const edgeRes = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SERVICE_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ sessionId }),
-    })
-    const edgeData = await edgeRes.json()
-    if (!edgeRes.ok) throw new Error(edgeData.error || `Edge function error ${edgeRes.status}`)
-    pdfUrl = edgeData.pdfUrl
-    if (!pdfUrl) throw new Error('No PDF URL returned')
-  } catch (e) {
-    console.error('PDF export failed:', e.message)
-    res.writeHead(502)
-    res.end(JSON.stringify({ error: `PDF export failed: ${e.message}` }))
-    return
-  }
-
-  // Step 2: Download the PDF to a local temp file.
-  const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}.pdf`)
-  try {
-    const pdfRes = await fetch(pdfUrl)
-    if (!pdfRes.ok) throw new Error(`HTTP ${pdfRes.status}`)
-    const bytes = await pdfRes.arrayBuffer()
-    await writeFile(tmpFile, Buffer.from(bytes))
-  } catch (e) {
-    console.error('PDF download failed:', e.message)
-    res.writeHead(502)
-    res.end(JSON.stringify({ error: `Could not download PDF: ${e.message}` }))
-    return
-  }
-
-  // Step 3: Analyze with claude CLI (uses Claude subscription, not API credits).
-  try {
-    console.log(`Analyzing session ${sessionId} with claude CLI...`)
-    const result = await runClaude(tmpFile)
-    console.log(`Done. Tags: ${result.tags?.join(', ')}`)
+    console.log(`[btn] Analyzing ${sessionId}...`)
+    const pdfUrl = await getPdfUrl(sessionId)
+    const result = await analyzePdf(pdfUrl)
+    console.log(`[btn] Done. Tags: ${result.tags?.join(', ')}`)
     res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(result))
   } catch (e) {
-    console.error('claude analysis failed:', e.message)
-    res.writeHead(500)
-    res.end(JSON.stringify({ error: `AI analysis failed: ${e.message}` }))
-  } finally {
-    await unlink(tmpFile).catch(() => {})
+    console.error(`[btn] Error for ${sessionId}: ${e.message}`)
+    res.writeHead(e.message.includes('not reachable') ? 503 : 500)
+    res.end(JSON.stringify({ error: e.message }))
   }
 })
 
+// ── Start ─────────────────────────────────────────────────────────────────────
+
 server.listen(PORT, '127.0.0.1', () => {
   console.log(`\n✨ AI server running at http://localhost:${PORT}`)
-  console.log('   Click the ✨ AI button in the admin portal to generate session summaries.\n')
+  console.log(`   Auto-summarizing sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
 })
+
+// Run immediately on startup (after a short delay), then every 30 min.
+setTimeout(runAutoSummarize, 60 * 1000)
+setInterval(runAutoSummarize, AUTO_INTERVAL_MS)
