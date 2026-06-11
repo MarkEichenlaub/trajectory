@@ -19,7 +19,6 @@ import AdminProgressPlanView from './AdminProgressPlanView'
 import Toast from './Toast'
 
 // Occasionally-used admin views load on first open, not at boot.
-const AccountsView = lazy(() => import('./AccountsView'))
 const Settings = lazy(() => import('./Settings'))
 const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
@@ -789,6 +788,7 @@ export default function AdminApp({ userId }) {
         {view === VIEWS.SETTINGS && (
           <Suspense fallback={<div className="empty-state" style={{ marginTop: 40 }}>Loading… <span className="spin">⟳</span></div>}>
             <Settings
+              student={activeStudent}
               students={students}
               allSources={allSources}
               onSaveStudent={handleSaveStudent}
@@ -798,9 +798,9 @@ export default function AdminApp({ userId }) {
                 setProblems(p)
                 setAopsProblems(ap)
               }}
+              onStudentAdded={setActiveStudentId}
               showToast={showToast}
             />
-            <AccountsView students={students} showToast={showToast} />
           </Suspense>
         )}
       </div>

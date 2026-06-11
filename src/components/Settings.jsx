@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react'
-import { fetchStudentContacts, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources } from '../utils/supabase'
+import { fetchStudentContacts, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources, fetchProfiles, fetchStudentLinks, fetchInvites, deleteInvite } from '../utils/supabase'
 import ContactsPanel from './portal/ContactsPanel'
 
-export default function Settings({ students, allSources, onSaveStudent, onStatusChange, onRefreshData, showToast }) {
+const TYPE_COLORS = {
+  admin: 'var(--accent)',
+  parent: 'var(--green)',
+  adult: 'var(--green)',
+  student: 'var(--text-dim)',
+}
+
+export default function Settings({ student, students, allSources, onSaveStudent, onStatusChange, onRefreshData, onStudentAdded, showToast }) {
   const [saving, setSaving] = useState(null)
   const [refreshing, setRefreshing] = useState(false)
 
@@ -18,15 +25,15 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
     }
   }
 
-  async function handleSave(student) {
-    setSaving(student.id)
-    await onSaveStudent(student)
+  async function handleSave(s) {
+    setSaving(s.id)
+    await onSaveStudent(s)
     setSaving(null)
   }
 
-  async function handleRemove(student) {
-    if (!confirm(`Remove ${student.name}? (Assignment history is kept.)`)) return
-    await onSaveStudent(student, true)
+  async function handleRemove(s) {
+    if (!confirm(`Remove ${s.name}? (Assignment history is kept.)`)) return
+    await onSaveStudent(s, true)
   }
 
   async function handleAdd() {
@@ -38,6 +45,7 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
     const id = name.trim().toLowerCase().replace(/\s+/g, '-')
     const newStudent = { id, name: name.trim(), first_name, last_name, email: '', notes: '' }
     await onSaveStudent(newStudent)
+    onStudentAdded?.(id)
   }
 
   return (
@@ -46,18 +54,20 @@ export default function Settings({ students, allSources, onSaveStudent, onStatus
 
       <div className="settings-section">
         <h3>Students</h3>
-        {students.map(s => (
+        {student ? (
           <StudentCard
-            key={s.id}
-            student={s}
+            key={student.id}
+            student={student}
             allSources={allSources || []}
             onSave={handleSave}
             onRemove={handleRemove}
             onStatusChange={onStatusChange}
-            saving={saving === s.id}
+            saving={saving === student.id}
             showToast={showToast}
           />
-        ))}
+        ) : (
+          <div style={{ fontSize: 13, color: 'var(--text-dim)', padding: '8px 0' }}>No student selected.</div>
+        )}
         <button onClick={handleAdd} style={{ marginTop: 8 }}>+ Add Student</button>
       </div>
 
@@ -176,6 +186,7 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
       )}
       <InviteRow studentId={student.id} showToast={showToast} />
       <ContactsSection studentId={student.id} showToast={showToast} />
+      <LinkedAccountsSection studentId={student.id} showToast={showToast} />
       <div className="student-card-row" style={{ marginTop: 4 }}>
         <label style={{ color: 'var(--text-dim)' }}>Problem bank</label>
         <button
@@ -294,6 +305,80 @@ function ContactsSection({ studentId, showToast }) {
         canBill={true}
         isStudentRole={false}
       />
+    </div>
+  )
+}
+
+// Shows the auth accounts that can log into the portal for this student,
+// plus any pending (un-accepted) invites with a revoke button.
+function LinkedAccountsSection({ studentId, showToast }) {
+  const [data, setData] = useState(null)
+
+  function reload() {
+    setData(null)
+    const now = Date.now()
+    Promise.all([fetchProfiles(), fetchStudentLinks(), fetchInvites()])
+      .then(([profiles, allLinks, allInvites]) => setData({
+        profiles,
+        links: allLinks.filter(l => l.student_id === studentId),
+        invites: allInvites.filter(i =>
+          i.student_id === studentId && !i.accepted_at && new Date(i.expires_at).getTime() > now
+        ),
+      }))
+      .catch(e => showToast(e.message, 'error'))
+  }
+
+  useEffect(reload, [studentId])
+
+  if (data === null) return null
+
+  const { profiles, links, invites } = data
+  if (links.length === 0 && invites.length === 0) return null
+
+  const profileByAccount = id => profiles.find(p => p.id === id)
+
+  async function handleRevoke(inv) {
+    if (!confirm(`Revoke the pending invite for ${inv.email}?`)) return
+    try {
+      await deleteInvite(inv.id)
+      setData(prev => ({ ...prev, invites: prev.invites.filter(i => i.id !== inv.id) }))
+      showToast('Invite revoked')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  return (
+    <div style={{ paddingLeft: 68, paddingBottom: 8 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', margin: '10px 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        Login accounts
+      </div>
+      {links.map(l => {
+        const p = profileByAccount(l.account_id)
+        return (
+          <div key={l.id} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, padding: '3px 0' }}>
+            <span style={{ width: 48, flexShrink: 0, fontSize: 11, color: 'var(--text-dim)' }}>
+              {l.relationship === 'self' ? 'self' : 'parent'}
+            </span>
+            <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {p?.email || '(unknown)'}
+            </span>
+            <span style={{ fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', color: TYPE_COLORS[p?.account_type] || 'var(--text-dim)' }}>
+              {p?.account_type}
+            </span>
+          </div>
+        )
+      })}
+      {invites.map(i => (
+        <div key={i.id} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, padding: '3px 0' }}>
+          <span style={{ width: 48, flexShrink: 0, fontSize: 11, color: 'var(--yellow)' }}>
+            {i.relationship === 'self' ? 'self' : 'parent'}
+          </span>
+          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{i.email}</span>
+          <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--yellow)' }}>INVITED</span>
+          <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px' }} onClick={() => handleRevoke(i)}>Revoke</button>
+        </div>
+      ))}
     </div>
   )
 }
