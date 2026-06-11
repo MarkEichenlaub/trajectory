@@ -124,10 +124,11 @@ Deno.serve(async (req) => {
   }
 
   const calData = await calRes.json() as { items?: CalEvent[] }
-  // Filter specifically for "Leo / Mark Physics" to avoid false matches on "leo"
-  const events = (calData.items ?? []).filter(e =>
-    (e.summary ?? '').toLowerCase().includes('leo / mark physics')
-  )
+  // Match "Leo / Mark Physics" or "Leo Li-Savarese/Mark Physics" (different naming conventions)
+  const events = (calData.items ?? []).filter(e => {
+    const s = (e.summary ?? '').toLowerCase()
+    return (s.includes('leo') && s.includes('mark physics'))
+  })
 
   const results: Array<{ eventId: string; date: string; status: string; error?: string }> = []
 
