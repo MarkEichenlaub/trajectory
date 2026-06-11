@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { saveSession, updateSession, deleteSession } from '../utils/supabase'
+import { saveSession, updateSession, deleteSession, summarizeSession } from '../utils/supabase'
 
 export default function SessionsView({ sessions, students, activeStudentId, onSessionsChange, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
+  const [generating, setGenerating] = useState(false)
 
   const student = students.find(s => s.id === activeStudentId)
   const now = new Date().toISOString()
@@ -47,6 +48,22 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
       showToast('Session saved')
     } catch (e) {
       showToast(e.message, 'error')
+    }
+  }
+
+  async function handleGenerate() {
+    setGenerating(true)
+    try {
+      const result = await summarizeSession(draft.id)
+      setDraft(d => ({
+        ...d,
+        summary: result.summary || d.summary,
+        tagsInput: result.tags ? result.tags.join(', ') : d.tagsInput,
+      }))
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setGenerating(false)
     }
   }
 
@@ -116,7 +133,20 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
             />
           </div>
           <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
-            <label style={{ paddingTop: 6 }}>Summary</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <label style={{ paddingTop: 6 }}>Summary</label>
+              {draft.miro_board_url && (
+                <button
+                  className="sm"
+                  style={{ fontSize: 11, padding: '2px 6px', whiteSpace: 'nowrap' }}
+                  onClick={handleGenerate}
+                  disabled={generating}
+                  title="Generate summary and tags from the Miro whiteboard"
+                >
+                  {generating ? '…' : '✨ AI'}
+                </button>
+              )}
+            </div>
             <textarea
               value={draft.summary || ''}
               onChange={e => setDraft(d => ({ ...d, summary: e.target.value }))}

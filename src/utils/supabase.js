@@ -88,6 +88,14 @@ export async function deleteSession(id) {
   if (error) throw new Error(error.message)
 }
 
+export async function summarizeSession(sessionId) {
+  const { data, error } = await supabase.functions.invoke('summarize-session', {
+    body: { sessionId },
+  })
+  if (error) throw new Error(error.message)
+  return data
+}
+
 export async function fetchStudentContacts(studentId) {
   const { data, error } = await adminClient()
     .from('student_contacts').select('*').eq('student_id', studentId).order('created_at')
