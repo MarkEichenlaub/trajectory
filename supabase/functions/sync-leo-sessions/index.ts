@@ -215,7 +215,7 @@ Deno.serve(async (req) => {
         miro_board_url: miroBoardUrl,
         meet_url: meetUrl,
         gcal_event_id: eventId,
-        balance_decremented: true,
+        balance_decremented: false,
       }, { onConflict: 'id' })
       if (error) {
         console.error('Session insert error:', error)
