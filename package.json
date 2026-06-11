@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "deploy": "npm run build && gh-pages -d dist",
-    "test": "vitest run"
+    "test": "vitest run",
+    "ai-server": "node scripts/ai-server.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",
