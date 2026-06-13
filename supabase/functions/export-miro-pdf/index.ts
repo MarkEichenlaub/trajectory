@@ -73,9 +73,14 @@ Deno.serve(async (req) => {
   })
 })
 
+// encodeURIComponent encodes '=' as '%3D', which Miro's router doesn't handle — keep '=' literal.
+function encodeMiroBoardId(boardId: string): string {
+  return encodeURIComponent(boardId).replace(/%3D/gi, '=')
+}
+
 async function exportMiroPDF(boardId: string): Promise<string | null> {
   // Create export job
-  const createRes = await fetch(`https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/export/jobs`, {
+  const createRes = await fetch(`https://api.miro.com/v2/boards/${encodeMiroBoardId(boardId)}/export/jobs`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}`,
@@ -98,7 +103,7 @@ async function exportMiroPDF(boardId: string): Promise<string | null> {
     await new Promise(r => setTimeout(r, 5000))
 
     const statusRes = await fetch(
-      `https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/export/jobs/${job.id}`,
+      `https://api.miro.com/v2/boards/${encodeMiroBoardId(boardId)}/export/jobs/${job.id}`,
       { headers: { 'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}`, 'Accept': 'application/json' } }
     )
     const status = await statusRes.json() as { id: string; status: string; url?: string; downloadLink?: string }
