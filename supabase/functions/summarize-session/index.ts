@@ -4,7 +4,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
 const MIRO_ACCESS_TOKEN = Deno.env.get('MIRO_ACCESS_TOKEN')!
 
-// Exports the Miro board PDF for a session and returns its public URL.
+// Fetches board text content from Miro and returns it for AI analysis.
 // The actual AI analysis is done by the local ai-server.mjs using the claude CLI
 // (runs on Mark's machine via his Claude subscription, not API credits).
 Deno.serve(async (req) => {
@@ -46,47 +46,89 @@ Deno.serve(async (req) => {
     .single()
 
   if (sessionErr || !session) return json({ error: 'session not found' }, 404)
-  if (!session.miro_board_id && !session.miro_pdf_url) {
-    return json({ error: 'no whiteboard for this session' }, 400)
+  if (!session.miro_board_id && !session.miro_pdf_url) return json({ error: 'no whiteboard for this session' }, 400)
+
+  // If a high-res snapshot was already uploaded (e.g. from the Miro panel's
+  // "Snapshot for AI" button), use it directly — it's the best content.
+  if (session.miro_pdf_url) return json({ pictureUrl: session.miro_pdf_url })
+
+  // Otherwise pull what we can from the live board. A physics whiteboard is
+  // mostly handwriting/diagrams, which only the board *picture* captures — the
+  // text-items API just returns typed widgets (often only the calculator's
+  // placeholder). So the picture is the primary content; any meaningful typed
+  // text is returned alongside it as supplementary context.
+  const out: { pictureUrl?: string; boardText?: string } = {}
+
+  try {
+    out.pictureUrl = await getMiroBoardPicture(session.miro_board_id)
+  } catch (e) {
+    console.error('picture:', e.message)
   }
 
-  // Return existing PDF URL, or export a new one from Miro.
-  let pdfUrl = session.miro_pdf_url
-  if (!pdfUrl && session.miro_board_id) {
-    pdfUrl = await exportMiroPDF(session.miro_board_id)
-    if (!pdfUrl) return json({ error: 'miro export failed or timed out' }, 502)
-    await supabase.from('sessions').update({ miro_pdf_url: pdfUrl }).eq('id', sessionId)
+  try {
+    out.boardText = await getMiroBoardText(session.miro_board_id)
+  } catch (e) {
+    if (!e.message.includes('No text content')) console.error('text:', e.message)
   }
 
-  return json({ pdfUrl })
+  if (!out.pictureUrl && !out.boardText) {
+    return json({ error: 'No readable content on this board (no picture or text).' }, 502)
+  }
+  return json(out)
 })
 
-async function exportMiroPDF(boardId: string): Promise<string | null> {
-  const createRes = await fetch(`https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/export/jobs`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ format: 'pdf' }),
+// encodeURIComponent encodes '=' as '%3D', which Miro's router doesn't handle — keep '=' literal.
+function encodeMiroBoardId(boardId: string): string {
+  return encodeURIComponent(boardId).replace(/%3D/gi, '=')
+}
+
+async function getMiroBoardPicture(boardId: string): Promise<string> {
+  const encodedId = encodeMiroBoardId(boardId)
+  const res = await fetch(`https://api.miro.com/v2/boards/${encodedId}`, {
+    headers: { 'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}` },
   })
-  if (!createRes.ok) return null
-
-  const job = await createRes.json() as { id: string; status: string }
-
-  for (let i = 0; i < 10; i++) {
-    await new Promise(r => setTimeout(r, 5000))
-    const statusRes = await fetch(
-      `https://api.miro.com/v2/boards/${encodeURIComponent(boardId)}/export/jobs/${job.id}`,
-      { headers: { 'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}` } }
-    )
-    const status = await statusRes.json() as { status: string; url?: string; downloadLink?: string }
-    if (['FINISHED', 'finished', 'completed'].includes(status.status)) {
-      return status.url || status.downloadLink || null
-    }
-    if (['FAILED', 'failed', 'error'].includes(status.status)) return null
+  if (!res.ok) {
+    const errBody = await res.text()
+    throw new Error(`Miro board fetch failed: HTTP ${res.status} — ${errBody}`)
   }
-  return null
+  const board = await res.json() as { picture?: { imageURL?: string }; [key: string]: unknown }
+  const url = board.picture?.imageURL
+  if (!url) throw new Error(`No picture available for this Miro board. Board keys: ${Object.keys(board).join(', ')}; picture: ${JSON.stringify(board.picture)}`)
+  return url
+}
+
+async function getMiroBoardText(boardId: string): Promise<string> {
+  const encodedId = encodeMiroBoardId(boardId)
+  const texts: string[] = []
+  let cursor: string | undefined
+
+  do {
+    const url = new URL(`https://api.miro.com/v2/boards/${encodedId}/items`)
+    url.searchParams.set('limit', '50')
+    if (cursor) url.searchParams.set('cursor', cursor)
+
+    const res = await fetch(url.toString(), {
+      headers: { 'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}` },
+    })
+    if (!res.ok) {
+      const errBody = await res.text()
+      throw new Error(`Miro board items fetch failed: HTTP ${res.status} — ${errBody}`)
+    }
+    const data = await res.json() as { data: { data?: { content?: string; title?: string } }[]; cursor?: string }
+
+    for (const item of data.data ?? []) {
+      const raw = item.data?.content ?? item.data?.title ?? ''
+      if (raw) {
+        const text = raw.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+        if (text) texts.push(text)
+      }
+    }
+
+    cursor = data.cursor
+  } while (cursor)
+
+  if (!texts.length) throw new Error('No text content found on Miro board')
+  return texts.join('\n')
 }
 
 function json(body: unknown, status = 200) {

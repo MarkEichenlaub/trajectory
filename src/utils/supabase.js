@@ -88,24 +88,6 @@ export async function deleteSession(id) {
   if (error) throw new Error(error.message)
 }
 
-// Calls the local AI server (scripts/ai-server.mjs) which uses the claude CLI
-// with Mark's subscription instead of API credits. Start it with: npm run ai-server
-export async function summarizeSession(sessionId) {
-  let res
-  try {
-    res = await fetch('http://localhost:3747/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessionId }),
-    })
-  } catch {
-    throw new Error('AI server not reachable — run: npm run ai-server')
-  }
-  const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error || `AI server error ${res.status}`)
-  return data
-}
-
 export async function fetchStudentContacts(studentId) {
   const { data, error } = await adminClient()
     .from('student_contacts').select('*').eq('student_id', studentId).order('created_at')

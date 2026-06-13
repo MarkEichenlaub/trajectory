@@ -18,6 +18,14 @@ import { startHost } from '../board/host.js'
 
 const inMiro = typeof miro !== 'undefined'
 
+// Where panel snapshots go. The Miro panel is served over HTTPS, so it can't
+// POST to the local ai-server (http://localhost is blocked by the browser's
+// Private Network Access rules). This edge function stores the image in the
+// cloud instead; the local ai-server then pulls it and writes the summary.
+const SNAPSHOT_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co/functions/v1/save-board-snapshot'
+// How often, while the panel is open, to auto-capture the board if it changed.
+const AUTO_SNAPSHOT_MS = 3 * 60 * 1000
+
 const S = {
   wrap: { padding: 12, fontSize: 14 },
   section: { marginBottom: 16 },
@@ -160,6 +168,68 @@ export default function App() {
     busRef.current?.send({ type: 'mode-changed', calcId: desc.calcId })
   }
 
+  const [snapshotStatus, setSnapshotStatus] = useState(null) // null | 'working' | string
+  const lastSnapSigRef = useRef(null)
+
+  // Exports the whole board to an image and uploads it for summarization. To keep
+  // the periodic auto-capture from disturbing tutoring, it saves Mark's current
+  // selection and restores it afterward (selection is per-user in Miro, so the
+  // student never sees it). Returns false if the board is empty.
+  async function captureSnapshot() {
+    const items = await miro.board.get()
+    if (!items.length) return false
+    const prevSelection = await miro.board.getSelection().catch(() => [])
+    try {
+      await miro.board.select({ id: items.map(i => i.id) })
+      const { base64, imageType } = await miro.board.exportSelectionToImage()
+      const { id: boardId } = await miro.board.getInfo()
+      const res = await fetch(SNAPSHOT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ boardId, imageBase64: base64, imageType: imageType || 'image/png' }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`)
+      return true
+    } finally {
+      const ids = (prevSelection || []).map(i => i.id)
+      if (ids.length) await miro.board.select({ id: ids }).catch(() => {})
+      else await miro.board.deselect?.().catch(() => {})
+    }
+  }
+
+  // Manual "capture now" override (the automatic timer below normally handles it).
+  async function snapshotForAI() {
+    setSnapshotStatus('working')
+    try {
+      const ok = await captureSnapshot()
+      setSnapshotStatus(ok ? '✓ Snapshot sent — a summary fills in automatically after the session.' : 'Board is empty')
+    } catch (err) {
+      setSnapshotStatus(`Failed: ${err.message}`)
+    }
+  }
+
+  // Automatic capture: while the panel is open, snapshot the board whenever it has
+  // changed (new items), at most once per AUTO_SNAPSHOT_MS, and only when Mark
+  // isn't actively selecting something — so a summary is filled in with no clicks.
+  useEffect(() => {
+    if (!inMiro) return
+    let cancelled = false
+    const tick = async () => {
+      try {
+        const items = await miro.board.get()
+        const sig = items.length
+        if (!sig || sig === lastSnapSigRef.current) return
+        const sel = await miro.board.getSelection().catch(() => [])
+        if (sel && sel.length) return // busy — try again next tick
+        const ok = await captureSnapshot()
+        if (ok && !cancelled) lastSnapSigRef.current = sig
+      } catch { /* transient (offline, no session for this board, export busy) */ }
+    }
+    const id = setInterval(tick, AUTO_SNAPSHOT_MS)
+    return () => { cancelled = true; clearInterval(id) }
+  }, [])
+
   const catalogHits = useMemo(() => (query.trim() ? searchCatalog(query).slice(0, 25) : []), [query])
   const hostOnline = inMiro && (selfHosting || Date.now() - hostSeen < 90000)
 
@@ -229,6 +299,24 @@ export default function App() {
           {query.trim() && catalogHits.length === 0 && <div style={{ color: '#9ca3af', padding: 6 }}>no matches</div>}
         </div>
       </div>
+
+      {inMiro && (
+        <div style={S.section}>
+          <div style={S.h}>AI Summary</div>
+          <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 6 }}>
+            Auto-saves the board every few minutes. A summary &amp; tags fill in by
+            themselves after the session — no need to click.
+          </div>
+          <button style={S.btn} onClick={snapshotForAI} disabled={snapshotStatus === 'working'}>
+            {snapshotStatus === 'working' ? 'Capturing…' : '📸 Capture now'}
+          </button>
+          {snapshotStatus && snapshotStatus !== 'working' && (
+            <div style={{ marginTop: 6, fontSize: 12, color: snapshotStatus.startsWith('✓') ? '#16a34a' : '#b91c1c' }}>
+              {snapshotStatus}
+            </div>
+          )}
+        </div>
+      )}
 
       {inMiro && (
         <div style={S.section}>

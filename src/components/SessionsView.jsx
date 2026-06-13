@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import { saveSession, updateSession, deleteSession, summarizeSession } from '../utils/supabase'
+import { saveSession, updateSession, deleteSession } from '../utils/supabase'
 
 export default function SessionsView({ sessions, students, activeStudentId, onSessionsChange, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
-  const [generating, setGenerating] = useState(false)
 
   const student = students.find(s => s.id === activeStudentId)
   const now = new Date().toISOString()
@@ -48,22 +47,6 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
       showToast('Session saved')
     } catch (e) {
       showToast(e.message, 'error')
-    }
-  }
-
-  async function handleGenerate() {
-    setGenerating(true)
-    try {
-      const result = await summarizeSession(draft.id)
-      setDraft(d => ({
-        ...d,
-        summary: result.summary || d.summary,
-        tagsInput: result.tags ? result.tags.join(', ') : d.tagsInput,
-      }))
-    } catch (e) {
-      showToast(e.message, 'error')
-    } finally {
-      setGenerating(false)
     }
   }
 
@@ -133,24 +116,11 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
             />
           </div>
           <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <label style={{ paddingTop: 6 }}>Summary</label>
-              {draft.miro_board_url && (
-                <button
-                  className="sm"
-                  style={{ fontSize: 11, padding: '2px 6px', whiteSpace: 'nowrap' }}
-                  onClick={handleGenerate}
-                  disabled={generating}
-                  title="Generate summary and tags from the Miro whiteboard"
-                >
-                  {generating ? '…' : '✨ AI'}
-                </button>
-              )}
-            </div>
+            <label style={{ paddingTop: 6 }}>Summary</label>
             <textarea
               value={draft.summary || ''}
               onChange={e => setDraft(d => ({ ...d, summary: e.target.value }))}
-              placeholder="What did you cover in this session?"
+              placeholder="Fills in automatically from the whiteboard after the session — or type your own. Clear it to regenerate."
               rows={3}
               style={{ flex: 1, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13, resize: 'vertical' }}
             />

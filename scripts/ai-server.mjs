@@ -36,9 +36,10 @@ const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
 const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`
 const REST_URL = `${SUPABASE_URL}/rest/v1`
 const PORT = 3747
-const AUTO_INTERVAL_MS = 30 * 60 * 1000 // 30 minutes
-// Wait this long after session end_time before auto-processing (gives Miro time to sync)
-const SESSION_SETTLE_MINUTES = 20
+const AUTO_INTERVAL_MS = 15 * 60 * 1000 // re-check for new finished sessions every 15 min
+// Wait this long after a session's end_time before summarizing (lets the panel's
+// final auto-snapshot finish uploading).
+const SESSION_SETTLE_MINUTES = 10
 
 if (!SERVICE_KEY) {
   console.error('ERROR: VITE_SUPABASE_SERVICE_KEY not found in .env')
@@ -61,7 +62,7 @@ const DB_HEADERS = {
 
 // ── Core analysis pipeline ────────────────────────────────────────────────────
 
-async function getPdfUrl(sessionId) {
+async function getSessionContent(sessionId) {
   const res = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
     method: 'POST',
     headers: { ...DB_HEADERS, 'Content-Type': 'application/json' },
@@ -69,45 +70,73 @@ async function getPdfUrl(sessionId) {
   })
   const data = await res.json()
   if (!res.ok) throw new Error(data.error || `Edge function error ${res.status}`)
-  if (!data.pdfUrl) throw new Error('No PDF available for this session')
-  return data.pdfUrl
+  // Prefer a visual capture (a panel snapshot, or the rare board PDF) — it shows
+  // the handwriting/diagrams that make up most of a physics board. Typed text is
+  // only a fallback (handwritten boards expose almost no text via the Miro API).
+  if (data.pictureUrl) {
+    const isPdf = /\.pdf(\?|$)/i.test(data.pictureUrl)
+    return { type: isPdf ? 'pdf' : 'image', content: data.pictureUrl }
+  }
+  if (data.boardText) return { type: 'text', content: data.boardText }
+  throw new Error('No board content available for this session')
 }
 
-async function analyzePdf(pdfUrl) {
-  const pdfRes = await fetch(pdfUrl)
-  if (!pdfRes.ok) throw new Error(`Could not download PDF: HTTP ${pdfRes.status}`)
-  const bytes = await pdfRes.arrayBuffer()
+// Runs the claude CLI (Mark's subscription) to turn board content into a
+// { summary, tags } object. Reads the file with the Read tool and returns the
+// schema-validated structured output.
+async function analyzeContent({ type, content }) {
+  const ext = type === 'image' ? '.png' : type === 'pdf' ? '.pdf' : '.txt'
+  const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}${ext}`)
 
-  const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}.pdf`)
-  await writeFile(tmpFile, Buffer.from(bytes))
+  if (type === 'text') {
+    await writeFile(tmpFile, content)
+  } else {
+    const dl = await fetch(content)
+    if (!dl.ok) throw new Error(`Could not download board ${type}: HTTP ${dl.status}`)
+    await writeFile(tmpFile, Buffer.from(await dl.arrayBuffer()))
+  }
 
   try {
+    const subject = type === 'text'
+      ? `Read the tutoring session whiteboard notes at ${tmpFile}.`
+      : type === 'pdf'
+        ? `Read the tutoring session whiteboard PDF at ${tmpFile}.`
+        : `Look at the tutoring session whiteboard image at ${tmpFile}.`
     const prompt = [
-      `Read the tutoring session whiteboard PDF at ${tmpFile}.`,
+      subject,
       'It is from a one-on-one physics and math tutoring session.',
       'Summarize what was covered in 2-5 sentences: past tense, specific topics and key ideas discussed.',
       'List 3-8 concise topic tags (for example: "Taylor series", "small-angle approximation", "energy conservation").',
+      'If the board is essentially blank or unreadable, set summary to an empty string and tags to an empty array.',
     ].join(' ')
 
     const schema = SUMMARY_SCHEMA.replace(/'/g, "''")
     const p = prompt.replace(/'/g, "''")
     const isWin = process.platform === 'win32'
-    const cmd = `claude -p --allowedTools Read -y --json-schema '${schema}' '${p}'`
+    // --output-format json wraps the run in an envelope whose `structured_output`
+    // field holds the schema-validated result. Empty stdin ('' | …) stops the CLI
+    // from waiting ~3s for piped input. (-y is NOT a valid flag — it errors out.)
+    const base = `claude -p --allowedTools Read --output-format json --json-schema '${schema}' '${p}'`
+    const cmd = isWin ? `'' | ${base}` : `${base} < /dev/null`
 
     const { stdout } = await execAsync(cmd, {
       shell: isWin ? 'pwsh.exe' : undefined,
-      timeout: 120000,
+      timeout: 180000,
       cwd: ROOT,
+      maxBuffer: 10 * 1024 * 1024,
     })
 
-    const raw = stdout.trim()
+    let envelope
     try {
-      return JSON.parse(raw)
+      envelope = JSON.parse(stdout.trim())
     } catch {
-      const m = raw.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/)
-      if (m) return JSON.parse(m[1].trim())
-      throw new Error(`Unexpected AI output: ${raw.slice(0, 200)}`)
+      throw new Error(`Could not parse claude output: ${stdout.slice(0, 200)}`)
     }
+    const result = envelope.structured_output || envelope
+    if (typeof result.summary !== 'string' || !Array.isArray(result.tags)) {
+      throw new Error(`No structured output from claude (is_error=${envelope.is_error}): ${stdout.slice(0, 200)}`)
+    }
+    return result
   } finally {
     await unlink(tmpFile).catch(() => {})
   }
@@ -128,24 +157,29 @@ async function saveSessionSummary(sessionId, summary, tags) {
 // ── Auto-summarization loop ───────────────────────────────────────────────────
 
 let autoRunning = false
+let lastRun = null
 
 async function runAutoSummarize() {
   if (autoRunning) return
   autoRunning = true
+  lastRun = new Date().toISOString()
   try {
-    // Find sessions that ended ≥20 min ago (settle time), have a Miro board,
-    // but no summary yet — limit to the last 45 days.
+    // Find sessions that ended ≥ settle-time ago, have a Miro board, but no
+    // summary yet — limit to the last 45 days. Treating an empty-string summary
+    // as "needs one" lets Mark regenerate by clearing the field in the portal.
     const before = new Date(Date.now() - SESSION_SETTLE_MINUTES * 60 * 1000).toISOString()
     const since = new Date(Date.now() - 45 * 24 * 3600 * 1000).toISOString()
 
     const qs = new URLSearchParams({
-      select: 'id,miro_board_id',
-      summary: 'is.null',
+      select: 'id,miro_board_id,miro_pdf_url',
       miro_board_id: 'not.is.null',
       order: 'end_time.desc',
       limit: '10',
     })
-    const url = `${REST_URL}/sessions?${qs}&end_time=lt.${encodeURIComponent(before)}&end_time=gt.${encodeURIComponent(since)}`
+    const url = `${REST_URL}/sessions?${qs}`
+      + `&or=(summary.is.null,summary.eq.)`
+      + `&end_time=lt.${encodeURIComponent(before)}`
+      + `&end_time=gt.${encodeURIComponent(since)}`
 
     const listRes = await fetch(url, { headers: DB_HEADERS })
     if (!listRes.ok) {
@@ -162,8 +196,14 @@ async function runAutoSummarize() {
     for (const session of sessions) {
       try {
         console.log(`[auto] Processing ${session.id}...`)
-        const pdfUrl = await getPdfUrl(session.id)
-        const { summary, tags } = await analyzePdf(pdfUrl)
+        const sessionContent = await getSessionContent(session.id)
+        const { summary, tags } = await analyzeContent(sessionContent)
+        // Blank board → leave the summary null so the next run retries once a
+        // panel snapshot has been captured (rather than locking in an empty one).
+        if (!summary.trim()) {
+          console.log(`[auto] – ${session.id}: board looks blank, will retry later`)
+          continue
+        }
         await saveSessionSummary(session.id, summary, tags)
         console.log(`[auto] ✓ ${session.id} — tags: ${tags.join(', ')}`)
       } catch (e) {
@@ -175,50 +215,26 @@ async function runAutoSummarize() {
   }
 }
 
-// ── HTTP handler (✨ AI button: returns result without saving) ─────────────────
+// ── Health endpoint ───────────────────────────────────────────────────────────
+// Board snapshots are uploaded by the Miro panel straight to the cloud (the
+// save-board-snapshot edge function), so this process needs no inbound API — it
+// just runs the pull-based auto-summarize loop. The endpoint is here so Mark can
+// confirm the server is alive (open http://localhost:3747 or curl it).
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Headers', 'content-type')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
-
-  if (req.method !== 'POST' || req.url !== '/analyze') {
-    res.writeHead(404); res.end(JSON.stringify({ error: 'not found' })); return
-  }
-
-  let body = ''
-  for await (const chunk of req) body += chunk
-
-  let sessionId
-  try { sessionId = JSON.parse(body).sessionId } catch { /* handled below */ }
-
-  if (!sessionId) {
-    res.writeHead(400); res.end(JSON.stringify({ error: 'sessionId required' })); return
-  }
-
-  try {
-    console.log(`[btn] Analyzing ${sessionId}...`)
-    const pdfUrl = await getPdfUrl(sessionId)
-    const result = await analyzePdf(pdfUrl)
-    console.log(`[btn] Done. Tags: ${result.tags?.join(', ')}`)
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(result))
-  } catch (e) {
-    console.error(`[btn] Error for ${sessionId}: ${e.message}`)
-    res.writeHead(e.message.includes('not reachable') ? 503 : 500)
-    res.end(JSON.stringify({ error: e.message }))
-  }
+  res.writeHead(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify({ ok: true, service: 'trajectory-ai-summarizer', lastRun }))
 })
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`\n✨ AI server running at http://localhost:${PORT}`)
-  console.log(`   Auto-summarizing sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
+  console.log(`\n✨ AI summarizer running (health check: http://localhost:${PORT})`)
+  console.log(`   Auto-summarizing finished sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
 })
 
-// Run immediately on startup (after a short delay), then every 30 min.
-setTimeout(runAutoSummarize, 60 * 1000)
+// Run shortly after startup, then on the interval.
+setTimeout(runAutoSummarize, 20 * 1000)
 setInterval(runAutoSummarize, AUTO_INTERVAL_MS)
