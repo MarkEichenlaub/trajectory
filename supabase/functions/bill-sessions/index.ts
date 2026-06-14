@@ -118,7 +118,7 @@ async function checkReportReminder(
 }
 
 async function sendVenmoReminder(
-  student: { id: string; name: string; first_name: string | null; billing_name: string | null },
+  student: { id: string; name: string; first_name: string | null; billing_name: string | null; gender: string | null },
   cycleSessions: { id: string; scheduled_at: string; tags: string[] | null }[],
 ) {
   const count = cycleSessions.length
@@ -131,11 +131,12 @@ async function sendVenmoReminder(
 
   const firstName = student.first_name || student.name.split(' ')[0]
   const billingName = student.billing_name || 'their parent'
+  const pronoun = student.gender === 'female' ? 'She' : student.gender === 'male' ? 'He' : 'They'
 
   await sendEmail(
     MARK_EMAIL,
     `Venmo invoice due for ${student.name}`,
-    `Hi Mark,\n\n${student.name} is due for a new invoice on Venmo to ${billingName}. She has 0 sessions of credit remaining.\n\nHere is a message for the Venmo request:\n\n${firstName} next ${count} physics sessions.\n\nLast cycle:\n${sessionLines}`,
+    `Hi Mark,\n\n${student.name} is due for a new invoice on Venmo to ${billingName}. ${pronoun} has 0 sessions of credit remaining.\n\nHere is a message for the Venmo request:\n\n${firstName} next ${count} physics sessions.\n\nLast cycle:\n${sessionLines}`,
   )
 
   const ids = cycleSessions.map(s => s.id)
@@ -150,7 +151,7 @@ async function sendVenmoReminder(
 async function checkVenmoReminders() {
   const { data: students } = await supabase
     .from('students')
-    .select('id, name, first_name, billing_name')
+    .select('id, name, first_name, billing_name, gender')
     .lte('session_balance', 0)
     .eq('invoicing_enabled', false)
     .eq('status', 'active')

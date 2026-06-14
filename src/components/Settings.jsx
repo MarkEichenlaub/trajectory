@@ -174,6 +174,18 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         <input value={draft.billing_name || ''} onChange={e => set('billing_name', e.target.value)} placeholder="Parent / guardian name on invoice" />
       </div>
       <div className="student-card-row">
+        <label>Gender</label>
+        <select
+          value={draft.gender || ''}
+          onChange={e => set('gender', e.target.value || null)}
+          style={{ fontSize: 13, background: 'var(--surface)', border: '1px solid var(--border)', color: draft.gender ? 'var(--text)' : 'var(--text-dim)', borderRadius: 4, padding: '4px 6px' }}
+        >
+          <option value="">Not set</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div className="student-card-row">
         <label>Notes</label>
         <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
       </div>
