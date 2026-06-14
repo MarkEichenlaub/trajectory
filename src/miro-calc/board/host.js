@@ -23,6 +23,14 @@ const IDLE_TICKS = 2 // ~1.5 s of no typing triggers evaluation (besides "=")
 const REPAIR_EVERY = 7 // ~5 s
 const HEARTBEAT_MS = 50000 // wall-clock, not ticks — headless ticks are throttled
 
+// Board snapshots for AI summaries. Served over HTTPS, so the upload can't reach
+// the local ai-server directly (http://localhost is blocked by the browser's
+// Private Network Access rules) — it POSTs to this edge function, which stores
+// the image in the cloud; the local ai-server then pulls it and writes a summary.
+const SNAPSHOT_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co/functions/v1/save-board-snapshot'
+const SNAPSHOT_EVERY_MS = 3 * 60 * 1000 // re-capture a changed board at most this often
+const SNAPSHOT_POLL_MS = 30000 // how often to check (wall-clock gated; headless timers are throttled)
+
 function runtimeFor(desc) {
   return {
     desc,
@@ -255,6 +263,69 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
     })
   }
 
+  // ── Board snapshot for AI summaries ─────────────────────────────────────────
+  // Photographs the whole board and uploads it for the current session, where the
+  // local ai-server later turns it into a summary + tags. This lives in the host
+  // (not the panel) so it auto-runs from whichever iframe holds the lease — the
+  // panel when it's open, otherwise the always-on headless app iframe — meaning a
+  // board gets captured with no panel open and nothing to click.
+  let lastSnapAt = 0
+  let lastSnapSig = null
+  let snapping = false
+
+  // Returns false if the board is empty. The manual "Capture now" button calls
+  // this directly (ungated); the auto-loop below adds leader/throttle guards.
+  async function captureSnapshot() {
+    const items = await miro.board.get()
+    if (!items.length) return false
+    const prevSelection = await miro.board.getSelection().catch(() => [])
+    try {
+      await miro.board.select({ id: items.map((i) => i.id) })
+      const { base64, imageType } = await miro.board.exportSelectionToImage()
+      const { id: boardId } = await miro.board.getInfo()
+      const res = await fetch(SNAPSHOT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ boardId, imageBase64: base64, imageType: imageType || 'image/png' }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        throw new Error(data.error || `HTTP ${res.status}`)
+      }
+      return true
+    } finally {
+      // Selection is per-user in Miro, so saving/restoring it keeps the periodic
+      // capture invisible to Mark — and the student never sees his selection.
+      const ids = (prevSelection || []).map((i) => i.id)
+      if (ids.length) await miro.board.select({ id: ids }).catch(() => {})
+      else await miro.board.deselect?.().catch(() => {})
+    }
+  }
+
+  // Only the lease leader auto-captures, so the panel and headless iframes never
+  // both upload. Wall-clock gated (Date.now), because Chrome throttles the
+  // headless iframe's timers to ~1/min. Captures only when the board changed
+  // (item count) and Mark isn't mid-selection — same restraint the panel used.
+  async function maybeSnapshot() {
+    if (snapping || !lease.isLeader()) return
+    if (Date.now() - lastSnapAt < SNAPSHOT_EVERY_MS) return
+    snapping = true
+    try {
+      const items = await miro.board.get()
+      const sig = items.length
+      if (!sig) return
+      const sel = await miro.board.getSelection().catch(() => [])
+      if (sel && sel.length) return // busy — try again next cycle
+      if (sig === lastSnapSig) { lastSnapAt = Date.now(); return } // unchanged
+      const ok = await captureSnapshot()
+      if (ok) { lastSnapSig = sig; lastSnapAt = Date.now() }
+    } catch {
+      /* transient: offline, no session for this board yet, export busy */
+    } finally {
+      snapping = false
+    }
+  }
+
   async function tick() {
     if (running) return
     running = true
@@ -333,7 +404,8 @@ export async function startHost({ log = console.log, priority = 1 } = {}) {
   await reloadWidgets()
   await heartbeat(true)
   setInterval(tick, TICK_MS)
+  setInterval(() => { maybeSnapshot().catch(() => {}) }, SNAPSHOT_POLL_MS)
   log(`miro-calc host started (session ${lease.sessionId}, ${widgets.length} widget(s))`)
 
-  return { reloadWidgets, isLeader: () => lease.isLeader() }
+  return { reloadWidgets, isLeader: () => lease.isLeader(), captureSnapshot }
 }

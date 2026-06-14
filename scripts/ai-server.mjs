@@ -46,6 +46,18 @@ if (!SERVICE_KEY) {
   process.exit(1)
 }
 
+// This is a long-running background server with nothing to restart it if it
+// dies, so a transient blip (a brief DNS/network failure, an offline moment)
+// must NEVER take it down. Previously an unprotected fetch in the auto-loop
+// rejected during one such blip, became an unhandled rejection, and crashed the
+// whole process — silently stopping all summarization for days. Log and survive.
+process.on('unhandledRejection', (reason) => {
+  console.error(`[guard] unhandled rejection (kept alive): ${reason?.stack || reason}`)
+})
+process.on('uncaughtException', (err) => {
+  console.error(`[guard] uncaught exception (kept alive): ${err?.stack || err}`)
+})
+
 const SUMMARY_SCHEMA = JSON.stringify({
   type: 'object',
   properties: {
@@ -181,7 +193,14 @@ async function runAutoSummarize() {
       + `&end_time=lt.${encodeURIComponent(before)}`
       + `&end_time=gt.${encodeURIComponent(since)}`
 
-    const listRes = await fetch(url, { headers: DB_HEADERS })
+    let listRes
+    try {
+      listRes = await fetch(url, { headers: DB_HEADERS })
+    } catch (e) {
+      // Network/DNS hiccup — just skip this cycle and retry on the next one.
+      console.error(`[auto] Could not reach Supabase (will retry next cycle): ${e.message}`)
+      return
+    }
     if (!listRes.ok) {
       console.error(`[auto] Failed to list sessions: ${listRes.status}`)
       return
@@ -235,6 +254,8 @@ server.listen(PORT, '127.0.0.1', () => {
   console.log(`   Auto-summarizing finished sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
 })
 
-// Run shortly after startup, then on the interval.
-setTimeout(runAutoSummarize, 20 * 1000)
-setInterval(runAutoSummarize, AUTO_INTERVAL_MS)
+// Run shortly after startup, then on the interval. Wrap so a rejection from the
+// loop can never escape as an unhandled rejection (the original crash path).
+const safeRun = () => runAutoSummarize().catch((e) => console.error(`[auto] run failed (kept alive): ${e.message}`))
+setTimeout(safeRun, 20 * 1000)
+setInterval(safeRun, AUTO_INTERVAL_MS)
