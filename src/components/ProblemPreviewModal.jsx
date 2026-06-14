@@ -34,7 +34,7 @@ function renderStatementHtml(text) {
 
 // Modal preview of a single problem: full statement with KaTeX, figures, tags
 // and links. Used in the admin Problems browser and the student problem bank.
-export default function ProblemPreviewModal({ problem, onClose }) {
+export default function ProblemPreviewModal({ problem, onClose, onExclude }) {
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
@@ -72,12 +72,31 @@ export default function ProblemPreviewModal({ problem, onClose }) {
             {problem.tags.map(t => <span key={t} className="tag">{t}</span>)}
           </div>
         )}
+        {problem.nonPhysics && (
+          <div style={{ marginTop: 16, padding: '8px 12px', background: 'var(--red-bg, #fff0f0)', border: '1px solid var(--red-line, #ffb3b3)', borderRadius: 6, fontSize: 13, color: 'var(--red, #c0392b)' }}>
+            <strong>Not physics content</strong> — This is an AoPS course logistics or instructions problem, not an actual physics problem.
+          </div>
+        )}
         <div className="modal-footer">
           {problem.problemUrl && (
             <a className="pdf-link" href={problem.problemUrl} target="_blank" rel="noreferrer" style={{ marginRight: 'auto' }}>Problem ↗</a>
           )}
           {problem.solutionUrl && (
             <a className="pdf-link" href={problem.solutionUrl} target="_blank" rel="noreferrer" style={problem.problemUrl ? {} : { marginRight: 'auto' }}>Solution ↗</a>
+          )}
+          {onExclude && (
+            <button
+              className="sm"
+              style={{ color: 'var(--red, #c0392b)', borderColor: 'var(--red-line, #ffb3b3)' }}
+              title="Permanently hide this problem from the portal"
+              onClick={() => {
+                if (window.confirm('Hide this problem permanently? It will no longer appear in the portal. (You can undo this in the database if needed.)')) {
+                  onExclude(problem.id)
+                }
+              }}
+            >
+              Delete
+            </button>
           )}
           <button className="sm" onClick={onClose}>Close</button>
         </div>

@@ -27,7 +27,8 @@
     "aops_id": "43541",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "f07ffcc8-e5a4-4692-8de9-fb9c2d0dacd6",
@@ -57,7 +58,8 @@
     "aops_id": "43543",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "477342e9-b79c-469e-8fa0-256ddc8328b5",
@@ -155,7 +157,8 @@
     "aops_id": "43542",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "4ef99097-a397-4b74-8450-59f1153a3099",
@@ -185,7 +188,8 @@
     "aops_id": "43540",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "397d3d0e-bed2-4919-a673-6ea067a48e26",
@@ -589,7 +593,8 @@
     "aops_id": "45990",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "67767644-38fd-493a-bc16-adcc1b78c56d",
@@ -5143,7 +5148,8 @@
     "aops_id": "44633",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "a7cfb04d-a1c1-4978-b161-eb2bb4998d62",
@@ -7843,7 +7849,8 @@
     "aops_id": "44987",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "4fda7848-5b94-40de-bcfc-8c2477857b73",

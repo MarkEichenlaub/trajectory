@@ -25,6 +25,7 @@ export default function ProblemTable({
   problems, selected, statusMap, filters, setFilters,
   onToggle, onSelectAll, onClearAll,
   sortCol, sortDir, onSort,
+  onExclude,
 }) {
   const [previewProblem, setPreviewProblem] = useState(null)
   // Rendering all ~900+ rows at once blocks the main thread for over a second,
@@ -92,11 +93,12 @@ export default function ProblemTable({
               const isSelected = selected.has(p.id)
               const isAssigned = status === 'assigned'
               const isCompleted = status === 'completed'
+              const isNonPhysics = p.nonPhysics === true
 
               return (
                 <tr
                   key={p.id}
-                  className={isSelected ? 'selected' : isCompleted ? 'done' : isAssigned ? 'assigned-row-tr' : ''}
+                  className={isSelected ? 'selected' : isNonPhysics ? 'non-physics-row' : isCompleted ? 'done' : isAssigned ? 'assigned-row-tr' : ''}
                   onClick={() => onToggle(p.id)}
                   style={{ cursor: 'pointer' }}
                 >
@@ -142,6 +144,7 @@ export default function ProblemTable({
                         title="Preview problem"
                         onClick={e => { e.stopPropagation(); setPreviewProblem(p) }}
                       >
+                        {isNonPhysics && <span className="non-physics-badge" title="Not physics content — AoPS logistics or instructions">⚠ non-physics</span>}
                         {p.name}
                       </div>
                       <button
@@ -183,7 +186,11 @@ export default function ProblemTable({
       </div>
       {previewProblem && (
         <Suspense fallback={null}>
-          <ProblemPreviewModal problem={previewProblem} onClose={() => setPreviewProblem(null)} />
+          <ProblemPreviewModal
+            problem={previewProblem}
+            onClose={() => setPreviewProblem(null)}
+            onExclude={onExclude ? (id) => { onExclude(id); setPreviewProblem(null) } : null}
+          />
         </Suspense>
       )}
     </>

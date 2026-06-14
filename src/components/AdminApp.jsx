@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -46,6 +46,7 @@ export default function AdminApp({ userId }) {
   const [assignments, setAssignments] = useState([])
   const [sessions, setSessions] = useState([])
   const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
+  const [excludedIds, setExcludedIds] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
@@ -126,6 +127,7 @@ export default function AdminApp({ userId }) {
     apply('sessions', k('sb', userId, 'sessions'), () => fetchSessions(), setSessions,
       { onError: e => setError(e.message) })
     apply('handouts', k('sb', userId, 'handouts'), () => fetchHandouts().catch(() => []), setHandouts)
+    fetchExcludedProblems().then(setExcludedIds).catch(() => {})
   }, [])
 
   // Mirror state back into the cache so every mutation (assign, save student,
@@ -162,10 +164,10 @@ export default function AdminApp({ userId }) {
     if (view === VIEWS.HANDOUTS) refreshHandouts()
   }, [view])
 
-  const allProblems = useMemo(
-    () => assembleProblemBank({ problems, aopsProblems, handouts }),
-    [problems, aopsProblems, handouts]
-  )
+  const allProblems = useMemo(() => {
+    const bank = assembleProblemBank({ problems, aopsProblems, handouts })
+    return excludedIds.size > 0 ? bank.filter(p => !excludedIds.has(p.id)) : bank
+  }, [problems, aopsProblems, handouts, excludedIds])
 
   const allSources = useMemo(() =>
     [...new Set(allProblems.map(p => p.contest))].sort(),
@@ -360,6 +362,17 @@ export default function AdminApp({ userId }) {
       await deleteHandout(handout.id)
       await refreshHandouts()
       showToast('Draft discarded')
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleExcludeProblem(problemId) {
+    try {
+      await excludeProblem(problemId)
+      setExcludedIds(prev => new Set([...prev, problemId]))
+      setSelected(prev => { const next = new Set(prev); next.delete(problemId); return next })
+      showToast('Problem hidden — it will no longer appear in the portal')
     } catch (e) {
       showToast(e.message, 'error')
     }
@@ -710,6 +723,7 @@ export default function AdminApp({ userId }) {
                 sortCol={sortCol}
                 sortDir={sortDir}
                 onSort={handleSort}
+                onExclude={handleExcludeProblem}
               />
             </div>
           </>

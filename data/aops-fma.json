@@ -27,7 +27,8 @@
     "aops_id": "32274",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "8e5dd439-b5e5-4adc-9d18-f9e8ba9ed1c0",
@@ -363,7 +364,8 @@
     "aops_id": "32244",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null
+    "solutionUrl": null,
+    "nonPhysics": true
   },
   {
     "id": "52d37465-0e06-48a2-ba22-392ce0dc6871",

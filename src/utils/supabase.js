@@ -567,6 +567,21 @@ export async function publishFeedback(assignment, feedbackUrl, studentName, prob
   })
 }
 
+// ── Excluded problems (admin) ─────────────────────────────────────────────────
+
+export async function fetchExcludedProblems() {
+  const { data, error } = await adminClient().from('excluded_problems').select('problem_id')
+  if (error) throw new Error(error.message)
+  return new Set((data || []).map(r => r.problem_id))
+}
+
+export async function excludeProblem(problemId) {
+  const { error } = await adminClient()
+    .from('excluded_problems')
+    .upsert({ problem_id: problemId }, { onConflict: 'problem_id' })
+  if (error) throw new Error(error.message)
+}
+
 export async function markMyProblemCompleted(studentId, problemId) {
   const date = new Date().toISOString().slice(0, 10)
   const { data: existing } = await supabase
