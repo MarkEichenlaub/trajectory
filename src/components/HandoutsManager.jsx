@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { saveHandout, deleteHandout, uploadHandoutPDF, uploadHandoutSolutionPDF } from '../utils/supabase'
 import HomeworkDraftsPanel from './HomeworkDraftsPanel'
 
@@ -24,10 +24,68 @@ function handoutToForm(h) {
   }
 }
 
+function scoreHandout(h, q) {
+  if (!q) return 0
+  const lower = q.toLowerCase()
+  let score = 0
+  if (h.name.toLowerCase().includes(lower)) score += 4
+  if ((h.description || '').toLowerCase().includes(lower)) score += 2
+  if ((h.tags || []).some(t => t.toLowerCase().includes(lower))) score += 2
+  if ((h.topics || []).some(t => t.toLowerCase().includes(lower))) score += 1
+  if ((h.source || '').toLowerCase().includes(lower)) score += 1
+  return score
+}
+
 export default function HandoutsManager({ handouts, drafts = [], onDraftRequestChanges, onDraftApprove, onDraftDiscard, onHandoutsChange, showToast }) {
   const [form, setForm] = useState(EMPTY_FORM)
   const [editingId, setEditingId] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedTags, setSelectedTags] = useState(new Set())
+
+  // Collect all tags across all handouts with frequency counts
+  const allTagCounts = useMemo(() => {
+    const counts = {}
+    handouts.forEach(h => {
+      ;(h.tags || []).forEach(t => { counts[t] = (counts[t] || 0) + 1 })
+      ;(h.topics || []).forEach(t => { counts[t] = (counts[t] || 0) + 1 })
+    })
+    return counts
+  }, [handouts])
+
+  const sortedTags = useMemo(() =>
+    Object.entries(allTagCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])),
+    [allTagCounts]
+  )
+
+  const filtered = useMemo(() => {
+    let list = handouts
+
+    // Tag filter
+    if (selectedTags.size > 0) {
+      list = list.filter(h => {
+        const allH = [...(h.tags || []), ...(h.topics || [])]
+        return [...selectedTags].every(t => allH.includes(t))
+      })
+    }
+
+    if (!searchQuery.trim()) return list
+
+    const q = searchQuery.trim()
+    const scored = list
+      .map(h => ({ h, score: scoreHandout(h, q) }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+    return scored.map(({ h }) => h)
+  }, [handouts, searchQuery, selectedTags])
+
+  function toggleTag(tag) {
+    setSelectedTags(prev => {
+      const next = new Set(prev)
+      if (next.has(tag)) next.delete(tag); else next.add(tag)
+      return next
+    })
+  }
 
   function toggleTopic(topic) {
     setForm(f => ({
@@ -38,7 +96,6 @@ export default function HandoutsManager({ handouts, drafts = [], onDraftRequestC
     }))
   }
 
-  // True when the form differs from what it was seeded with (new vs editing).
   function formDirty() {
     const existing = editingId ? handouts.find(h => h.id === editingId) : null
     const baseline = existing ? handoutToForm(existing) : EMPTY_FORM
@@ -278,45 +335,110 @@ export default function HandoutsManager({ handouts, drafts = [], onDraftRequestC
       {handouts.length === 0 ? (
         <div className="empty-state">No handouts yet.</div>
       ) : (
-        <div className="assigned-list">
-          {handouts.map(h => (
-            <div
-              key={h.id}
-              className={`assigned-row${editingId === h.id ? ' selected' : ''}`}
-              style={{ flexDirection: 'column', alignItems: 'stretch', gap: 4 }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ flex: 1 }}>
-                  <span className="p-name" style={{ fontWeight: 500 }}>{h.name}</span>
-                  <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, marginLeft: 8 }}>
-                    {h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout'} · {h.source}
-                    {h.resource_type === 'exam' && h.year ? ` · ${h.year}` : ''}
-                  </span>
-                </div>
-                <div className="assigned-row-links">
-                  {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">{h.resource_type === 'exam' ? 'Exam ↗' : 'PDF ↗'}</a>}
-                  {h.solution_url && <a href={h.solution_url} target="_blank" rel="noreferrer">Solutions ↗</a>}
-                  <button
-                    className="sm"
-                    style={{ fontSize: 11, padding: '1px 6px' }}
-                    onClick={() => startEdit(h)}
-                  >Edit</button>
-                  <button
-                    className="sm danger"
-                    style={{ fontSize: 11, padding: '1px 6px' }}
-                    onClick={() => handleDelete(h.id)}
-                  >✕</button>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+
+          {/* Tag pane */}
+          {sortedTags.length > 0 && (
+            <div style={{ width: 180, flexShrink: 0, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', position: 'sticky', top: 0, maxHeight: '80vh', overflowY: 'auto' }}>
+              <div style={{ padding: '10px 10px 8px', borderBottom: '1px solid var(--border)' }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 0 }}>
+                  Tags
                 </div>
               </div>
-              {h.description && (
-                <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.4 }}>{h.description}</p>
+              {selectedTags.size > 0 && (
+                <div style={{ padding: '6px 10px 0' }}>
+                  <button className="sm" onClick={() => setSelectedTags(new Set())}
+                    style={{ width: '100%', fontSize: 11, background: 'var(--accent-dim)', color: 'var(--accent)' }}>
+                    Clear {selectedTags.size} filter{selectedTags.size > 1 ? 's' : ''}
+                  </button>
+                </div>
               )}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                {(h.topics || []).map(t => <span key={t} className="tag topic">{t}</span>)}
-                {(h.tags || []).map(t => <span key={t} className="tag">{t}</span>)}
+              <div style={{ paddingBottom: 6, paddingTop: 4 }}>
+                {sortedTags.map(([tag, count]) => (
+                  <div key={tag} onClick={() => toggleTag(tag)}
+                    style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                      padding: '3px 10px', cursor: 'pointer', fontSize: 12,
+                      background: selectedTags.has(tag) ? 'var(--accent-dim)' : 'transparent',
+                      color: selectedTags.has(tag) ? 'var(--accent)' : 'var(--text)',
+                      borderLeft: `2px solid ${selectedTags.has(tag) ? 'var(--accent)' : 'transparent'}`,
+                    }}>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tag}</span>
+                    <span style={{ fontSize: 10, color: 'var(--text-dim)', marginLeft: 4, flexShrink: 0 }}>{count}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
+
+          {/* List */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="search-bar" style={{ marginBottom: 10 }}>
+              <input
+                placeholder="Search titles, descriptions, tags…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+              <span className="result-count">
+                {filtered.length} of {handouts.length}
+              </span>
+            </div>
+
+            {filtered.length === 0 ? (
+              <div className="empty-state">No handouts match.</div>
+            ) : (
+              <div className="assigned-list">
+                {filtered.map(h => (
+                  <div
+                    key={h.id}
+                    className={`assigned-row${editingId === h.id ? ' selected' : ''}`}
+                    style={{ flexDirection: 'column', alignItems: 'stretch', gap: 4 }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{ flex: 1 }}>
+                        <span className="p-name" style={{ fontWeight: 500 }}>{h.name}</span>
+                        <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, marginLeft: 8 }}>
+                          {h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout'} · {h.source}
+                          {h.resource_type === 'exam' && h.year ? ` · ${h.year}` : ''}
+                        </span>
+                      </div>
+                      <div className="assigned-row-links">
+                        {h.pdf_url && <a href={h.pdf_url} target="_blank" rel="noreferrer">{h.resource_type === 'exam' ? 'Exam ↗' : 'PDF ↗'}</a>}
+                        {h.solution_url && <a href={h.solution_url} target="_blank" rel="noreferrer">Solutions ↗</a>}
+                        <button
+                          className="sm"
+                          style={{ fontSize: 11, padding: '1px 6px' }}
+                          onClick={() => startEdit(h)}
+                        >Edit</button>
+                        <button
+                          className="sm danger"
+                          style={{ fontSize: 11, padding: '1px 6px' }}
+                          onClick={() => handleDelete(h.id)}
+                        >✕</button>
+                      </div>
+                    </div>
+                    {h.description && (
+                      <p style={{ fontSize: 12, color: 'var(--text-dim)', margin: 0, lineHeight: 1.4 }}>{h.description}</p>
+                    )}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                      {(h.topics || []).map(t => (
+                        <span key={t} className="tag topic" style={{ cursor: 'pointer' }}
+                          onClick={() => toggleTag(t)}>
+                          {t}
+                        </span>
+                      ))}
+                      {(h.tags || []).map(t => (
+                        <span key={t} className="tag" style={{ cursor: 'pointer' }}
+                          onClick={() => toggleTag(t)}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
