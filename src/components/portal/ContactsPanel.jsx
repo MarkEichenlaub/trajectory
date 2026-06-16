@@ -13,6 +13,7 @@ const CONTACT_TOGGLES = [
   ['receives_invoices', 'Invoices'],
   ['receives_assignments', 'Assignments'],
   ['receives_assignment_reminders', 'Assignment reminders'],
+  ['receives_session_reminders', 'Session reminders'],
 ]
 
 function ContactsPanel({ studentId, contacts, setContacts, isAdmin, canBill, isStudentRole, invoices, setInvoices }) {
