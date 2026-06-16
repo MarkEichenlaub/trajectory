@@ -8,7 +8,7 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
   const student = students.find(s => s.id === activeStudentId)
   const now = new Date().toISOString()
   const studentSessions = sessions
-    .filter(s => s.student_id === activeStudentId && s.end_time && s.end_time <= now)
+    .filter(s => s.student_id === activeStudentId && (s.end_time ?? s.scheduled_at) <= now)
     .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
   function startEdit(session) {
