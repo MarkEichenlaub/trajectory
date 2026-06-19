@@ -304,6 +304,48 @@ Deno.serve(async (req) => {
     else results.push({ eventId: '', date: s.id, status: 'orphan_deleted' })
   }
 
+  // If an event was moved from a date in the recent past, the stale session row
+  // is never in futureSessions (scheduled_at < now) and never gets cleaned up.
+  // Query the last 14 days of calendar events to extend validIds, then prune
+  // any gcal-borna-* session in that window with no matching calendar event.
+  const lookbackDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
+  const pastParams = new URLSearchParams({
+    q: 'Borna',
+    timeMin: lookbackDate.toISOString(),
+    timeMax: now.toISOString(),
+    singleEvents: 'true',
+    orderBy: 'startTime',
+    maxResults: '50',
+  })
+  const pastCalRes = await fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/primary/events?${pastParams}`,
+    { headers: { 'Authorization': `Bearer ${accessToken}` } },
+  )
+  if (pastCalRes.ok) {
+    const pastCalData = await pastCalRes.json() as { items?: CalEvent[] }
+    const pastEvents = (pastCalData.items ?? []).filter(e =>
+      (e.summary ?? '').toLowerCase().includes('borna')
+    )
+    for (const e of pastEvents) {
+      if (e.start.dateTime) validIds.add(`gcal-borna-${toCompactUTC(e.start.dateTime)}`)
+    }
+  } else {
+    console.error('Past calendar query failed:', pastCalRes.status)
+  }
+  const { data: pastSessions } = await supabase
+    .from('sessions')
+    .select('id')
+    .eq('student_id', STUDENT_ID)
+    .like('id', 'gcal-borna-%')
+    .gte('scheduled_at', lookbackDate.toISOString())
+    .lt('scheduled_at', now.toISOString())
+  for (const s of pastSessions ?? []) {
+    if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
+    const { error } = await supabase.from('sessions').delete().eq('id', s.id)
+    if (error) console.error('Past orphan session delete error:', error)
+    else results.push({ eventId: '', date: s.id, status: 'past_orphan_deleted' })
+  }
+
   const summary = {
     ok: true,
     total: events.length,
@@ -312,6 +354,7 @@ Deno.serve(async (req) => {
     meet_backfilled: results.filter(r => r.status === 'meet_backfilled').length,
     already_done: results.filter(r => r.status === 'already_done').length,
     orphans_deleted: results.filter(r => r.status === 'orphan_deleted').length,
+    past_orphans_deleted: results.filter(r => r.status === 'past_orphan_deleted').length,
     errors: results.filter(r => r.status.includes('error') || r.status.includes('failed')).length,
     results,
   }

@@ -5,6 +5,7 @@ const ProblemPreviewModal = lazy(() => import('./ProblemPreviewModal'))
 
 const COLS = [
   { key: 'status', label: 'Status', width: 72, sortable: true },
+  { key: 'contest', label: 'Collection', width: 100, sortable: true },
   { key: 'year', label: 'Year', width: 56, sortable: true },
   { key: 'label', label: '#', width: 48, sortable: true },
   { key: 'name', label: 'Problem', width: null, sortable: true },
@@ -114,10 +115,10 @@ export default function ProblemTable({
                     <StatusBadge status={status} />
                   </td>
                   <td style={{ whiteSpace: 'nowrap' }}>
-                    {(p.type === 'Handout' || p.type === 'Book')
-                      ? <span style={{ color: 'var(--accent)', fontSize: 11, fontWeight: 500 }}>{p.contest}</span>
-                      : <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>
-                    }
+                    <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{p.contest}</span>
+                  </td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
+                    {p.year > 0 && <span style={{ color: 'var(--text-dim)', fontSize: 12 }}>{p.year}</span>}
                   </td>
                   <td>
                     {p.type !== 'Handout' && p.type !== 'Book' && (
