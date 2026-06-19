@@ -131,6 +131,9 @@ Deno.serve(async (req) => {
   )
 
   const results: Array<{ eventId: string; date: string; status: string; error?: string }> = []
+  // IDs of sessions whose scheduled_at was updated in place (event moved to a new time).
+  // These retain their old time-based IDs, so we must protect them from reconciliation deletion.
+  const movedSessionIds = new Set<string>()
 
   for (const event of events) {
     const eventId = event.id
@@ -145,12 +148,39 @@ Deno.serve(async (req) => {
       month: 'short', day: 'numeric', year: 'numeric',
     })
 
-    // Look up existing session by this canonical ID
-    const { data: existing } = await supabase
+    // Look up existing session by this canonical ID first; fall back to gcal_event_id
+    // so that a moved event updates the existing row instead of creating a duplicate.
+    let { data: existing } = await supabase
       .from('sessions')
-      .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id')
+      .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id, scheduled_at')
       .eq('id', sessionId)
       .maybeSingle()
+    if (!existing) {
+      const { data: byEventId } = await supabase
+        .from('sessions')
+        .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id, scheduled_at')
+        .eq('gcal_event_id', eventId)
+        .maybeSingle()
+      if (byEventId) {
+        // Event moved — update scheduled_at in place and clear the reminder flag.
+        // We also call ensureMeet here so the Meet URL stays current.
+        const meetUrl = await ensureMeet(accessToken, event)
+        const movedPatch: Record<string, unknown> = {
+          scheduled_at: startDate.toISOString(),
+          end_time: endDate ? endDate.toISOString() : null,
+          session_reminder_sent_at: null,
+        }
+        if (meetUrl && byEventId.meet_url !== meetUrl) movedPatch.meet_url = meetUrl
+        const { error: moveErr } = await supabase
+          .from('sessions').update(movedPatch).eq('id', byEventId.id)
+        if (moveErr) console.error('Session move update error:', moveErr)
+        else console.log(`Session ${byEventId.id}: moved ${byEventId.scheduled_at} → ${startDate.toISOString()}`)
+        // Protect old ID from reconciliation — it still belongs to this event
+        movedSessionIds.add(byEventId.id)
+        results.push({ eventId, date: dateStr, status: 'moved' })
+        continue
+      }
+    }
 
     // Ensure a Google Meet link on every matched event (backfills existing + new).
     const meetUrl = await ensureMeet(accessToken, event)
@@ -268,7 +298,7 @@ Deno.serve(async (req) => {
     .gte('scheduled_at', now.toISOString())
     .lte('scheduled_at', maxDate.toISOString())
   for (const s of futureSessions ?? []) {
-    if (validIds.has(s.id)) continue
+    if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
     const { error } = await supabase.from('sessions').delete().eq('id', s.id)
     if (error) console.error('Orphan session delete error:', error)
     else results.push({ eventId: '', date: s.id, status: 'orphan_deleted' })

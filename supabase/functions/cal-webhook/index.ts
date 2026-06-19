@@ -351,16 +351,31 @@ async function handleBookingRescheduled(payload: Record<string, unknown>, supaba
     return new Response('Missing startTime', { status: 400 })
   }
 
-  // Find the session by old booking ID
+  // Find the session by old booking ID.
+  // cal_booking_id stores the numeric bookingId; cal_uid stores the UID string.
+  // Cal.com sends rescheduleUid as the old booking's UID, so we need to try both.
   const lookupId = oldBookingId || newBookingId
-  const { data: existing } = await supabase
+  let existing: Array<Record<string, unknown>> | null = null
+
+  const { data: byBookingId } = await supabase
     .from('sessions')
     .select('id, student_id, scheduled_at, students!inner(name)')
     .eq('cal_booking_id', lookupId)
     .limit(1)
+  existing = byBookingId
+
+  if (!existing?.length && oldBookingId) {
+    // rescheduleUid is the old booking's UID — matches cal_uid, not cal_booking_id
+    const { data: byUid } = await supabase
+      .from('sessions')
+      .select('id, student_id, scheduled_at, students!inner(name)')
+      .eq('cal_uid', oldBookingId)
+      .limit(1)
+    existing = byUid
+  }
 
   if (!existing?.length) {
-    console.log('No session found for rescheduled booking:', lookupId)
+    console.log('No session found for rescheduled booking:', lookupId, '/ uid:', oldBookingId)
     return new Response(JSON.stringify({ ok: true, message: 'no matching session' }), {
       status: 200, headers: { 'Content-Type': 'application/json' },
     })
@@ -376,6 +391,7 @@ async function handleBookingRescheduled(payload: Record<string, unknown>, supaba
       end_time: newEndTime ? new Date(newEndTime).toISOString() : null,
       cal_booking_id: newBookingId,
       cal_uid: payload.uid ? String(payload.uid) : null,
+      session_reminder_sent_at: null,
     })
     .eq('id', session.id)
 
