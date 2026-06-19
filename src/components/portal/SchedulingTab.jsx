@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getAvailability, bookSession, rescheduleSession, cancelSession } from '../../utils/supabase'
 
-export default function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmin }) {
+export default function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmin, sessionProblems, allProblems }) {
   const nowIso = new Date().toISOString()
   const tz = student?.timezone || 'America/New_York'
   const tzAbbr = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short' })
@@ -293,6 +293,9 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
 
     if (selectedSession) {
       const canReschedule = !!selectedSession.gcal_event_id
+      const sessionOnDeck = isAdmin
+        ? (sessionProblems || []).filter(sp => sp.session_id === selectedSession.id)
+        : []
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
@@ -350,6 +353,23 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
               </>
             )}
           </div>
+          {sessionOnDeck.length > 0 && (
+            <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>On deck</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {sessionOnDeck.map(sp => {
+                  const p = (allProblems || []).find(pr => pr.id === sp.problem_id)
+                  return (
+                    <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                      <span style={{ flex: 1 }}>{sp.problem_name}</span>
+                      {p?.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Problem ↗</a>}
+                      {p?.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Solution ↗</a>}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
           {actionError && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 8 }}>{actionError}</div>}
         </div>
       )
