@@ -582,6 +582,33 @@ export async function excludeProblem(problemId) {
   if (error) throw new Error(error.message)
 }
 
+// ── Session problems (on-deck, admin) ────────────────────────────────────────
+
+export async function fetchSessionProblems(studentId) {
+  let q = adminClient().from('session_problems').select('*').order('created_at')
+  if (studentId) q = q.eq('student_id', studentId)
+  const { data, error } = await q
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function insertSessionProblems(rows) {
+  const { error } = await adminClient().from('session_problems').insert(rows)
+  if (error) throw new Error(error.message)
+}
+
+export async function deleteSessionProblem(id) {
+  const { error } = await adminClient().from('session_problems').delete().eq('id', id)
+  if (error) throw new Error(error.message)
+}
+
+// Student-facing: RLS limits to this student's sessions with end_time set
+export async function fetchMySessionProblems() {
+  const { data, error } = await supabase.from('session_problems').select('*').order('created_at')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
 export async function markMyProblemCompleted(studentId, problemId) {
   const date = new Date().toISOString().slice(0, 10)
   const { data: existing } = await supabase

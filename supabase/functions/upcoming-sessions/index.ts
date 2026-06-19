@@ -31,11 +31,27 @@ Deno.serve(async (req) => {
     return new Response('error: ' + error.message, { status: 500, headers: { 'Content-Type': 'text/plain' } })
   }
 
-  // Plain text, one session per line: <startISO>\t<studentName>\t<sessionId>
-  // (plain text so the AHK client needs no JSON parser).
+  // Fetch on-deck problems for these sessions
+  const sessionIds = (data ?? []).map((s: Record<string, unknown>) => s.id as string)
+  const onDeckMap: Record<string, string[]> = {}
+  if (sessionIds.length > 0) {
+    const { data: spData } = await supabase
+      .from('session_problems')
+      .select('session_id, problem_name')
+      .in('session_id', sessionIds)
+    for (const row of (spData ?? [])) {
+      const sid = row.session_id as string
+      if (!onDeckMap[sid]) onDeckMap[sid] = []
+      onDeckMap[sid].push(row.problem_name as string)
+    }
+  }
+
+  // Plain text, one session per line: <startISO>\t<studentName>\t<sessionId>\t<prob1|prob2>
+  // (plain text so the AHK client needs no JSON parser; 4th field is empty when no on-deck problems)
   const lines = (data ?? []).map((s: Record<string, unknown>) => {
     const name = (s.students as { name?: string } | null)?.name || (s.id as string)
-    return `${s.scheduled_at}\t${name}\t${s.id}`
+    const onDeck = (onDeckMap[s.id as string] || []).join('|')
+    return `${s.scheduled_at}\t${name}\t${s.id}\t${onDeck}`
   })
 
   return new Response(lines.join('\n'), { status: 200, headers: { 'Content-Type': 'text/plain' } })

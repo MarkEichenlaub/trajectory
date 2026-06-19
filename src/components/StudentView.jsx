@@ -15,7 +15,7 @@ import SchedulingTab from './portal/SchedulingTab'
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
 
-export default function StudentView({ student, assignments, sessions, problems, accessibleSources, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
+export default function StudentView({ student, assignments, sessions, problems, accessibleSources, sessionProblems, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
   // billing-capable roles. A logged-in student sees study info only. In admin
   // preview the role is chosen via previewRole, so Mark can see exactly what a
@@ -338,6 +338,31 @@ export default function StudentView({ student, assignments, sessions, problems, 
                       ))}
                     </div>
                   )}
+                  {(() => {
+                    const covered = (sessionProblems || []).filter(sp => sp.session_id === s.id)
+                    if (!covered.length) return null
+                    return (
+                      <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                          Problems we covered
+                        </div>
+                        {covered.map(sp => {
+                          const p = problems.find(pr => pr.id === sp.problem_id)
+                          return (
+                            <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
+                              <span style={{ flex: 1 }}>{sp.problem_name}</span>
+                              {p?.problemUrl && (
+                                <a href={p.problemUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Problem ↗</a>
+                              )}
+                              {p?.solutionUrl && (
+                                <a href={p.solutionUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Solution ↗</a>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    )
+                  })()}
                 </div>
               ))}
             </div>

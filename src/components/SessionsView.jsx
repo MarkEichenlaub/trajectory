@@ -1,15 +1,26 @@
 import { useState } from 'react'
 import { saveSession, updateSession, deleteSession } from '../utils/supabase'
 
-export default function SessionsView({ sessions, students, activeStudentId, onSessionsChange, showToast }) {
+export default function SessionsView({ sessions, students, activeStudentId, sessionProblems, onSessionsChange, onDeleteSessionProblem, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
 
   const student = students.find(s => s.id === activeStudentId)
   const now = new Date().toISOString()
-  const studentSessions = sessions
+
+  const upcomingSessions = sessions
+    .filter(s => s.student_id === activeStudentId && s.scheduled_at > now)
+    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+
+  const pastSessions = sessions
     .filter(s => s.student_id === activeStudentId && (s.end_time ?? s.scheduled_at) <= now)
     .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
+
+  const onDeckBySession = {}
+  for (const sp of (sessionProblems || [])) {
+    if (!onDeckBySession[sp.session_id]) onDeckBySession[sp.session_id] = []
+    onDeckBySession[sp.session_id].push(sp)
+  }
 
   function startEdit(session) {
     setEditingId(session.id)
@@ -80,8 +91,8 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
     <div className="assigned-view">
       <div className="assigned-header">
         <div>
-          <h2>{student.name}'s Past Sessions</h2>
-          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{studentSessions.length} sessions</span>
+          <h2>{student.name}'s Sessions</h2>
+          <span style={{ color: 'var(--text-dim)', fontSize: 13 }}>{pastSessions.length} past sessions</span>
         </div>
         <button className="primary" onClick={startNew}>+ New Session</button>
       </div>
@@ -142,11 +153,68 @@ export default function SessionsView({ sessions, students, activeStudentId, onSe
         </div>
       )}
 
-      {studentSessions.length === 0 && !editingId ? (
+      {upcomingSessions.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+            Upcoming
+          </div>
+          <div className="assigned-list">
+            {upcomingSessions.map(s => {
+              const onDeck = onDeckBySession[s.id] || []
+              return (
+                <div key={s.id} className="assigned-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ flex: 1 }}>
+                      <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11 }}>{formatDate(s.scheduled_at)}</span>
+                      {s.notes && <span className="p-name" style={{ marginLeft: 8, fontWeight: 500 }}>{s.notes}</span>}
+                    </div>
+                    <div className="assigned-row-links">
+                      {s.miro_board_url && (
+                        <a href={s.miro_board_url} target="_blank" rel="noreferrer">Whiteboard ↗</a>
+                      )}
+                      <button className="sm" style={{ color: 'var(--text-dim)', fontSize: 11, padding: '1px 6px' }}
+                        onClick={() => editingId === s.id ? setEditingId(null) : startEdit(s)}>
+                        Edit
+                      </button>
+                      <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px' }}
+                        onClick={() => handleDelete(s.id)}>✕</button>
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+                      On deck
+                    </div>
+                    {onDeck.length === 0 ? (
+                      <span style={{ fontSize: 12, color: 'var(--text-dim)', fontStyle: 'italic' }}>
+                        Nothing yet — select problems in the browser and click "On deck"
+                      </span>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        {onDeck.map(sp => (
+                          <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                            <span style={{ flex: 1 }}>{sp.problem_name}</span>
+                            <button
+                              className="sm danger"
+                              style={{ fontSize: 11, padding: '1px 5px' }}
+                              onClick={() => onDeleteSessionProblem(sp.id)}
+                            >×</button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {pastSessions.length === 0 && !editingId ? (
         <div className="empty-state">No past sessions yet. Sessions appear here automatically once they end.</div>
       ) : (
         <div className="assigned-list">
-          {studentSessions.map(s => (
+          {pastSessions.map(s => (
             <div key={s.id} className={`assigned-row${editingId === s.id ? ' drag-over' : ''}`} style={{ flexDirection: 'column', alignItems: 'stretch', gap: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ flex: 1 }}>

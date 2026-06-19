@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -81,6 +81,8 @@ export default function AdminApp({ userId }) {
   const [emailDraft, setEmailDraft] = useState(null)
   const [requiresSubmission, setRequiresSubmission] = useState(false)
   const [packetModalOpen, setPacketModalOpen] = useState(false)
+  const [sessionProblems, setSessionProblems] = useState([])
+  const [onDeckSessionId, setOnDeckSessionId] = useState(null)
 
   // Which slices have received real (cached or fetched) data — guards the
   // state→cache mirror effects below from writing initial empty state.
@@ -128,6 +130,7 @@ export default function AdminApp({ userId }) {
       { onError: e => setError(e.message) })
     apply('handouts', k('sb', userId, 'handouts'), () => fetchHandouts().catch(() => []), setHandouts)
     fetchExcludedProblems().then(setExcludedIds).catch(() => {})
+    fetchSessionProblems().then(setSessionProblems).catch(() => {})
   }, [])
 
   // Mirror state back into the cache so every mutation (assign, save student,
@@ -180,6 +183,13 @@ export default function AdminApp({ userId }) {
   }
 
   const activeStudent = students.find(s => s.id === activeStudentId) || students[0]
+
+  const upcomingSessions = useMemo(() => {
+    const nowIso = new Date().toISOString()
+    return sessions
+      .filter(s => s.student_id === activeStudentId && s.scheduled_at > nowIso)
+      .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+  }, [sessions, activeStudentId])
 
   const statusMap = useMemo(() => {
     const map = {}
@@ -425,6 +435,41 @@ export default function AdminApp({ userId }) {
     }
   }
 
+  async function handleOnDeck() {
+    if (!activeStudent || selected.size === 0) return
+    const sessionId = onDeckSessionId || upcomingSessions[0]?.id
+    if (!sessionId) {
+      showToast(`No upcoming sessions for ${activeStudent.name}`, 'error')
+      return
+    }
+    const rows = [...selected].map(pid => {
+      const p = allProblems.find(pr => pr.id === pid)
+      return { session_id: sessionId, student_id: activeStudentId, problem_id: pid, problem_name: p?.name || pid }
+    })
+    try {
+      await insertSessionProblems(rows)
+      const fresh = await fetchSessionProblems()
+      setSessionProblems(fresh)
+      setSelected(new Set())
+      const session = sessions.find(s => s.id === sessionId)
+      const dateStr = session
+        ? new Date(session.scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+        : ''
+      showToast(`${rows.length} problem${rows.length > 1 ? 's' : ''} on deck for ${dateStr || 'session'}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function handleDeleteSessionProblem(id) {
+    try {
+      await deleteSessionProblem(id)
+      setSessionProblems(prev => prev.filter(sp => sp.id !== id))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleToggleStatus(assignmentId) {
     const existing = assignments.find(a => a.id === assignmentId)
     if (!existing) return
@@ -627,6 +672,7 @@ export default function AdminApp({ userId }) {
             sessions={previewSessions}
             problems={allProblems}
             accessibleSources={previewAccessibleSources}
+            sessionProblems={sessionProblems.filter(sp => sp.student_id === previewStudentId)}
             onMarkCompleted={null}
             isPreview={true}
             previewRole={previewRole}
@@ -706,6 +752,26 @@ export default function AdminApp({ userId }) {
                     />
                     Submission
                   </label>
+                  {upcomingSessions.length > 1 && (
+                    <select
+                      value={onDeckSessionId || upcomingSessions[0]?.id || ''}
+                      onChange={e => setOnDeckSessionId(e.target.value)}
+                      style={{ fontSize: 12, padding: '2px 6px' }}
+                    >
+                      {upcomingSessions.map(s => (
+                        <option key={s.id} value={s.id}>
+                          {new Date(s.scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  {upcomingSessions.length > 0 && (
+                    <button className="sm" onClick={handleOnDeck}>
+                      On deck{upcomingSessions.length === 1
+                        ? ` → ${new Date(upcomingSessions[0].scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`
+                        : ''}
+                    </button>
+                  )}
                   <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>
@@ -751,7 +817,9 @@ export default function AdminApp({ userId }) {
             sessions={sessions}
             students={students}
             activeStudentId={activeStudentId}
+            sessionProblems={sessionProblems}
             onSessionsChange={async () => setSessions(await fetchSessions())}
+            onDeleteSessionProblem={handleDeleteSessionProblem}
             showToast={showToast}
           />
         )}

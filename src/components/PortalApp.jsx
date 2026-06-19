@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, handoutSource, handoutLessonLabel } from '../utils/problemBank'
-import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources } from '../utils/supabase'
+import { supabase, fetchStudentAssignments, fetchStudentSessions, fetchHandoutsPublic, fetchMyAccessibleSources, fetchMySessionProblems } from '../utils/supabase'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
 import StudentView from './StudentView'
@@ -21,6 +21,7 @@ export default function PortalApp({ account, userId, onSignOut }) {
   const [assignments, setAssignments] = useState(null)
   const [sessions, setSessions] = useState([])
   const [accessibleSources, setAccessibleSources] = useState([])
+  const [sessionProblems, setSessionProblems] = useState([])
   const [loadError, setLoadError] = useState(null)
   const [retryKey, setRetryKey] = useState(0)
 
@@ -54,6 +55,8 @@ export default function PortalApp({ account, userId, onSignOut }) {
       () => fetchHandoutsPublic().catch(() => []), setHandouts)
     apply('portalSources', k('sb', userId, 'portal', 'sources'),
       () => fetchMyAccessibleSources().catch(() => []), setAccessibleSources)
+    apply('portalSessionProblems', k('sb', userId, 'portal', 'sessionProblems'),
+      () => fetchMySessionProblems().catch(() => []), setSessionProblems)
   }, [retryKey])
 
   // Mirror mutations (e.g. marking a problem completed) back into the cache.
@@ -105,6 +108,10 @@ export default function PortalApp({ account, userId, onSignOut }) {
   const studentSessions = useMemo(
     () => sessions.filter(s => s.student_id === activeStudent?.id),
     [sessions, activeStudent]
+  )
+  const studentSessionProblems = useMemo(
+    () => sessionProblems.filter(sp => sp.student_id === activeStudent?.id),
+    [sessionProblems, activeStudent]
   )
 
   function handleMarkCompleted(updatedAssignment) {
@@ -160,6 +167,7 @@ export default function PortalApp({ account, userId, onSignOut }) {
           sessions={studentSessions}
           problems={allProblems}
           accessibleSources={accessibleSources}
+          sessionProblems={studentSessionProblems}
           onMarkCompleted={handleMarkCompleted}
           account={account}
         />
