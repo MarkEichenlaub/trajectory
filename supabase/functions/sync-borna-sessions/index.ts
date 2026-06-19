@@ -148,20 +148,44 @@ Deno.serve(async (req) => {
       month: 'short', day: 'numeric', year: 'numeric',
     })
 
-    // Look up existing session by this canonical ID first; fall back to gcal_event_id
-    // so that a moved event updates the existing row instead of creating a duplicate.
+    // Look up existing session by this canonical ID first; fall back to gcal_event_id;
+    // fall back again to the old time-based ID embedded in the event ID for recurring
+    // occurrences (e.g. "base_20260618T140000Z" → "gcal-borna-20260618T140000").
+    // This third path catches sessions created before gcal_event_id was being persisted.
     let { data: existing } = await supabase
       .from('sessions')
       .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id, scheduled_at')
       .eq('id', sessionId)
       .maybeSingle()
     if (!existing) {
+      let movedSession: typeof existing = null
+
       const { data: byEventId } = await supabase
         .from('sessions')
         .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id, scheduled_at')
         .eq('gcal_event_id', eventId)
         .maybeSingle()
-      if (byEventId) {
+      movedSession = byEventId
+
+      // Third fallback: recurring-event occurrences encode the original datetime in
+      // the event ID ("…_20260618T140000Z"). Derive the old time-based session ID and
+      // look it up — handles sessions that predate gcal_event_id being persisted.
+      if (!movedSession) {
+        const m = eventId.match(/_(\d{8}T\d{6})Z?$/)
+        if (m) {
+          const oldSessionId = `gcal-borna-${m[1]}`
+          if (oldSessionId !== sessionId) {
+            const { data: byOldId } = await supabase
+              .from('sessions')
+              .select('id, miro_board_id, miro_board_url, meet_url, gcal_event_id, scheduled_at')
+              .eq('id', oldSessionId)
+              .maybeSingle()
+            movedSession = byOldId
+          }
+        }
+      }
+
+      if (movedSession) {
         // Event moved — update scheduled_at in place and clear the reminder flag.
         // We also call ensureMeet here so the Meet URL stays current.
         const meetUrl = await ensureMeet(accessToken, event)
@@ -169,14 +193,15 @@ Deno.serve(async (req) => {
           scheduled_at: startDate.toISOString(),
           end_time: endDate ? endDate.toISOString() : null,
           session_reminder_sent_at: null,
+          gcal_event_id: eventId,
         }
-        if (meetUrl && byEventId.meet_url !== meetUrl) movedPatch.meet_url = meetUrl
+        if (meetUrl && movedSession.meet_url !== meetUrl) movedPatch.meet_url = meetUrl
         const { error: moveErr } = await supabase
-          .from('sessions').update(movedPatch).eq('id', byEventId.id)
+          .from('sessions').update(movedPatch).eq('id', movedSession.id)
         if (moveErr) console.error('Session move update error:', moveErr)
-        else console.log(`Session ${byEventId.id}: moved ${byEventId.scheduled_at} → ${startDate.toISOString()}`)
+        else console.log(`Session ${movedSession.id}: moved ${movedSession.scheduled_at} → ${startDate.toISOString()}`)
         // Protect old ID from reconciliation — it still belongs to this event
-        movedSessionIds.add(byEventId.id)
+        movedSessionIds.add(movedSession.id)
         results.push({ eventId, date: dateStr, status: 'moved' })
         continue
       }

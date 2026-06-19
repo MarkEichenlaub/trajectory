@@ -7166,7 +7166,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Block Collision And Rolling On Ramp",
     "desc": "A block or sphere is dropped onto a ramp, undergoing an impulsive elastic collision. Analyzes the post-collision velocity and angular velocity of the object, and whether it immediately rolls without slipping on the ramp.",
     "topics": [
       "Mechanics (collisions, rotation)"
@@ -7190,7 +7190,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Semiconductor Diode Rectifier With Capacitive Filter",
     "desc": "Analyzes a semiconductor diode's exponential I-V characteristic and its use in a half-wave rectifier circuit with a capacitor filter. Studies the ripple voltage and charge/discharge behavior of the capacitor.",
     "topics": [
       "Electromagnetism (circuits)",
@@ -7217,7 +7217,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Adiabatic Piston Vacuum Pump Analysis",
     "desc": "Analyzes a vacuum pump that uses an adiabatically compressed piston to expel gas. Derives how the pressure in the evacuated vessel decreases with each pump stroke and finds the minimum achievable pressure.",
     "topics": [
       "Thermodynamics"
@@ -7241,7 +7241,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Electric Potential Of Charged Polyhedra",
     "desc": "Finds the electric potential at the center and along the axis of a uniformly charged cube using superposition and scaling arguments, then extends the analysis to a uniformly charged pyramid.",
     "topics": [
       "Electrostatics"
@@ -7265,7 +7265,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Telescope Resolution: Optics To Quantum Limits",
     "desc": "Examines the angular resolution of a telescope in both the geometric optics limit and the diffraction limit, and connects the diffraction limit to the quantum mechanical uncertainty principle applied to photon momentum.",
     "topics": [
       "Optics",
@@ -7290,7 +7290,7 @@
     "country": "",
     "type": "Theory",
     "label": "B3",
-    "name": "",
+    "name": "Poynting-Robertson Effect Decay Timescale",
     "desc": "Analyzes the Poynting-Robertson effect, where solar radiation pressure causes small orbiting particles to slowly spiral inward. Derives the timescale for a dust grain to fall from a given orbit into the Sun.",
     "topics": [
       "Astrophysics",
@@ -7316,7 +7316,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Stacked Wedges Static Friction Range",
     "desc": "Analyzes a system of stacked wedges on a frictionless surface with static friction between them. Finds the range of applied horizontal forces for which the wedges remain stationary together.",
     "topics": [
       "Mechanics (statics, friction)"
@@ -7340,7 +7340,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Carnot Engine Between Finite Reservoirs",
     "desc": "Analyzes a Carnot engine operating between two finite heat-capacity objects (not infinite reservoirs). Finds the final equilibrium temperature and the total work extracted, then optimizes over intermediate temperature steps to maximize work.",
     "topics": [
       "Thermodynamics"
@@ -7364,7 +7364,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Soft Iron Compass Deviation Model",
     "desc": "Models the deviation of a ship's magnetic compass caused by soft iron in the hull, which becomes magnetized by the Earth's field. Uses the method of image magnetic charges (Lord Kelvin's iron sphere correction) to find the compass error.",
     "topics": [
       "Electromagnetism (magnetostatics)"
@@ -7388,7 +7388,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "GZK Limit And Cosmic Ray Cutoff",
     "desc": "Derives the GZK (Greisen-Zatsepin-Kuzmin) limit: the maximum energy of a cosmic ray proton that can propagate through the cosmic microwave background without producing pions via the delta resonance. Uses relativistic kinematics and threshold energy calculation.",
     "topics": [
       "Special relativity",
@@ -7415,7 +7415,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Cascade Of Toppling Dominoes",
     "desc": "Analyzes the propagation of a toppling chain of dominoes: models each domino as a thin rod, derives the torque and angular velocity at impact, and finds the steady-state propagation speed of the domino wave.",
     "topics": [
       "Mechanics (rotation, waves)"
@@ -7439,7 +7439,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Van De Graaff Proton Beam Accelerator",
     "desc": "Designs a Van de Graaff particle accelerator to deliver a proton beam to a target. Analyzes the accelerating voltage, beam current, beam optics through an electromagnet, and the cooling requirements for the electromagnet windings.",
     "topics": [
       "Electromagnetism",
@@ -7466,7 +7466,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Doppler Effect From Moving Sound Source",
     "desc": "A sound source moves away from a stationary observer, and the observed frequency is measured as a function of time. Uses the Doppler formula to determine the source speed and initial distance from the frequency-time data.",
     "topics": [
       "Waves / acoustics (Doppler effect)",
@@ -7490,7 +7490,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Operational Amplifier Circuit Analysis",
     "desc": "Analyzes operational amplifier (op-amp) circuits including an inverting amplifier, a differential amplifier, an integrator, and a differentiator. Finds the output voltage as a function of input and circuit component values.",
     "topics": [
       "Electromagnetism (circuits)"
@@ -7516,7 +7516,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Relativistic Rod And Cylinder Paradox",
     "desc": "Analyzes the paradox of a relativistic rod and a cylinder: in the rod's rest frame the rod fits inside the cylinder, but in the cylinder's frame the rod is longer. Uses spacetime diagrams to resolve the apparent contradiction.",
     "topics": [
       "Special relativity"
@@ -7539,7 +7539,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Ice Formation And Heat Conduction",
     "desc": "Models the freezing of a lake, where ice grows on the surface and heat must conduct through the existing ice layer to the cold air above. Also considers equilibrium between ice formation and the heat released into the water.",
     "topics": [
       "Thermodynamics (heat conduction)",
@@ -7564,7 +7564,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Ball Projectile From Loop-The-Loop",
     "desc": "A ball rolls without slipping around a loop-the-loop track and becomes a projectile after leaving the top of the loop. Analyzes the minimum speed for completing the loop and the landing position of the projectile.",
     "topics": [
       "Mechanics (rotation, projectile)"
@@ -7587,7 +7587,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Electron Spiral Into Charged Sphere",
     "desc": "Analyzes an electron in a circular orbit around a uniformly charged sphere. The electron undergoes Larmor radiation due to its centripetal acceleration, loses energy, and spirals inward. Computes the orbital decay time.",
     "topics": [
       "Electromagnetism (radiation)",
@@ -7613,7 +7613,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Quantum Particle In Gravitational Well",
     "desc": "Analyzes a neutron (or other quantum particle) bouncing in a gravitational well above a hard floor using the WKB (Bohr-Sommerfeld) quantization condition, finding the allowed energy levels.",
     "topics": [
       "Quantum mechanics",
@@ -7637,7 +7637,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Thevenin and Norton Equivalent Networks",
     "desc": "Analyzes a network of resistors driven by a current source. Uses Thevenin and Norton equivalent circuit methods to find the voltages and currents throughout the network.",
     "topics": [
       "Electromagnetism (circuits)"
@@ -7662,7 +7662,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Damped Spring Oscillation With Friction",
     "desc": "Two blocks connected by a spring on a surface with friction undergo oscillations. Analyzes the amplitude decrease per half-cycle due to kinetic friction and finds the conditions for the oscillations to cease.",
     "topics": [
       "Mechanics (oscillations, friction)"
@@ -7685,7 +7685,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Water Phase Transition Heat Engine",
     "desc": "Analyzes a heat engine that uses the liquid-vapor phase transition of water. Draws the PV and PT diagrams and finds the work done, heat absorbed, and efficiency for a cycle that includes an isobaric and an isothermal step through the steam phase.",
     "topics": [
       "Thermodynamics",
@@ -7712,7 +7712,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Rocket Escape And Interplanetary Transfer",
     "desc": "Applies the Tsiolkovsky rocket equation to find the fuel mass required to achieve escape velocity and the additional delta-v for a Hohmann transfer orbit from Earth to Mars. Includes gravity losses during ascent.",
     "topics": [
       "Mechanics (rocket propulsion)",
@@ -7738,7 +7738,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Gilbert And Ampere Dipole Comparison",
     "desc": "Compares two models of magnetic dipoles: the Gilbert dipole (pair of monopoles separated by a distance) and the Ampere dipole (a current loop). Computes fields both on the axis and on the equatorial plane and shows they differ inside the dipole but agree far away.",
     "topics": [
       "Electromagnetism (magnetostatics)"
@@ -7762,7 +7762,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Unicyclist Leaning In Circular Motion",
     "desc": "Analyzes the dynamics of a unicyclist riding in a circle, accounting for the finite height of the rider's center of mass above the wheel. Finds the lean angle and corrects the naive formula.",
     "topics": [
       "Mechanics (rotation, circular motion)"
@@ -7785,7 +7785,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Minimum Power Heat Pump Cooling",
     "desc": "Analyzes an air conditioner operating as a reversed Carnot engine (heat pump) to cool a room against external heat leakage. Finds the minimum power required to maintain the room at a given temperature below ambient.",
     "topics": [
       "Thermodynamics"
@@ -7809,7 +7809,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Accelerating Rocket And Gravitational Redshift",
     "desc": "Explores the spacetime interval invariance in special relativity, analyzes uniformly accelerating rocket motion, and applies the equivalence principle to derive gravitational frequency shift (redshift).",
     "topics": [
       "Special relativity",
@@ -7833,7 +7833,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Point Charge In Grounded Conducting Sphere",
     "desc": "Finds the electric field and potential distribution for a point charge placed inside a hollow grounded conducting sphere. Sketches the field lines and potential surfaces inside and outside.",
     "topics": [
       "Electrostatics"
@@ -7857,7 +7857,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Ball Through L-Shaped Hole",
     "desc": "A ball passes through an L-shaped hole in a sliding block; analyzes the impulsive forces and resulting motion. Then considers the case with friction causing the ball to roll after leaving the block.",
     "topics": [
       "Mechanics (collisions, impulse)",
@@ -7882,7 +7882,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Relativistic Fields Of Moving Charges",
     "desc": "Derives the electric and magnetic fields of a moving charged infinite sheet using special relativity (Lorentz transformation of fields). Generalizes to show how a current-carrying wire creates a magnetic field around it from the relativity of electrostatics.",
     "topics": [
       "Special relativity",
@@ -7907,7 +7907,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Counterflow Heat Exchanger Analysis",
     "desc": "Analyzes a counterflow heat exchanger, where hot and cold fluid streams flow in opposite directions through adjacent pipes. Derives the temperature profiles and total heat transferred as a function of thermal conductance per unit length.",
     "topics": [
       "Thermodynamics (heat transfer)"
@@ -7930,7 +7930,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Rolling And Sliding On Inclined Plane",
     "desc": "A rolling object on an inclined plane transitions between rolling without slipping and sliding depending on the slope angle. Finds the critical angle and the subsequent motion for each regime.",
     "topics": [
       "Mechanics (rotation, friction)"
@@ -7954,7 +7954,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Relativistic Muon Decay In Circular Motion",
     "desc": "Muons produced in a particle accelerator travel in circular orbits in a magnetic field and undergo relativistic time dilation. Calculates the fraction of muons that decay before completing one orbit, using the relativistic decay factor.",
     "topics": [
       "Special relativity (time dilation)",
@@ -7980,7 +7980,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Duck Floating Between Oil And Water",
     "desc": "A rubber duck floats in a container with two immiscible fluids (oil on water). Uses the graphical data of duck depth vs. time during filling to determine the density of the oil layer.",
     "topics": [
       "Fluid mechanics (buoyancy)"
@@ -8004,7 +8004,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Blackbird Wind-Powered Vehicle Analysis",
     "desc": "Analyzes the \"Blackbird\" wind-powered vehicle that can travel faster than the wind both directly downwind and upwind. Derives the propeller and gear-ratio conditions needed to achieve speeds exceeding the wind speed in each direction.",
     "topics": [
       "Mechanics (propulsion, gears)",
@@ -8030,7 +8030,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Energy Flow Through Maxwell's Configurations",
     "desc": "Verifies Maxwell's equations via the Poynting vector for three canonical configurations: a charged rod (static E field), a charging parallel-plate capacitor (time-varying E field), and a solenoid (static B field). Confirms energy flux equals power delivered.",
     "topics": [
       "Electromagnetism (energy flow)"
@@ -8054,7 +8054,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Relativistic S-Meson Decay Analysis",
     "desc": "Analyzes the relativistic two-body decay of an S-meson at rest into two P-mesons in the rest frame, then Lorentz-boosts to the lab frame to find the angular distribution and momenta of the products.",
     "topics": [
       "Special relativity",
@@ -8079,7 +8079,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Isochoric-Adiabatic Cycle Efficiency Analysis",
     "desc": "A thermodynamic cycle consisting of two isochoric (constant-volume) and one adiabatic process is analyzed. Uses graphical data of pressure vs. volume to extract the heat capacity ratio gamma and computes the efficiency.",
     "topics": [
       "Thermodynamics"
@@ -8103,7 +8103,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Rotating Charged Cylinder Electromagnetic Fields",
     "desc": "Analyzes two coaxial conducting cylinders, one of which is charged and the other rotating. Finds the electric field between the cylinders and the magnetic field generated by the rotating charged cylinder (which becomes a solenoid).",
     "topics": [
       "Electromagnetism"
@@ -8127,7 +8127,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Gravitational Escape Or Collision Trajectory",
     "desc": "Two masses interact gravitationally and are released from rest at a given separation. Determines whether they undergo a bound orbit, a parabolic escape, or a direct collision, depending on the initial angular momentum and separation.",
     "topics": [
       "Gravity / orbital mechanics",
@@ -8152,7 +8152,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Hyperbolic Motion In Inverted Potential",
     "desc": "Analyzes motion in an inverted harmonic oscillator potential (repulsive quadratic force), finding the hyperbolic trajectories and the time dependence of position. Contrasts with the familiar oscillator.",
     "topics": [
       "Mechanics (oscillations)"
@@ -8175,7 +8175,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Magnetic Monopole Through Conducting Loop",
     "desc": "A magnetic monopole passes through a U-shaped conducting track connected to a resistive loop. Analyzes the induced EMF, current, and energy dissipated as the monopole moves at constant velocity through the loop.",
     "topics": [
       "Electromagnetism (induction)"
@@ -8198,7 +8198,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Sonoluminescent Bubble Thermodynamic Cycle",
     "desc": "Models single-bubble sonoluminescence using a simplified thermodynamic cycle: isothermal expansion, adiabatic collapse, and isochoric cooling. Computes the number of gas moles, pressures, temperatures, and total work done on the bubble.",
     "topics": [
       "Thermodynamics",
@@ -8224,7 +8224,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Physical Pendulum Period Analysis",
     "desc": "A physical pendulum (thin rod suspended at a distance R from its center of mass) is timed for various values of R. Uses the period-vs-R data and linear regression to determine the local gravitational acceleration g and the rod length L.",
     "topics": [
       "Mechanics (oscillations)"
@@ -8248,7 +8248,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Scaling Filament Dimensions For Power Consumption",
     "desc": "Designs a light bulb filament of the same material and emission spectrum but different power consumption, by finding the new filament dimensions (length and radius) as functions of the power scaling factor n.",
     "topics": [
       "Electromagnetism (resistance, radiation)",
@@ -8273,7 +8273,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Blackbody Radiation Energy Density Distribution",
     "desc": "Derives the energy density of electromagnetic radiation in a cavity (a simplified model of blackbody radiation) by counting allowed standing-wave modes in k-space and applying a cutoff at energy kBT. Obtains the Stefan-Boltzmann scaling of energy with temperature.",
     "topics": [
       "Statistical mechanics / quantum mechanics",
@@ -8298,7 +8298,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "High-Voltage Power Transmission Analysis",
     "desc": "Analyzes a high-voltage AC power transmission line carrying 1000 MW at 500 kV. Computes resistive losses, the magnetic field near the wire, the EMF induced in a rectangular loop beneath the line, and the effect of an inductive load on cable losses (power factor correction with capacitors).",
     "topics": [
       "Electromagnetism (AC circuits, power transmission)"
@@ -8323,7 +8323,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Particle Dynamics On A Parabolic Bowl",
     "desc": "A particle constrained to move on a frictionless parabolic bowl finds the circular orbit speed, the maximum height for a given initial speed, and the period of small radial oscillations (both in the small-amplitude and large-amplitude limits).",
     "topics": [
       "Mechanics (constrained motion, oscillations)"
@@ -8347,7 +8347,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Sliding Off A Rotating Platform",
     "desc": "An object on a rotating merry-go-round slides off when centripetal acceleration and tangential acceleration together overcome static friction. Finds the velocity magnitude and direction at the instant of sliding.",
     "topics": [
       "Mechanics (rotation, friction)"
@@ -8370,7 +8370,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Charge Relaxation In Resistive Spherical Shell",
     "desc": "A spherical shell of resistive material surrounds a central point charge. Charge migrates through the resistive shell over time until electrostatic equilibrium is reached. Finds the charge on the outer surface as a function of time.",
     "topics": [
       "Electromagnetism (resistive media)",
@@ -8395,7 +8395,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Cyclic Process In Cylindrical Piston System",
     "desc": "A cylindrical pipe with a movable piston contains air and undergoes a four-step thermodynamic cycle (isothermal compression, adiabatic expansion, isothermal expansion, isochoric cooling). Draws the PV diagram and computes work and temperature at each step.",
     "topics": [
       "Thermodynamics"
@@ -8420,7 +8420,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Proton-Proton Chain Reaction Analysis",
     "desc": "Analyzes the proton-proton chain reactions in stellar fusion, identifying the intermediate particles (deuterium, helium-3, beryllium-7, etc.) and computing the energy released at each step. Determines which reaction products carry a unique energy each time.",
     "topics": [
       "Nuclear/atomic physics",
@@ -8447,7 +8447,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Block Motion On Rotating Plank",
     "desc": "A thin plank rotates about its center pivot and a small block slides on it with no friction. Finds the special initial angle for which the block displacement is always proportional to the plank angle, and determines the oscillation period for this special case.",
     "topics": [
       "Mechanics (coupled oscillations)"
@@ -8472,7 +8472,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Conducting Rod, Fuse, And Radiation",
     "desc": "Three related problems: (a) a conducting rod sliding on rails in a magnetic field, finding the mass needed to break a fuse; (b) the Poynting vector for a current-carrying fuse wire; (c) using the Stefan-Boltzmann blackbody law to find the steady-state radius of a fuse wire at its melting point.",
     "topics": [
       "Electromagnetism",
@@ -8499,7 +8499,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Solenoid Self-Inductance And Current Decay",
     "desc": "A hollow cylinder carries a tangential (azimuthal) current, acting as a solenoid. Derives the internal magnetic field, the self-inductance, and the current decay as an RL circuit using the induced back-EMF from Faraday's law.",
     "topics": [
       "Electromagnetism (inductance, Faraday's law)"
@@ -8525,7 +8525,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Separating Beta Emitters By Activity Decay",
     "desc": "A mixture of two beta-emitting isotopes (32P and 35S) decays and the total activity vs. time is tabulated. Graphical analysis of the semi-log plot reveals two distinct half-lives and allows separation of the initial activities of each isotope.",
     "topics": [
       "Nuclear/atomic physics (radioactive decay)"
@@ -8550,7 +8550,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Binary Stars And Perpendicular Oscillation",
     "desc": "Two equal-mass stars orbit their common center of mass; a small planetoid oscillates along the symmetry axis perpendicular to the orbital plane. Finds the ratio of the planetoid's oscillation period to the binary star orbital period.",
     "topics": [
       "Gravity / orbital mechanics",
@@ -8575,7 +8575,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Adiabatic Expansion And Optimal Barrel Length",
     "desc": "A potato gun fires a potato down a cylinder; the compressed gas expands adiabatically (diatomic gas). Finds the optimal barrel length that maximizes the potato's kinetic energy when it exits, and calculates that maximum energy.",
     "topics": [
       "Thermodynamics",
@@ -8600,7 +8600,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Double Collision Golf Ball Range",
     "desc": "A golf ball and bowling ball are dropped together; the bowling ball bounces off the floor first then collides with the golf ball. All collisions are elastic and frictionless. Finds the angle that maximizes the horizontal range of the golf ball after the double collision.",
     "topics": [
       "Mechanics (collisions)"
@@ -8624,7 +8624,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Collinear Dipole Interaction and Field Analysis",
     "desc": "Two collinear anti-parallel electric dipoles interact. Derives the exact interaction potential energy, approximates it to leading order in d/r (dipole-dipole interaction), and finds the force and the electric field of one dipole at the location of the other.",
     "topics": [
       "Electrostatics"
@@ -8648,7 +8648,7 @@
     "country": "",
     "type": "Theory",
     "label": "1",
-    "name": "",
+    "name": "Fomalhaut B's Orbital Period And Star Mass",
     "desc": "Estimates the mass of the star Fomalhaut from a Hubble Space Telescope image of its planet Fomalhaut b in a wide orbit, using the measured orbital radius and Kepler's third law. Requires reading length scales from the image.",
     "topics": [
       "Astrophysics / orbital mechanics"
@@ -8673,7 +8673,7 @@
     "country": "",
     "type": "Theory",
     "label": "2",
-    "name": "",
+    "name": "Linear Air Resistance In Vertical Motion",
     "desc": "A ball thrown upward with initial speed v0 experiences linear air resistance (F = -kv). Derives the velocity as a function of time, sketches the v-t graph, and finds the rise time and maximum height analytically.",
     "topics": [
       "Mechanics (drag, kinematics)"
@@ -8697,7 +8697,7 @@
     "country": "",
     "type": "Theory",
     "label": "3",
-    "name": "",
+    "name": "Work Done Inserting Conducting Slab",
     "desc": "A charged parallel-plate capacitor is disconnected from its battery, and a conducting metal slab of half the plate gap thickness is inserted. Calculates the work done on the slab as it is inserted.",
     "topics": [
       "Electrostatics"
@@ -8721,7 +8721,7 @@
     "country": "",
     "type": "Theory",
     "label": "4",
-    "name": "",
+    "name": "Parallel Bulbs And Maximum Power Distribution",
     "desc": "A battery with internal resistance r is connected to N identical light bulbs in parallel. Finds the total power dissipated in the bulbs as a function of N and determines the range of internal resistance r for which power is maximized at N = 5.",
     "topics": [
       "Electromagnetism (circuits)"
@@ -8746,7 +8746,7 @@
     "country": "",
     "type": "Theory",
     "label": "A1",
-    "name": "",
+    "name": "Conducting Plates With Sequential Connections",
     "desc": "Four parallel conducting plates are connected in a sequence of steps: first to a voltage source, then plates 2 and 3 are shorted together, then the source is removed. Finds the final potential differences between each adjacent pair of plates.",
     "topics": [
       "Electrostatics (capacitors)"
@@ -8769,7 +8769,7 @@
     "country": "",
     "type": "Theory",
     "label": "A2",
-    "name": "",
+    "name": "Monatomic Gas Three-Process Heat Engine",
     "desc": "A heat engine cycle for a monatomic ideal gas consists of an isochoric heating to 32 times the initial pressure, an adiabatic expansion back to initial pressure, and an isobaric cooling. Finds the maximum volume, heat added and removed, and efficiency.",
     "topics": [
       "Thermodynamics"
@@ -8794,7 +8794,7 @@
     "country": "",
     "type": "Theory",
     "label": "A3",
-    "name": "",
+    "name": "Radioactive Planet Thermal Equilibrium",
     "desc": "A radioactively heated planet radiates energy from its surface as a blackbody. Derives the surface temperature and the temperature difference between the surface and the center using the thermal conductivity equation for a sphere.",
     "topics": [
       "Astrophysics / geophysics",
@@ -8819,7 +8819,7 @@
     "country": "",
     "type": "Theory",
     "label": "A4",
-    "name": "",
+    "name": "Doppler Shift Of Falling Sound Source",
     "desc": "A tape recorder playing a tone is dropped from rest and observed from below. Uses tabulated frequency-vs-time data and the Doppler formula to graphically verify the theoretical expression, and extracts numerically the emitted frequency and drop height.",
     "topics": [
       "Waves / acoustics (Doppler effect)",
@@ -8844,7 +8844,7 @@
     "country": "",
     "type": "Theory",
     "label": "B1",
-    "name": "",
+    "name": "Spring Platform And Inelastic Collision",
     "desc": "A person stands on a platform attached to a spring and holds a lump of clay above the platform. After releasing the clay, the platform oscillates; the clay strikes after exactly one full oscillation. Analyzes the critical mass ratio below which this is possible and the amplitude ratio before and after the inelastic collision.",
     "topics": [
       "Mechanics (oscillations, collisions)"
@@ -8869,7 +8869,7 @@
     "country": "",
     "type": "Theory",
     "label": "B2",
-    "name": "",
+    "name": "Charged Ball In Parallel Plate Capacitor",
     "desc": "A small charged metal ball on a string hangs inside a vertical parallel-plate capacitor. Analyzes equilibrium angle, small oscillations about equilibrium, maximum voltage before the ball hits a plate, and resonant driving by an AC voltage.",
     "topics": [
       "Electrostatics",
@@ -8895,7 +8895,7 @@
     "country": "",
     "type": "Theory",
     "label": "1",
-    "name": "",
+    "name": "Charged Particle Escape From Sphere",
     "desc": "A charged particle of sign opposite to a uniformly charged sphere is placed at the center and given kinetic energy K0 such that it just reaches the boundary. Finds K0 and the time for the particle to travel from the center to the boundary.",
     "topics": [
       "Electrostatics",
@@ -8919,7 +8919,7 @@
     "country": "",
     "type": "Theory",
     "label": "2",
-    "name": "",
+    "name": "Pool Ball Rolling Without Slipping",
     "desc": "A pool ball is struck by a horizontal impulse at a height alpha times the radius above its center. Finds the final rolling speed as a function of the impulse magnitude and alpha, and identifies the alpha value for which the ball immediately rolls without slipping.",
     "topics": [
       "Mechanics (rotation, impulse)"
@@ -8943,7 +8943,7 @@
     "country": "",
     "type": "Theory",
     "label": "3",
-    "name": "",
+    "name": "Block On Circular Track With Friction",
     "desc": "A block slides on a circular track with friction from both the floor and the vertical wall. Derives the differential equation for kinetic energy as a function of angle traveled, and finds the initial speed needed for the block to complete exactly one full revolution.",
     "topics": [
       "Mechanics (friction, circular motion)"
@@ -8967,7 +8967,7 @@
     "country": "",
     "type": "Theory",
     "label": "4",
-    "name": "",
+    "name": "Beads Sliding Down Circular Hoop",
     "desc": "Two beads slide without friction down opposite sides of a vertical circular hoop resting on the ground. Finds the maximum bead-to-hoop mass ratio for which the hoop always remains on the ground (normal force never goes to zero).",
     "topics": [
       "Mechanics (constraints, normal force)"
