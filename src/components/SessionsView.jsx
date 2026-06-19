@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { saveSession, updateSession, deleteSession } from '../utils/supabase'
 
-export default function SessionsView({ sessions, students, activeStudentId, sessionProblems, onSessionsChange, onDeleteSessionProblem, showToast }) {
+export default function SessionsView({ sessions, students, activeStudentId, sessionProblems, allProblems, onSessionsChange, onDeleteSessionProblem, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
 
@@ -190,16 +190,21 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
                       </span>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                        {onDeck.map(sp => (
-                          <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-                            <span style={{ flex: 1 }}>{sp.problem_name}</span>
-                            <button
-                              className="sm danger"
-                              style={{ fontSize: 11, padding: '1px 5px' }}
-                              onClick={() => onDeleteSessionProblem(sp.id)}
-                            >×</button>
-                          </div>
-                        ))}
+                        {onDeck.map(sp => {
+                          const p = (allProblems || []).find(pr => pr.id === sp.problem_id)
+                          return (
+                            <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                              <span style={{ flex: 1 }}>{sp.problem_name}</span>
+                              {p?.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Problem ↗</a>}
+                              {p?.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Solution ↗</a>}
+                              <button
+                                className="sm danger"
+                                style={{ fontSize: 11, padding: '1px 5px' }}
+                                onClick={() => onDeleteSessionProblem(sp.id)}
+                              >×</button>
+                            </div>
+                          )
+                        })}
                       </div>
                     )}
                   </div>

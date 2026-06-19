@@ -818,6 +818,7 @@ export default function AdminApp({ userId }) {
             students={students}
             activeStudentId={activeStudentId}
             sessionProblems={sessionProblems}
+            allProblems={allProblems}
             onSessionsChange={async () => setSessions(await fetchSessions())}
             onDeleteSessionProblem={handleDeleteSessionProblem}
             showToast={showToast}
@@ -829,6 +830,8 @@ export default function AdminApp({ userId }) {
             key={activeStudentId}
             student={activeStudent}
             sessions={sessions.filter(s => s.student_id === activeStudentId)}
+            sessionProblems={sessionProblems.filter(sp => sp.student_id === activeStudentId)}
+            allProblems={allProblems}
           />
         )}
 
@@ -917,7 +920,7 @@ export default function AdminApp({ userId }) {
 
 // ── Admin scheduling tab ──────────────────────────────────────────────────────
 
-function AdminScheduleView({ student, sessions }) {
+function AdminScheduleView({ student, sessions, sessionProblems, allProblems }) {
   const [contacts, setContacts] = useState([])
   const [loadingContacts, setLoadingContacts] = useState(true)
 
@@ -931,6 +934,17 @@ function AdminScheduleView({ student, sessions }) {
   }, [student?.id])
 
   const invited = contacts.filter(c => c.receives_meets && c.verified && !c.bounced)
+
+  const nowIso = new Date().toISOString()
+  const upcomingSessions = (sessions || [])
+    .filter(s => s.scheduled_at > nowIso)
+    .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
+
+  const onDeckBySession = {}
+  for (const sp of (sessionProblems || [])) {
+    if (!onDeckBySession[sp.session_id]) onDeckBySession[sp.session_id] = []
+    onDeckBySession[sp.session_id].push(sp)
+  }
 
   function formatDate(iso) {
     return new Date(iso).toLocaleString('en-US', {
@@ -972,6 +986,41 @@ function AdminScheduleView({ student, sessions }) {
           </p>
         )}
       </div>
+
+      {upcomingSessions.length > 0 && (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 20 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Upcoming sessions</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {upcomingSessions.map(s => {
+              const onDeck = onDeckBySession[s.id] || []
+              return (
+                <div key={s.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 13, fontWeight: 500 }}>{formatDate(s.scheduled_at)}</span>
+                    {s.meet_url && <a href={s.meet_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Meet ↗</a>}
+                    {s.miro_board_url && <a href={s.miro_board_url} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Whiteboard ↗</a>}
+                  </div>
+                  {onDeck.length > 0 && (
+                    <div style={{ paddingLeft: 12, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 2 }}>On deck</div>
+                      {onDeck.map(sp => {
+                        const p = (allProblems || []).find(pr => pr.id === sp.problem_id)
+                        return (
+                          <div key={sp.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
+                            <span style={{ flex: 1 }}>{sp.problem_name}</span>
+                            {p?.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Problem ↗</a>}
+                            {p?.solutionUrl && <a href={p.solutionUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Solution ↗</a>}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       <SchedulingTab
         sessions={sessions}
