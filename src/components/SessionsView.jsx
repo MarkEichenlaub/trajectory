@@ -159,10 +159,10 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
             Upcoming
           </div>
           <div className="assigned-list">
-            {upcomingSessions.map(s => {
+            {upcomingSessions.slice(0, 3).map(s => {
               const onDeck = onDeckBySession[s.id] || []
               return (
-                <div key={s.id} className="assigned-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 6 }}>
+                <div key={s.id} className="assigned-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 6, background: 'var(--accent-dim)', borderColor: 'var(--accent)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{ flex: 1 }}>
                       <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11 }}>{formatDate(s.scheduled_at)}</span>
