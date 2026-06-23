@@ -21,6 +21,7 @@ import { randomUUID } from 'crypto'
 const execAsync = promisify(exec)
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
+const MIRO_AUTH_STATE = resolve(ROOT, '.miro-auth.json')
 
 // Load .env
 const envText = await readFile(resolve(ROOT, '.env'), 'utf8')
@@ -74,7 +75,51 @@ const DB_HEADERS = {
 
 // ── Core analysis pipeline ────────────────────────────────────────────────────
 
-async function getSessionContent(sessionId) {
+// Takes a screenshot of a Miro board using Playwright with saved auth state.
+// Returns a Buffer (JPEG), or null if auth state is missing or Playwright fails.
+// One-time setup: run  node scripts/miro-auth-setup.mjs
+async function screenshotMiroBoard(boardId) {
+  try {
+    await readFile(MIRO_AUTH_STATE)
+  } catch {
+    console.log('[snapshot] No Miro auth state — run: node scripts/miro-auth-setup.mjs')
+    return null
+  }
+
+  let chromium
+  try {
+    ;({ chromium } = await import('playwright'))
+  } catch {
+    console.log('[snapshot] playwright not found — run: npm install playwright')
+    return null
+  }
+
+  const boardUrl = `https://miro.com/app/board/${boardId}/`
+  console.log(`[snapshot] Opening Miro board via Playwright: ${boardUrl}`)
+  const browser = await chromium.launch({
+    headless: true,
+    args: ['--use-gl=swiftshader'], // software GL so Canvas works in headless mode
+  })
+  const context = await browser.newContext({ storageState: MIRO_AUTH_STATE })
+  const page = await context.newPage()
+  try {
+    await page.goto(boardUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 })
+    await page.waitForTimeout(12_000) // let the board canvas fully render
+    // Ctrl+Shift+H = "fit board to screen" in Miro — shows all content
+    await page.keyboard.press('Control+Shift+H')
+    await page.waitForTimeout(1_500)
+    const buf = await page.screenshot({ type: 'jpeg', quality: 80 })
+    console.log(`[snapshot] Captured ${buf.length} bytes`)
+    return buf
+  } catch (e) {
+    console.error(`[snapshot] Playwright screenshot failed: ${e.message}`)
+    return null
+  } finally {
+    await browser.close()
+  }
+}
+
+async function getSessionContent(sessionId, boardId) {
   const res = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
     method: 'POST',
     headers: { ...DB_HEADERS, 'Content-Type': 'application/json' },
@@ -89,6 +134,11 @@ async function getSessionContent(sessionId) {
     const isPdf = /\.pdf(\?|$)/i.test(data.pictureUrl)
     return { type: isPdf ? 'pdf' : 'image', content: data.pictureUrl }
   }
+  // No picture from the edge function — take a live screenshot via Playwright.
+  if (boardId) {
+    const screenshot = await screenshotMiroBoard(boardId)
+    if (screenshot) return { type: 'screenshot', content: screenshot }
+  }
   if (data.boardText) return { type: 'text', content: data.boardText }
   throw new Error('No board content available for this session')
 }
@@ -97,11 +147,14 @@ async function getSessionContent(sessionId) {
 // { summary, tags } object. Reads the file with the Read tool and returns the
 // schema-validated structured output.
 async function analyzeContent({ type, content }) {
-  const ext = type === 'image' ? '.png' : type === 'pdf' ? '.pdf' : '.txt'
+  const effectiveType = type === 'screenshot' ? 'image' : type
+  const ext = effectiveType === 'image' ? '.jpg' : effectiveType === 'pdf' ? '.pdf' : '.txt'
   const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}${ext}`)
 
   if (type === 'text') {
     await writeFile(tmpFile, content)
+  } else if (type === 'screenshot') {
+    await writeFile(tmpFile, content) // content is a Buffer from Playwright
   } else {
     const dl = await fetch(content)
     if (!dl.ok) throw new Error(`Could not download board ${type}: HTTP ${dl.status}`)
@@ -109,9 +162,9 @@ async function analyzeContent({ type, content }) {
   }
 
   try {
-    const subject = type === 'text'
+    const subject = effectiveType === 'text'
       ? `Read the tutoring session whiteboard notes at ${tmpFile}.`
-      : type === 'pdf'
+      : effectiveType === 'pdf'
         ? `Read the tutoring session whiteboard PDF at ${tmpFile}.`
         : `Look at the tutoring session whiteboard image at ${tmpFile}.`
     const prompt = [
@@ -215,7 +268,7 @@ async function runAutoSummarize() {
     for (const session of sessions) {
       try {
         console.log(`[auto] Processing ${session.id}...`)
-        const sessionContent = await getSessionContent(session.id)
+        const sessionContent = await getSessionContent(session.id, session.miro_board_id)
         const { summary, tags } = await analyzeContent(sessionContent)
         // Blank board → leave the summary null so the next run retries once a
         // panel snapshot has been captured (rather than locking in an empty one).
