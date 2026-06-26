@@ -5951,9 +5951,7 @@
     "name": "Shake It",
     "desc": "Models the physics of animals shaking water off their fur, analyzing centripetal forces on water droplets and surface tension. Explores scaling laws relating body size to shaking frequency.",
     "topics": [
-      "Mechanics",
-      "Fluid mechanics",
-      "Scaling / dimensional analysis"
+      "Mechanics"
     ],
     "tags": [
       "surface tension",
@@ -5976,9 +5974,8 @@
     "name": "Black Tides",
     "desc": "Analyzes tidal disruption events (TDEs), where a star passes too close to a supermassive black hole and is torn apart by tidal forces. Examines orbital mechanics and the tidal disruption radius.",
     "topics": [
-      "Gravity / orbital mechanics",
       "Astrophysics",
-      "Fluid mechanics"
+      "Mechanics"
     ],
     "tags": [
       "tidal force",
@@ -6002,7 +5999,7 @@
     "desc": "Explores the design of a Bitter electromagnet, a multi-layer solenoid wound from metal plates. Analyzes the mechanical stresses (pressure and tension) in the solenoid windings due to magnetic forces.",
     "topics": [
       "Electromagnetism",
-      "Mechanics (stress/strain)"
+      "Mechanics"
     ],
     "tags": [
       "solenoid",
@@ -6011,7 +6008,8 @@
       "magnetic pressure",
       "tensile stress",
       "wire tension",
-      "multi-layer"
+      "multi-layer",
+      "stress/strain"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_25.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2025-USAPhO-Exam_solutions.pdf"
@@ -6026,8 +6024,7 @@
     "name": "Scroll 'n' Roll",
     "desc": "An ant walks on a rotating disk that is free to spin on a frictionless surface. Uses conservation of angular momentum and linear momentum to analyze the motion of the ant and the disk.",
     "topics": [
-      "Mechanics (angular momentum)",
-      "Rotating frames"
+      "Mechanics"
     ],
     "tags": [
       "angular momentum",
@@ -6050,8 +6047,7 @@
     "name": "Where's the Kaboom?",
     "desc": "Studies how a sonic boom propagates through an atmosphere with a temperature (and hence sound speed) gradient. Analyzes the shape and direction of the Mach cone in a non-uniform medium.",
     "topics": [
-      "Waves / acoustics",
-      "Optics / ray methods (applied to sound)"
+      "Waves & Oscillations"
     ],
     "tags": [
       "sonic boom",
@@ -6060,7 +6056,8 @@
       "sound speed gradient",
       "atmosphere",
       "refraction",
-      "supersonic"
+      "supersonic",
+      "applied to sound"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_25.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2025-USAPhO-Exam_solutions.pdf"
@@ -6075,9 +6072,9 @@
     "name": "Locked and Moded",
     "desc": "Analyzes mode-locked lasers and Fabry-Perot resonators, connecting the time-domain and frequency-domain descriptions of light pulses. Uses uncertainty principle arguments relating pulse duration to spectral bandwidth.",
     "topics": [
-      "Optics (laser physics)",
-      "Quantum mechanics (uncertainty principle)",
-      "Waves / Fourier analysis"
+      "Optics",
+      "Quantum Physics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "mode-locked laser",
@@ -6086,7 +6083,8 @@
       "Fourier transform",
       "resonator",
       "pulse duration",
-      "spectral bandwidth"
+      "spectral bandwidth",
+      "laser physics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_25.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2025-USAPhO-Exam_solutions.pdf"
@@ -6101,8 +6099,7 @@
     "name": "Ping Pong",
     "desc": "Models an LC circuit formed by a solenoid connected to two charged spheres, analyzing oscillation frequency and radiation damping. Estimates the number of oscillations before half the electromagnetic energy is radiated away.",
     "topics": [
-      "Electromagnetism (LC circuits)",
-      "Electromagnetism (radiation)"
+      "Electromagnetism"
     ],
     "tags": [
       "LC circuit",
@@ -6112,7 +6109,9 @@
       "electromagnetic radiation",
       "dipole radiation",
       "damping",
-      "circuits"
+      "circuits",
+      "LC circuits",
+      "radiation"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6128,8 +6127,8 @@
     "desc": "Investigates the conditions for hydrostatic stability of a star using a polytropic equation of state (P proportional to density to the gamma power). Applies to giant stars with radiation pressure and to white dwarfs with quantum electron pressure.",
     "topics": [
       "Astrophysics",
-      "Thermodynamics / statistical mechanics",
-      "Quantum mechanics (Heisenberg uncertainty)"
+      "Quantum Physics",
+      "Thermodynamics"
     ],
     "tags": [
       "stellar stability",
@@ -6155,7 +6154,7 @@
     "desc": "Analyzes image formation by an ideal converging lens, including magnification, focus blur due to finite aperture, diffraction blur, and photon shot noise in digital sensors. Finds conditions for geometric vs. diffraction-limited imaging.",
     "topics": [
       "Optics",
-      "Quantum mechanics (photon statistics)"
+      "Quantum Physics"
     ],
     "tags": [
       "lens",
@@ -6167,7 +6166,8 @@
       "shot noise",
       "photons",
       "camera",
-      "geometric optics"
+      "geometric optics",
+      "photon statistics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6182,9 +6182,8 @@
     "name": "The Muon Shot",
     "desc": "Analyzes relativistic muon physics in the context of a proposed muon collider. Covers center-of-mass energy thresholds, relativistic time dilation and decay probability, and collision rates in circular storage rings.",
     "topics": [
-      "Special relativity",
-      "Particle physics",
-      "Nuclear/atomic physics (decay)"
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "muon",
@@ -6194,7 +6193,8 @@
       "radioactive decay",
       "particle physics",
       "Lorentz factor",
-      "collision cross-section"
+      "collision cross-section",
+      "decay"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6209,8 +6209,8 @@
     "name": "Solid Heat",
     "desc": "Two independent parts: (a) quantum corrections to heat capacity in an Einstein solid, starting from entropy and deriving the leading-order quantum correction to CV; (b) a gas-piston system where the piston is a classical solid, finding equilibrium and oscillation frequency.",
     "topics": [
-      "Statistical mechanics / thermodynamics",
-      "Quantum mechanics (quantized energy)"
+      "Quantum Physics",
+      "Thermodynamics"
     ],
     "tags": [
       "heat capacity",
@@ -6220,7 +6220,8 @@
       "thermodynamics",
       "piston",
       "adiabatic",
-      "oscillation"
+      "oscillation",
+      "quantized energy"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO_Exam_24.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2024-USAPhO-Exam_solutions.pdf"
@@ -6235,8 +6236,8 @@
     "name": "Quality Quest",
     "desc": "Explores multiple methods of measuring the quality factor Q of an RLC resonant circuit, including time-domain damping measurements and frequency-domain resonance curve analysis. Involves data fitting and the gain function.",
     "topics": [
-      "Electromagnetism (circuits)",
-      "Waves / oscillations"
+      "Electromagnetism",
+      "Waves & Oscillations"
     ],
     "tags": [
       "quality factor",
@@ -6262,8 +6263,7 @@
     "name": "Circus Act",
     "desc": "Studies a ball bouncing elastically between two inclined planes and within curved bowls (hemispherical and sinusoidal). Finds the constraints on geometry and angles for the ball to alternate between two distinct trajectories.",
     "topics": [
-      "Mechanics (projectile motion)",
-      "Geometry / kinematics"
+      "Mechanics"
     ],
     "tags": [
       "projectile motion",
@@ -6287,8 +6287,8 @@
     "name": "Time is a Flat Circle",
     "desc": "A negatively charged particle constrained to a horizontal plane interacts with charges placed above and below. Analyzes the equilibrium radius, small-amplitude linear oscillations, and circular orbits, comparing their frequencies.",
     "topics": [
-      "Electrostatics",
-      "Mechanics (oscillations)"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "charged particle",
@@ -6297,7 +6297,8 @@
       "oscillation frequency",
       "circular orbit",
       "equilibrium",
-      "normal modes"
+      "normal modes",
+      "oscillations"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -6312,8 +6313,7 @@
     "name": "The Motive Power of Ice",
     "desc": "Examines two non-Carnot heat engines: one using an ideal gas in a rectangular P-V cycle, and one exploiting the pressure-dependent melting point of ice. Derives the Clausius-Clapeyron equation from the ice engine's efficiency equaling the Carnot limit.",
     "topics": [
-      "Thermodynamics",
-      "Phase transitions"
+      "Thermodynamics"
     ],
     "tags": [
       "heat engine",
@@ -6338,8 +6338,8 @@
     "name": "Electric Roulette",
     "desc": "Analyzes a solenoid with a rotating conducting rod replacing part of the wire, acting as both a Faraday motor and generator. Finds the inductance, torque, back-EMF, and the coupled equations of motion for current and angular velocity.",
     "topics": [
-      "Electromagnetism (inductance, Faraday's law)",
-      "Mechanics (rotation)"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "solenoid",
@@ -6350,7 +6350,9 @@
       "back-EMF",
       "motor",
       "angular momentum",
-      "coupled oscillators"
+      "coupled oscillators",
+      "inductance, Faraday's law",
+      "rotation"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -6365,9 +6367,9 @@
     "name": "Fast and Furious",
     "desc": "Compares two methods for accelerating a spacecraft to relativistic speed: conventional rocket propulsion (Tsiolkovsky equation) and photon sail (light pressure from Earth-based lasers). Fully relativistic treatment required for the sail problem.",
     "topics": [
-      "Special relativity",
-      "Mechanics (rockets)",
-      "Electromagnetism (radiation pressure)"
+      "Electromagnetism",
+      "Mechanics",
+      "Relativity"
     ],
     "tags": [
       "special relativity",
@@ -6376,7 +6378,8 @@
       "radiation pressure",
       "Lorentz factor",
       "momentum",
-      "relativistic dynamics"
+      "relativistic dynamics",
+      "rockets"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -6391,9 +6394,9 @@
     "name": "Starry Messengers",
     "desc": "Uses observations of supernova SN1987A neutrinos (arriving before the light) to constrain neutrino mass and charge. Analyzes relativistic kinematics of massive vs. massless particles and deflection of charged neutrinos by the intergalactic magnetic field.",
     "topics": [
-      "Special relativity",
-      "Particle physics (neutrinos)",
-      "Astrophysics"
+      "Astrophysics",
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "neutrino",
@@ -6403,7 +6406,8 @@
       "neutrino mass",
       "magnetic deflection",
       "astrophysics",
-      "SN1987A"
+      "SN1987A",
+      "neutrinos"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2023-USAPhO-solutions.pdf"
@@ -6418,7 +6422,7 @@
     "name": "Moment of Clarity",
     "desc": "Introduces the concept of bending moment in solid rods and beams. Analyzes a bridge beam supported at two points, finding the bending moment distribution and the optimal placement of supports to maximize the load the bridge can carry.",
     "topics": [
-      "Mechanics (statics / structural mechanics)"
+      "Mechanics"
     ],
     "tags": [
       "bending moment",
@@ -6428,7 +6432,8 @@
       "structural mechanics",
       "bridge",
       "load",
-      "optimization"
+      "optimization",
+      "statics / structural mechanics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-solutions.pdf"
@@ -6443,8 +6448,8 @@
     "name": "Death Metal",
     "desc": "A charged liquid metal droplet becomes unstable when its electrostatic energy exceeds its surface tension energy and splits in half (Rayleigh instability). Analyzes successive splitting events and the total work done by the charging current.",
     "topics": [
-      "cont",
-      "Fluid mechanics (surface tension)"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "Rayleigh instability",
@@ -6468,7 +6473,7 @@
     "name": "Rainbow Road",
     "desc": "Derives the physics of optical caustics produced by light reflecting inside a spherical water droplet, explaining rainbows. Finds the caustic angle as a function of refractive index and computes the angular width of rainbow colors.",
     "topics": [
-      "Optics (geometric)"
+      "Optics"
     ],
     "tags": [
       "rainbow",
@@ -6479,7 +6484,8 @@
       "Snell's law",
       "optics",
       "angular dispersion",
-      "glory"
+      "glory",
+      "geometric"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-solutions.pdf"
@@ -6494,7 +6500,7 @@
     "name": "Virial Reality",
     "desc": "Studies deviations from ideal gas behavior using the virial expansion and van der Waals equation. Uses tabulated data for nitrogen's second virial coefficient B(T) to extract the van der Waals constants a and b.",
     "topics": [
-      "Thermodynamics / statistical mechanics"
+      "Thermodynamics"
     ],
     "tags": [
       "virial expansion",
@@ -6518,8 +6524,8 @@
     "name": "Broken Vase",
     "desc": "A point charge oscillates inside a charged ring. In the boosted (moving) frame, uses special relativity to find the modified restoring force and period, and determines how electric charge transforms between frames (deriving charge invariance).",
     "topics": [
-      "Special relativity",
-      "Electrostatics"
+      "Electromagnetism",
+      "Relativity"
     ],
     "tags": [
       "special relativity",
@@ -6543,8 +6549,8 @@
     "name": "Time Crystal",
     "desc": "Analyzes electron motion in a crystalline metal where the energy-momentum relation is E = V(1 - cos(pb)), arising from band theory. Explores the resulting effective mass (which can be negative), Bloch oscillations, and current in a long rod under an applied electric field.",
     "topics": [
-      "Quantum mechanics (band theory / solid state)",
-      "Electromagnetism"
+      "Electromagnetism",
+      "Quantum Physics"
     ],
     "tags": [
       "Bloch oscillations",
@@ -6554,7 +6560,8 @@
       "solid state",
       "electron dynamics",
       "Drude model",
-      "time crystal"
+      "time crystal",
+      "band theory / solid state"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-solutions.pdf"
@@ -6569,9 +6576,10 @@
     "name": "Take Five",
     "desc": "Five independent short problems: partial polarization of light; thermal oscillations in a bistable resistor circuit following Newton's law of cooling; speaker interference and Doppler effect; op-amp RC circuit; and water flowing from a beaker into a glass.",
     "topics": [
-      "Optics / waves",
-      "Thermodynamics / circuits",
-      "Fluid mechanics"
+      "Mechanics",
+      "Optics",
+      "Thermodynamics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "polarization",
@@ -6598,7 +6606,7 @@
     "name": "Chain Reaction",
     "desc": "Three independent mechanics problems: a flexible string wrapped around a cylinder finding tension at the top; a grappling hook (point mass + chain) launched upward finding maximum height; and a rod resting inside a hemispherical bowl finding equilibrium angle.",
     "topics": [
-      "Mechanics (statics and dynamics)"
+      "Mechanics"
     ],
     "tags": [
       "string tension",
@@ -6608,7 +6616,8 @@
       "equilibrium",
       "hemispherical bowl",
       "rod",
-      "constraint forces"
+      "constraint forces",
+      "statics and dynamics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-Exam.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/2022-USAPhO-solutions.pdf"
@@ -6623,8 +6632,8 @@
     "name": "Lego Movie",
     "desc": "Models gravitational wave emission from a binary black hole system using Newtonian physics and dimensional analysis. Derives the chirp mass parameter, frequency evolution, and uses LIGO data to estimate masses of the first detected binary black hole merger (GW150914).",
     "topics": [
-      "Astrophysics / gravity",
-      "Waves / radiation"
+      "Astrophysics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "gravitational waves",
@@ -6649,8 +6658,7 @@
     "name": "The Jet Stream",
     "desc": "Models the aerodynamic drag and lift on an airplane in flight and uses flight-time data from eastbound and westbound trips to infer the jet stream wind speed at cruising altitude.",
     "topics": [
-      "Fluid mechanics (drag, lift)",
-      "Mechanics (kinematics)"
+      "Mechanics"
     ],
     "tags": [
       "aerodynamics",
@@ -6660,7 +6668,9 @@
       "wind",
       "flight time",
       "data analysis",
-      "airplane"
+      "airplane",
+      "drag, lift",
+      "kinematics"
     ],
     "problemUrl": "https://aapt.org/Common2022/upload/2021-USAPhO_plus.pdf",
     "solutionUrl": "https://aapt.org/Common2022/upload/2021-USAPhO_Solutions_v3.pdf"
@@ -6676,8 +6686,7 @@
     "desc": "Analyzes the ABRACADABRA experiment for detecting axion dark matter, which oscillates the magnetic flux through a toroidal solenoid at the axion's Compton frequency. Derives the signal amplitude and sensitivity limits.",
     "topics": [
       "Electromagnetism",
-      "Particle physics / dark matter",
-      "Quantum mechanics"
+      "Quantum Physics"
     ],
     "tags": [
       "axion",
@@ -6701,9 +6710,9 @@
     "name": "Great Hall",
     "desc": "Analyzes the classical Hall effect using the Drude model (force balance on drifting electrons), then derives the quantum Hall effect using Bohr-Sommerfeld quantization of cyclotron orbits and the resulting quantized Hall conductance.",
     "topics": [
-      "Electromagnetism (Hall effect)",
-      "Quantum mechanics",
-      "Statistical mechanics (Drude model)"
+      "Electromagnetism",
+      "Quantum Physics",
+      "Thermodynamics"
     ],
     "tags": [
       "Hall effect",
@@ -6727,7 +6736,7 @@
     "name": "Toffee Pudding",
     "desc": "A spring is pulled at constant velocity while attached to a box with static and kinetic friction, causing stick-slip (fits-and-starts) motion. Analyzes the position of the box as a function of time and conditions for the spring to remain stretched.",
     "topics": [
-      "Mechanics (oscillations, friction)"
+      "Mechanics"
     ],
     "tags": [
       "stick-slip",
@@ -6737,7 +6746,8 @@
       "kinetic friction",
       "static friction",
       "periodic motion",
-      "driven oscillator"
+      "driven oscillator",
+      "oscillations, friction"
     ],
     "problemUrl": "https://aapt.org/Common2022/upload/2021-USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common2022/upload/2021-USAPhO_Solutions_v3.pdf"
@@ -6752,7 +6762,7 @@
     "name": "Flashlight",
     "desc": "Alice fires a muon beam straight down from a moving flying car; Bob on the ground observes the muons' trajectory. Analyzes velocity addition, Doppler effect, and light travel time in the context of special relativity.",
     "topics": [
-      "Special relativity"
+      "Relativity"
     ],
     "tags": [
       "special relativity",
@@ -6777,8 +6787,8 @@
     "desc": "Explores a classical model of the electron as a rotating charged spherical shell, finding the maximum magnetic moment, the minimum radius consistent with the known magnetic moment, and the energy stored in the electric and magnetic fields compared to the rest energy.",
     "topics": [
       "Electromagnetism",
-      "Special relativity (rest energy)",
-      "Atomic/nuclear physics"
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "electron model",
@@ -6802,8 +6812,8 @@
     "name": "Disk Jockey",
     "desc": "An ant walks on a rotating disk pivoted at its center, with the disk free to rotate. Finds the net angle the disk rotates when the ant traces a small rectangular loop, and when the ant walks along a circle tangent to its starting point-both examples of geometric phase.",
     "topics": [
-      "Mechanics (angular momentum, rotation)",
-      "Geometry (geometric phase)"
+      "Mechanics",
+      "Quantum Physics"
     ],
     "tags": [
       "geometric phase",
@@ -6812,7 +6822,8 @@
       "ant",
       "moment of inertia",
       "holonomy",
-      "Berry phase analogue"
+      "Berry phase analogue",
+      "angular momentum, rotation"
     ],
     "problemUrl": "https://aapt.org/Common2022/upload/2021-USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common2022/upload/2021-USAPhO_Solutions_v3.pdf"
@@ -6827,8 +6838,8 @@
     "name": "Hot Pocket",
     "desc": "Two independent parts: (a) optimal heat engine strategy for heating a room using a fire as a hot reservoir, finding minimum fuel consumption; (b) convective heat transport in a box with a heated bottom, estimating convection speed and heat flux.",
     "topics": [
-      "Thermodynamics",
-      "Fluid mechanics (convection)"
+      "Mechanics",
+      "Thermodynamics"
     ],
     "tags": [
       "heat engine",
@@ -6853,7 +6864,7 @@
     "name": "The Mad Hatter",
     "desc": "A mass on a spring (zero relaxed length) is constrained to move on a frictionless hemisphere. Analyzes equilibrium points as a function of spring constant, stability, trajectory after a tangential kick, and the maximum launch angle to hit a cylinder placed on top.",
     "topics": [
-      "Mechanics (constrained motion, oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "constrained motion",
@@ -6862,7 +6873,8 @@
       "equilibrium",
       "stability",
       "angular momentum",
-      "trajectory on surface"
+      "trajectory on surface",
+      "constrained motion, oscillations"
     ],
     "problemUrl": "https://aapt.org/Common2022/upload/2021-USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common2022/upload/2021-USAPhO_Solutions_v3.pdf"
@@ -6878,14 +6890,15 @@
     "desc": "Analyzes the electromagnetic angular momentum stored in the crossed electric and magnetic fields of a rotating charged cylindrical shell. Shows that as the cylinder decelerates, angular momentum is transferred from mechanical to electromagnetic form.",
     "topics": [
       "Electromagnetism",
-      "Mechanics (angular momentum)"
+      "Mechanics"
     ],
     "tags": [
       "electromagnetic angular momentum",
       "rotating charged shell",
       "Poynting vector",
       "angular momentum conservation",
-      "electromagnetic fields"
+      "electromagnetic fields",
+      "angular momentum"
     ],
     "problemUrl": "https://aapt.org/Common/upload/2020_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/2020_USAPhO_solutions.pdf"
@@ -6900,8 +6913,8 @@
     "name": "Swoosh!",
     "desc": "Analyzes the Foucault pendulum, a pendulum on a rotating Earth subject to the Coriolis force. Derives the precession rate and trajectory in the rotating frame, and finds the effective frequency of oscillation.",
     "topics": [
-      "Mechanics (rotating frames)",
-      "Geophysics"
+      "Astrophysics",
+      "Mechanics"
     ],
     "tags": [
       "Foucault pendulum",
@@ -6910,7 +6923,8 @@
       "precession",
       "pendulum",
       "non-inertial frame",
-      "Earth rotation"
+      "Earth rotation",
+      "rotating frames"
     ],
     "problemUrl": "https://aapt.org/Common/upload/2020_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/2020_USAPhO_solutions.pdf"
@@ -6925,7 +6939,7 @@
     "name": "Spin Cycle",
     "desc": "Studies relativistic effects on a rotating ring of clocks, including length contraction, clock synchronization, and the Sagnac effect. Explores the difficulties of defining simultaneity and distance for a rotating reference frame.",
     "topics": [
-      "Special relativity"
+      "Relativity"
     ],
     "tags": [
       "special relativity",
@@ -6949,8 +6963,8 @@
     "name": "String Cheese",
     "desc": "Analyzes the shape of a thin stream of falling water, which narrows due to acceleration while conserving mass flux. Also analyzes the Rayleigh-Plateau instability by which surface tension causes the stream to break into droplets.",
     "topics": [
-      "Fluid mechanics",
-      "Waves / instabilities"
+      "Mechanics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "falling water stream",
@@ -6973,7 +6987,7 @@
     "name": "Mirror Mirror on the Wall",
     "desc": "Analyzes the Lloyd's mirror interference setup, where a light source near a reflecting surface produces fringes from the interference of direct and reflected rays. Finds the fringe spacing and intensity pattern.",
     "topics": [
-      "Optics (wave optics / interference)"
+      "Optics"
     ],
     "tags": [
       "Lloyd's mirror",
@@ -6982,7 +6996,8 @@
       "reflection",
       "path difference",
       "wave optics",
-      "coherence"
+      "coherence",
+      "wave optics / interference"
     ],
     "problemUrl": "https://aapt.org/Common/upload/2020_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/2020_USAPhO_solutions.pdf"
@@ -6997,8 +7012,7 @@
     "name": "Real Expansion",
     "desc": "Studies the free expansion of a van der Waals gas (with attractive interactions between molecules), computing the temperature change, entropy increase, and the thermodynamic consequences of the intermolecular attraction.",
     "topics": [
-      "Thermodynamics",
-      "Statistical mechanics"
+      "Thermodynamics"
     ],
     "tags": [
       "van der Waals gas",
@@ -7022,7 +7036,7 @@
     "name": "Collision Course",
     "desc": "Two blocks slide down an inclined plane with different friction coefficients, collide elastically, and continue sliding. Analyzes the conditions for multiple collisions and the final speeds, with consideration of impulsive forces.",
     "topics": [
-      "Mechanics (collisions, friction)"
+      "Mechanics"
     ],
     "tags": [
       "elastic collision",
@@ -7030,7 +7044,8 @@
       "inclined plane",
       "impulse",
       "kinematics",
-      "coefficient of friction"
+      "coefficient of friction",
+      "collisions, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2019_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2019-Solutions.pdf"
@@ -7045,8 +7060,8 @@
     "name": "Green Revolution",
     "desc": "Models a wind turbine as a heat engine powered by temperature differences created by solar heating. Derives efficiency and power output using thermodynamic cycle analysis applied to the atmosphere.",
     "topics": [
-      "Thermodynamics",
-      "Fluid mechanics (atmosphere)"
+      "Mechanics",
+      "Thermodynamics"
     ],
     "tags": [
       "heat engine",
@@ -7055,7 +7070,8 @@
       "atmospheric thermodynamics",
       "efficiency",
       "Carnot",
-      "thermodynamic cycle"
+      "thermodynamic cycle",
+      "atmosphere"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2019_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2019-Solutions.pdf"
@@ -7070,7 +7086,7 @@
     "name": "Electric Slide",
     "desc": "Analyzes space-charge-limited current transport in a semiconductor, where the electric field is modified by the charge of the carriers themselves. Covers both drift-dominated and diffusion-dominated transport regimes.",
     "topics": [
-      "Electromagnetism (semiconductor physics)"
+      "Electromagnetism"
     ],
     "tags": [
       "space-charge",
@@ -7079,7 +7095,8 @@
       "diffusion",
       "Poisson's equation",
       "current transport",
-      "Child's law"
+      "Child's law",
+      "semiconductor physics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2019_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2019-Solutions.pdf"
@@ -7094,9 +7111,8 @@
     "name": "Strain in the Membrane",
     "desc": "Models a neuron cell membrane as an elastic capacitor that can deform under the electric field between its plates. Analyzes how ion pumps charge the membrane and under what conditions it becomes mechanically unstable and collapses.",
     "topics": [
-      "Electrostatics",
-      "Mechanics (elasticity)",
-      "Biophysics"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "capacitor",
@@ -7122,7 +7138,7 @@
     "desc": "Uses the blackbody radiation spectrum from a star to determine its radius and temperature, combined with parallax to find its luminosity and distance. Also analyzes a planetary transit to determine the planet's radius.",
     "topics": [
       "Astrophysics",
-      "Optics (blackbody radiation)"
+      "Optics"
     ],
     "tags": [
       "blackbody radiation",
@@ -7146,7 +7162,7 @@
     "name": "Pitfall",
     "desc": "Analyzes the motion of a rigid rod pivoted at one end, constrained by a bead that can slide along the rod and a rail. The system acts like an inverted pendulum and the bead falls in a complex trajectory determined by constraint forces.",
     "topics": [
-      "Mechanics (constrained rigid body)"
+      "Mechanics"
     ],
     "tags": [
       "rigid body",
@@ -7154,7 +7170,8 @@
       "inverted pendulum",
       "Lagrangian mechanics",
       "coupled motion",
-      "constraint forces"
+      "constraint forces",
+      "constrained rigid body"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/2019_USAPhO.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2019-Solutions.pdf"
@@ -7169,7 +7186,7 @@
     "name": "Block Collision And Rolling On Ramp",
     "desc": "A block or sphere is dropped onto a ramp, undergoing an impulsive elastic collision. Analyzes the post-collision velocity and angular velocity of the object, and whether it immediately rolls without slipping on the ramp.",
     "topics": [
-      "Mechanics (collisions, rotation)"
+      "Mechanics"
     ],
     "tags": [
       "elastic collision",
@@ -7178,7 +7195,8 @@
       "friction",
       "angular velocity",
       "ramp",
-      "moment of inertia"
+      "moment of inertia",
+      "collisions, rotation"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2018.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2018-Solutions.pdf"
@@ -7193,8 +7211,8 @@
     "name": "Semiconductor Diode Rectifier With Capacitive Filter",
     "desc": "Analyzes a semiconductor diode's exponential I-V characteristic and its use in a half-wave rectifier circuit with a capacitor filter. Studies the ripple voltage and charge/discharge behavior of the capacitor.",
     "topics": [
-      "Electromagnetism (circuits)",
-      "Semiconductor physics"
+      "Electromagnetism",
+      "Quantum Physics"
     ],
     "tags": [
       "diode",
@@ -7244,7 +7262,7 @@
     "name": "Electric Potential Of Charged Polyhedra",
     "desc": "Finds the electric potential at the center and along the axis of a uniformly charged cube using superposition and scaling arguments, then extends the analysis to a uniformly charged pyramid.",
     "topics": [
-      "Electrostatics"
+      "Electromagnetism"
     ],
     "tags": [
       "electrostatics",
@@ -7269,7 +7287,7 @@
     "desc": "Examines the angular resolution of a telescope in both the geometric optics limit and the diffraction limit, and connects the diffraction limit to the quantum mechanical uncertainty principle applied to photon momentum.",
     "topics": [
       "Optics",
-      "Quantum mechanics (uncertainty principle)"
+      "Quantum Physics"
     ],
     "tags": [
       "telescope",
@@ -7294,8 +7312,8 @@
     "desc": "Analyzes the Poynting-Robertson effect, where solar radiation pressure causes small orbiting particles to slowly spiral inward. Derives the timescale for a dust grain to fall from a given orbit into the Sun.",
     "topics": [
       "Astrophysics",
-      "Electromagnetism (radiation pressure)",
-      "Orbital mechanics"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "Poynting-Robertson effect",
@@ -7319,7 +7337,7 @@
     "name": "Stacked Wedges Static Friction Range",
     "desc": "Analyzes a system of stacked wedges on a frictionless surface with static friction between them. Finds the range of applied horizontal forces for which the wedges remain stationary together.",
     "topics": [
-      "Mechanics (statics, friction)"
+      "Mechanics"
     ],
     "tags": [
       "statics",
@@ -7328,7 +7346,8 @@
       "normal force",
       "static friction",
       "equilibrium",
-      "force analysis"
+      "force analysis",
+      "statics, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2018/upload/2017-USAPhO-exam-2.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2017-Solutions.pdf"
@@ -7367,7 +7386,7 @@
     "name": "Soft Iron Compass Deviation Model",
     "desc": "Models the deviation of a ship's magnetic compass caused by soft iron in the hull, which becomes magnetized by the Earth's field. Uses the method of image magnetic charges (Lord Kelvin's iron sphere correction) to find the compass error.",
     "topics": [
-      "Electromagnetism (magnetostatics)"
+      "Electromagnetism"
     ],
     "tags": [
       "magnetic compass",
@@ -7376,7 +7395,8 @@
       "magnetic dipole",
       "image method",
       "ship correction",
-      "Lord Kelvin"
+      "Lord Kelvin",
+      "magnetostatics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2018/upload/2017-USAPhO-exam-2.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2017-Solutions.pdf"
@@ -7391,9 +7411,9 @@
     "name": "GZK Limit And Cosmic Ray Cutoff",
     "desc": "Derives the GZK (Greisen-Zatsepin-Kuzmin) limit: the maximum energy of a cosmic ray proton that can propagate through the cosmic microwave background without producing pions via the delta resonance. Uses relativistic kinematics and threshold energy calculation.",
     "topics": [
-      "Special relativity",
-      "Particle physics",
-      "Astrophysics"
+      "Astrophysics",
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "GZK limit",
@@ -7418,7 +7438,7 @@
     "name": "Cascade Of Toppling Dominoes",
     "desc": "Analyzes the propagation of a toppling chain of dominoes: models each domino as a thin rod, derives the torque and angular velocity at impact, and finds the steady-state propagation speed of the domino wave.",
     "topics": [
-      "Mechanics (rotation, waves)"
+      "Mechanics"
     ],
     "tags": [
       "domino chain reaction",
@@ -7427,7 +7447,8 @@
       "torque",
       "moment of inertia",
       "propagation speed",
-      "wave"
+      "wave",
+      "rotation, waves"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2018/upload/2017-USAPhO-exam-2.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2017-Solutions.pdf"
@@ -7443,8 +7464,8 @@
     "desc": "Designs a Van de Graaff particle accelerator to deliver a proton beam to a target. Analyzes the accelerating voltage, beam current, beam optics through an electromagnet, and the cooling requirements for the electromagnet windings.",
     "topics": [
       "Electromagnetism",
-      "Particle physics (accelerator)",
-      "Mechanics"
+      "Mechanics",
+      "Quantum Physics"
     ],
     "tags": [
       "Van de Graaff",
@@ -7454,7 +7475,8 @@
       "magnetic focusing",
       "beam optics",
       "cooling",
-      "Joule heating"
+      "Joule heating",
+      "accelerator"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2018/upload/2017-USAPhO-exam-2.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2017-Solutions.pdf"
@@ -7469,8 +7491,8 @@
     "name": "Doppler Effect From Moving Sound Source",
     "desc": "A sound source moves away from a stationary observer, and the observed frequency is measured as a function of time. Uses the Doppler formula to determine the source speed and initial distance from the frequency-time data.",
     "topics": [
-      "Waves / acoustics (Doppler effect)",
-      "Kinematics"
+      "Mechanics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "Doppler effect",
@@ -7493,7 +7515,7 @@
     "name": "Operational Amplifier Circuit Analysis",
     "desc": "Analyzes operational amplifier (op-amp) circuits including an inverting amplifier, a differential amplifier, an integrator, and a differentiator. Finds the output voltage as a function of input and circuit component values.",
     "topics": [
-      "Electromagnetism (circuits)"
+      "Electromagnetism"
     ],
     "tags": [
       "op-amp",
@@ -7519,7 +7541,7 @@
     "name": "Relativistic Rod And Cylinder Paradox",
     "desc": "Analyzes the paradox of a relativistic rod and a cylinder: in the rod's rest frame the rod fits inside the cylinder, but in the cylinder's frame the rod is longer. Uses spacetime diagrams to resolve the apparent contradiction.",
     "topics": [
-      "Special relativity"
+      "Relativity"
     ],
     "tags": [
       "special relativity",
@@ -7542,8 +7564,7 @@
     "name": "Ice Formation And Heat Conduction",
     "desc": "Models the freezing of a lake, where ice grows on the surface and heat must conduct through the existing ice layer to the cold air above. Also considers equilibrium between ice formation and the heat released into the water.",
     "topics": [
-      "Thermodynamics (heat conduction)",
-      "Phase transitions"
+      "Thermodynamics"
     ],
     "tags": [
       "heat conduction",
@@ -7567,7 +7588,7 @@
     "name": "Ball Projectile From Loop-The-Loop",
     "desc": "A ball rolls without slipping around a loop-the-loop track and becomes a projectile after leaving the top of the loop. Analyzes the minimum speed for completing the loop and the landing position of the projectile.",
     "topics": [
-      "Mechanics (rotation, projectile)"
+      "Mechanics"
     ],
     "tags": [
       "loop-the-loop",
@@ -7575,7 +7596,8 @@
       "projectile motion",
       "circular motion",
       "minimum speed",
-      "moment of inertia"
+      "moment of inertia",
+      "rotation, projectile"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016-Solutions.pdf"
@@ -7590,9 +7612,9 @@
     "name": "Electron Spiral Into Charged Sphere",
     "desc": "Analyzes an electron in a circular orbit around a uniformly charged sphere. The electron undergoes Larmor radiation due to its centripetal acceleration, loses energy, and spirals inward. Computes the orbital decay time.",
     "topics": [
-      "Electromagnetism (radiation)",
-      "Orbital mechanics",
-      "Atomic physics"
+      "Electromagnetism",
+      "Mechanics",
+      "Quantum Physics"
     ],
     "tags": [
       "Larmor radiation",
@@ -7601,7 +7623,8 @@
       "orbital decay",
       "centripetal acceleration",
       "classical atom",
-      "Rutherford model"
+      "Rutherford model",
+      "radiation"
     ],
     "problemUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2016-Solutions.pdf"
@@ -7616,8 +7639,8 @@
     "name": "Quantum Particle In Gravitational Well",
     "desc": "Analyzes a neutron (or other quantum particle) bouncing in a gravitational well above a hard floor using the WKB (Bohr-Sommerfeld) quantization condition, finding the allowed energy levels.",
     "topics": [
-      "Quantum mechanics",
-      "Gravity"
+      "Mechanics",
+      "Quantum Physics"
     ],
     "tags": [
       "WKB approximation",
@@ -7640,7 +7663,7 @@
     "name": "Thevenin and Norton Equivalent Networks",
     "desc": "Analyzes a network of resistors driven by a current source. Uses Thevenin and Norton equivalent circuit methods to find the voltages and currents throughout the network.",
     "topics": [
-      "Electromagnetism (circuits)"
+      "Electromagnetism"
     ],
     "tags": [
       "Thevenin equivalent",
@@ -7665,7 +7688,7 @@
     "name": "Damped Spring Oscillation With Friction",
     "desc": "Two blocks connected by a spring on a surface with friction undergo oscillations. Analyzes the amplitude decrease per half-cycle due to kinetic friction and finds the conditions for the oscillations to cease.",
     "topics": [
-      "Mechanics (oscillations, friction)"
+      "Mechanics"
     ],
     "tags": [
       "spring-mass system",
@@ -7673,7 +7696,8 @@
       "amplitude decay",
       "oscillation",
       "energy dissipation",
-      "stop condition"
+      "stop condition",
+      "oscillations, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-5.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf"
@@ -7688,8 +7712,7 @@
     "name": "Water Phase Transition Heat Engine",
     "desc": "Analyzes a heat engine that uses the liquid-vapor phase transition of water. Draws the PV and PT diagrams and finds the work done, heat absorbed, and efficiency for a cycle that includes an isobaric and an isothermal step through the steam phase.",
     "topics": [
-      "Thermodynamics",
-      "Phase transitions"
+      "Thermodynamics"
     ],
     "tags": [
       "heat engine",
@@ -7715,8 +7738,7 @@
     "name": "Rocket Escape And Interplanetary Transfer",
     "desc": "Applies the Tsiolkovsky rocket equation to find the fuel mass required to achieve escape velocity and the additional delta-v for a Hohmann transfer orbit from Earth to Mars. Includes gravity losses during ascent.",
     "topics": [
-      "Mechanics (rocket propulsion)",
-      "Orbital mechanics"
+      "Mechanics"
     ],
     "tags": [
       "rocket equation",
@@ -7726,7 +7748,8 @@
       "orbital mechanics",
       "Mars",
       "escape velocity",
-      "mass ratio"
+      "mass ratio",
+      "rocket propulsion"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-5.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf"
@@ -7741,7 +7764,7 @@
     "name": "Gilbert And Ampere Dipole Comparison",
     "desc": "Compares two models of magnetic dipoles: the Gilbert dipole (pair of monopoles separated by a distance) and the Ampere dipole (a current loop). Computes fields both on the axis and on the equatorial plane and shows they differ inside the dipole but agree far away.",
     "topics": [
-      "Electromagnetism (magnetostatics)"
+      "Electromagnetism"
     ],
     "tags": [
       "magnetic dipole",
@@ -7750,7 +7773,8 @@
       "magnetic monopole",
       "current loop",
       "magnetic field",
-      "far field"
+      "far field",
+      "magnetostatics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-5.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2015-Solutions.pdf"
@@ -7765,7 +7789,7 @@
     "name": "Unicyclist Leaning In Circular Motion",
     "desc": "Analyzes the dynamics of a unicyclist riding in a circle, accounting for the finite height of the rider's center of mass above the wheel. Finds the lean angle and corrects the naive formula.",
     "topics": [
-      "Mechanics (rotation, circular motion)"
+      "Mechanics"
     ],
     "tags": [
       "unicyclist",
@@ -7773,7 +7797,8 @@
       "lean angle",
       "center of mass",
       "torque",
-      "centripetal acceleration"
+      "centripetal acceleration",
+      "rotation, circular motion"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-2.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2014-Solutions_rev-4012021.pdf"
@@ -7812,8 +7837,7 @@
     "name": "Accelerating Rocket And Gravitational Redshift",
     "desc": "Explores the spacetime interval invariance in special relativity, analyzes uniformly accelerating rocket motion, and applies the equivalence principle to derive gravitational frequency shift (redshift).",
     "topics": [
-      "Special relativity",
-      "General relativity (equivalence principle)"
+      "Relativity"
     ],
     "tags": [
       "spacetime interval",
@@ -7836,7 +7860,7 @@
     "name": "Point Charge In Grounded Conducting Sphere",
     "desc": "Finds the electric field and potential distribution for a point charge placed inside a hollow grounded conducting sphere. Sketches the field lines and potential surfaces inside and outside.",
     "topics": [
-      "Electrostatics"
+      "Electromagnetism"
     ],
     "tags": [
       "conducting sphere",
@@ -7860,8 +7884,7 @@
     "name": "Ball Through L-Shaped Hole",
     "desc": "A ball passes through an L-shaped hole in a sliding block; analyzes the impulsive forces and resulting motion. Then considers the case with friction causing the ball to roll after leaving the block.",
     "topics": [
-      "Mechanics (collisions, impulse)",
-      "Mechanics (rolling, friction)"
+      "Mechanics"
     ],
     "tags": [
       "impulse",
@@ -7870,7 +7893,9 @@
       "friction",
       "conservation of momentum",
       "angular momentum",
-      "rigid body"
+      "rigid body",
+      "collisions, impulse",
+      "rolling, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2015/upload/E3-2-2.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2014-Solutions_rev-4012021.pdf"
@@ -7885,8 +7910,8 @@
     "name": "Relativistic Fields Of Moving Charges",
     "desc": "Derives the electric and magnetic fields of a moving charged infinite sheet using special relativity (Lorentz transformation of fields). Generalizes to show how a current-carrying wire creates a magnetic field around it from the relativity of electrostatics.",
     "topics": [
-      "Special relativity",
-      "Electromagnetism"
+      "Electromagnetism",
+      "Relativity"
     ],
     "tags": [
       "Lorentz transformation",
@@ -7910,7 +7935,7 @@
     "name": "Counterflow Heat Exchanger Analysis",
     "desc": "Analyzes a counterflow heat exchanger, where hot and cold fluid streams flow in opposite directions through adjacent pipes. Derives the temperature profiles and total heat transferred as a function of thermal conductance per unit length.",
     "topics": [
-      "Thermodynamics (heat transfer)"
+      "Thermodynamics"
     ],
     "tags": [
       "heat exchanger",
@@ -7933,7 +7958,7 @@
     "name": "Rolling And Sliding On Inclined Plane",
     "desc": "A rolling object on an inclined plane transitions between rolling without slipping and sliding depending on the slope angle. Finds the critical angle and the subsequent motion for each regime.",
     "topics": [
-      "Mechanics (rotation, friction)"
+      "Mechanics"
     ],
     "tags": [
       "rolling",
@@ -7942,7 +7967,8 @@
       "static friction",
       "kinetic friction",
       "transition angle",
-      "angular acceleration"
+      "angular acceleration",
+      "rotation, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2014/upload/E3-1-7.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2013-Solutions.pdf"
@@ -7957,9 +7983,9 @@
     "name": "Relativistic Muon Decay In Circular Motion",
     "desc": "Muons produced in a particle accelerator travel in circular orbits in a magnetic field and undergo relativistic time dilation. Calculates the fraction of muons that decay before completing one orbit, using the relativistic decay factor.",
     "topics": [
-      "Special relativity (time dilation)",
-      "Nuclear/atomic physics (radioactive decay)",
-      "Electromagnetism (circular orbit)"
+      "Electromagnetism",
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "muon",
@@ -7968,7 +7994,8 @@
       "circular orbit",
       "magnetic field",
       "Lorentz factor",
-      "half-life"
+      "half-life",
+      "radioactive decay"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2014/upload/E3-1-7.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2013-Solutions.pdf"
@@ -7983,7 +8010,7 @@
     "name": "Duck Floating Between Oil And Water",
     "desc": "A rubber duck floats in a container with two immiscible fluids (oil on water). Uses the graphical data of duck depth vs. time during filling to determine the density of the oil layer.",
     "topics": [
-      "Fluid mechanics (buoyancy)"
+      "Mechanics"
     ],
     "tags": [
       "buoyancy",
@@ -8007,8 +8034,7 @@
     "name": "Blackbird Wind-Powered Vehicle Analysis",
     "desc": "Analyzes the \"Blackbird\" wind-powered vehicle that can travel faster than the wind both directly downwind and upwind. Derives the propeller and gear-ratio conditions needed to achieve speeds exceeding the wind speed in each direction.",
     "topics": [
-      "Mechanics (propulsion, gears)",
-      "Fluid mechanics"
+      "Mechanics"
     ],
     "tags": [
       "Blackbird",
@@ -8018,7 +8044,8 @@
       "propeller",
       "gear ratio",
       "wind power",
-      "velocity"
+      "velocity",
+      "propulsion, gears"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2014/upload/E3-1-7.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2013-Solutions.pdf"
@@ -8033,7 +8060,7 @@
     "name": "Energy Flow Through Maxwell's Configurations",
     "desc": "Verifies Maxwell's equations via the Poynting vector for three canonical configurations: a charged rod (static E field), a charging parallel-plate capacitor (time-varying E field), and a solenoid (static B field). Confirms energy flux equals power delivered.",
     "topics": [
-      "Electromagnetism (energy flow)"
+      "Electromagnetism"
     ],
     "tags": [
       "Poynting vector",
@@ -8042,7 +8069,8 @@
       "capacitor",
       "solenoid",
       "Maxwell's equations",
-      "energy flux"
+      "energy flux",
+      "energy flow"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2014/upload/E3-1-7.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2013-Solutions.pdf"
@@ -8057,8 +8085,8 @@
     "name": "Relativistic S-Meson Decay Analysis",
     "desc": "Analyzes the relativistic two-body decay of an S-meson at rest into two P-mesons in the rest frame, then Lorentz-boosts to the lab frame to find the angular distribution and momenta of the products.",
     "topics": [
-      "Special relativity",
-      "Particle physics"
+      "Quantum Physics",
+      "Relativity"
     ],
     "tags": [
       "meson decay",
@@ -8130,7 +8158,6 @@
     "name": "Gravitational Escape Or Collision Trajectory",
     "desc": "Two masses interact gravitationally and are released from rest at a given separation. Determines whether they undergo a bound orbit, a parabolic escape, or a direct collision, depending on the initial angular momentum and separation.",
     "topics": [
-      "Gravity / orbital mechanics",
       "Mechanics"
     ],
     "tags": [
@@ -8155,7 +8182,7 @@
     "name": "Hyperbolic Motion In Inverted Potential",
     "desc": "Analyzes motion in an inverted harmonic oscillator potential (repulsive quadratic force), finding the hyperbolic trajectories and the time dependence of position. Contrasts with the familiar oscillator.",
     "topics": [
-      "Mechanics (oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "inverted harmonic oscillator",
@@ -8163,7 +8190,8 @@
       "hyperbolic motion",
       "exponential growth",
       "instability",
-      "potential well"
+      "potential well",
+      "oscillations"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2013/upload/E3-2-3.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2012-Solutions.pdf"
@@ -8178,7 +8206,7 @@
     "name": "Magnetic Monopole Through Conducting Loop",
     "desc": "A magnetic monopole passes through a U-shaped conducting track connected to a resistive loop. Analyzes the induced EMF, current, and energy dissipated as the monopole moves at constant velocity through the loop.",
     "topics": [
-      "Electromagnetism (induction)"
+      "Electromagnetism"
     ],
     "tags": [
       "magnetic monopole",
@@ -8186,7 +8214,8 @@
       "Faraday's law",
       "resistive loop",
       "energy dissipation",
-      "induced current"
+      "induced current",
+      "induction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2013/upload/E3-2-3.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/upload/USAPhO-2012-Solutions.pdf"
@@ -8201,8 +8230,9 @@
     "name": "Sonoluminescent Bubble Thermodynamic Cycle",
     "desc": "Models single-bubble sonoluminescence using a simplified thermodynamic cycle: isothermal expansion, adiabatic collapse, and isochoric cooling. Computes the number of gas moles, pressures, temperatures, and total work done on the bubble.",
     "topics": [
+      "Mechanics",
       "Thermodynamics",
-      "Acoustics / fluid mechanics"
+      "Waves & Oscillations"
     ],
     "tags": [
       "sonoluminescence",
@@ -8227,7 +8257,7 @@
     "name": "Physical Pendulum Period Analysis",
     "desc": "A physical pendulum (thin rod suspended at a distance R from its center of mass) is timed for various values of R. Uses the period-vs-R data and linear regression to determine the local gravitational acceleration g and the rod length L.",
     "topics": [
-      "Mechanics (oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "physical pendulum",
@@ -8236,7 +8266,8 @@
       "linear regression",
       "gravitational acceleration",
       "rod",
-      "period"
+      "period",
+      "oscillations"
     ],
     "problemUrl": "https://aapt.org/Common/upload/USAPhO-2011_rev-4012021.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2011-Solutions_rev-4012021.pdf"
@@ -8251,8 +8282,8 @@
     "name": "Scaling Filament Dimensions For Power Consumption",
     "desc": "Designs a light bulb filament of the same material and emission spectrum but different power consumption, by finding the new filament dimensions (length and radius) as functions of the power scaling factor n.",
     "topics": [
-      "Electromagnetism (resistance, radiation)",
-      "Thermodynamics (blackbody radiation)"
+      "Electromagnetism",
+      "Thermodynamics"
     ],
     "tags": [
       "filament",
@@ -8261,7 +8292,8 @@
       "Stefan-Boltzmann",
       "power scaling",
       "light bulb",
-      "dimensional analysis"
+      "dimensional analysis",
+      "resistance, radiation"
     ],
     "problemUrl": "https://aapt.org/Common/upload/USAPhO-2011_rev-4012021.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2011-Solutions_rev-4012021.pdf"
@@ -8276,8 +8308,9 @@
     "name": "Blackbody Radiation Energy Density Distribution",
     "desc": "Derives the energy density of electromagnetic radiation in a cavity (a simplified model of blackbody radiation) by counting allowed standing-wave modes in k-space and applying a cutoff at energy kBT. Obtains the Stefan-Boltzmann scaling of energy with temperature.",
     "topics": [
-      "Statistical mechanics / quantum mechanics",
-      "Electromagnetism (blackbody radiation)"
+      "Electromagnetism",
+      "Quantum Physics",
+      "Thermodynamics"
     ],
     "tags": [
       "blackbody radiation",
@@ -8301,7 +8334,7 @@
     "name": "High-Voltage Power Transmission Analysis",
     "desc": "Analyzes a high-voltage AC power transmission line carrying 1000 MW at 500 kV. Computes resistive losses, the magnetic field near the wire, the EMF induced in a rectangular loop beneath the line, and the effect of an inductive load on cable losses (power factor correction with capacitors).",
     "topics": [
-      "Electromagnetism (AC circuits, power transmission)"
+      "Electromagnetism"
     ],
     "tags": [
       "AC power transmission",
@@ -8311,7 +8344,8 @@
       "magnetic field",
       "induced EMF",
       "Faraday's law",
-      "RMS current"
+      "RMS current",
+      "AC circuits, power transmission"
     ],
     "problemUrl": "https://aapt.org/Common/upload/USAPhO-2011_rev-4012021.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2011-Solutions_rev-4012021.pdf"
@@ -8326,7 +8360,7 @@
     "name": "Particle Dynamics On A Parabolic Bowl",
     "desc": "A particle constrained to move on a frictionless parabolic bowl finds the circular orbit speed, the maximum height for a given initial speed, and the period of small radial oscillations (both in the small-amplitude and large-amplitude limits).",
     "topics": [
-      "Mechanics (constrained motion, oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "parabolic bowl",
@@ -8335,7 +8369,8 @@
       "oscillation period",
       "normal force",
       "potential energy",
-      "anharmonic"
+      "anharmonic",
+      "constrained motion, oscillations"
     ],
     "problemUrl": "https://aapt.org/Common/upload/USAPhO-2011_rev-4012021.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2011-Solutions_rev-4012021.pdf"
@@ -8350,7 +8385,7 @@
     "name": "Sliding Off A Rotating Platform",
     "desc": "An object on a rotating merry-go-round slides off when centripetal acceleration and tangential acceleration together overcome static friction. Finds the velocity magnitude and direction at the instant of sliding.",
     "topics": [
-      "Mechanics (rotation, friction)"
+      "Mechanics"
     ],
     "tags": [
       "merry-go-round",
@@ -8358,7 +8393,8 @@
       "tangential acceleration",
       "static friction",
       "angular acceleration",
-      "sliding condition"
+      "sliding condition",
+      "rotation, friction"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2010_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2010-Solutions.pdf"
@@ -8373,8 +8409,7 @@
     "name": "Charge Relaxation In Resistive Spherical Shell",
     "desc": "A spherical shell of resistive material surrounds a central point charge. Charge migrates through the resistive shell over time until electrostatic equilibrium is reached. Finds the charge on the outer surface as a function of time.",
     "topics": [
-      "Electromagnetism (resistive media)",
-      "Electrostatics"
+      "Electromagnetism"
     ],
     "tags": [
       "resistive shell",
@@ -8383,7 +8418,8 @@
       "electrostatics",
       "time constant",
       "RC analogy",
-      "current density"
+      "current density",
+      "resistive media"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2010_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2010-Solutions.pdf"
@@ -8423,9 +8459,8 @@
     "name": "Proton-Proton Chain Reaction Analysis",
     "desc": "Analyzes the proton-proton chain reactions in stellar fusion, identifying the intermediate particles (deuterium, helium-3, beryllium-7, etc.) and computing the energy released at each step. Determines which reaction products carry a unique energy each time.",
     "topics": [
-      "Nuclear/atomic physics",
-      "Particle physics",
-      "Astrophysics"
+      "Astrophysics",
+      "Quantum Physics"
     ],
     "tags": [
       "proton-proton chain",
@@ -8450,7 +8485,7 @@
     "name": "Block Motion On Rotating Plank",
     "desc": "A thin plank rotates about its center pivot and a small block slides on it with no friction. Finds the special initial angle for which the block displacement is always proportional to the plank angle, and determines the oscillation period for this special case.",
     "topics": [
-      "Mechanics (coupled oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "plank",
@@ -8460,7 +8495,8 @@
       "normal modes",
       "small angle",
       "special solution",
-      "period"
+      "period",
+      "coupled oscillations"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2010_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/physicsteam/2019/upload/USAPhO-2010-Solutions.pdf"
@@ -8502,7 +8538,7 @@
     "name": "Solenoid Self-Inductance And Current Decay",
     "desc": "A hollow cylinder carries a tangential (azimuthal) current, acting as a solenoid. Derives the internal magnetic field, the self-inductance, and the current decay as an RL circuit using the induced back-EMF from Faraday's law.",
     "topics": [
-      "Electromagnetism (inductance, Faraday's law)"
+      "Electromagnetism"
     ],
     "tags": [
       "solenoid",
@@ -8513,7 +8549,8 @@
       "self-inductance",
       "EMF",
       "resistivity",
-      "circuits"
+      "circuits",
+      "inductance, Faraday's law"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8528,7 +8565,7 @@
     "name": "Separating Beta Emitters By Activity Decay",
     "desc": "A mixture of two beta-emitting isotopes (32P and 35S) decays and the total activity vs. time is tabulated. Graphical analysis of the semi-log plot reveals two distinct half-lives and allows separation of the initial activities of each isotope.",
     "topics": [
-      "Nuclear/atomic physics (radioactive decay)"
+      "Quantum Physics"
     ],
     "tags": [
       "radioactive decay",
@@ -8553,8 +8590,7 @@
     "name": "Binary Stars And Perpendicular Oscillation",
     "desc": "Two equal-mass stars orbit their common center of mass; a small planetoid oscillates along the symmetry axis perpendicular to the orbital plane. Finds the ratio of the planetoid's oscillation period to the binary star orbital period.",
     "topics": [
-      "Gravity / orbital mechanics",
-      "Mechanics (oscillations)"
+      "Mechanics"
     ],
     "tags": [
       "binary star",
@@ -8563,7 +8599,8 @@
       "harmonic oscillation",
       "gravity",
       "simple harmonic motion",
-      "period ratio"
+      "period ratio",
+      "oscillations"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8578,8 +8615,8 @@
     "name": "Adiabatic Expansion And Optimal Barrel Length",
     "desc": "A potato gun fires a potato down a cylinder; the compressed gas expands adiabatically (diatomic gas). Finds the optimal barrel length that maximizes the potato's kinetic energy when it exits, and calculates that maximum energy.",
     "topics": [
-      "Thermodynamics",
-      "Mechanics (projectile)"
+      "Mechanics",
+      "Thermodynamics"
     ],
     "tags": [
       "potato gun",
@@ -8588,7 +8625,8 @@
       "diatomic",
       "optimal barrel length",
       "kinetic energy",
-      "work done by gas"
+      "work done by gas",
+      "projectile"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8603,7 +8641,7 @@
     "name": "Double Collision Golf Ball Range",
     "desc": "A golf ball and bowling ball are dropped together; the bowling ball bounces off the floor first then collides with the golf ball. All collisions are elastic and frictionless. Finds the angle that maximizes the horizontal range of the golf ball after the double collision.",
     "topics": [
-      "Mechanics (collisions)"
+      "Mechanics"
     ],
     "tags": [
       "elastic collision",
@@ -8612,7 +8650,8 @@
       "double collision",
       "projectile motion",
       "maximum range",
-      "angle optimization"
+      "angle optimization",
+      "collisions"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8627,7 +8666,7 @@
     "name": "Collinear Dipole Interaction and Field Analysis",
     "desc": "Two collinear anti-parallel electric dipoles interact. Derives the exact interaction potential energy, approximates it to leading order in d/r (dipole-dipole interaction), and finds the force and the electric field of one dipole at the location of the other.",
     "topics": [
-      "Electrostatics"
+      "Electromagnetism"
     ],
     "tags": [
       "electric dipole",
@@ -8651,7 +8690,7 @@
     "name": "Fomalhaut B's Orbital Period And Star Mass",
     "desc": "Estimates the mass of the star Fomalhaut from a Hubble Space Telescope image of its planet Fomalhaut b in a wide orbit, using the measured orbital radius and Kepler's third law. Requires reading length scales from the image.",
     "topics": [
-      "Astrophysics / orbital mechanics"
+      "Astrophysics"
     ],
     "tags": [
       "stellar mass",
@@ -8676,7 +8715,7 @@
     "name": "Linear Air Resistance In Vertical Motion",
     "desc": "A ball thrown upward with initial speed v0 experiences linear air resistance (F = -kv). Derives the velocity as a function of time, sketches the v-t graph, and finds the rise time and maximum height analytically.",
     "topics": [
-      "Mechanics (drag, kinematics)"
+      "Mechanics"
     ],
     "tags": [
       "air resistance",
@@ -8685,7 +8724,8 @@
       "velocity",
       "rise time",
       "terminal velocity",
-      "differential equation"
+      "differential equation",
+      "drag, kinematics"
     ],
     "problemUrl": "https://aapt.org/physicsteam/2010/upload/2009_SemiFinal.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2009-Solutions_rev-4012021.pdf"
@@ -8700,7 +8740,7 @@
     "name": "Work Done Inserting Conducting Slab",
     "desc": "A charged parallel-plate capacitor is disconnected from its battery, and a conducting metal slab of half the plate gap thickness is inserted. Calculates the work done on the slab as it is inserted.",
     "topics": [
-      "Electrostatics"
+      "Electromagnetism"
     ],
     "tags": [
       "capacitor",
@@ -8724,7 +8764,7 @@
     "name": "Parallel Bulbs And Maximum Power Distribution",
     "desc": "A battery with internal resistance r is connected to N identical light bulbs in parallel. Finds the total power dissipated in the bulbs as a function of N and determines the range of internal resistance r for which power is maximized at N = 5.",
     "topics": [
-      "Electromagnetism (circuits)"
+      "Electromagnetism"
     ],
     "tags": [
       "battery",
@@ -8749,7 +8789,7 @@
     "name": "Conducting Plates With Sequential Connections",
     "desc": "Four parallel conducting plates are connected in a sequence of steps: first to a voltage source, then plates 2 and 3 are shorted together, then the source is removed. Finds the final potential differences between each adjacent pair of plates.",
     "topics": [
-      "Electrostatics (capacitors)"
+      "Electromagnetism"
     ],
     "tags": [
       "capacitor",
@@ -8757,7 +8797,8 @@
       "charge redistribution",
       "potential difference",
       "voltage",
-      "electrostatics"
+      "electrostatics",
+      "capacitors"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8797,8 +8838,8 @@
     "name": "Radioactive Planet Thermal Equilibrium",
     "desc": "A radioactively heated planet radiates energy from its surface as a blackbody. Derives the surface temperature and the temperature difference between the surface and the center using the thermal conductivity equation for a sphere.",
     "topics": [
-      "Astrophysics / geophysics",
-      "Thermodynamics (heat conduction)"
+      "Astrophysics",
+      "Thermodynamics"
     ],
     "tags": [
       "radioactive heating",
@@ -8807,7 +8848,8 @@
       "thermal conductivity",
       "temperature gradient",
       "spherical planet",
-      "heat equation"
+      "heat equation",
+      "heat conduction"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8822,8 +8864,8 @@
     "name": "Doppler Shift Of Falling Sound Source",
     "desc": "A tape recorder playing a tone is dropped from rest and observed from below. Uses tabulated frequency-vs-time data and the Doppler formula to graphically verify the theoretical expression, and extracts numerically the emitted frequency and drop height.",
     "topics": [
-      "Waves / acoustics (Doppler effect)",
-      "Kinematics"
+      "Mechanics",
+      "Waves & Oscillations"
     ],
     "tags": [
       "Doppler effect",
@@ -8847,7 +8889,7 @@
     "name": "Spring Platform And Inelastic Collision",
     "desc": "A person stands on a platform attached to a spring and holds a lump of clay above the platform. After releasing the clay, the platform oscillates; the clay strikes after exactly one full oscillation. Analyzes the critical mass ratio below which this is possible and the amplitude ratio before and after the inelastic collision.",
     "topics": [
-      "Mechanics (oscillations, collisions)"
+      "Mechanics"
     ],
     "tags": [
       "spring-mass",
@@ -8857,7 +8899,8 @@
       "amplitude ratio",
       "period",
       "critical mass",
-      "simple harmonic motion"
+      "simple harmonic motion",
+      "oscillations, collisions"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8872,8 +8915,8 @@
     "name": "Charged Ball In Parallel Plate Capacitor",
     "desc": "A small charged metal ball on a string hangs inside a vertical parallel-plate capacitor. Analyzes equilibrium angle, small oscillations about equilibrium, maximum voltage before the ball hits a plate, and resonant driving by an AC voltage.",
     "topics": [
-      "Electrostatics",
-      "Mechanics (pendulum, oscillations)"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "parallel plate capacitor",
@@ -8883,7 +8926,8 @@
       "small oscillations",
       "resonance",
       "AC voltage",
-      "resistive medium"
+      "resistive medium",
+      "pendulum, oscillations"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8898,8 +8942,8 @@
     "name": "Charged Particle Escape From Sphere",
     "desc": "A charged particle of sign opposite to a uniformly charged sphere is placed at the center and given kinetic energy K0 such that it just reaches the boundary. Finds K0 and the time for the particle to travel from the center to the boundary.",
     "topics": [
-      "Electrostatics",
-      "Mechanics (kinematics)"
+      "Electromagnetism",
+      "Mechanics"
     ],
     "tags": [
       "charged sphere",
@@ -8907,7 +8951,8 @@
       "escape condition",
       "kinetic energy",
       "potential energy",
-      "SHM-like motion"
+      "SHM-like motion",
+      "kinematics"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8922,7 +8967,7 @@
     "name": "Pool Ball Rolling Without Slipping",
     "desc": "A pool ball is struck by a horizontal impulse at a height alpha times the radius above its center. Finds the final rolling speed as a function of the impulse magnitude and alpha, and identifies the alpha value for which the ball immediately rolls without slipping.",
     "topics": [
-      "Mechanics (rotation, impulse)"
+      "Mechanics"
     ],
     "tags": [
       "pool ball",
@@ -8931,7 +8976,8 @@
       "rolling without slipping",
       "moment of inertia",
       "friction",
-      "spin"
+      "spin",
+      "rotation, impulse"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8946,7 +8992,7 @@
     "name": "Block On Circular Track With Friction",
     "desc": "A block slides on a circular track with friction from both the floor and the vertical wall. Derives the differential equation for kinetic energy as a function of angle traveled, and finds the initial speed needed for the block to complete exactly one full revolution.",
     "topics": [
-      "Mechanics (friction, circular motion)"
+      "Mechanics"
     ],
     "tags": [
       "circular track",
@@ -8955,7 +9001,8 @@
       "centripetal force",
       "normal force",
       "differential equation",
-      "angular displacement"
+      "angular displacement",
+      "friction, circular motion"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"
@@ -8970,7 +9017,7 @@
     "name": "Beads Sliding Down Circular Hoop",
     "desc": "Two beads slide without friction down opposite sides of a vertical circular hoop resting on the ground. Finds the maximum bead-to-hoop mass ratio for which the hoop always remains on the ground (normal force never goes to zero).",
     "topics": [
-      "Mechanics (constraints, normal force)"
+      "Mechanics"
     ],
     "tags": [
       "bead on hoop",
@@ -8979,7 +9026,8 @@
       "energy conservation",
       "angular position",
       "critical mass ratio",
-      "constraints"
+      "constraints",
+      "constraints, normal force"
     ],
     "problemUrl": "https://aapt.org/Programs/contests/upload/olympiad_2008_semi-final.pdf",
     "solutionUrl": "https://aapt.org/Common/upload/USAPhO-2008-Solutions_rev-4012021.pdf"

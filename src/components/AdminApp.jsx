@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -83,6 +83,7 @@ export default function AdminApp({ userId }) {
   const [packetModalOpen, setPacketModalOpen] = useState(false)
   const [sessionProblems, setSessionProblems] = useState([])
   const [onDeckSessionId, setOnDeckSessionId] = useState(null)
+  const [markingDoneId, setMarkingDoneId] = useState(null)
 
   // Which slices have received real (cached or fetched) data — guards the
   // state→cache mirror effects below from writing initial empty state.
@@ -488,6 +489,25 @@ export default function AdminApp({ userId }) {
     }
   }
 
+  async function handleMarkComplete(problemId) {
+    if (!activeStudent) return
+    setMarkingDoneId(problemId)
+    try {
+      const result = await markMyProblemCompleted(activeStudentId, problemId)
+      if (result) {
+        setAssignments(prev => {
+          const idx = prev.findIndex(a => a.id === result.id)
+          if (idx >= 0) return prev.map(a => a.id === result.id ? { ...a, ...result } : a)
+          return [...prev, result]
+        })
+      }
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setMarkingDoneId(null)
+    }
+  }
+
   async function handleUpdateNote(assignmentId, notes) {
     try {
       await updateAssignment(assignmentId, { notes })
@@ -765,13 +785,11 @@ export default function AdminApp({ userId }) {
                       ))}
                     </select>
                   )}
-                  {upcomingSessions.length > 0 && (
-                    <button className="sm" onClick={handleOnDeck}>
-                      On deck{upcomingSessions.length === 1
-                        ? ` → ${new Date(upcomingSessions[0].scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`
-                        : ''}
-                    </button>
-                  )}
+                  <button className="sm" onClick={handleOnDeck}>
+                    On deck{upcomingSessions.length === 1
+                      ? ` → ${new Date(upcomingSessions[0].scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}`
+                      : ''}
+                  </button>
                   <button className="sm primary" onClick={handleAssign}>
                     Assign to {activeStudent?.name}
                   </button>
@@ -790,6 +808,8 @@ export default function AdminApp({ userId }) {
                 sortDir={sortDir}
                 onSort={handleSort}
                 onExclude={handleExcludeProblem}
+                onMarkComplete={handleMarkComplete}
+                markingDoneId={markingDoneId}
               />
             </div>
           </>

@@ -11,6 +11,7 @@ const COLS = [
   { key: 'name', label: 'Problem', width: null, sortable: true },
   { key: 'topics', label: 'Topics', width: 170, sortable: false },
   { key: 'links', label: 'Links', width: 88, sortable: false },
+  { key: 'actions', label: '', width: 80, sortable: false },
 ]
 
 function StatusBadge({ status }) {
@@ -26,7 +27,7 @@ export default function ProblemTable({
   problems, selected, statusMap, filters, setFilters,
   onToggle, onSelectAll, onClearAll,
   sortCol, sortDir, onSort,
-  onExclude,
+  onExclude, onMarkComplete, markingDoneId,
 }) {
   const [previewProblem, setPreviewProblem] = useState(null)
   // Rendering all ~900+ rows at once blocks the main thread for over a second,
@@ -171,6 +172,18 @@ export default function ProblemTable({
                       )}
                       {p.solutionUrl && <a className="pdf-link" href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                     </div>
+                  </td>
+                  <td onClick={e => e.stopPropagation()}>
+                    {!isCompleted && onMarkComplete && (
+                      <button
+                        className="sm"
+                        style={{ fontSize: 11, whiteSpace: 'nowrap' }}
+                        disabled={markingDoneId === p.id}
+                        onClick={() => onMarkComplete(p.id)}
+                      >
+                        {markingDoneId === p.id ? '…' : 'Mark done'}
+                      </button>
+                    )}
                   </td>
                 </tr>
               )
