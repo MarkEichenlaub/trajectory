@@ -49,6 +49,7 @@ export default function ProblemBankBrowser({ bankProblems, assignments, student,
         !p.name.toLowerCase().includes(q) &&
         !p.desc.toLowerCase().includes(q) &&
         !p.tags.some(t => t.toLowerCase().includes(q)) &&
+        !(p.topics || []).some(t => t.toLowerCase().includes(q)) &&
         !(p.year ? String(p.year).includes(q) : false) &&
         !(p.country || '').toLowerCase().includes(q)
       ) return false
