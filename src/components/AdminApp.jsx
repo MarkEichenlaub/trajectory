@@ -188,7 +188,7 @@ export default function AdminApp({ userId }) {
   const upcomingSessions = useMemo(() => {
     const nowIso = new Date().toISOString()
     return sessions
-      .filter(s => s.student_id === activeStudentId && s.scheduled_at > nowIso && !s.end_time)
+      .filter(s => s.student_id === activeStudentId && s.scheduled_at > nowIso)
       .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
   }, [sessions, activeStudentId])
 
