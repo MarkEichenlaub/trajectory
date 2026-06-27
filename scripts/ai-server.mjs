@@ -2,12 +2,19 @@
  * Local AI server — generates session summaries using the claude CLI.
  * Uses Mark's Claude subscription (not API credits).
  *
- * Start with:  npm run ai-server
+ * Two ways to run it:
+ *   - `node scripts/ai-server.mjs --once`  → run ONE summarization pass, then exit.
+ *     This is how it runs in production: a Windows Scheduled Task fires it every
+ *     15 minutes. Each pass is a fresh, independent process, so a crash, hang, or
+ *     claude-CLI timeout in one pass can NEVER stop future passes — the next tick
+ *     just starts clean. (The old always-on daemon had no supervisor: when it died
+ *     once, summarization silently stopped for days. This is the robust replacement.)
+ *   - `npm run ai-server`  (no flag) → long-running daemon: a health endpoint plus
+ *     the same auto loop on a 15-min timer. Kept for manual/interactive use.
  *
- * Two modes:
- *   - HTTP button: POST /analyze {sessionId} → returns {summary, tags} (admin reviews before saving)
- *   - Auto loop: every 30 min, finds sessions that ended without a summary and
- *     auto-saves AI-generated content. Mark can edit afterwards in the admin UI.
+ * Either way the loop finds sessions that ended without a summary and auto-saves
+ * AI-generated { summary, tags } (using Mark's Claude subscription via the claude
+ * CLI — no API cost). Mark can edit afterwards in the admin UI.
  */
 import http from 'http'
 import { exec } from 'child_process'
@@ -38,6 +45,7 @@ const FUNCTIONS_URL = `${SUPABASE_URL}/functions/v1`
 const REST_URL = `${SUPABASE_URL}/rest/v1`
 const PORT = 3747
 const AUTO_INTERVAL_MS = 15 * 60 * 1000 // re-check for new finished sessions every 15 min
+const RUN_ONCE = process.argv.includes('--once') // one pass then exit (Scheduled Task mode)
 // Wait this long after a session's end_time before summarizing (lets the panel's
 // final auto-snapshot finish uploading).
 const SESSION_SETTLE_MINUTES = 10
@@ -120,27 +128,45 @@ async function screenshotMiroBoard(boardId) {
 }
 
 async function getSessionContent(sessionId, boardId) {
-  const res = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
-    method: 'POST',
-    headers: { ...DB_HEADERS, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId }),
-  })
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || `Edge function error ${res.status}`)
-  // Prefer a visual capture (a panel snapshot, or the rare board PDF) — it shows
-  // the handwriting/diagrams that make up most of a physics board. Typed text is
-  // only a fallback (handwritten boards expose almost no text via the Miro API).
+  // Ask the edge function what cloud content exists for this board. Crucially, a
+  // non-OK response (e.g. its 502 "no readable content" when a board has no
+  // uploaded snapshot and no typed text) is NOT fatal — the live Playwright
+  // screenshot below is our most reliable source for handwritten physics boards,
+  // so we must still fall through to it. (Previously any non-OK status threw here,
+  // so boards with no cloud picture/text were skipped forever even though a
+  // perfectly good screenshot was available.)
+  let data = {}
+  try {
+    const res = await fetch(`${FUNCTIONS_URL}/summarize-session`, {
+      method: 'POST',
+      headers: { ...DB_HEADERS, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId }),
+    })
+    data = await res.json().catch(() => ({}))
+    if (!res.ok && res.status !== 502) {
+      // 401/403/404/400 are real misconfigurations worth flagging in the log,
+      // but we still try the screenshot fallback rather than giving up.
+      console.error(`[content] summarize-session HTTP ${res.status}: ${data.error || ''}`)
+    }
+  } catch (e) {
+    console.error(`[content] summarize-session unreachable (will still try screenshot): ${e.message}`)
+  }
+
+  // Prefer an already-uploaded visual capture (a panel snapshot, or the rare board
+  // PDF) — it shows the handwriting/diagrams at the moment it was captured.
   if (data.pictureUrl) {
     const isPdf = /\.pdf(\?|$)/i.test(data.pictureUrl)
     return { type: isPdf ? 'pdf' : 'image', content: data.pictureUrl }
   }
-  // No picture from the edge function — take a live screenshot via Playwright.
+  // No uploaded snapshot — take a live screenshot via Playwright. This is the path
+  // that actually works for most handwritten boards.
   if (boardId) {
     const screenshot = await screenshotMiroBoard(boardId)
     if (screenshot) return { type: 'screenshot', content: screenshot }
   }
+  // Last resort: typed text (usually sparse on handwritten boards).
   if (data.boardText) return { type: 'text', content: data.boardText }
-  throw new Error('No board content available for this session')
+  throw new Error('No board content available (no snapshot, screenshot, or text)')
 }
 
 // Runs the claude CLI (Mark's subscription) to turn board content into a
@@ -185,8 +211,12 @@ async function analyzeContent({ type, content }) {
     const cmd = isWin ? `'' | ${base}` : `${base} < /dev/null`
 
     const { stdout } = await execAsync(cmd, {
+      // 5 min: reading a dense handwritten board with Opus + structured output can
+      // be slow under load. The old 3-min cap was hit on 2026-06-20 (a transient
+      // timeout), which — combined with the daemon having no supervisor — is what
+      // silently stopped summarization. The Scheduled Task retries either way now.
       shell: isWin ? 'pwsh.exe' : undefined,
-      timeout: 180000,
+      timeout: 300000,
       cwd: ROOT,
       maxBuffer: 10 * 1024 * 1024,
     })
@@ -287,28 +317,35 @@ async function runAutoSummarize() {
   }
 }
 
-// ── Health endpoint ───────────────────────────────────────────────────────────
-// Board snapshots are uploaded by the Miro panel straight to the cloud (the
-// save-board-snapshot edge function), so this process needs no inbound API — it
-// just runs the pull-based auto-summarize loop. The endpoint is here so Mark can
-// confirm the server is alive (open http://localhost:3747 or curl it).
-
-const server = http.createServer((req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify({ ok: true, service: 'trajectory-ai-summarizer', lastRun }))
-})
-
 // ── Start ─────────────────────────────────────────────────────────────────────
 
-server.listen(PORT, '127.0.0.1', () => {
-  console.log(`\n✨ AI summarizer running (health check: http://localhost:${PORT})`)
-  console.log(`   Auto-summarizing finished sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
-})
+// Wrap so a rejection from the loop can never escape as an unhandled rejection
+// (the original crash path).
+const safeRun = () => runAutoSummarize().catch((e) => console.error(`[auto] run failed: ${e.message}`))
 
-// Run shortly after startup, then on the interval. Wrap so a rejection from the
-// loop can never escape as an unhandled rejection (the original crash path).
-const safeRun = () => runAutoSummarize().catch((e) => console.error(`[auto] run failed (kept alive): ${e.message}`))
-setTimeout(safeRun, 20 * 1000)
-setInterval(safeRun, AUTO_INTERVAL_MS)
+if (RUN_ONCE) {
+  // Scheduled-Task mode: do exactly one pass, then exit so the task completes.
+  // The next tick (15 min later) is a brand-new process — no supervisor needed.
+  console.log(`\n[once] ${new Date().toISOString()} — single summarization pass`)
+  await safeRun()
+  console.log(`[once] ${new Date().toISOString()} — done\n`)
+  process.exit(0)
+} else {
+  // Daemon mode (`npm run ai-server`). Board snapshots are uploaded by the Miro
+  // panel straight to the cloud (the save-board-snapshot edge function), so this
+  // process needs no inbound API — the endpoint just lets Mark confirm it's alive
+  // (open http://localhost:3747 or curl it).
+  const server = http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return }
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ ok: true, service: 'trajectory-ai-summarizer', lastRun }))
+  })
+  server.listen(PORT, '127.0.0.1', () => {
+    console.log(`\n✨ AI summarizer running (health check: http://localhost:${PORT})`)
+    console.log(`   Auto-summarizing finished sessions every ${AUTO_INTERVAL_MS / 60000} minutes.\n`)
+  })
+  // Run shortly after startup, then on the interval.
+  setTimeout(safeRun, 20 * 1000)
+  setInterval(safeRun, AUTO_INTERVAL_MS)
+}
