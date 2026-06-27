@@ -112,10 +112,21 @@ async function screenshotMiroBoard(boardId) {
   const page = await context.newPage()
   try {
     await page.goto(boardUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 })
-    await page.waitForTimeout(12_000) // let the board canvas fully render
-    // Ctrl+Shift+H = "fit board to screen" in Miro — shows all content
-    await page.keyboard.press('Control+Shift+H')
-    await page.waitForTimeout(1_500)
+    // The board's strokes/diagrams load asynchronously after the page shell. A
+    // fixed 12s wait used to fire too early on slower loads, capturing a near-blank
+    // canvas — which then got (wrongly) summarized as "blank" and skipped. Wait for
+    // the network to settle first (best-effort; a Miro SPA polls forever, so cap
+    // it), then add a paint buffer so the handwriting is actually rendered.
+    await page.waitForLoadState('networkidle', { timeout: 45_000 }).catch(() => {})
+    await page.waitForTimeout(12_000)
+    // Fit the whole board into view so off-screen content isn't cut off. The
+    // shortcut is dropped unless the canvas has focus, so click it first (a single
+    // select-tool click never edits the board; Escape clears any incidental
+    // selection before the shot).
+    await page.mouse.click(960, 640)
+    await page.keyboard.press('Escape')
+    await page.keyboard.press('Control+Shift+H') // Miro "fit board to screen"
+    await page.waitForTimeout(3_000)
     const buf = await page.screenshot({ type: 'jpeg', quality: 80 })
     console.log(`[snapshot] Captured ${buf.length} bytes`)
     return buf

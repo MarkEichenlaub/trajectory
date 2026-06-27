@@ -21,13 +21,16 @@ if (-not (Test-Path $vbs)) { throw "Launcher not found: $vbs" }
 # Action: run the hidden VBS launcher (which runs the --once pass and waits for it).
 $action = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument "`"$vbs`""
 
-# Trigger: at THIS user's logon, then repeat every 15 minutes for as long as Mark
-# is logged in. The trigger must name the user (-User) — a bare -AtLogOn means "any
-# user" and would require admin to register. Repetition is attached by borrowing
-# the spec from a one-off trigger (the documented way to get an indefinite repeat).
-$trigger = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
-$trigger.Repetition = (New-ScheduledTaskTrigger -Once -At (Get-Date) `
-    -RepetitionInterval (New-TimeSpan -Minutes 15)).Repetition
+# Two triggers, so the task fires every 15 minutes *starting immediately* and also
+# keeps going across reboots/logins:
+#   1. Time-based: starts a minute from now and repeats every 15 min indefinitely.
+#      This is the steady cadence. With StartWhenAvailable it also resumes after a
+#      reboot (the start boundary is in the past, so it runs as soon as it can).
+#   2. At this user's logon: a prompt kick right after each login. It must name the
+#      user (-User) — a bare -AtLogOn means "any user" and needs admin to register.
+$triggerEvery = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(1)) `
+    -RepetitionInterval (New-TimeSpan -Minutes 15)
+$triggerLogon = New-ScheduledTaskTrigger -AtLogOn -User "$env:USERDOMAIN\$env:USERNAME"
 
 # Settings: never run two passes at once; catch up if a tick was missed; run on
 # battery; and hard-stop a pass that hangs past an hour so it can't block the next.
@@ -43,7 +46,7 @@ Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction Silent
 # No explicit -Principal: it defaults to the registering (current) user, running
 # only when logged on, non-elevated — exactly what we want, and registerable
 # without admin rights. The claude CLI then uses Mark's logged-in subscription.
-Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger `
+Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $triggerEvery,$triggerLogon `
     -Settings $settings `
     -Description 'Runs one Trajectory session-summary pass every 15 min (self-healing replacement for the old ai-server daemon).' | Out-Null
 
