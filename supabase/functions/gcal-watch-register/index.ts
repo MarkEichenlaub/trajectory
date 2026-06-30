@@ -25,6 +25,27 @@ async function getGoogleAccessToken(): Promise<string> {
   return data.access_token
 }
 
+// Obtain an incremental-sync token. Google only returns nextSyncToken on the FINAL
+// page of an events.list, so a single maxResults=1 request never yields one when the
+// calendar has more than one event — we must page to the end. The token must come
+// from the same query params the webhook's incremental sync uses (no time bounds,
+// no singleEvents) or Google rejects it with 400.
+async function fetchSyncToken(accessToken: string): Promise<string | null> {
+  let pageToken: string | undefined
+  for (let i = 0; i < 50; i++) {
+    const url = new URL('https://www.googleapis.com/calendar/v3/calendars/primary/events')
+    url.searchParams.set('maxResults', '2500')
+    if (pageToken) url.searchParams.set('pageToken', pageToken)
+    const res = await fetch(url.toString(), { headers: { Authorization: `Bearer ${accessToken}` } })
+    if (!res.ok) throw new Error(`events.list failed: ${res.status} ${await res.text()}`)
+    const data = await res.json() as { nextPageToken?: string; nextSyncToken?: string }
+    if (data.nextSyncToken) return data.nextSyncToken
+    if (!data.nextPageToken) return null
+    pageToken = data.nextPageToken
+  }
+  return null
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok')
 
@@ -51,20 +72,21 @@ Deno.serve(async (req) => {
     .from('app_config').select('value').eq('key', 'gcal_sync_token').maybeSingle()
 
   if (!existing?.value) {
-    const syncRes = await fetch(
-      'https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=1',
-      { headers: { Authorization: `Bearer ${accessToken}` } },
-    )
-    if (!syncRes.ok) {
+    let syncToken: string | null
+    try {
+      syncToken = await fetchSyncToken(accessToken)
+    } catch (e) {
       return new Response(
-        JSON.stringify({ error: 'Initial sync failed', detail: await syncRes.text() }), { status: 500 },
+        JSON.stringify({ error: 'Initial sync failed', detail: String(e) }), { status: 500 },
       )
     }
-    const syncData = await syncRes.json() as { nextSyncToken?: string }
-    if (syncData.nextSyncToken) {
-      await admin.from('app_config').upsert({
-        key: 'gcal_sync_token', value: syncData.nextSyncToken, updated_at: new Date().toISOString(),
+    if (syncToken) {
+      const { error } = await admin.from('app_config').upsert({
+        key: 'gcal_sync_token', value: syncToken, updated_at: new Date().toISOString(),
       })
+      if (error) console.error('Failed to store gcal_sync_token:', error.message)
+    } else {
+      console.error('No nextSyncToken returned after paging through events')
     }
   }
 
@@ -94,11 +116,12 @@ Deno.serve(async (req) => {
     id: string; resourceId: string; expiration: string
   }
 
-  await admin.from('app_config').upsert([
+  const { error: cfgErr } = await admin.from('app_config').upsert([
     { key: 'gcal_channel_id',     value: watchData.id,          updated_at: new Date().toISOString() },
     { key: 'gcal_resource_id',    value: watchData.resourceId,  updated_at: new Date().toISOString() },
     { key: 'gcal_channel_expiry', value: watchData.expiration,  updated_at: new Date().toISOString() },
   ])
+  if (cfgErr) console.error('Failed to store watch-channel config:', cfgErr.message)
 
   const expiresAt = new Date(Number(watchData.expiration)).toISOString()
   console.log(`Watch channel registered: ${channelId}, expires ${expiresAt}`)

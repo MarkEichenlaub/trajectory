@@ -92,16 +92,32 @@ Deno.serve(async (req) => {
     })
 
     if (res.status === 410) {
-      // Sync token expired — reset to a fresh token and wait for the next notification
-      const reset = await fetch(
-        'https://www.googleapis.com/calendar/v3/calendars/primary/events?maxResults=1',
-        { headers: { Authorization: `Bearer ${accessToken}` } },
-      )
-      const d = await reset.json() as { nextSyncToken?: string }
-      if (d.nextSyncToken) {
-        await admin.from('app_config').upsert({
-          key: 'gcal_sync_token', value: d.nextSyncToken, updated_at: new Date().toISOString(),
+      // Sync token expired — reset to a fresh token and wait for the next notification.
+      // nextSyncToken only appears on the final page, so page to the end (same params
+      // as the incremental query above: no time bounds, no singleEvents).
+      let resetPageToken: string | undefined
+      let freshToken: string | undefined
+      for (let i = 0; i < 50; i++) {
+        const resetUrl = new URL('https://www.googleapis.com/calendar/v3/calendars/primary/events')
+        resetUrl.searchParams.set('maxResults', '2500')
+        if (resetPageToken) resetUrl.searchParams.set('pageToken', resetPageToken)
+        const reset = await fetch(resetUrl.toString(), {
+          headers: { Authorization: `Bearer ${accessToken}` },
         })
+        if (!reset.ok) {
+          console.error('Sync-token reset failed:', reset.status, await reset.text())
+          break
+        }
+        const d = await reset.json() as { nextPageToken?: string; nextSyncToken?: string }
+        if (d.nextSyncToken) { freshToken = d.nextSyncToken; break }
+        if (!d.nextPageToken) break
+        resetPageToken = d.nextPageToken
+      }
+      if (freshToken) {
+        const { error } = await admin.from('app_config').upsert({
+          key: 'gcal_sync_token', value: freshToken, updated_at: new Date().toISOString(),
+        })
+        if (error) console.error('Failed to store reset gcal_sync_token:', error.message)
       }
       return new Response('ok', { status: 200 })
     }

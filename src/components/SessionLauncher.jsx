@@ -117,6 +117,9 @@ export default function SessionLauncher() {
       const label = problem.type === 'Book' ? 'Book' : problem.type === 'Handout' ? 'Handout' : 'Problem'
       links.push({ label: `On deck: ${label} ↗`, url: problem.problemUrl })
     }
+    if (problem?.solutionUrl) {
+      links.push({ label: 'On deck: Solution ↗', url: problem.solutionUrl })
+    }
   })
 
   // Browsers block multiple window.open() calls fired synchronously; staggering
@@ -179,6 +182,9 @@ export default function SessionLauncher() {
                         {problem.type === 'Book' ? 'Book ↗' : problem.type === 'Handout' ? 'Handout ↗' : 'Problem ↗'}
                       </a>
                     : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
+                  {problem?.solutionUrl
+                    ? <a href={problem.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>
+                    : <span style={{ color: 'var(--text-dim)' }}>No solution</span>}
                 </div>
               </div>
             ))}

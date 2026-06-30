@@ -1,0 +1,14 @@
+-- Grant table privileges on app_config to service_role.
+--
+-- The original add_app_config migration created the table with RLS enabled but
+-- never granted base table privileges to service_role (the Postgres role the edge
+-- functions authenticate as via SB_SECRET_KEY). Postgres GRANTs are enforced
+-- independently of RLS bypass, so every read/write the functions attempted on
+-- app_config failed with "permission denied for table app_config" (42501).
+--
+-- Both gcal-watch-register and gcal-webhook ignore the error from those calls, so
+-- the failure was silent: the sync token + watch-channel keys were never persisted,
+-- gcal-webhook always saw "No gcal_sync_token" and bailed, and real-time
+-- Google-Calendar -> sessions updates never worked. (The lone existing row,
+-- gcal_webhook_secret, was inserted by hand in the SQL editor as postgres.)
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.app_config TO service_role;
