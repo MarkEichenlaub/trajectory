@@ -1,6 +1,6 @@
 [
   {
-    "id": "1206e56b-1d24-4f62-aef4-90a15afcf3f4",
+    "id": "996e1e74-78cf-4c37-8faa-dac02cf2f693",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -27,11 +27,10 @@
     "aops_id": "32274",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "8e5dd439-b5e5-4adc-9d18-f9e8ba9ed1c0",
+    "id": "d9df2747-b55d-43de-a9af-87874c278e16",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -63,7 +62,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a8a12cc0-6883-438f-82a0-f360f0f25554",
+    "id": "468322d8-9fbb-4331-a19c-40e36e4ebd11",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -95,7 +94,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e6238cad-373f-4da5-8d47-b07b43e44161",
+    "id": "6cb9051b-e994-4fe6-af76-aec6444cd940",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -127,7 +126,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6c70fc2f-9f6b-49b3-97b6-96cf4be14a46",
+    "id": "d135758a-5801-4ace-a19a-bb3bfaed8a12",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -157,7 +156,7 @@
     "solutionUrl": null
   },
   {
-    "id": "44aa75ce-5f8c-409c-8838-026c10678ce2",
+    "id": "3449fb61-dcb5-4805-ae12-49d71ac875d3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -187,7 +186,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2d7affaa-5f81-4d2c-bba9-d33781f6bdcc",
+    "id": "e89326fc-772e-4c64-b414-91d7edb98699",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -217,7 +216,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8544295c-4097-44c0-9ba1-30ef0a59ebdb",
+    "id": "a61c61e2-4c8a-4f23-853d-771df3077126",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -247,7 +246,7 @@
     "solutionUrl": null
   },
   {
-    "id": "dbc1244c-9f79-4137-a961-82469c175024",
+    "id": "a0dd0e72-2d89-481d-b138-e6ae44376048",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -277,7 +276,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e8300b16-9a75-4f16-874e-830a04073159",
+    "id": "d8b1b2fa-a149-417a-a3f1-18ad5a663a14",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -307,7 +306,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2ac2e132-9c12-4c4a-8a58-565196c09797",
+    "id": "3aedbe97-6990-4d27-8f38-1d888f7e52ce",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -337,7 +336,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ab1be8be-d733-43f3-b69b-144505ba26be",
+    "id": "5fdb39ef-75c0-49b3-a5e6-331cf9e8923d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -364,11 +363,10 @@
     "aops_id": "32244",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "52d37465-0e06-48a2-ba22-392ce0dc6871",
+    "id": "bd7298e7-556e-45bb-a6b0-7eea1fff0ce8",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -695,7 +693,7 @@
     "solutionUrl": null
   },
   {
-    "id": "38b3b784-aca8-4e4a-95aa-ba3ca4bff8fd",
+    "id": "ac300e4a-bbe8-4e85-8859-c21da12dbe84",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -725,7 +723,7 @@
     "solutionUrl": null
   },
   {
-    "id": "704426f9-571f-40d4-8e96-8d98d9918fe6",
+    "id": "c64efaa9-1b9d-4cc1-b410-66a8c93292f9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -755,7 +753,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a0f46ac5-f230-4938-9430-4e1bff95d2c2",
+    "id": "d096c1e9-af70-42e2-8abb-151ceb75fb10",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -785,7 +783,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1a802df0-1bb5-497e-8a1f-1d9ec7bb8bb4",
+    "id": "f25a4a01-59df-44bb-a7a4-63d706b0b0a2",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -815,7 +813,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0b9bba7c-7cfb-411b-81b4-c2c1f76412c4",
+    "id": "1b3d7bc0-cbd7-4f96-970a-042e67779cdb",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -845,7 +843,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8b8f78f5-6106-4968-9257-aca3b9268bcd",
+    "id": "257691f0-b387-4e0d-ab70-86e3aca4d32b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -875,7 +873,7 @@
     "solutionUrl": null
   },
   {
-    "id": "53dcf0af-9363-4bb3-8dce-b4055810a34f",
+    "id": "35348a02-0306-42d5-9d33-a7d4a46f7b10",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -905,7 +903,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a56d3b49-1952-46da-b39c-cb7b5bed51a6",
+    "id": "0dac2fc3-679e-4188-be3a-2f1f6cfba757",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -937,7 +935,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3aa5a90b-5ff0-4660-8b2f-9d2c672eb9b4",
+    "id": "386cdf5b-b11a-43f7-913b-304f69b5854d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -967,7 +965,7 @@
     "solutionUrl": null
   },
   {
-    "id": "42823534-12fa-4f3e-98bd-9b3764c28f6e",
+    "id": "56737690-bd39-4696-8a13-54bac0d636a6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -997,7 +995,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e2fc782a-7fb4-4299-b7dc-ed283909d7bf",
+    "id": "d7f4ec37-ae7f-4a04-afb0-ed9ae11d689e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1289,7 +1287,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fa96eade-5670-4bc1-8d1b-093f2576f184",
+    "id": "be24010f-88e1-4f70-b067-c5da0379f54a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1319,7 +1317,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d75e0008-734a-479f-bf2f-ca07d2cc0b3f",
+    "id": "21515afd-d9a7-46e0-af79-e7a9337ac275",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1349,7 +1347,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6cee3514-8750-4843-8bfb-ae900c00b1d3",
+    "id": "5473def1-0c51-41e8-98f1-92adc95802a3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1379,7 +1377,7 @@
     "solutionUrl": null
   },
   {
-    "id": "637baf31-da01-4c3a-a2c4-687d68eb6bf5",
+    "id": "c0f744f3-018b-41ce-b1d4-dc56258212b7",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1409,7 +1407,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7485a65b-82c2-4ee6-9000-aa6f3136096f",
+    "id": "a3aa6fb0-738e-4919-a22e-bbaa0e088dd1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1439,7 +1437,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1c415146-510a-4eac-beb3-b819661400b1",
+    "id": "3bdccdc7-b7ee-4883-aa56-dc58fc8f8c38",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1471,7 +1469,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b4df1baf-a0a8-4811-8a9d-bae504806285",
+    "id": "e55d43aa-bccd-479a-bff8-e3668f062444",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1503,7 +1501,7 @@
     "solutionUrl": null
   },
   {
-    "id": "73b2e82f-7889-4e30-a796-52ebb68a2098",
+    "id": "a2cddbc5-cde5-449b-87bc-bd3bfceb0d06",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1533,7 +1531,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e66a0a05-cdbf-4db0-a18a-7590ec78662e",
+    "id": "7e258932-df72-48d5-ab9b-64ae9d604359",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1563,7 +1561,7 @@
     "solutionUrl": null
   },
   {
-    "id": "342ee949-f5dd-4441-a044-a2cba6071a7c",
+    "id": "333acdf1-9c35-44bb-aaf1-61f500a663b3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1593,7 +1591,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6e50f08d-9dbb-4842-ad71-f42793355ca7",
+    "id": "240bd7cd-f727-4fe2-bb44-c4257e800e99",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1928,7 +1926,7 @@
     "solutionUrl": null
   },
   {
-    "id": "604ee395-3482-413c-8377-699379aec7e9",
+    "id": "36c21ba4-0b81-4818-a20e-0fb32359f7e3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1958,7 +1956,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4c054537-2192-4c74-9321-2dc4ab4030d1",
+    "id": "91de8d1a-5a19-4f95-a38c-4a623f7c8d9f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1988,7 +1986,7 @@
     "solutionUrl": null
   },
   {
-    "id": "595283ce-c5da-4187-b9b9-e0c190954a1f",
+    "id": "a115884e-6231-41ee-999a-e6077e77940b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2018,7 +2016,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9082d1c0-41a4-47cf-9265-0370ffb1204e",
+    "id": "acfc80c6-d9f8-4ee7-9a75-60dc8d290795",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2048,7 +2046,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2800e499-d5e9-4d0a-b833-e58c8252027b",
+    "id": "ec84970d-d7c1-4a90-9ba1-ff216e4c6e63",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2078,7 +2076,7 @@
     "solutionUrl": null
   },
   {
-    "id": "90848f9d-0f7d-4502-bb77-d32d9b366101",
+    "id": "aa1b5b89-e1f2-4c62-a583-dc9ffd12c80c",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2108,7 +2106,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8a15b0f0-6338-4b96-9dc6-dc4c45595e9f",
+    "id": "d016ebf6-1251-44e1-8ae8-078b21312830",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2138,7 +2136,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c663356f-d424-458a-b5eb-20177669d5df",
+    "id": "7ea7d05b-5d74-4641-91bc-3df0944982d2",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2168,7 +2166,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1389b741-c641-4830-a899-87d456fa9037",
+    "id": "4c5483aa-2a16-49d7-9925-ebb4f54cdcbf",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2198,7 +2196,7 @@
     "solutionUrl": null
   },
   {
-    "id": "971ce1e9-27a4-42d9-9a9c-c4790427cc85",
+    "id": "2ef24a25-3d96-4edc-895f-98e5fbc0fb7d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2228,7 +2226,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a27bcc25-b9e6-4691-9a22-8fef9aaa0a4d",
+    "id": "6f5314e5-9d7b-47df-be87-36d7d3967065",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2392,7 +2390,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c687eb26-fa38-44e3-b3cf-dd7cfecdb6ad",
+    "id": "076642a3-cb17-4426-827f-eab5219df438",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2422,7 +2420,7 @@
     "solutionUrl": null
   },
   {
-    "id": "917a5175-08f9-421c-9a67-15f400071605",
+    "id": "6e9a232c-b26a-49a0-9e86-9453cb871d75",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2452,7 +2450,7 @@
     "solutionUrl": null
   },
   {
-    "id": "78c959dc-22ca-4ef2-8f3f-e82725334f0b",
+    "id": "6ccf95fc-14cf-4ade-828f-0d9c72bc958d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2482,7 +2480,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a164bfb7-d5eb-48e3-a3b0-e58355780deb",
+    "id": "68a63645-24d7-441f-beb7-db055247b4e7",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2512,7 +2510,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2f08a0fd-615e-476d-be6c-e95a99251df5",
+    "id": "08bf2078-69d8-4a54-88da-bd156cb32be0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2542,7 +2540,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1d67bf87-a9fc-4903-9dc5-a3f5e98a73d8",
+    "id": "82d0f322-c1f4-412d-9608-fedc81ecdbf9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2572,7 +2570,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c5ee6197-ba48-4379-ae31-b828b3927c04",
+    "id": "165d9449-3e12-4abd-85ca-f4c2e7009bbc",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2602,7 +2600,7 @@
     "solutionUrl": null
   },
   {
-    "id": "88cf2ebc-e5b2-4d3f-b8d7-46d00487062f",
+    "id": "1fe98e54-6678-437d-84e5-4fb19bf30823",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2632,7 +2630,7 @@
     "solutionUrl": null
   },
   {
-    "id": "86a42ec4-4b18-4232-8714-e5833c29a9ec",
+    "id": "bab3264a-d777-44d3-b45a-3e0afbff2150",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2662,7 +2660,7 @@
     "solutionUrl": null
   },
   {
-    "id": "40c2aa1c-395e-4e44-8b7b-2dca34666d41",
+    "id": "67b6b5a0-32f9-462a-ba90-3ef7b28f222e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2692,7 +2690,7 @@
     "solutionUrl": null
   },
   {
-    "id": "af222d34-63c8-4c3e-af62-03c82d39ce82",
+    "id": "578dd9a1-8eef-4ebe-8738-1ea18040b736",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2722,7 +2720,7 @@
     "solutionUrl": null
   },
   {
-    "id": "261947f7-1e3d-4c96-8671-225dae27b922",
+    "id": "1741a4bb-4508-491b-8de2-17c996b4e22b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3057,7 +3055,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c067b8d6-dafd-45e4-b708-ba912e906300",
+    "id": "d1f0ab82-df6a-49ce-a1c2-2d0718192015",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3088,7 +3086,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1443c5f2-c9b8-485e-b0c8-8f0faaa78c51",
+    "id": "65286a87-db45-459c-88f6-f02792b0bab1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3119,7 +3117,7 @@
     "solutionUrl": null
   },
   {
-    "id": "317b8de5-36b8-4d71-a23c-2be141974fcc",
+    "id": "337feb00-ea95-4f3c-ae99-b770c994cad6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3150,7 +3148,7 @@
     "solutionUrl": null
   },
   {
-    "id": "95a1f3eb-e680-44da-956e-6111a66ae89c",
+    "id": "d5af22e6-4389-492b-ab4a-7a6bc4f2f752",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3181,7 +3179,7 @@
     "solutionUrl": null
   },
   {
-    "id": "41a7f60f-8ca1-43b2-9eb3-04c6d4dcd9d7",
+    "id": "d8d0be6c-efe5-4ca5-876c-31bfa9a3c8fd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3212,7 +3210,7 @@
     "solutionUrl": null
   },
   {
-    "id": "deda558b-125a-4a33-ac21-2e34bf3ef10e",
+    "id": "33dc1099-ee65-46f0-8d38-e99aeea1f8d6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3243,7 +3241,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b80b7f9c-000f-4792-8cee-5e67ff6ddc89",
+    "id": "277943fe-5a7e-4324-b196-e1c7900dad15",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3274,7 +3272,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b2a84aca-74fd-49ae-aed0-ace613ec2b1f",
+    "id": "cf629818-ef77-4ca7-9911-a03e2c1b4a03",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3305,7 +3303,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7e132e2a-9bc3-4b06-9502-64c6c3756ef5",
+    "id": "c393006a-5b04-4fb5-a38a-1e22f614f58d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3336,7 +3334,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b13b6a46-23b7-4402-8003-f058fd93e125",
+    "id": "16681604-6bc3-4e83-aee2-fa685abc5e14",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3367,7 +3365,7 @@
     "solutionUrl": null
   },
   {
-    "id": "747a2953-ad9f-43fc-9f09-002a30f8724f",
+    "id": "31ff61c0-13fc-4293-a3d7-771e5d19722f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3671,7 +3669,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a46f85ee-cb9f-41dc-ae7f-9c21f79bf674",
+    "id": "b7de6b1c-c079-4030-adf2-0c4bda729f7b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3701,7 +3699,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f023fd9f-8c38-465b-b1a3-0ca90a1ab02b",
+    "id": "38654f3b-6868-4463-9c9c-5d9e02e546ad",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3731,7 +3729,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c90b2425-769b-4c0e-a135-c5e85c75ff95",
+    "id": "0a8c97fb-ccea-4ebb-b48f-48d4064b7405",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3761,7 +3759,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f3fd7c77-0a1d-40cf-af62-9ccb153fdd55",
+    "id": "2a6189d9-a660-408b-9ada-46df4d956081",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3791,7 +3789,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f91522e8-f3dd-46fa-8e92-29610d91f4af",
+    "id": "7e08a407-7cff-4c0a-b993-91f2357b1ed2",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3821,7 +3819,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c87a1365-3f14-47d5-b5d3-b1fb7a6668b1",
+    "id": "b27923c3-47de-4e52-960d-3ede090f307d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3851,7 +3849,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6610bcf8-e682-4231-9a5c-722fe398a8bc",
+    "id": "f38796a2-7742-450a-8b7b-ec201f979f33",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3881,7 +3879,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9735ee9d-2359-42d6-a180-898b83c5026c",
+    "id": "738db65b-610b-4ad5-8e6e-3455f6d56003",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3911,7 +3909,7 @@
     "solutionUrl": null
   },
   {
-    "id": "66a4ed81-74a5-4aa1-94ef-ab1741a42a63",
+    "id": "11e3bf50-15bd-4066-915c-c947f8021419",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3941,7 +3939,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6d64b625-5ba7-40ad-b8ce-f3b073be2fd4",
+    "id": "9b0fd509-0a05-4864-ab60-4d9c409fc39d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3971,7 +3969,7 @@
     "solutionUrl": null
   },
   {
-    "id": "24b91e44-e4b4-4c4d-aca2-497994406cc2",
+    "id": "d38f8447-1155-42e9-9be7-cbb95c44cdb9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4339,7 +4337,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a8ca8a94-dd28-47db-be75-d230ddf1736c",
+    "id": "069511c7-9ec2-4719-9c83-0207f6f506b5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4369,7 +4367,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b6f79041-6a60-4d54-8598-b3b486b2d5c0",
+    "id": "cb00dfc3-4087-45e7-8fb6-f64ed5ff7d43",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4399,7 +4397,7 @@
     "solutionUrl": null
   },
   {
-    "id": "babb8df1-6b73-4fbd-8fa5-e83951d1319a",
+    "id": "f08e98cc-6918-461f-8743-31da8673f6e5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4429,7 +4427,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0b0bbf4e-5462-439e-8d6b-e86888eafb90",
+    "id": "e9077c0e-36cb-4b5f-b574-0e0f285bf24e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4459,7 +4457,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d21f0c0-12b6-4d73-964f-2300b1d7042a",
+    "id": "1e734ede-4c42-4106-800c-163e9b956050",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4489,7 +4487,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7953abaf-f7ae-4673-b0d7-1dbe6f6bd021",
+    "id": "f6b057aa-6ab5-4dd4-a7a6-cba9a4385052",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4519,7 +4517,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8e69c8ce-c863-4fd4-a23a-5e109627748f",
+    "id": "298fc53b-1433-42d8-a4d2-1ed2cc597bf1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4549,7 +4547,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2ada83c9-3b10-407b-8e57-608f5bdb200e",
+    "id": "443e9975-90e5-4c47-8472-5a064fe918dd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4579,7 +4577,7 @@
     "solutionUrl": null
   },
   {
-    "id": "98292c94-aa2e-4c11-93b1-9798855db5e3",
+    "id": "25d19bea-2bf3-4c08-8afb-cb207496613c",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4609,7 +4607,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4efe8adb-5025-45e7-ac44-409315041292",
+    "id": "70084ca5-578b-47b4-8d35-2ccbb59c3595",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4639,7 +4637,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4d31d35f-ae94-4b90-b78a-b698de3c7d77",
+    "id": "1137453a-df63-4dfa-ba7f-f0915b8ac435",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4650,7 +4648,7 @@
     "set_label": "Problem 11",
     "name": "In this week's USAPhO-Style problem, we will study some basic physics related to the…",
     "desc": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn. **a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: \\begin{aligned} G &=…",
-    "statement": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn.\n\n**a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: \\begin{aligned} G &= \\text{Newton's gravitational constant} \\\\ M & = \\text{mass of Saturn} \\\\ \\rho & = \\text{density of rings} \\\\ r & = \\text{inner radius of the ring}\\\\ R &= \\text{outer radius of the ring} \\\\ \\omega &=\\text{angular frequency of orbit of the ring}\\\\ t &= \\text{thickness of the rings} \\end{aligned}\n\nFind $$\\omega$$ such that the midline of the the ring (the strip at distance $$\\dfrac{r+R}{2}$$ from its center) is in orbit around Saturn.\n\n**b)** Assume the ring is in the orbit you found in part (a). Find the angular frequency of orbits at the inner edge of the ring and at the outer edge of the ring.\n\n**c)** Suppose a small stone were placed on the inside edge of the ring, stationary relative to the ring. Ignore gravitational force from the ring itself. Would the stone fall towards Saturn or away from Saturn? Answer the same question for a stone at the outer edge of the ring.\n\n**d)** Suppose the stone on the inside edge of the ring (from part (c)) is held to the inside edge of the ring by a short string. If the mass of the stone is $$m,$$ find the tension in the string.\n\n**e)** The values of the variables in this problem may be assumed to be \\begin{aligned} G &= 6.67 \\times 10^{-11} \\;\\mathrm{N \\cdot m^2 \\cdot kg^{-2}} \\\\ M &=5.68 \\times 10^{26} \\;\\mathrm{kg} \\\\ \\rho &= 4\\times 10^3 \\;\\mathrm{kg \\cdot m^{-3}} \\\\ r &= 1.2 \\times 10^5 \\;\\mathrm{km} \\\\ R &= 4.0 \\times 10^5 \\;\\mathrm{km} \\\\ t &= 100 \\;\\mathrm{m} \\end{aligned}\n\nAdditionally, if a rock experiences a tension force greater than about $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ it will tear apart.\n\nSuppose we make the following model of the ring: [*] Take two rocks, each of mass $$m.$$ Tie a massless rope between them. [*] Place them in orbit around Saturn so that they have orbital angular frequency $$\\omega,$$ as calculated in part (a). Spin the rope so that the same rock is always closest to Saturn. Adjust the length of the rope so that the inner rock is at distance $$r$$ from the planet and the outer rock is at a distance $$R$$ from the planet. [*] Make many copies of this rock-rope-rock system and place them alongside each other to form a ring all around Saturn. [*] The number of copies should be such that the total mass in the rocks is equal to the mass of the rings of Saturn. [*] The thickness of the ropes is set so that the total cross-sectional area of all the ropes is equal to $$2\\pi r t.$$ [*] If the tension per unit cross-sectional area in a rope exceeds $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ the rope snaps.\n\nBased on this model, is it possible for the rings of Saturn to be a single solid object, or would the rocks that make up the ring tear apart?\n\n**f)** The model in part (e) is simplified to allow us to make calculations on it. Although a more-accurate model is possible, it would also be more complicated. Briefly discuss some of the inaccuracies in the model from part (e). Do you think the conclusion stands despite these inaccuracies?",
+    "statement": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn.\n\n**a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: \\begin{aligned} G &= \\text{Newton's gravitational constant} \\\\ M & = \\text{mass of Saturn} \\\\ \\rho & = \\text{density of rings} \\\\ r & = \\text{inner radius of the ring}\\\\ R &= \\text{outer radius of the ring} \\\\ \\omega &=\\text{angular frequency of orbit of the ring}\\\\ t &= \\text{thickness of the rings} \\end{aligned}\n\nFind $$\\omega$$ such that the midline of the ring (the strip at distance $$\\dfrac{r+R}{2}$$ from its center) is in orbit around Saturn.\n\n**b)** Assume the ring is in the orbit you found in part (a). Find the angular frequency of orbits at the inner edge of the ring and at the outer edge of the ring.\n\n**c)** Suppose a small stone were placed on the inside edge of the ring, stationary relative to the ring. Ignore gravitational force from the ring itself. Would the stone fall towards Saturn or away from Saturn? Answer the same question for a stone at the outer edge of the ring.\n\n**d)** Suppose the stone on the inside edge of the ring (from part (c)) is held to the inside edge of the ring by a short string. If the mass of the stone is $$m,$$ find the tension in the string.\n\n**e)** The values of the variables in this problem may be assumed to be \\begin{aligned} G &= 6.67 \\times 10^{-11} \\;\\mathrm{N \\cdot m^2 \\cdot kg^{-2}} \\\\ M &=5.68 \\times 10^{26} \\;\\mathrm{kg} \\\\ \\rho &= 4\\times 10^3 \\;\\mathrm{kg \\cdot m^{-3}} \\\\ r &= 1.2 \\times 10^5 \\;\\mathrm{km} \\\\ R &= 4.0 \\times 10^5 \\;\\mathrm{km} \\\\ t &= 100 \\;\\mathrm{m} \\end{aligned}\n\nAdditionally, if a rock experiences a tension force greater than about $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ it will tear apart.\n\nSuppose we make the following model of the ring: [*] Take two rocks, each of mass $$m.$$ Tie a massless rope between them. [*] Place them in orbit around Saturn so that they have orbital angular frequency $$\\omega,$$ as calculated in part (a). Spin the rope so that the same rock is always closest to Saturn. Adjust the length of the rope so that the inner rock is at distance $$r$$ from the planet and the outer rock is at a distance $$R$$ from the planet. [*] Make many copies of this rock-rope-rock system and place them alongside each other to form a ring all around Saturn. [*] The number of copies should be such that the total mass in the rocks is equal to the mass of the rings of Saturn. [*] The thickness of the ropes is set so that the total cross-sectional area of all the ropes is equal to $$2\\pi r t.$$ [*] If the tension per unit cross-sectional area in a rope exceeds $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ the rope snaps.\n\nBased on this model, is it possible for the rings of Saturn to be a single solid object, or would the rocks that make up the ring tear apart?\n\n**f)** The model in part (e) is simplified to allow us to make calculations on it. Although a more-accurate model is possible, it would also be more complicated. Briefly discuss some of the inaccuracies in the model from part (e). Do you think the conclusion stands despite these inaccuracies?",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4974,7 +4972,7 @@
     "solutionUrl": null
   },
   {
-    "id": "18b57d94-b29c-4167-8717-60fdf8f5a517",
+    "id": "02753398-d9b5-4f65-aab2-824d5e8fc32b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5004,7 +5002,7 @@
     "solutionUrl": null
   },
   {
-    "id": "30f3cbec-ddd2-4253-8390-560e2dc37fcf",
+    "id": "478667b5-2725-4391-a583-a90a211a00f5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5036,7 +5034,7 @@
     "solutionUrl": null
   },
   {
-    "id": "46a1d526-aa46-4886-9ea2-9ba2e6e7e49a",
+    "id": "5905e0af-04c4-4859-9c11-d1f9fc4074a4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5066,7 +5064,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d4faf3f9-66cf-4c42-a53f-7f51d5b0646f",
+    "id": "a4c0c61e-e311-4d33-8018-107e685e3836",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5098,7 +5096,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b74c9b25-c0f3-4a0e-a3f2-59165b79adf5",
+    "id": "6e781846-f5cc-4310-bd56-11bab432a1f0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5128,7 +5126,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ff258e00-adf5-4f3c-8f34-246348dcf529",
+    "id": "0fc77c99-82a2-4c60-8f5a-9980f7a6e7d4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5158,7 +5156,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3d3ef1a3-27e0-4f51-9731-382e63aa7aa7",
+    "id": "664c908c-e398-4da2-beec-8ecf5d696aba",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5188,7 +5186,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e8321c93-8b25-48d1-a35a-cabdec2f620b",
+    "id": "1ec04c5b-b0cc-4fd3-a71b-3d59227ee424",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5218,7 +5216,7 @@
     "solutionUrl": null
   },
   {
-    "id": "63cfbd16-61e6-4824-84c8-eefbb090153c",
+    "id": "f8dd3dd8-0611-4351-991b-be17d72dd411",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5248,7 +5246,7 @@
     "solutionUrl": null
   },
   {
-    "id": "50b6c0c4-5d9c-48ad-8238-88425b941c0c",
+    "id": "e2c4b792-3ba0-4c40-a810-23acecaf1c93",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5278,7 +5276,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1c20204b-3384-44bb-b815-e0af9c25cce8",
+    "id": "0dc994a5-a3a7-401d-a5df-37c41e74eb66",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5579,7 +5577,7 @@
     "solutionUrl": null
   },
   {
-    "id": "492dc5c6-3fe8-42e5-bd65-d598249927ba",
+    "id": "35200e73-6cee-471d-b14b-1e7e0cebc8af",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5609,7 +5607,7 @@
     "solutionUrl": null
   },
   {
-    "id": "747586fb-d625-4f7a-82cd-134354941c79",
+    "id": "6634d265-916f-4486-9f0a-e9a321fe3f35",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5639,7 +5637,7 @@
     "solutionUrl": null
   },
   {
-    "id": "907c5be8-622e-44be-b3a0-934b8d0342aa",
+    "id": "584588c2-de83-4a3a-b311-9b19ca98de4b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5669,7 +5667,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a21966bd-a87b-4438-9685-2a7e66bd4e72",
+    "id": "6c12180d-d23b-4479-8d80-81dfa1cb9bbd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5699,7 +5697,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d2220f7b-d6e6-49f7-96d9-eb003158cc69",
+    "id": "a031d6f2-588a-47b1-9565-4e04b4c8d08e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5729,7 +5727,7 @@
     "solutionUrl": null
   },
   {
-    "id": "026cc1bd-51ec-4859-8006-b6e0dc994a7d",
+    "id": "91f70e9d-62ef-451e-8684-eb210e061ac1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5759,7 +5757,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7a93fdfc-56d7-4bc6-97d5-6c953d5a69b1",
+    "id": "e1537a28-9cd4-40fc-8054-3a5c431c2146",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5789,7 +5787,7 @@
     "solutionUrl": null
   },
   {
-    "id": "75f930d6-e72f-45b7-92a8-0d48a3637742",
+    "id": "20ad4f6b-cf9c-4642-b600-6dc7e530fa98",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5819,7 +5817,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b43c92dd-4dc1-40e7-8198-3201146e8414",
+    "id": "42797953-4ada-4988-a979-8e71f407430e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5849,7 +5847,7 @@
     "solutionUrl": null
   },
   {
-    "id": "98df2853-364c-4cd8-950c-ade450e77af4",
+    "id": "63c9e214-822e-4a2d-b36b-079121059b73",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5879,7 +5877,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0f55a420-93fd-4e6e-8138-16319af014bf",
+    "id": "59fe74b2-f01a-4ed2-b6e4-61c895afde82",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6249,7 +6247,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1866b17b-74a9-41b3-b380-c32dcc968ad6",
+    "id": "6f0afb47-79d7-4d49-97b6-999df62b3e53",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6279,7 +6277,7 @@
     "solutionUrl": null
   },
   {
-    "id": "da9f9136-71ae-41fc-8119-7192c98b9092",
+    "id": "43b899ce-ad2e-472a-a465-8f49d491ed73",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6290,7 +6288,7 @@
     "set_label": "Problem 2",
     "name": "Two identical carts A and B each with mass $$m$$ are connected via a spring with spring…",
     "desc": "Two identical carts A and B each with mass $$m$$ are connected via a spring with spring constant $$k$$. Two additional springs, identical to the first, connect the cars to two fixed points. The carts are free to oscillate under the effect of the springs in one dimensional…",
-    "statement": "Two identical carts A and B each with mass $$m$$ are connected via a spring with spring constant $$k$$. Two additional springs, identical to the first, connect the cars to two fixed points. The carts are free to oscillate under the effect of the springs in one dimensional frictionless motion.\n\nUnder suitable initial conditions, the two carts will oscillate in phase according to $$ x_A(t) = x_0 \\sin\\omega_1 t = x_B(t), $$ where $$x_A$$ and $$x_B$$ are the locations of carts A and B relative to their respective equilibrium positions. Under other suitable initial conditions, the two carts will oscillate exactly out of phase according to $$ x_A(t) = x_0 \\sin\\omega_2 t = -x_B(t). $$ Determine the ratio $$\\omega_2/\\omega_1.$$\n\n(a) $$\\sqrt 3$$ (b) $$2$$ (c) $$2\\sqrt 2$$ (d) $$3$$ (e) $$5$$",
+    "statement": "Two identical carts A and B each with mass $$m$$ are connected via a spring with spring constant $$k$$. Two additional springs, identical to the first, connect the cars to two fixed points. The carts are free to oscillate under the effect of the springs in one dimensional frictionless motion.\n\nUnder suitable initial conditions, the two carts will oscillate in phase according to $$\\begin{aligned} x_A(t) &= x_0 \\sin\\omega_1 t \\\\[6pt] &= x_B(t), \\end{aligned}$$ where $$x_A$$ and $$x_B$$ are the locations of carts A and B relative to their respective equilibrium positions. Under other suitable initial conditions, the two carts will oscillate exactly out of phase according to $$ x_A(t) = x_0 \\sin\\omega_2 t = -x_B(t). $$ Determine the ratio $$\\omega_2/\\omega_1.$$\n\n(a) $$\\sqrt 3$$ (b) $$2$$ (c) $$2\\sqrt 2$$ (d) $$3$$ (e) $$5$$",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -6309,7 +6307,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5fb2a9f2-86d3-42de-bd8c-896548bf3bb2",
+    "id": "f7883ba5-7b77-47c9-9cda-6e5ab9065059",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6339,7 +6337,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ae1844ae-b19b-4e58-a6c5-dac888c76322",
+    "id": "602d59ee-9be2-47c3-bb2a-ed123b75b6fa",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6369,7 +6367,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ce0b2738-9397-456d-b8d9-63aa20e3aabc",
+    "id": "f4b34895-838d-49c9-a203-d770ad351b8f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6399,7 +6397,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2c9ae3f9-696c-4dd9-810a-35e8e4d838de",
+    "id": "1b4eb46e-7a19-45eb-b7ac-15800333b175",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6429,7 +6427,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e7dbd064-4565-4e8f-a86a-abdbf44f79a4",
+    "id": "eb833a98-aaff-4b44-9c51-ea9dd1465f79",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6459,7 +6457,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0030c30-d1b1-4926-8032-ea6c7e88f394",
+    "id": "2ae7cf61-9cff-4126-8ea6-02424302c4ed",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6489,7 +6487,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5112ec98-1b31-4053-811d-5eff0d3abd87",
+    "id": "9ed32b22-79e5-47a5-9773-43692449cb40",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6519,7 +6517,7 @@
     "solutionUrl": null
   },
   {
-    "id": "30231f8d-0040-4cae-abe7-a727839084b5",
+    "id": "de58fd1e-5138-481a-a61e-22dc816494fd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6549,7 +6547,7 @@
     "solutionUrl": null
   },
   {
-    "id": "43a7c101-ae0d-47fd-b457-749ea4683300",
+    "id": "5cbf0020-d987-4453-a732-86e2b8d050ac",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6560,7 +6558,7 @@
     "set_label": "Problem 11",
     "name": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance…",
     "desc": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass. **a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$…",
-    "statement": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass.\n\n**a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$\n\n**b)** Similarly, draw a plot of the moment of inertia of the pendulum about the point of suspension as a function of $$R.$$ The moment of inertia of a rod about its center of $$\\dfrac{1}{12} ML^2.$$\n\n**c)** Based on the plots you drew in parts (a) and (b), will the rod's period be shortest for very small $$R, (R \\ll L),$$ very long $$R (R = \\dfrac{L}{2}),$$ or somewhere in the middle? Briefly explain your answer.\n\n**d)** Find an equation for the period of the rod as a function of $$R.$$\n\n**e)** The following data on the period of the rod was collected in an experiment: \\begin{tabular}{cc} $$R$$ ($$\\mathrm{m}$$) & $$T$$ ($$\\mathrm{s}$$) \\\\ \\hline 0.050 & 3.842 \\\\ 0.075 & 3.164 \\\\ 0.102 & 2.747 \\\\ 0.156 & 2.301 \\\\ 0.198 & 2.115 \\\\ 0.211 & 2.074 \\\\ 0.302 & 1.905 \\\\ 0.387 & 1.855 \\\\ 0.451 & 1.853 \\\\ 0.588 & 1.900 \\end{tabular} We would like to use a graph of this data to determine both $$g,$$ the local gravitational acceleration, and $$L,$$ the length of the rod.\n\nThis will be difficult using a plot of $$T$$ vs $$R.$$ Instead, we will plot some combination of $$T$$ and $$R$$ on the $$y$$ axis and some function of $$R$$ on the $$x$$ axis.\n\nFind an appropriate combination of $$T$$ and $$R$$ to plot on the $$y$$ axis and an appropriate function of $$R$$ to plot on the $$x$$ axis so that, according to the equation you found in part (d), the data should lie on a straight line. Do this by manipulating the equation from part (d) until it is of the form $$y = mx + b$$ where $$y$$ is a combination of $$T$$ and $$R,$$ $$x$$ is a function of $$R,$$ and $$m$$ and $$b$$ are functions of $$l, g,$$ and constants.\n\n**f)** Add two extra columns to the data table, with with your combination of $$T$$ and $$R$$ that forms $$y$$ and one with your function of $$R$$ that forms $$x.$$\n\n**g)** Draw a plot of the data. Draw a best-fit line through the data. From the slope and intercept of the line, estimate $$g$$ and $$L$$ for the rod.\n\nMake sure that your plot has labels and units on the axes. Plot the scale of your axes so that the data takes up almost the entire piece of paper you use, but all the data fits on the plot.",
+    "statement": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass.\n\n**a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$\n\n**b)** Similarly, draw a plot of the moment of inertia of the pendulum about the point of suspension as a function of $$R.$$ The moment of inertia of a rod about its center of $$\\dfrac{1}{12} ML^2.$$\n\n**c)** Based on the plots you drew in parts (a) and (b), will the rod's period be shortest for very small $$R, (R \\ll L),$$ very long $$R (R = \\dfrac{L}{2}),$$ or somewhere in the middle? Briefly explain your answer.\n\n**d)** Find an equation for the period of the rod as a function of $$R.$$\n\n**e)** The following data on the period of the rod was collected in an experiment: \\begin{tabular}{cc} $$R$$ ($$\\mathrm{m}$$) & $$T$$ ($$\\mathrm{s}$$) \\\\ \\hline 0.050 & 3.842 \\\\ 0.075 & 3.164 \\\\ 0.102 & 2.747 \\\\ 0.156 & 2.301 \\\\ 0.198 & 2.115 \\\\ 0.211 & 2.074 \\\\ 0.302 & 1.905 \\\\ 0.387 & 1.855 \\\\ 0.451 & 1.853 \\\\ 0.588 & 1.900 \\end{tabular} We would like to use a graph of this data to determine both $$g,$$ the local gravitational acceleration, and $$L,$$ the length of the rod.\n\nThis will be difficult using a plot of $$T$$ vs $$R.$$ Instead, we will plot some combination of $$T$$ and $$R$$ on the $$y$$ axis and some function of $$R$$ on the $$x$$ axis.\n\nFind an appropriate combination of $$T$$ and $$R$$ to plot on the $$y$$ axis and an appropriate function of $$R$$ to plot on the $$x$$ axis so that, according to the equation you found in part (d), the data should lie on a straight line. Do this by manipulating the equation from part (d) until it is of the form $$y = mx + b$$ where $$y$$ is a combination of $$T$$ and $$R,$$ $$x$$ is a function of $$R,$$ and $$m$$ and $$b$$ are functions of $$l, g,$$ and constants.\n\n**f)** Add two extra columns to the data table, one with your combination of $$T$$ and $$R$$ that forms $$y$$ and one with your function of $$R$$ that forms $$x.$$\n\n**g)** Draw a plot of the data. Draw a best-fit line through the data. From the slope and intercept of the line, estimate $$g$$ and $$L$$ for the rod.\n\nMake sure that your plot has labels and units on the axes. Plot the scale of your axes so that the data takes up almost the entire piece of paper you use, but all the data fits on the plot.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -6742,7 +6740,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b9e285c5-d99c-4e53-a14a-c14a4f10a356",
+    "id": "8c471f2d-a74a-4fff-a9ae-52150de2bc07",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6772,7 +6770,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e5de2389-a7e7-4bca-9356-630407c4031e",
+    "id": "fc47673d-eb80-4634-b48f-ea1032be36aa",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6802,7 +6800,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4ba531a9-8f64-4b5d-befb-290d78c7487d",
+    "id": "6ca151dc-358e-4790-8050-be8cbbd13630",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6832,7 +6830,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e68ff77c-5dfd-4ad2-8890-3c9b56d54157",
+    "id": "7d0d3fa9-703c-4f37-a996-eae430141401",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6862,7 +6860,7 @@
     "solutionUrl": null
   },
   {
-    "id": "13d90742-70fc-4c4a-a7bd-5849d98d43cc",
+    "id": "f7d2391a-81a1-4055-b4e7-25c9b4eefa2d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6892,7 +6890,7 @@
     "solutionUrl": null
   },
   {
-    "id": "aeabda06-9683-4ba0-b6c2-bd2de6d4ee78",
+    "id": "fa2a6e4f-7327-4806-a371-c28969d4e55e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6922,7 +6920,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f00b0c17-3801-45d6-b3ed-0ebe07a62c19",
+    "id": "c472526e-f467-488b-baf9-d2180e1c754a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6952,7 +6950,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0365b2a-55cf-4269-beac-672d9095fd43",
+    "id": "5369220a-1ed1-4d7c-b99b-fca99d191584",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6982,7 +6980,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b7e4f7fa-7c68-40b8-8b33-32c740431a6c",
+    "id": "57a1a94f-d485-483c-87da-698b7d9c648e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -7012,7 +7010,7 @@
     "solutionUrl": null
   },
   {
-    "id": "40c0272d-7d07-48c3-8401-12cf5bf1f808",
+    "id": "eac1c59c-92e9-43cc-91f3-d8588eb94838",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -7042,7 +7040,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c05efd6e-1f64-4c73-8f76-7ff36f463aca",
+    "id": "8bbd6f23-fd14-43b9-9623-c8a234736765",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",

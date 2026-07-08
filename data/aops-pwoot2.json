@@ -1,6 +1,6 @@
 [
   {
-    "id": "30c702d6-4f07-4e79-aa24-c3d56a8408d5",
+    "id": "eda5d0e2-ca46-4581-9037-564c7f06f914",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -30,7 +30,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b6077ee9-fd52-43db-84b9-b151c9921790",
+    "id": "a82cc864-233d-4043-8529-ac37b219d030",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -60,7 +60,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a69530b2-f6cb-41e0-9f5e-13d5668b8b42",
+    "id": "23eeacce-3ecd-4b93-aa58-5c46bcf025db",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -71,7 +71,7 @@
     "set_label": "Problem 3",
     "name": "This problem extends the idea of a cylinder as a spring and gives you some practice in…",
     "desc": "This problem extends the idea of a cylinder as a spring and gives you some practice in working with formulas that are given in the problem. You should come away \"half way\" understanding the formulas. That is, you should be able to make some inferences about them needed to solve…",
-    "statement": "This problem extends the idea of a cylinder as a spring and gives you some practice in working with formulas that are given in the problem. You should come away \"half way\" understanding the formulas. That is, you should be able to make some inferences about them needed to solve the problem, but should not expect to understand everything about where the formulas come from. This mode of reasoning about formulas is common in olympiad physics.\n\n**a)** Suppose a cylinder has length $$L_0,$$ radius $$R_0,$$ and Young's modulus $$Y,$$ all when under no stress. If the cylinder is subjected to a uniform tension $$T,$$ it stretches, and its volume may increase from $$V_0 = \\pi R_0^2 L_0$$ to $$V(T) = \\left(1+\\lambda(T)\\right) V_0.$$ Assuming the radius stays constant as the cylinder stretches, find $$\\lambda(T).$$\n\n**b)** Most cylinders, when stretched, do not maintain constant radius. A more realistic assumption for certain materials is that the volume of the cylinder does not change at all when stretched. Suppose we have such a cylinder and we stretch it so that its length $$L$$ increases: $$ L \\to (1+\\alpha) L.$$ Then the radius also changes $$ R \\to (1+\\beta) R.$$\n\nSuppose the change in length is very small, so $$\\alpha \\ll 1.$$ Find $$\\beta$$ as a function of $$\\alpha.$$\n\nYour answer should be approximate for finite $$\\alpha,$$ but exact in the limit $$\\alpha \\to 0.$$\n\n**c)** The ratio $$-\\dfrac{\\beta}{\\alpha}$$ is called **Poisson's ratio**. A common symbol for Poisson's ratio is $$ u.$$ What is Poisson's ratio for the material in part (a) of this question? What is it for the material in part (b) of this question?\n\n**d)** The material in part (b), which strongly resists changes to its volume, has a very high **bulk modulus** $$B.$$ The material in part (a) has a very low bulk modulus. One of the following formulas gives Poisson's ratio as a function of bulk modulus and Young's modulus. Which one?\n\n\\begin{aligned} u & = \\dfrac{3B - Y}{6B} \\\\ \\vspace{2pt} \\\\ u & = \\dfrac{Y - 3B}{3B} \\\\ \\vspace{2pt} \\\\ u & = \\dfrac{3B - Y}{6Y} \\\\ \\vspace{2pt} \\\\ u & = \\dfrac{3Y - B}{6Y} \\\\ \\vspace{2pt} \\\\ u & = \\dfrac{3B - Y}{3B} \\end{aligned}",
+    "statement": "This problem extends the idea of a cylinder as a spring and gives you some practice in working with formulas that are given in the problem. You should come away \"half way\" understanding the formulas. That is, you should be able to make some inferences about them needed to solve the problem, but should not expect to understand everything about where the formulas come from. This mode of reasoning about formulas is common in olympiad physics.\n\n**a)** Suppose a cylinder has length $$L_0,$$ radius $$R_0,$$ and Young's modulus $$Y,$$ all when under no stress. If the cylinder is subjected to a uniform tension $$T,$$ it stretches, and its volume may increase from $$V_0 = \\pi R_0^2 L_0$$ to $$V(T) = \\left(1+\\lambda(T)\\right) V_0.$$ Assuming the radius stays constant as the cylinder stretches, find $$\\lambda(T).$$\n\n**b)** Most cylinders, when stretched, do not maintain constant radius. A more realistic assumption for certain materials is that the volume of the cylinder does not change at all when stretched. Suppose we have such a cylinder and we stretch it so that its length $$L$$ increases: $$ L \\to (1+\\alpha) L.$$ Then the radius also changes $$ R \\to (1+\\beta) R.$$\n\nSuppose the change in length is very small, so $$\\alpha \\ll 1.$$ Find $$\\beta$$ as a function of $$\\alpha.$$\n\nYour answer should be approximate for finite $$\\alpha,$$ but exact in the limit $$\\alpha \\to 0.$$\n\n**c)** The ratio $$-\\dfrac{\\beta}{\\alpha}$$ is called **Poisson's ratio**. A common symbol for Poisson's ratio is $$\\nu.$$ What is Poisson's ratio for the material in part (a) of this question? What is it for the material in part (b) of this question?\n\n**d)** The material in part (b), which strongly resists changes to its volume, has a very high **bulk modulus** $$B.$$ The material in part (a) has a very low bulk modulus. One of the following formulas gives Poisson's ratio as a function of bulk modulus and Young's modulus. Which one?\n\n\\begin{aligned}\\nu & = \\dfrac{3B - Y}{6B} \\\\ \\vspace{2pt} \\\\\\nu & = \\dfrac{Y - 3B}{3B} \\\\ \\vspace{2pt} \\\\\\nu & = \\dfrac{3B - Y}{6Y} \\\\ \\vspace{2pt} \\\\\\nu & = \\dfrac{3Y - B}{6Y} \\\\ \\vspace{2pt} \\\\\\nu & = \\dfrac{3B - Y}{3B} \\end{aligned}",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -90,7 +90,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ed87a076-d4a2-43c9-927a-39161274eda9",
+    "id": "c0a76657-3a4d-4f4d-823f-d6ffb93a4bd5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -122,7 +122,7 @@
     "solutionUrl": null
   },
   {
-    "id": "53a0ef04-6030-47a6-a5b8-71e585dbbb0b",
+    "id": "e4cfc355-8f47-4f4a-b33a-fe2f91adcce9",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -152,7 +152,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f77600c1-dec8-48be-9424-40c6f42f99a0",
+    "id": "1e86b5d1-9d26-44ab-9989-772d2c0ec102",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -182,7 +182,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4e1e07d4-97fe-4eba-9510-8d6362a5df33",
+    "id": "dbb42002-4262-46d1-a4a6-82baf1b06767",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -212,7 +212,7 @@
     "solutionUrl": null
   },
   {
-    "id": "06f06298-833f-4f56-b3c7-d5bdbdc0c2b9",
+    "id": "dcc18737-e91f-4709-930b-46bf8c9f0304",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -244,7 +244,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cb031ae6-73ea-40bf-9242-d85542294f64",
+    "id": "eb4f57ac-7233-4671-b80e-106cdc72678a",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -276,7 +276,7 @@
     "solutionUrl": null
   },
   {
-    "id": "21769bf0-d920-43b2-b8b6-50acae2749fd",
+    "id": "c765bd4a-cbdf-4017-a37f-8b13b6894f47",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -645,7 +645,7 @@
     "solutionUrl": null
   },
   {
-    "id": "11d47d20-5a45-465d-9909-9cce52b89ad1",
+    "id": "503f276a-5b8a-454c-b983-c53ba9d514ac",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -675,7 +675,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5678e060-8c60-441d-9d47-328e1f8409f9",
+    "id": "47feafa6-c0d1-4053-9370-ad85bc3d3ff6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -705,7 +705,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fa7bd846-992d-49a4-b546-16ab09968731",
+    "id": "2cc24ae8-4d87-4bd9-881d-f169050046a7",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -737,7 +737,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9d2467c6-e201-4050-a83c-99ca1e21f8ed",
+    "id": "8f1a390c-1f0d-4ba0-81d3-bde4ab8708a3",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -767,7 +767,7 @@
     "solutionUrl": null
   },
   {
-    "id": "04d110e6-8b7e-45ab-9f2f-d8badfd96095",
+    "id": "71c5859b-73f9-411f-983d-03e53ace7e65",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -797,7 +797,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ee585d63-859b-4b50-8843-464b18850065",
+    "id": "5785143b-fda6-4afc-8afc-457003cbaa08",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -827,7 +827,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e45f8c15-d937-4e66-ace0-1fe9a9ca55ee",
+    "id": "b7ea5dca-11a3-4463-9754-ad9a3682c956",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -860,7 +860,7 @@
     "solutionUrl": null
   },
   {
-    "id": "13884882-716c-4842-af42-6592788df4e8",
+    "id": "7d571344-1e49-43de-9ce2-04427f3224b6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -890,7 +890,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9532d1b4-e05d-4da4-820a-7015bf5d5577",
+    "id": "a8509fb3-1678-434a-8c9e-82dd4ca41c5e",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -923,7 +923,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a444e5f2-ba26-4bee-8b79-f685f6535aae",
+    "id": "1abfdb6f-29ff-4f4c-80b0-e62b31aae5a4",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1053,7 +1053,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4b47f010-8127-434f-a2ba-48cdb7154d8f",
+    "id": "788a7a42-885f-45ec-95a3-66315aa61dd8",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1085,7 +1085,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0ce753f0-9fd0-4910-a7e1-076c3468b679",
+    "id": "61084fd8-96f7-44c2-810c-27eefbf8b7d3",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1096,7 +1096,7 @@
     "set_label": "Problem 2",
     "name": "The \"Tennis Racket Theorem\" describes a striking effect of rigid bodies rotating freely…",
     "desc": "The \"Tennis Racket Theorem\" describes a striking effect of rigid bodies rotating freely in space, illustrated below: Recall that in the handout, we briefly discussed the three principal axes for the rotation of a rigid body about its center. The \"flipping\" behavior seen in the…",
-    "statement": "The \"Tennis Racket Theorem\" describes a striking effect of rigid bodies rotating freely in space, illustrated below:\n\nRecall that in the handout, we briefly discussed the three principal axes for the rotation of a rigid body about its center. The \"flipping\" behavior seen in the gif above occurs when rotating about the principal axis $$I_2$$ with a moment of inertia in between the other moments of inertia of the other two axes.\n\nAlthough most explanations of this effect involve complicated analysis, in 2011 mathematician Terry Tao posted a simple explanation of the effect to the website MathOverflow. The YouTube channel \"Veritasium\" recently created a video illustrating this explanation.\n\nThe video is available (https://youtu.be/1VPfZ_XzisU); it may help to visualize the effects we'll analyze. The video is, however, incomplete; this problem will fill in some details.\n\nConsider a cross made of two massless sticks of length $$2\\ell.$$ The intersection between the sticks is located at the origin. One stick lies along the $$x$$ axis and the other lies along the $$y$$ axis.\n\nThe stick lying along the $$y$$ axis has two point masses attached to it; one at either end. The masses are each $$m.$$\n\nThe stick lying along the $$x$$ axis has two point masses attached to it as well; again one at each end. The masses are each $$M,$$ and we assume $$M \\gg m.$$\n\n**a)** Find the moments of inertia $$I_x, I_y,$$ and $$I_z$$ of the cross about each coordinate axis. Which axis is the intermediate axis?\n\n**b)** We imagine the cross begins rotating about the $$y$$ axis with angular frequency $$\\omega$$ in the direction such that the $$y$$ component of angular momentum is positive. (And the $$x$$ and $$z$$ components of angular momentum are zero.) Next, we transform into a frame rotating in the same sense, so that the cross is stationary. Find the forces on each mass in this frame.\n\n**c)** The rotating frame can be described with coordinates $$x', y', z'$$ obeying \\begin{aligned} y' & = y \\\\ x' & = x\\cos\\omega t + z \\sin\\omega t \\\\ z' & = z\\cos\\omega t - x \\sin\\omega t \\\\ \\end{aligned}\n\nIf the cross is perfectly aligned with the $$y$$ axis, then in the rotating frame, we can have equilibrium, and no \"flipping\" motion occurs. Perfect alignment is never completely possible, though.\n\nSuppose that the cross is very slightly misaligned, so that the stick along the $$y'$$ axis is actually inclined to the $$y'$$ axis by some angle $$\\phi.$$\n\nFind angular acceleration of the disk as a function of $$\\phi,$$ and thereby find an equation of motion for $$\\phi.$$ For this part of the problem, neglect Coriolis forces.\n\n**d)** Suppose there were another T-shaped piece, like the one in the gif, but twice as big in all dimensions and the same density. How would the time between its flipping back and forth compare to the time between flipping back and forth for the piece in the gif? The video mentions a concern that Earth could flip upside down. If it were to do so based on the equation of motion you derived in part (c), estimate (to order of magnitude only) how long that would take.\n\n**e)** The analysis above seems to explain why the cross would flip directions, then flip back, while spinning. But what if the cross were originally spinning around the $$x$$ axis? We could make exactly the same argument as before, imagining a slight rotation about the $$y$$ axis which, due to centrifugal forces, makes the cross flip back and forth. But this is not observed - it's only spinning around the $$y$$ axis that leads to instability. Why isn't spinning around the $$x$$ axis similarly unstable?",
+    "statement": "The \"Tennis Racket Theorem\" describes a striking effect of rigid bodies rotating freely in space, illustrated below:\n\nRecall that in the handout, we briefly discussed the three principal axes for the rotation of a rigid body about its center. The \"flipping\" behavior seen in the GIF above occurs when rotating about the principal axis $$I_2$$ with a moment of inertia in between the other moments of inertia of the other two axes.\n\nAlthough most explanations of this effect involve complicated analysis, in 2011 mathematician Terry Tao posted a simple explanation of the effect to the website MathOverflow. The YouTube channel \"Veritasium\" recently created a video illustrating this explanation.\n\nThe video is available (https://youtu.be/1VPfZ_XzisU); it may help to visualize the effects we'll analyze. The video is, however, incomplete; this problem will fill in some details.\n\nConsider a cross made of two massless sticks of length $$2\\ell.$$ The intersection between the sticks is located at the origin. One stick lies along the $$x$$ axis and the other lies along the $$y$$ axis.\n\nThe stick lying along the $$y$$ axis has two point masses attached to it; one at either end. The masses are each $$m.$$\n\nThe stick lying along the $$x$$ axis has two point masses attached to it as well; again one at each end. The masses are each $$M,$$ and we assume $$M \\gg m.$$\n\n**a)** Find the moments of inertia $$I_x, I_y,$$ and $$I_z$$ of the cross about each coordinate axis. Which axis is the intermediate axis?\n\n**b)** We imagine the cross begins rotating about the $$y$$ axis with angular frequency $$\\omega$$ in the direction such that the $$y$$ component of angular momentum is positive. (And the $$x$$ and $$z$$ components of angular momentum are zero.) Next, we transform into a frame rotating in the same sense, so that the cross is stationary. Find the forces on each mass in this frame.\n\n**c)** The rotating frame can be described with coordinates $$x', y', z'$$ obeying \\begin{aligned} y' & = y \\\\ x' & = x\\cos\\omega t + z \\sin\\omega t \\\\ z' & = z\\cos\\omega t - x \\sin\\omega t \\\\ \\end{aligned}\n\nIf the cross is perfectly aligned with the $$y$$ axis, then in the rotating frame, we can have equilibrium, and no \"flipping\" motion occurs. Perfect alignment is never completely possible, though.\n\nSuppose that the cross is very slightly misaligned, so that the stick along the $$y'$$ axis is actually inclined to the $$y'$$ axis by some angle $$\\phi.$$\n\nFind angular acceleration of the disk as a function of $$\\phi,$$ and thereby find an equation of motion for $$\\phi.$$ For this part of the problem, neglect Coriolis forces.\n\n**d)** Suppose there were another T-shaped piece, like the one in the GIF, but twice as big in all dimensions and the same density. How would the time between its flipping back and forth compare to the time between flipping back and forth for the piece in the GIF? The video mentions a concern that Earth could flip upside down. If it were to do so based on the equation of motion you derived in part (c), estimate (to order of magnitude only) how long that would take.\n\n**e)** The analysis above seems to explain why the cross would flip directions, then flip back, while spinning. But what if the cross were originally spinning around the $$x$$ axis? We could make exactly the same argument as before, imagining a slight rotation about the $$y$$ axis which, due to centrifugal forces, makes the cross flip back and forth. But this is not observed - it's only spinning around the $$y$$ axis that leads to instability. Why isn't spinning around the $$x$$ axis similarly unstable?",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/tennis_racket_theorem.gif"
     ],
@@ -1117,7 +1117,7 @@
     "solutionUrl": null
   },
   {
-    "id": "24aac7c3-ba5d-4b8d-9063-f39ac1ca5966",
+    "id": "c5db2017-38bc-46f3-8695-46900918201b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1147,7 +1147,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f1e3c078-2c18-48d7-a0eb-001a9102e026",
+    "id": "34c4b836-1f4e-4caf-b32c-de206ebaed3c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1177,7 +1177,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5de6eed0-a545-439c-befb-4c0d70e1a6a2",
+    "id": "fb639ee5-d4ef-4ff8-a89f-f4c409082ae5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1207,7 +1207,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c7442367-14ea-4984-af83-5756d78e01c6",
+    "id": "fde59970-0963-4f89-8cac-dce060b73697",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1237,7 +1237,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bd86e7da-2971-4c80-96aa-135a6e786ec4",
+    "id": "4b400ede-0ddf-4090-9124-357b0391c603",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1269,7 +1269,7 @@
     "solutionUrl": null
   },
   {
-    "id": "31d943ff-545b-4e4a-a434-5ddb4221fd4e",
+    "id": "fb73938f-4cd3-489a-af7c-38e8879cb374",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1299,7 +1299,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f4af82b1-9416-46da-9bd6-80cd74f7e9cc",
+    "id": "4d40d59a-4015-427f-9867-19d146d30d7a",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1329,7 +1329,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0dae0135-6cf5-47ad-8630-b1744fffa7bb",
+    "id": "20a88dea-a2d4-4539-851d-9daf92f61a8d",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1526,7 +1526,7 @@
     "solutionUrl": null
   },
   {
-    "id": "11d45422-1d24-4002-86bf-86b127fc06ae",
+    "id": "9f276ddf-1e02-4abc-9b06-edfccd46da07",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1556,7 +1556,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a8bca2c5-c9f6-4967-a158-34615d4a4d6d",
+    "id": "9d8f660b-862f-462b-b00c-8404fc912084",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1586,7 +1586,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6d576d62-02d0-4dff-b70f-0b5a6f1077a5",
+    "id": "a2c9416a-dcba-4d18-8cf1-69ff4380ea55",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1616,7 +1616,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8aac6ff6-1842-4a1f-8bb8-dba40fece9c6",
+    "id": "4c0c1d3b-5bc8-483b-bc87-b8577bb51f4d",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1646,7 +1646,7 @@
     "solutionUrl": null
   },
   {
-    "id": "adb9b634-5545-4906-9eea-82532ca6ffc1",
+    "id": "ee21ed82-2ae5-4b48-a817-80d0712a09e9",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1657,7 +1657,7 @@
     "set_label": "Problem 5",
     "name": "**a)** A planet has a radius $$R$$ and the gravitational field strength at its surface is…",
     "desc": "**a)** A planet has a radius $$R$$ and the gravitational field strength at its surface is $$g.$$ A satellite is placed in a circular orbit of radius $$r$$ around the planet. Obtain an expression for $$T,$$ the period of orbit of the satellite, in terms of $$R, g$$ and $$r.$$…",
-    "statement": "**a)** A planet has a radius $$R$$ and the gravitational field strength at its surface is $$g.$$ A satellite is placed in a circular orbit of radius $$r$$ around the planet. Obtain an expression for $$T,$$ the period of orbit of the satellite, in terms of $$R, g$$ and $$r.$$\n\n**b)** Both the Earth and Jupiter can be assumed to have circular orbits about the Sun. Jupiter has an orbital period, $$T_{\\mathrm{Jupiter}} = 11.9 \\;\\mathrm{years}.$$ What is the orbital radius of Jupiter in au?\n\n**c)** The density of the Earth changes sharply between the core and the mantle. By taking just two suitable values of the density of the core and mantle of the Earth from the graph below, estimate a value of the mass of the Earth using this data.\n\n**d)** A planet of mass $$M_p$$ has an orbiting moon of mass $$M_m.$$ The mass of the moon is about 1/8 the mass of the planet.\n\n(i) Sketch a set of equipotential lines for the planet-moon system. Ignore the orbital motion of the moon. Without detailed calculation, indicate on your sketch the relative positions of the neutral point (a point of zero field strength) and the centre of mass of the planet-moon system.\n\nA rocket of mass $$m$$ is launched from the planet. The rocket engine is used very briefly at take-off when it is close to the planet’s surface, and it almost immediately reaches speed $$v,$$ after which the fuel is exhausted and there is no further propulsion. It is then in free-fall and will have just enough energy to reach the moon. Assume that you can ignore relative motion of the planet and moon, and ignore air resistance.\n\nObtain expressions and calculate values for:\n\n(ii) The distance, $$d,$$ from the planet’s centre, where the speed of the rocket is lowest.\n\n(iii) The launch speed $$v$$ of the rocket from the planet.\n\nFor this question part, you may take \\begin{aligned} M_p & = 6.00 \\times 10^{24} \\;\\mathrm{kg} \\\\ M_m & = 7.50 \\times 10^{23} \\;\\mathrm{kg} \\\\ D & = 3.84 \\times 10^8 \\;\\mathrm{m}\\\\ R_p & = 6.4 \\times 10^6 \\;\\mathrm{m}. \\end{aligned}\n\n**e)** The Earth can be considered to consist of concentric spheres of material, the outer sphere being the crust with a density of $$2500 \\;\\mathrm{kg m^{-3}}.$$ If the mass of the Earth is $$M_E = 6.0 \\times 10^{24}\\;\\mathrm{kg}$$, what will be the fractional change in the gravitational field strength when descending to the bottom of a gold mine, a distance $$d = 3000 \\;\\mathrm{m}$$ below the surface of the Earth?\n\n**f)** A planetary sized object similar to the Earth was formed from a very large spherical cloud of interstellar dust collapsing under gravity to form a spherical body of uniform density $$\\rho$$ and radius $$R.$$\n\n(i) Find an expression for the change in gravitational potential energy as the radius of the protoplanet increases from $$r$$ to $$r + \\delta r$$ by the formation of a thin spherical shell of material of mass $$\\delta m.$$\n\n(ii) Now derive an expression for the total transfer of gravitational potential energy in the formation of the planet. Use the following terms: the gravitational constant $$G,$$ and the final radius and mass, $$R$$ and $$M$$ respectively.\n\n(iii) If all of this energy was used to heat the planet formed at a very low initial temperature, estimate the temperature that the planet would have reached.\n\nFor this planet, take $$R = 6.4 \\times 10^6 \\;\\mathrm{m}, M = 4.0 \\times 10^{24}\\;\\mathrm{kg,}$$ and the average specific heat capacity of the material of the planet is $$700 \\;\\mathrm{J \\cdot kg^{-1}\\cdot K^{-1} }.$$",
+    "statement": "**a)** A planet has a radius $$R$$ and the gravitational field strength at its surface is $$g.$$ A satellite is placed in a circular orbit of radius $$r$$ around the planet. Obtain an expression for $$T,$$ the period of orbit of the satellite, in terms of $$R, g$$ and $$r.$$\n\n**b)** Both the Earth and Jupiter can be assumed to have circular orbits about the Sun. Jupiter has an orbital period, $$T_{\\mathrm{Jupiter}} = 11.9 \\;\\mathrm{years}.$$ What is the orbital radius of Jupiter in au?\n\n**c)** The density of the Earth changes sharply between the core and the mantle. By taking just two suitable values of the density of the core and mantle of the Earth from the graph below, estimate a value of the mass of the Earth using this data.\n\n**d)** A planet of mass $$M_p$$ has an orbiting moon of mass $$M_m.$$ The mass of the moon is about 1/8 the mass of the planet.\n\n(i) Sketch a set of equipotential lines for the planet-moon system. Ignore the orbital motion of the moon. Without detailed calculation, indicate on your sketch the relative positions of the neutral point (a point of zero field strength) and the centre of mass of the planet-moon system.\n\nA rocket of mass $$m$$ is launched from the planet. The rocket engine is used very briefly at take-off when it is close to the planet’s surface, and it almost immediately reaches speed $$v,$$ after which the fuel is exhausted and there is no further propulsion. It is then in free-fall and will have just enough energy to reach the moon. Assume that you can ignore relative motion of the planet and moon, and ignore air resistance.\n\nObtain expressions and calculate values for:\n\n(ii) The distance, $$d,$$ from the planet’s centre, where the speed of the rocket is lowest.\n\n(iii) The launch speed $$v$$ of the rocket from the planet.\n\nFor this question part, you may take \\begin{aligned} M_p & = 6.00 \\times 10^{24} \\;\\mathrm{kg} \\\\ M_m & = 7.50 \\times 10^{23} \\;\\mathrm{kg} \\\\ D & = 3.84 \\times 10^8 \\;\\mathrm{m}\\\\ R_p & = 6.4 \\times 10^6 \\;\\mathrm{m}. \\end{aligned}\n\n**e)** The Earth can be considered to consist of concentric spheres of material, the outer sphere being the crust with a density of $$2500 \\;\\mathrm{kg m^{-3}}.$$ If the mass of the Earth is $$M_E = 6.0 \\times 10^{24}\\;\\mathrm{kg}$$, what will be the fractional change in the gravitational field strength when descending to the bottom of a gold mine, a distance $$d = 3000 \\;\\mathrm{m}$$ below the surface of the Earth?\n\n**f)** A planetary sized object similar to the Earth was formed from a very large spherical cloud of interstellar dust collapsing under gravity to form a spherical body of uniform density $$\\rho$$ and radius $$R.$$\n\n(i) Find an expression for the change in gravitational potential energy as the radius of the protoplanet increases from $$r$$ to $$r + \\delta r$$ by the formation of a thin spherical shell of material of mass $$\\delta m.$$\n\n(ii) Now derive an expression for the total transfer of gravitational potential energy in the formation of the planet. Use the following terms: the gravitational constant $$G,$$ and the final radius and mass, $$R$$ and $$M$$ respectively.\n\n(iii) If all of this energy was used to heat the planet formed at a very low initial temperature, estimate the temperature that the planet would have reached.\n\nFor this planet, take $$\\begin{aligned} R &= 6.4 \\times 10^6 \\;\\mathrm{m}, M \\\\[6pt] &= 4.0 \\times 10^{24}\\;\\mathrm{kg,} \\end{aligned}$$ and the average specific heat capacity of the material of the planet is $$700 \\;\\mathrm{J \\cdot kg^{-1}\\cdot K^{-1} }.$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/bpho_moho_discontinuity.jpg"
     ],
@@ -1678,7 +1678,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3eceecd8-ccc7-4c4a-8020-cc5a56a6a312",
+    "id": "69de3d0a-26a7-44a2-ad42-cd0dd69df56b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1708,7 +1708,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a2666c90-c63f-4a12-9eba-2747df377f51",
+    "id": "cd5718a9-bed2-4d46-832b-6527515d4066",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1740,7 +1740,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b8c35888-58d1-43de-ad35-30b99382c79f",
+    "id": "f69ee762-61d5-4aa8-b3ff-2d04ee66f0a7",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1770,7 +1770,7 @@
     "solutionUrl": null
   },
   {
-    "id": "92f198bb-74e2-47a7-92c6-cf4c400aff70",
+    "id": "c2fead52-3d42-4f66-bf5a-f199448d6ec0",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1781,7 +1781,7 @@
     "set_label": "Problem 9",
     "name": "In this problem, we'll get more familiar with the **virial theorem**. The virial theorem…",
     "desc": "In this problem, we'll get more familiar with the **virial theorem**. The virial theorem is proved in the handout with an example problem, and here we'll take another perspective. We'll return to the virial theorem one more time when we study quantum mechanics in our final…",
-    "statement": "In this problem, we'll get more familiar with the **virial theorem**. The virial theorem is proved in the handout with an example problem, and here we'll take another perspective. We'll return to the virial theorem one more time when we study quantum mechanics in our final problem set.\n\nThe virial theorem for Newtonian gravity states that for any system of particles that is gravitationally bound (i.e. they interact via gravity, and the particles can't shoot off to infinity), $$\\langle T \\rangle = -\\left\\langle \\dfrac{U}{2}\\right\\rangle $$ where $$T$$ is the total kinetic energy of the system and $$U$$ the total potential energy. The brackets $$(\\langle \\; \\rangle)$$ indicate a time average over a very long time, e.g. $$ \\langle T \\rangle = \\lim_{\\tau\\to\\infty} \\dfrac{1}{\\tau} \\int_0^\\tau T(t)\\mathrm{d}t.$$\n\n**a)** Show that the virial theorem holds for a particle in a circular orbit around a star. You may ignore any effect of the particle on the star.\n\n**b)** Now show it again, but this time, don't assume that the particle is much less massive than the star.\n\nNext, we'll work through a proof of the virial theorem.\n\n**c)** Define the following quantity $$G$$ as the \"virial\". $$ G = \\sum_i \\vec{p}_i \\cdot \\vec{r}_i.$$ Here, we are imagining a system of particles indexed by $$i.$$ $$\\vec{p}_i$$ is the momentum of the $$i$$th particle and $$\\vec{r}_i$$ is the position of the $$i$$th particle.\n\nExpress the time derivative $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t}$$ in terms of the total kinetic energy of the system and a sum over a term involving the net force on the $$i$$th particle, $$\\vec{F}_i,$$ and $$\\vec{r}_i.$$\n\n**d)** Imagine watching the system for a very long time. What is the time-average of $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t}$$ in the limit where the time you spend watching the system goes to infinity? You should be able to answer this without doing any calculation.\n\n**e)** In part (c), you derived an equation for $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t},$$ and you now know the value of the long-time average of quantity. Use this to find a relation between the long-time average of the system's kinetic energy and the long-time average of a quantity involving a sum over a function of $$\\vec{F}_i$$ and $$\\vec{r}_i.$$\n\nTo make sure you're on the right track, at this point you should have,\n\n$$2 \\langle T \\rangle = \\left\\langle \\sum_i \\vec{F}_i \\cdot \\vec{r}_i \\right\\rangle.$$\n\nYou should now have something that's starting to look at bit like the virial theorem, but it involves a sum over particles involving forces and positions instead of simply the potential energy of the system. However, forces and positions, when combined, are related to potential energy, so our remaining job is to flesh out this relationship.\n\n**f)** $$\\vec{F}_i$$ is the net force on particle $$i.$$ Write this as a sum over all the particles $$j$$ not equal to $$i.$$ Rewrite your expression from part (e) using a double sum over $$i$$ and $$j eq i.$$\n\n**g)** Consider two terms from the sum in part (f), one for $$i = 1, j = 2$$ and one for $$i = 2, j=1.$$ Then $$\\vec{F}_{ij}$$ in the first case is the same as $$\\vec{F}_{ji}$$ in the second. Use this fact to rewrite the sum to sum over $$i$$ and $$j < i$$ so that the sum evaluates to the same thing as before. Apply Newton's third law and simplify the result as much as possible.\n\nAn alternative way to communicate this instruction is: Split the sum into one for $$j < i$$ and one for $$j > i$$. Then reverse $$i$$ and $$j$$ in one of the sums to combine them back into a single sum for $$j < i$$.\"\n\nYou should find\n\n$$ \\langle T\\rangle = -\\dfrac12 \\left\\langle \\sum_i\\sum_{j < i} (\\vec{F}_{ji}\\cdot \\left(\\vec{r}_i -\\vec{r}_j\\right) \\right\\rangle.$$\n\n**h)** Suppose the potential energy between any pair of particles is $$U_{ij} = k r_{ij}^n$$ where $$r_{ij}$$ is the distance between the particles. Find $$\\vec{F}_{ij}$$ in terms of $$U_{ij}$$ and $$\\hat{r}_{ij}$$ and use this to simplify your equation from part (g). You should now have a complete proof of the virial theorem.",
+    "statement": "In this problem, we'll get more familiar with the **virial theorem**. The virial theorem is proved in the handout with an example problem, and here we'll take another perspective. We'll return to the virial theorem one more time when we study quantum mechanics in our final problem set.\n\nThe virial theorem for Newtonian gravity states that for any system of particles that is gravitationally bound (i.e. they interact via gravity, and the particles can't shoot off to infinity), $$\\langle T \\rangle = -\\left\\langle \\dfrac{U}{2}\\right\\rangle $$ where $$T$$ is the total kinetic energy of the system and $$U$$ the total potential energy. The brackets $$(\\langle \\; \\rangle)$$ indicate a time average over a very long time, e.g. $$ \\langle T \\rangle = \\lim_{\\tau\\to\\infty} \\dfrac{1}{\\tau} \\int_0^\\tau T(t)\\mathrm{d}t.$$\n\n**a)** Show that the virial theorem holds for a particle in a circular orbit around a star. You may ignore any effect of the particle on the star.\n\n**b)** Now show it again, but this time, don't assume that the particle is much less massive than the star.\n\nNext, we'll work through a proof of the virial theorem.\n\n**c)** Define the following quantity $$G$$ as the \"virial\". $$ G = \\sum_i \\vec{p}_i \\cdot \\vec{r}_i.$$ Here, we are imagining a system of particles indexed by $$i.$$ $$\\vec{p}_i$$ is the momentum of the $$i$$th particle and $$\\vec{r}_i$$ is the position of the $$i$$th particle.\n\nExpress the time derivative $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t}$$ in terms of the total kinetic energy of the system and a sum over a term involving the net force on the $$i$$th particle, $$\\vec{F}_i,$$ and $$\\vec{r}_i.$$\n\n**d)** Imagine watching the system for a very long time. What is the time-average of $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t}$$ in the limit where the time you spend watching the system goes to infinity? You should be able to answer this without doing any calculation.\n\n**e)** In part (c), you derived an equation for $$\\dfrac{\\mathrm{d}G}{\\mathrm{d}t},$$ and you now know the value of the long-time average of quantity. Use this to find a relation between the long-time average of the system's kinetic energy and the long-time average of a quantity involving a sum over a function of $$\\vec{F}_i$$ and $$\\vec{r}_i.$$\n\nTo make sure you're on the right track, at this point you should have,\n\n$$2 \\langle T \\rangle = \\left\\langle \\sum_i \\vec{F}_i \\cdot \\vec{r}_i \\right\\rangle.$$\n\nYou should now have something that's starting to look at bit like the virial theorem, but it involves a sum over particles involving forces and positions instead of simply the potential energy of the system. However, forces and positions, when combined, are related to potential energy, so our remaining job is to flesh out this relationship.\n\n**f)** $$\\vec{F}_i$$ is the net force on particle $$i.$$ Write this as a sum over all the particles $$j$$ not equal to $$i.$$ Rewrite your expression from part (e) using a double sum over $$i$$ and $$j \\neq i.$$\n\n**g)** Consider two terms from the sum in part (f), one for $$i = 1, j = 2$$ and one for $$i = 2, j=1.$$ Then $$\\vec{F}_{ij}$$ in the first case is the same as $$\\vec{F}_{ji}$$ in the second. Use this fact to rewrite the sum to sum over $$i$$ and $$j < i$$ so that the sum evaluates to the same thing as before. Apply Newton's third law and simplify the result as much as possible.\n\nAn alternative way to communicate this instruction is: Split the sum into one for $$j < i$$ and one for $$j > i$$. Then reverse $$i$$ and $$j$$ in one of the sums to combine them back into a single sum for $$j < i$$.\"\n\nYou should find\n\n$$ \\langle T\\rangle = -\\dfrac12 \\left\\langle \\sum_i\\sum_{j < i} (\\vec{F}_{ji}\\cdot \\left(\\vec{r}_i -\\vec{r}_j\\right) \\right\\rangle.$$\n\n**h)** Suppose the potential energy between any pair of particles is $$U_{ij} = k r_{ij}^n$$ where $$r_{ij}$$ is the distance between the particles. Find $$\\vec{F}_{ij}$$ in terms of $$U_{ij}$$ and $$\\hat{r}_{ij}$$ and use this to simplify your equation from part (g). You should now have a complete proof of the virial theorem.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -1800,7 +1800,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c501cc0b-76d8-45dc-bc91-e3ca037546af",
+    "id": "0cd00187-dcb8-4514-87ef-02e002b92a4c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -1811,7 +1811,7 @@
     "set_label": "Problem 10",
     "name": "**note:** This is a long problem. You don't have to do all of it to get the benefit of…",
     "desc": "**note:** This is a long problem. You don't have to do all of it to get the benefit of working on parts of it. **a)** A particle is a distance $$r$$ from the sun and moves at speed $$v.$$ Its velocity is perpendicular to the vector from the sun to the particle's position. On the…",
-    "statement": "**note:** This is a long problem. You don't have to do all of it to get the benefit of working on parts of it.\n\n**a)** A particle is a distance $$r$$ from the sun and moves at speed $$v.$$ Its velocity is perpendicular to the vector from the sun to the particle's position. On the other side of the sun, the particle's distance from the sun is $$r'.$$ Find $$r'.$$\n\nYou should find that there are no allowed values of $$r'$$ for certain combinations of $$r$$ and $$v.$$ Find the condition on $$r$$ and $$v$$ such that $$r'$$ exists, and give an interpretation to your result.\n\n---------------\n\nIn this problem, we'll explore the concept of an **effective potential**. This concept came up in the handout in the proof of Kepler's first law, but we didn't explicitly label it there. After you solve this problem, you might want to revisit the proof of Kepler's first law given in the handout to see how the effective potential was used.\n\nRevisit the calculation in part (a).\n\nIf you try to make $$r'$$ smaller than the correct value and calculate $$v'$$ via conservation of energy, you'll find that the particle's angular momentum has decreased from the initial position of $$r$$ with speed $$v.$$ In other words, the particle can't get too close to the sun due to conservation of angular momentum. It's almost as if angular momentum creates a push that shoves particles out from the sun, countering the attractive force of gravity.\n\nThis is the idea that the effective potential formalizes.\n\n**b)** In polar coordinates the velocity of a particle has two component, $$v_r$$ and $$v_\\theta.$$ Find the energy of the particle in terms of these components and $$r, G,m,$$ and $$M.$$\n\n**c)** Find the angular momentum of the particle using the variables as in part (b).\n\n**d)** Use the result of part (c) to eliminate $$v_\\theta$$ from part (b). You should find that the energy is the same as if the potential energy were $$V = U_{e} + U.$$ What is $$U_{e}?$$ The name for $$V$$ is the **effective potential**.\n\nTo check your answer, you should find\n\n$$U_{e} = \\dfrac{L^2}{2mr^2}.$$\n\n**e)** A circular orbit is one where $$r$$ is constant. This means that $$V$$ is minimized at the correct $$r.$$ Use this fact to find the radius $$r_0$$ of a circular orbit under Newtonian gravity for a fixed $$L.$$ Verify that your result is correct by comparing it to a straightforward calculation based on Newton's laws.\n\n**f)** Find the angular frequency of small oscillations about about $$r_0.$$ Is your answer what you expect based on Kepler's laws?\n\n**g)** A masses $$m$$ is attached to the end of a string, which extends through a hole in a frictionless table. An external agent applies a constant tension $$T$$ to the end of the string hanging through the hole. The mass rotates around the table at an angular velocity $$\\Omega$$ such that its distance from the hole is constant. Next, the mass is given a small radial velocity. Find the angular frequency $$\\omega$$ of oscillations the mass's distance from the hole in terms of $$\\Omega.$$ How does your result compare to what you found in the previous parts of this problem? What does this imply about whether the orbit is \"closed\" (I.E. the mass goes back to the same state after one orbit)?\n\n**h)** Suppose that a particle is subjected to the central potential $$U = cr^n$$ With $$n$$ an integer. Throughout the rest of this problem, we will determine for which values of $$n$$ orbits are closed.\n\nOur first step in this proof is: suppose the particle orbits with angular frequency $$\\Omega,$$ then is given a small push in the radial direction. For what $$n$$ does the particle's distance from the center of its orbit oscillate?\n\nFor what $$n$$ does the particle return to its original state after one orbit, given these infinitesimal perturbations?\n\nTo check your progress, you should find the $$n$$ for which the particle returns to its original state after one orbit, given an infinitesimal push, are\n\n\\[ n = -1, 2, 7, 14, \\ldots , k^2 - 2 , \\ldots .\\] for any integer $$k.$$\n\n**i)** Our work in part (h) shows that for most potentials, orbits are not closed. It turns out, though, that even most of the potentials that survived our test in part (h) do not yield closed orbits when we allow the oscillations about a circular orbit to be any more than infinitesimal. Our goal in the rest of the problem is to determine which of the potentials that survived the test in part (h) truly give closed orbits. The result is called **Bertrand's Theorem**. (Although in reality, Bertrand's theorem is slightly stronger because it doesn't assume the potential is a power law where the exponent is an integer.)\n\nIn part (h), there should be both positive and negative $$n$$ among your answers. Why do we only need to focus on the positive $$n$$ for the rest of the problem? Among the positive $$n$$ values you found, are there any you know do yield closed orbits?\n\nIn order to evaluate positive $$n,$$ we'll do the following intermediate calculation:\n\nFor the small perturbations studied in part (h), find the angle between the position vector of the planet when it is furthest from the center of the orbit and when it is closest to the center of the orbit. This is called the **apsidal angle**.\n\nIn what follows, we'll assume that the apsidal angle does not vary depending on the orbital parameters. (This is true and can be shown via some manipulations of the equations of motion that we aren't going to bother with, but any online derivation of Bertrand's theorem will include them.)\n\nIn the final part of the problem, we'll use another line of reasoning to determine what the apsidal angle must be, assuming $$n>0$$ and the orbit is closed. Then only those $$n$$ with the correct apsidal angle can give closed orbits.\n\n**j)** This final part of the problem is somewhat technical, but will allow us to determine the allowed apsidal angles in closed orbits with $$n > 0$$ using some tricks.\n\nThe main idea is that we want to turn our equations into something that looks like a system we understand: the harmonic oscillator. We have an understanding of the energy of our system based on the effective potential, and we will try to manipulate that energy to look like the energy in a harmonic oscillator.\n\nThe effective potential includes the angular momentum term $$\\dfrac{L}{mr^2}.$$ This doesn't look like the potential energy of a harmonic oscillator, $$U = \\dfrac12 kx^2.$$ But we can make it look like the harmonic oscillator by defining $$x = \\dfrac{1}{r}$$ and turning the equation for energy in the orbit into an equation for $$x.$$\n\nWrite an equation for energy conservation in an orbit using $$\\dfrac{\\mathrm{d}r}{\\mathrm{d}t}, L, m, r, c,$$ and $$n.$$\n\nBecause we are interested in the apsidal angle, we want to study the variation in $$r$$ over $$\\theta$$ instead of $$t,$$ so rewrite the equation using $$\\dfrac{\\mathrm{d}r}{\\mathrm{d}\\theta}, \\dfrac{\\mathrm{d}\\theta}{\\mathrm{d}t}, L, m, r, c,n,$$ and $$E,$$ the total energy of the orbit. Then eliminate $$\\dfrac{\\mathrm{d}\\theta}{\\mathrm{d}t}$$ using $$L, m,$$ and $$r.$$\n\nNow switch to the variable $$x = \\dfrac{1}{r}.$$ If all this went well, you should have\n\n$$ \\dfrac12 \\dfrac{L^2}{m} \\left(\\dfrac{\\mathrm{d}x}{\\mathrm{d}\\theta}\\right)^2 + \\dfrac{L^2}{2m}x^2 + \\dfrac{c}{x^n} = E.$$\n\nThis looks kinda of like a harmonic oscillator, but it has that extra term\n\n$$\\dfrac{c}{x^n}.$$\n\nWe need another trick to deal with the effect of this term. That trick will be to consider the limiting case where the energy of the orbit goes to infinity.\n\nLet $$E \\to \\infty.$$ At typical $$x$$ values, what happens to that extra term, as compared to the rest of the potential? At what $$x$$ does the term still matter? Argue that the potential energy can be thought of, in this limit, as a harmonic oscillator potential energy with a key modification about where the particle is allowed to go inside the potential. What is that modification?\n\nBased on that modification, what is the angular frequency of $$x(\\theta)?$$ What does this imply about the apsidal angle? Finally, based on all the above, for what values of $$n$$ are orbits closed?\n\nIf you work through all of this, you'll have proved a simplified version of Bertrand's theorem! Enjoy working through the problem and share your progress on the message board.",
+    "statement": "**note:** This is a long problem. You don't have to do all of it to get the benefit of working on parts of it.\n\n**a)** A particle is a distance $$r$$ from the sun and moves at speed $$v.$$ Its velocity is perpendicular to the vector from the sun to the particle's position. On the other side of the sun, the particle's distance from the sun is $$r'.$$ Find $$r'.$$\n\nYou should find that there are no allowed values of $$r'$$ for certain combinations of $$r$$ and $$v.$$ Find the condition on $$r$$ and $$v$$ such that $$r'$$ exists, and give an interpretation to your result.\n\n---------------\n\nIn this problem, we'll explore the concept of an **effective potential**. This concept came up in the handout in the proof of Kepler's first law, but we didn't explicitly label it there. After you solve this problem, you might want to revisit the proof of Kepler's first law given in the handout to see how the effective potential was used.\n\nRevisit the calculation in part (a).\n\nIf you try to make $$r'$$ smaller than the correct value and calculate $$v'$$ via conservation of energy, you'll find that the particle's angular momentum has decreased from the initial position of $$r$$ with speed $$v.$$ In other words, the particle can't get too close to the sun due to conservation of angular momentum. It's almost as if angular momentum creates a push that shoves particles out from the sun, countering the attractive force of gravity.\n\nThis is the idea that the effective potential formalizes.\n\n**b)** In polar coordinates the velocity of a particle has two component, $$v_r$$ and $$v_\\theta.$$ Find the energy of the particle in terms of these components and $$r, G,m,$$ and $$M.$$\n\n**c)** Find the angular momentum of the particle using the variables as in part (b).\n\n**d)** Use the result of part (c) to eliminate $$v_\\theta$$ from part (b). You should find that the energy is the same as if the potential energy were $$V = U_{e} + U.$$ What is $$U_{e}?$$ The name for $$V$$ is the **effective potential**.\n\nTo check your answer, you should find\n\n$$U_{e} = \\dfrac{L^2}{2mr^2}.$$\n\n**e)** A circular orbit is one where $$r$$ is constant. This means that $$V$$ is minimized at the correct $$r.$$ Use this fact to find the radius $$r_0$$ of a circular orbit under Newtonian gravity for a fixed $$L.$$ Verify that your result is correct by comparing it to a straightforward calculation based on Newton's laws.\n\n**f)** Find the angular frequency of small oscillations about $$r_0.$$ Is your answer what you expect based on Kepler's laws?\n\n**g)** A masses $$m$$ is attached to the end of a string, which extends through a hole in a frictionless table. An external agent applies a constant tension $$T$$ to the end of the string hanging through the hole. The mass rotates around the table at an angular velocity $$\\Omega$$ such that its distance from the hole is constant. Next, the mass is given a small radial velocity. Find the angular frequency $$\\omega$$ of oscillations the mass's distance from the hole in terms of $$\\Omega.$$ How does your result compare to what you found in the previous parts of this problem? What does this imply about whether the orbit is \"closed\" (I.E. the mass goes back to the same state after one orbit)?\n\n**h)** Suppose that a particle is subjected to the central potential $$U = cr^n$$ With $$n$$ an integer. Throughout the rest of this problem, we will determine for which values of $$n$$ orbits are closed.\n\nOur first step in this proof is: suppose the particle orbits with angular frequency $$\\Omega,$$ then is given a small push in the radial direction. For what $$n$$ does the particle's distance from the center of its orbit oscillate?\n\nFor what $$n$$ does the particle return to its original state after one orbit, given these infinitesimal perturbations?\n\nTo check your progress, you should find the $$n$$ for which the particle returns to its original state after one orbit, given an infinitesimal push, are\n\n\\[ n = -1, 2, 7, 14, \\ldots , k^2 - 2 , \\ldots .\\] for any integer $$k.$$\n\n**i)** Our work in part (h) shows that for most potentials, orbits are not closed. It turns out, though, that even most of the potentials that survived our test in part (h) do not yield closed orbits when we allow the oscillations about a circular orbit to be any more than infinitesimal. Our goal in the rest of the problem is to determine which of the potentials that survived the test in part (h) truly give closed orbits. The result is called **Bertrand's Theorem**. (Although in reality, Bertrand's theorem is slightly stronger because it doesn't assume the potential is a power law where the exponent is an integer.)\n\nIn part (h), there should be both positive and negative $$n$$ among your answers. Why do we only need to focus on the positive $$n$$ for the rest of the problem? Among the positive $$n$$ values you found, are there any you know do yield closed orbits?\n\nIn order to evaluate positive $$n,$$ we'll do the following intermediate calculation:\n\nFor the small perturbations studied in part (h), find the angle between the position vector of the planet when it is furthest from the center of the orbit and when it is closest to the center of the orbit. This is called the **apsidal angle**.\n\nIn what follows, we'll assume that the apsidal angle does not vary depending on the orbital parameters. (This is true and can be shown via some manipulations of the equations of motion that we aren't going to bother with, but any online derivation of Bertrand's theorem will include them.)\n\nIn the final part of the problem, we'll use another line of reasoning to determine what the apsidal angle must be, assuming $$n>0$$ and the orbit is closed. Then only those $$n$$ with the correct apsidal angle can give closed orbits.\n\n**j)** This final part of the problem is somewhat technical, but will allow us to determine the allowed apsidal angles in closed orbits with $$n > 0$$ using some tricks.\n\nThe main idea is that we want to turn our equations into something that looks like a system we understand: the harmonic oscillator. We have an understanding of the energy of our system based on the effective potential, and we will try to manipulate that energy to look like the energy in a harmonic oscillator.\n\nThe effective potential includes the angular momentum term $$\\dfrac{L}{mr^2}.$$ This doesn't look like the potential energy of a harmonic oscillator, $$U = \\dfrac12 kx^2.$$ But we can make it look like the harmonic oscillator by defining $$x = \\dfrac{1}{r}$$ and turning the equation for energy in the orbit into an equation for $$x.$$\n\nWrite an equation for energy conservation in an orbit using $$\\dfrac{\\mathrm{d}r}{\\mathrm{d}t}, L, m, r, c,$$ and $$n.$$\n\nBecause we are interested in the apsidal angle, we want to study the variation in $$r$$ over $$\\theta$$ instead of $$t,$$ so rewrite the equation using $$\\dfrac{\\mathrm{d}r}{\\mathrm{d}\\theta}, \\dfrac{\\mathrm{d}\\theta}{\\mathrm{d}t}, L, m, r, c,n,$$ and $$E,$$ the total energy of the orbit. Then eliminate $$\\dfrac{\\mathrm{d}\\theta}{\\mathrm{d}t}$$ using $$L, m,$$ and $$r.$$\n\nNow switch to the variable $$x = \\dfrac{1}{r}.$$ If all this went well, you should have\n\n$$ \\dfrac12 \\dfrac{L^2}{m} \\left(\\dfrac{\\mathrm{d}x}{\\mathrm{d}\\theta}\\right)^2 + \\dfrac{L^2}{2m}x^2 + \\dfrac{c}{x^n} = E.$$\n\nThis looks kinda of like a harmonic oscillator, but it has that extra term\n\n$$\\dfrac{c}{x^n}.$$\n\nWe need another trick to deal with the effect of this term. That trick will be to consider the limiting case where the energy of the orbit goes to infinity.\n\nLet $$E \\to \\infty.$$ At typical $$x$$ values, what happens to that extra term, as compared to the rest of the potential? At what $$x$$ does the term still matter? Argue that the potential energy can be thought of, in this limit, as a harmonic oscillator potential energy with a key modification about where the particle is allowed to go inside the potential. What is that modification?\n\nBased on that modification, what is the angular frequency of $$x(\\theta)?$$ What does this imply about the apsidal angle? Finally, based on all the above, for what values of $$n$$ are orbits closed?\n\nIf you work through all of this, you'll have proved a simplified version of Bertrand's theorem! Enjoy working through the problem and share your progress on the message board.",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -1995,7 +1995,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c958b63e-2ec9-452e-b1a1-8d7495a4fcaf",
+    "id": "9db7f8d6-8f37-42ee-9af6-c48c38e4d264",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2025,7 +2025,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a5ca280f-e0c1-4183-815d-19d22cd42d76",
+    "id": "b7b0f73a-6a53-4fe4-bdcb-342fb581898b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2055,7 +2055,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4512bea6-55ba-4b9c-9e4d-96610f2f5ba5",
+    "id": "c04d5858-380c-464f-a335-5b83e0acbd84",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2085,7 +2085,7 @@
     "solutionUrl": null
   },
   {
-    "id": "baf348ac-efdf-4156-8037-bfef6d07eb69",
+    "id": "58142b54-ce21-4fd0-9f6c-8268195f4714",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2115,7 +2115,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1dc87ac7-e88b-41f2-9a0b-cc9d287c7fa3",
+    "id": "751407fb-4b44-4651-b316-445086a02586",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2145,7 +2145,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0e0e681a-62f3-45d6-b57c-e48938adc6f2",
+    "id": "02fa3c76-0c94-4981-8d37-bd297f28e208",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2175,7 +2175,7 @@
     "solutionUrl": null
   },
   {
-    "id": "406ff8f3-2220-4618-98dc-71213044885e",
+    "id": "375afd6c-1beb-41a5-a775-5d6619656b55",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2207,7 +2207,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0249d6a3-bdf7-46bd-9ef0-ed0b629f4374",
+    "id": "06a6585b-effc-4dab-9a79-7d3f6a475f64",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2237,7 +2237,7 @@
     "solutionUrl": null
   },
   {
-    "id": "07d7fb04-c4bb-4b43-8907-b4cfaac950fd",
+    "id": "d648ef2b-8d1c-4f00-b051-96914ee5803a",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2267,7 +2267,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ab85d6b8-9093-4e23-a265-5e07bdb9092a",
+    "id": "b8a23075-daf9-4eac-b483-be4497716308",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2427,7 +2427,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2809ce53-4411-464f-beb2-4a5bde8b373f",
+    "id": "cfd0fbaf-21a5-45e3-a959-2e7f3bad5f53",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2457,7 +2457,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c62875bd-7e5d-42df-8148-2d40b90b0295",
+    "id": "40089781-ead3-4602-a11a-30aabf9eadf5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2489,7 +2489,7 @@
     "solutionUrl": null
   },
   {
-    "id": "980f3128-74df-472c-8e69-40fd5d132820",
+    "id": "b212a860-9fa0-40d7-924d-dedee124b510",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2519,7 +2519,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a86ff957-2801-4cc4-a1f7-3469b379ad71",
+    "id": "45f0d432-6008-489d-bff5-f64ca9bb63aa",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2549,7 +2549,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7ada73c5-d68c-49b2-a259-edcdc864a4dc",
+    "id": "038733a6-9ab7-455d-a107-10aef98024f0",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2579,7 +2579,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3fb3ceed-65f5-42f5-a071-9fa99cf3e79a",
+    "id": "c1741b29-4e84-4f85-a04d-8e365d6f3a91",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2609,7 +2609,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ae635a11-49f3-4fbd-9044-9a68e5ea4bb8",
+    "id": "30c4aa02-84cf-41c1-b473-ea93efca4e26",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2639,7 +2639,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c588b6f9-885d-4106-beee-62090d50a3af",
+    "id": "05345ecc-8ee4-4cfe-b625-6fc2fbc3cc92",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2669,7 +2669,7 @@
     "solutionUrl": null
   },
   {
-    "id": "72e1142d-e538-4d04-acc3-95647d019686",
+    "id": "cdcec282-fdd8-4623-9fe0-13ae60414e2b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -2699,7 +2699,7 @@
     "solutionUrl": null
   },
   {
-    "id": "201744b4-e700-4998-8373-6a91ddf0f89b",
+    "id": "2e03a5d0-2e05-4204-a7cd-4034d2d60d94",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3033,7 +3033,7 @@
     "solutionUrl": null
   },
   {
-    "id": "60081caa-3f69-4c1a-b065-3cd31830668a",
+    "id": "a9bbd25f-223d-4134-a6dd-4c0033953512",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3063,7 +3063,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0f34fded-12f4-4d11-94f7-ef57d0aef6c4",
+    "id": "3cd81de3-1175-4f67-80e6-9b9725e45268",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3093,7 +3093,7 @@
     "solutionUrl": null
   },
   {
-    "id": "60f89af9-daf8-4600-83d9-8cc4feb925a8",
+    "id": "0b883c74-dd70-42b8-8419-6fb64de2dd17",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3123,7 +3123,7 @@
     "solutionUrl": null
   },
   {
-    "id": "210f6270-ab0c-4fa7-84f8-e001212e9f17",
+    "id": "3c6dfd6a-b96b-469b-9d6a-3de46815a7f5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3153,7 +3153,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1ff8df97-665b-435b-98f9-51dd6efcf288",
+    "id": "cb349375-91f9-401d-8719-59c529ab2a2c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3183,7 +3183,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2cdba58b-950a-4521-a176-a4a528723d6d",
+    "id": "b7f48029-fd86-484f-8b48-1e68d3c684e6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3213,7 +3213,7 @@
     "solutionUrl": null
   },
   {
-    "id": "34a7d16a-90e0-438a-9f9a-936f3fd0233e",
+    "id": "89b6b1c7-f0d8-4dd6-b849-b8d1b365123e",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3245,7 +3245,7 @@
     "solutionUrl": null
   },
   {
-    "id": "248bb782-2cd4-468b-9530-07c81ac492b5",
+    "id": "acfe4995-aa91-47d6-8d42-5579b4877e35",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3277,7 +3277,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ea97b23e-3429-461f-a79d-64d0e21b02f0",
+    "id": "f3adfe29-0e31-45b1-a26b-255d09a03b62",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3309,7 +3309,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cae35053-fb30-4c8c-a6c2-108e894deb6c",
+    "id": "06e5fe00-62fd-4bcd-9cc7-fafdc27d9be8",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3320,7 +3320,7 @@
     "set_label": "Problem 10",
     "name": "This problem is an experiment in collaboration. It's got a lot of different pieces that…",
     "desc": "This problem is an experiment in collaboration. It's got a lot of different pieces that need to be put together to solve it. That makes it the sort of problem that a group of people, working together and trading ideas, can solve. So for this problem, feel free to post on the…",
-    "statement": "This problem is an experiment in collaboration. It's got a lot of different pieces that need to be put together to solve it. That makes it the sort of problem that a group of people, working together and trading ideas, can solve. So for this problem, feel free to post on the message board, without hiding your text, any little ideas you have. Check out the existing thread and reply to your classmates. Over time, we may collaborate our way to a solution.\n\nThis problem involves electric polarizability, which we will cover in future weeks, in addition to fluid dynamics. The relevant definition is given in the problem. You may wish to work the prior problem about a vortex first first, and recall its discussion of Kelvin's theorem, and to review the continuity equation and its relation to Gauss' law. This problem should help make the analogy between fluid flow and electromagnetism.\n\n-------\n\nWhen a body moves in liquid, the motion of the body puts the liquid into motion, too. The motion of liquid contributes to the total kinetic energy of the system, and hence, leads to an increased __effective mass__ of the body. The difference of the effective mass and the actual mass of the body is referred to as the added mass. The added mass depends on the size and shape of the body.\n\nConsider a certain metallic body of volume $$V$$ and polarizability $$\\alpha$$ along its symmetry axis $$x$$ (i.e. homogeneous externally applied electric field $$\\vec{E}$$ induces total dipole moment $$\\vec{p} = \\alpha \\vec{E}$$ on this body). Additionally, the body shape is such that if it were made from a homogeneous dielectric material and put into homogeneous electric field, the electric field inside the body would be also homogeneous. Find the added mass of this body when it starts moving translationally, parallel to the x-axis, in an incompressible initially motionless liquid of density ρ. The viscosity of the liquid is negligibly small. Express the answer in terms of $$V, \\rho, \\alpha,$$ and physical constants.",
+    "statement": "This problem is an experiment in collaboration. It's got a lot of different pieces that need to be put together to solve it. That makes it the sort of problem that a group of people, working together and trading ideas, can solve. So for this problem, feel free to post on the message board, without hiding your text, any little ideas you have. Check out the existing thread and reply to your classmates. Over time, we may collaborate our way to a solution.\n\nThis problem involves electric polarizability, which we will cover in future weeks, in addition to fluid dynamics. The relevant definition is given in the problem. You may wish to work the prior problem about a vortex first, and recall its discussion of Kelvin's theorem, and to review the continuity equation and its relation to Gauss' law. This problem should help make the analogy between fluid flow and electromagnetism.\n\n-------\n\nWhen a body moves in liquid, the motion of the body puts the liquid into motion, too. The motion of liquid contributes to the total kinetic energy of the system, and hence, leads to an increased __effective mass__ of the body. The difference of the effective mass and the actual mass of the body is referred to as the added mass. The added mass depends on the size and shape of the body.\n\nConsider a certain metallic body of volume $$V$$ and polarizability $$\\alpha$$ along its symmetry axis $$x$$ (i.e. homogeneous externally applied electric field $$\\vec{E}$$ induces total dipole moment $$\\vec{p} = \\alpha \\vec{E}$$ on this body). Additionally, the body shape is such that if it were made from a homogeneous dielectric material and put into homogeneous electric field, the electric field inside the body would be also homogeneous. Find the added mass of this body when it starts moving translationally, parallel to the x-axis, in an incompressible initially motionless liquid of density ρ. The viscosity of the liquid is negligibly small. Express the answer in terms of $$V, \\rho, \\alpha,$$ and physical constants.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -3645,7 +3645,7 @@
     "solutionUrl": null
   },
   {
-    "id": "48102ae6-4aa5-432a-9c92-328f35677edc",
+    "id": "06b83529-4470-4185-844c-e20000f8c441",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3675,7 +3675,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1d316ba0-c627-4a1b-8060-ea3db35be06b",
+    "id": "6ef058b6-e95b-4d65-b9ee-a4a6f8f9738e",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3707,7 +3707,7 @@
     "solutionUrl": null
   },
   {
-    "id": "392a07cf-f5c1-4564-b029-47344bc861c4",
+    "id": "6bca7bb3-b667-4be1-9d8c-b60e304caaac",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3737,7 +3737,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1b87cddb-1fc4-4526-9703-05d82fe3032d",
+    "id": "3091b0dd-749f-47f0-b2da-655d16f2077b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3767,7 +3767,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0684d182-5c2e-4f67-a411-967e029327da",
+    "id": "b7d220fe-5609-4f4d-8802-082d26631136",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3797,7 +3797,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c2510700-fa87-4180-896a-36a1e2f6456f",
+    "id": "f9cbe10a-952a-4ed3-a6cd-6b4e62bf6794",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3827,7 +3827,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d1ab4ed1-cfbc-40dc-bdc9-10404825adae",
+    "id": "9a7e3113-62e2-44ae-8ce8-0a68b090e9b8",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3857,7 +3857,7 @@
     "solutionUrl": null
   },
   {
-    "id": "55951a61-298c-4bb3-bc14-901848826aad",
+    "id": "2d8fcb6b-69b3-4a3f-912d-57017d886d64",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3889,7 +3889,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cf615b56-1500-4a32-83e9-c9f1d51861af",
+    "id": "03581ca1-5aff-47e7-925b-e9340dfcbd6f",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -3921,7 +3921,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2444d92a-7b48-4a00-a315-ef14b045ecee",
+    "id": "e805dc8d-e9df-4ab0-865f-abe7fef65936",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4222,7 +4222,7 @@
     "solutionUrl": null
   },
   {
-    "id": "67dcf163-b131-40eb-acde-957aac5395c2",
+    "id": "80b6f384-aed1-4e49-9603-511331743abf",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4254,7 +4254,7 @@
     "solutionUrl": null
   },
   {
-    "id": "54052ae0-622d-464f-bd95-77bdee70fdd8",
+    "id": "7e8e7e64-9125-4b85-a8c2-b2ced8df29ab",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4284,7 +4284,7 @@
     "solutionUrl": null
   },
   {
-    "id": "38e29e0d-a88d-470f-ae16-1e6cc2300e88",
+    "id": "243a4bf4-c7d5-43ee-b4a4-fc8b8deea8c6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4314,7 +4314,7 @@
     "solutionUrl": null
   },
   {
-    "id": "31d7a770-8d52-4fa2-a525-b136795130c7",
+    "id": "90f83872-8dae-4335-b448-d6eaa5a9122a",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4346,7 +4346,7 @@
     "solutionUrl": null
   },
   {
-    "id": "854adb6d-c109-4f97-97d5-cf654ba13385",
+    "id": "e758d11e-783c-44c1-8ca2-5a0fc10764e5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4355,9 +4355,9 @@
     "week": 10,
     "set_number": 5,
     "set_label": "Problem 5",
-    "name": "A dielectric cylinder of radius $$r$$ carries carries a charge of surface density…",
-    "desc": "A dielectric cylinder of radius $$r$$ carries carries a charge of surface density $$\\sigma$$ on its cylindrical surface and rotates with angular velocity $$\\omega.$$ **a)** Determine the magnetic field strength inside the cylinder. If you wish, you can use the equation for the…",
-    "statement": "A dielectric cylinder of radius $$r$$ carries carries a charge of surface density $$\\sigma$$ on its cylindrical surface and rotates with angular velocity $$\\omega.$$\n\n**a)** Determine the magnetic field strength inside the cylinder.\n\nIf you wish, you can use the equation for the inductance, $$L = \\mu_0 N^2 S/\\ell$$ of a solenoid of radius $$r,$$ length $$ \\ell \\gg r,$$ cross-sectional area $$S,$$ and $$N$$ loops.\n\n**b)** A radial conducting wire connects the axis of the cylinder with the cylindrical surface (it rotates together with the cylinder). Find the electromotive force $$\\varepsilon$$ between the ends of the wire.\n\n**c)** Suppose that the wire connecting the axis of the cylinder with the cylindrical surface is not radial and has an arbitrary shape (still, there are no segments protruding outside the cylinder). Show that $$\\varepsilon$$ does not depend on the shape of the wire.",
+    "name": "A dielectric cylinder of radius $$r$$ carries a charge of surface density $$\\sigma$$ on…",
+    "desc": "A dielectric cylinder of radius $$r$$ carries a charge of surface density $$\\sigma$$ on its cylindrical surface and rotates with angular velocity $$\\omega.$$ **a)** Determine the magnetic field strength inside the cylinder. If you wish, you can use the equation for the…",
+    "statement": "A dielectric cylinder of radius $$r$$ carries a charge of surface density $$\\sigma$$ on its cylindrical surface and rotates with angular velocity $$\\omega.$$\n\n**a)** Determine the magnetic field strength inside the cylinder.\n\nIf you wish, you can use the equation for the inductance, $$L = \\mu_0 N^2 S/\\ell$$ of a solenoid of radius $$r,$$ length $$ \\ell \\gg r,$$ cross-sectional area $$S,$$ and $$N$$ loops.\n\n**b)** A radial conducting wire connects the axis of the cylinder with the cylindrical surface (it rotates together with the cylinder). Find the electromotive force $$\\varepsilon$$ between the ends of the wire.\n\n**c)** Suppose that the wire connecting the axis of the cylinder with the cylindrical surface is not radial and has an arbitrary shape (still, there are no segments protruding outside the cylinder). Show that $$\\varepsilon$$ does not depend on the shape of the wire.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4376,7 +4376,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c592d90a-7928-493c-82a5-dac25dbffff2",
+    "id": "e32d395d-073d-4d29-a374-1ce627a1b665",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4387,7 +4387,7 @@
     "set_label": "Problem 6",
     "name": "Magnetic fields are everywhere around us. Some typical magnetic $$B$$-field values:",
     "desc": "Magnetic fields are everywhere around us. Some typical magnetic $$B$$-field values: Earth's magnetic field: $$25 - 60 \\;\\mathrm{\\mu T}.$$ sunspots: $$0.3 \\;\\mathrm{T}.$$ strong permanent magnets: $$\\sim 1\\;\\mathrm{T}.$$ continuously-maintained fields in laboratory: up to $$45…",
-    "statement": "Magnetic fields are everywhere around us. Some typical magnetic $$B$$-field values:\n\nEarth's magnetic field: $$25 - 60 \\;\\mathrm{\\mu T}.$$ sunspots: $$0.3 \\;\\mathrm{T}.$$ strong permanent magnets: $$\\sim 1\\;\\mathrm{T}.$$ continuously-maintained fields in laboratory: up to $$45 \\;\\mathrm{T}.$$ neutron stars and magnetars: up to $$10^{11}\\;\\mathrm{T}.$$\n\nThe energy density of a magnetic field is $$w = B^2 \\dfrac{1}{2\\mu \\mu_0},$$ where $$\\mu_0 \\approx 1.3 \\times 10^{-6} \\;\\mathrm{N/A^2}$$ is the vacuum permeability, and $$\\mu$$ the relative permeability of the medium.\n\nSystems try to move toward lower-energy states, so ferromagnetic materials, which have $$\\mu \\gg 1,$$ are pulled towards regions with strong magnetic fields. Diamagnetic materials have $$\\mu < 1$$ and are pushed out from magnetic fields. For diamagnetic materials, the magnetic susceptibility $$\\chi = \\mu - 1$$ is small, $$|\\chi| \\ll 1,$$ and so the effect is small unless the field is strong. Water is diamagnetic with $$\\chi = -9 \\times 10^{-6}$$ and animals are mostly made of water. So, a frog can levitate in a magnetic field if the field is strong enough, as shown below.\n\n**a)** Let the frog height, $$h_f,$$ be not more than $$h_0 = 10 \\;\\mathrm{mm},$$ and let us assume that the squared magnetic field depends linearly on height $$z$$ as shown below.\n\nFind the strength of magnetic field $$B_0$$ needed to levitate the frog.\n\nAssume that the frog is made entirely of water with density $$\\rho = 1000 \\;\\mathrm{kg/m^3}.$$ Free fall acceleration is $$g = 9.8 \\;\\mathrm{m/s^2}.$$\n\nhint:\n\nfor $$|\\chi| \\ll 1,$$ we can write $$w \\approx B^2 \\dfrac{1-\\chi}{2\\mu_0}.$$ This means the energy density associated with the presence of water is $$\\Delta w = B^2 \\dfrac{1-\\chi}{2\\mu_0} - B^2 \\dfrac{1}{2\\mu_0} = -B^2 \\dfrac{\\chi}{2\\mu_0}.$$\n\n-------------------\n\nStars are made of a plasma which, is a good electrical conductor. Because of this, magnetic field lines behave as if they are \"frozen\" into the moving plasma. (This follows from Faraday's law and Kirchoff's voltage law: due to the absence of electric resistance, the voltage drop along a closed fictitious contour inside the plasma must be zero. This means the magnetic flux cannot change.)\n\nIf a star were to collapse into a neutron star, this effect would lead to an instantaneous increase of the magnetic field. See the sketch below of the magnetic field lines before and after the collapse (recall that magnetic field strength is proportional to the density of field lines).\n\n**b)** Assuming that the polar magnetic field of a star is $$B_S = 100 \\;\\mathrm{\\mu T}$$ and its average density is $$\\rho_S = 1400 \\;\\mathrm{kg/m^3},$$ what would its polar magnetic field strength $$B_c$$ be after its collapse into a neutron star due to the compression of magnetic field lines depicted above? The neutron star has density $$\\rho_n = 5\\times 10^{17} \\;\\mathrm{kg/m^3}.$$",
+    "statement": "Magnetic fields are everywhere around us. Some typical magnetic $$B$$-field values:\n\nEarth's magnetic field: $$25 - 60 \\;\\mathrm{\\mu T}.$$ sunspots: $$0.3 \\;\\mathrm{T}.$$ strong permanent magnets: $$\\sim 1\\;\\mathrm{T}.$$ continuously-maintained fields in laboratory: up to $$45 \\;\\mathrm{T}.$$ neutron stars and magnetars: up to $$10^{11}\\;\\mathrm{T}.$$\n\nThe energy density of a magnetic field is $$w = B^2 \\dfrac{1}{2\\mu \\mu_0},$$ where $$\\mu_0 \\approx 1.3 \\times 10^{-6} \\;\\mathrm{N/A^2}$$ is the vacuum permeability, and $$\\mu$$ the relative permeability of the medium.\n\nSystems try to move toward lower-energy states, so ferromagnetic materials, which have $$\\mu \\gg 1,$$ are pulled towards regions with strong magnetic fields. Diamagnetic materials have $$\\mu < 1$$ and are pushed out from magnetic fields. For diamagnetic materials, the magnetic susceptibility $$\\chi = \\mu - 1$$ is small, $$|\\chi| \\ll 1,$$ and so the effect is small unless the field is strong. Water is diamagnetic with $$\\chi = -9 \\times 10^{-6}$$ and animals are mostly made of water. So, a frog can levitate in a magnetic field if the field is strong enough, as shown below.\n\n**a)** Let the frog height, $$h_f,$$ be not more than $$h_0 = 10 \\;\\mathrm{mm},$$ and let us assume that the squared magnetic field depends linearly on height $$z$$ as shown below.\n\nFind the strength of magnetic field $$B_0$$ needed to levitate the frog.\n\nAssume that the frog is made entirely of water with density $$\\rho = 1000 \\;\\mathrm{kg/m^3}.$$ Free fall acceleration is $$g = 9.8 \\;\\mathrm{m/s^2}.$$\n\nhint:\n\nfor $$|\\chi| \\ll 1,$$ we can write $$w \\approx B^2 \\dfrac{1-\\chi}{2\\mu_0}.$$ This means the energy density associated with the presence of water is $$\\begin{aligned} \\Delta w &= B^2 \\dfrac{1-\\chi}{2\\mu_0} - B^2 \\dfrac{1}{2\\mu_0} \\\\[6pt] &= -B^2 \\dfrac{\\chi}{2\\mu_0}. \\end{aligned}$$\n\n-------------------\n\nStars are made of a plasma which, is a good electrical conductor. Because of this, magnetic field lines behave as if they are \"frozen\" into the moving plasma. (This follows from Faraday's law and Kirchoff's voltage law: due to the absence of electric resistance, the voltage drop along a closed fictitious contour inside the plasma must be zero. This means the magnetic flux cannot change.)\n\nIf a star were to collapse into a neutron star, this effect would lead to an instantaneous increase of the magnetic field. See the sketch below of the magnetic field lines before and after the collapse (recall that magnetic field strength is proportional to the density of field lines).\n\n**b)** Assuming that the polar magnetic field of a star is $$B_S = 100 \\;\\mathrm{\\mu T}$$ and its average density is $$\\rho_S = 1400 \\;\\mathrm{kg/m^3},$$ what would its polar magnetic field strength $$B_c$$ be after its collapse into a neutron star due to the compression of magnetic field lines depicted above? The neutron star has density $$\\rho_n = 5\\times 10^{17} \\;\\mathrm{kg/m^3}.$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/gulf_frog.png",
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/gulf_bfield_plot.png",
@@ -4410,7 +4410,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a61c175e-3e05-4639-b7e3-410cb3e4823c",
+    "id": "b5a8d893-26e2-4b34-bbaa-a01e254d5944",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4442,7 +4442,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fb3679ae-90e3-4dbb-8b37-b56f9acf23b7",
+    "id": "c2f9f5ca-c995-4d22-aaed-bf82326da0d0",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4453,7 +4453,7 @@
     "set_label": "Problem 8",
     "name": "A solenoid of length $$\\ell = 20 \\;\\mathrm{cm}$$ is wound around a vertical, cylindrical…",
     "desc": "A solenoid of length $$\\ell = 20 \\;\\mathrm{cm}$$ is wound around a vertical, cylindrical test tube made of glass, filled with water. The solenoid is thermally insulated from the water. The height of the water level is approximately $$20 \\;\\mathrm{cm}$$ above the upper end of the…",
-    "statement": "A solenoid of length $$\\ell = 20 \\;\\mathrm{cm}$$ is wound around a vertical, cylindrical test tube made of glass, filled with water. The solenoid is thermally insulated from the water. The height of the water level is approximately $$20 \\;\\mathrm{cm}$$ above the upper end of the solenoid, the diameter of the test tube is $$1 \\;\\mathrm{cm},$$ the number of turns of the coil is $$N = 6000.$$ The atmospheric pressure is $$p_0 = 101 \\;\\mathrm{kPa},$$ the temperature of the water is $$293 \\;\\mathrm{K}.$$ The magnetic susceptibility of water is $$\\chi = \\mu - 1 = -9.04 \\times 10^{-6}.$$ The vacuum permeability is $$\\mu_0 = 12.57 \\times 10^{-7} \\;\\mathrm{H/m}.$$\n\nThe current in the solenoid is slowly increased until the water starts boiling inside the coil. At which current strength would this happen? Make reasonable approximations when needed. Note that the required current strength might be slightly too large for the present technology.",
+    "statement": "A solenoid of length $$\\ell = 20 \\;\\mathrm{cm}$$ is wound around a vertical, cylindrical test tube made of glass, filled with water. The solenoid is thermally insulated from the water. The height of the water level is approximately $$20 \\;\\mathrm{cm}$$ above the upper end of the solenoid, the diameter of the test tube is $$1 \\;\\mathrm{cm},$$ the number of turns of the coil is $$N = 6000.$$ The atmospheric pressure is $$p_0 = 101 \\;\\mathrm{kPa},$$ the temperature of the water is $$293 \\;\\mathrm{K}.$$ The magnetic susceptibility of water is $$\\begin{aligned} \\chi &= \\mu - 1 \\\\[6pt] &= -9.04 \\times 10^{-6}. \\end{aligned}$$ The vacuum permeability is $$\\mu_0 = 12.57 \\times 10^{-7} \\;\\mathrm{H/m}.$$\n\nThe current in the solenoid is slowly increased until the water starts boiling inside the coil. At which current strength would this happen? Make reasonable approximations when needed. Note that the required current strength might be slightly too large for the present technology.",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/eupho_solenoid.png"
     ],
@@ -4474,7 +4474,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f25de5be-34a9-4d84-86b5-0e82f97d9f16",
+    "id": "6fbd3bbf-8fd3-4f4f-b650-a7982d58b72b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4485,7 +4485,7 @@
     "set_label": "Problem 9",
     "name": "All particles have a fundamental property called __spin__. Spin is an intrinsic form of…",
     "desc": "All particles have a fundamental property called __spin__. Spin is an intrinsic form of angular momentum. A full treatment of spin requires quantum mechanics, but we can still study spin using classical electromagnetism. In this problem, we investigate the influence of a…",
-    "statement": "All particles have a fundamental property called __spin__. Spin is an intrinsic form of angular momentum. A full treatment of spin requires quantum mechanics, but we can still study spin using classical electromagnetism. In this problem, we investigate the influence of a magnetic field on spin using classical physics.\n\nThe torque on a spin is given by $$\\vec{\\tau} = \\dfrac{\\mathrm{d}\\vec{L}}{\\mathrm{d}t} = \\vec{\\mu}\\times \\vec{B}.$$\n\nIn this case, the angular momentum $$\\vec{L}$$ represents the \"instrinsic\" spin of the particles, $$\\vec{\\mu}$$ is the magnetic moment of the particles, and $$\\vec{B}$$ is the magnetic field. The spin of a particle is associated with a magnetic moment via the equation $$\\vec{\\mu} = -\\gamma \\vec{L}$$ where $$\\gamma$$ is the __gyromagnetic ratio__.\n\n**a)** Prove that the magnitude of magnetic moment $$\\mu$$ is always constant under the influence of a magnetic field $$\\vec{B}.$$ For the special case of a constant magnetic field, also show that the angle between $$\\vec{\\mu}$$ and $$\\vec{B}$$ is constant.\n\n**b)** A uniform magnetic field $$\\vec{B}$$ exists and it makes an angle $$\\phi$$ with a particle's magnetic moment $$\\vec{\\mu}.$$ Due to the torque by the magnetic field, the magnetic moment $$\\vec{\\mu}$$ rotates around the field $$\\vec{B},$$ which is also known as Larmor precession. Determine the Larmor precession frequency $$\\omega_0$$ of the magnetic moment with respect to $$\\vec{B} = B_0 \\hat{k}.$$\n\n--------------\n\nNext, we choose a rotating frame $$S'$$ as our frame of reference. The rotating frame $$S' = (x',y',z')$$ rotates with an angular velocity $$\\omega \\hat{k}$$ as seen by an observer in the laboratory frame $$S = (x,y,z).$$ The axes $$x',y',z'$$ intersect with $$x,y,z$$ at time $$t = 0.$$ Any vector $$\\vec{A} = A_x \\hat{i} + A_y \\hat{j} + A_z \\hat{k}$$ in a lab frame can be written as $$\\vec{A} = A_x' \\hat{i}' + A_y' \\hat{j}' + A_z' \\hat{k}'$$ in the rotating frame $$S'.$$ The time derivative of the vector becomes\n\n$$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t} = \\left( \\dfrac{\\mathrm{d}A_x'}{\\mathrm{d}t} \\hat{i}' + \\dfrac{\\mathrm{d}A_y'}{\\mathrm{d}t} \\hat{j}' + \\dfrac{\\mathrm{d}A_z'}{\\mathrm{d}t}\\hat{k}' \\right) + \\left(A_x' \\dfrac{\\mathrm{d}\\hat{i}'}{\\mathrm{d}t} + A_y' \\dfrac{\\mathrm{d}\\hat{j}'}{\\mathrm{d}t} + A_z' \\dfrac{\\mathrm{d}k'}{\\mathrm{d}t}\\right).$$\n\n$$\\left(\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}\\right)_{\\mathrm{lab}} = \\left( \\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}\\right)_{\\mathrm{rot}} + \\left(\\omega \\hat{k} \\times \\vec{A}\\right),$$\n\nwhere $$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}_{\\mathrm{lab}}$$ is the time derivative of the vector $$\\vec{A}$$ seen by an observer in the lab frame, and $$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}_{\\mathrm{rot}}$$ is the time derivative seen by an observer in the rotating frame. For all the following problems, the answers are referred to the rotating frame $$S'.$$\n\n**c)** Show that the time evolution of the magnetic moment follows the equation $$\\left(\\dfrac{\\mathrm{d}\\vec{\\mu}}{\\mathrm{d}t}\\right)_{\\mathrm{rot}} = -\\gamma \\vec{\\mu}\\times \\vec{B}_{\\mathrm{eff}},$$ where $$\\vec{B}_{\\mathrm{eff}} = \\vec{B} - \\dfrac{\\omega}{\\gamma} \\hat{k}'$$ is the effective magnetic field.\n\n**d)** For $$\\vec{B} = B_0 \\hat{k},$$ what is the new precession frequency $$\\Delta$$ in terms of $$\\omega_0$$ and $$\\omega?$$\n\n**e)** Now, let us consider the case of a time-varying magnetic field. Besides a constant magnetic field, we also apply a rotating magnetic field $$\\vec{b}(t) = b(\\cos \\omega t \\hat{i} + \\sin \\omega t \\hat{j}),$$ so $$\\vec{B} = B_0 \\hat{k} + \\vec{b}(t).$$\n\nShow that the new Larmor precession frequency of the magnetic moment is $$\\Omega = \\gamma \\sqrt{\\left(B_0 - \\dfrac{\\omega}{\\gamma}\\right)^2 + b^2}.$$\n\n**f)** Instead of applying the field $$\\vec{b}(t) = b(\\cos \\omega t \\hat{i} + \\sin \\omega t \\hat{j}),$$ now we apply $$\\vec{b}(t) = b(\\cos \\omega \\hat{i} - \\sin \\omega t \\hat{j}.$$ What is the effective magnetic field $$\\vec{B}_{\\mathrm{eff}}$$ for this case (in terms of the unit vectors $$\\hat{i}', \\hat{j}', \\hat{k}')?$$ What is its time average, $$\\overline{\\vec{B}}_{\\mathrm{eff}}?$$",
+    "statement": "All particles have a fundamental property called __spin__. Spin is an intrinsic form of angular momentum. A full treatment of spin requires quantum mechanics, but we can still study spin using classical electromagnetism. In this problem, we investigate the influence of a magnetic field on spin using classical physics.\n\nThe torque on a spin is given by $$\\begin{aligned} \\vec{\\tau} &= \\dfrac{\\mathrm{d}\\vec{L}}{\\mathrm{d}t} \\\\[6pt] &= \\vec{\\mu}\\times \\vec{B}. \\end{aligned}$$\n\nIn this case, the angular momentum $$\\vec{L}$$ represents the \"instrinsic\" spin of the particles, $$\\vec{\\mu}$$ is the magnetic moment of the particles, and $$\\vec{B}$$ is the magnetic field. The spin of a particle is associated with a magnetic moment via the equation $$\\vec{\\mu} = -\\gamma \\vec{L}$$ where $$\\gamma$$ is the __gyromagnetic ratio__.\n\n**a)** Prove that the magnitude of magnetic moment $$\\mu$$ is always constant under the influence of a magnetic field $$\\vec{B}.$$ For the special case of a constant magnetic field, also show that the angle between $$\\vec{\\mu}$$ and $$\\vec{B}$$ is constant.\n\n**b)** A uniform magnetic field $$\\vec{B}$$ exists and it makes an angle $$\\phi$$ with a particle's magnetic moment $$\\vec{\\mu}.$$ Due to the torque by the magnetic field, the magnetic moment $$\\vec{\\mu}$$ rotates around the field $$\\vec{B},$$ which is also known as Larmor precession. Determine the Larmor precession frequency $$\\omega_0$$ of the magnetic moment with respect to $$\\vec{B} = B_0 \\hat{k}.$$\n\n--------------\n\nNext, we choose a rotating frame $$S'$$ as our frame of reference. The rotating frame $$S' = (x',y',z')$$ rotates with an angular velocity $$\\omega \\hat{k}$$ as seen by an observer in the laboratory frame $$S = (x,y,z).$$ The axes $$x',y',z'$$ intersect with $$x,y,z$$ at time $$t = 0.$$ Any vector $$\\vec{A} = A_x \\hat{i} + A_y \\hat{j} + A_z \\hat{k}$$ in a lab frame can be written as $$\\vec{A} = A_x' \\hat{i}' + A_y' \\hat{j}' + A_z' \\hat{k}'$$ in the rotating frame $$S'.$$ The time derivative of the vector becomes\n\n$$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t} = \\left( \\dfrac{\\mathrm{d}A_x'}{\\mathrm{d}t} \\hat{i}' + \\dfrac{\\mathrm{d}A_y'}{\\mathrm{d}t} \\hat{j}' + \\dfrac{\\mathrm{d}A_z'}{\\mathrm{d}t}\\hat{k}' \\right) + \\left(A_x' \\dfrac{\\mathrm{d}\\hat{i}'}{\\mathrm{d}t} + A_y' \\dfrac{\\mathrm{d}\\hat{j}'}{\\mathrm{d}t} + A_z' \\dfrac{\\mathrm{d}k'}{\\mathrm{d}t}\\right).$$\n\n$$\\left(\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}\\right)_{\\mathrm{lab}} = \\left( \\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}\\right)_{\\mathrm{rot}} + \\left(\\omega \\hat{k} \\times \\vec{A}\\right),$$\n\nwhere $$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}_{\\mathrm{lab}}$$ is the time derivative of the vector $$\\vec{A}$$ seen by an observer in the lab frame, and $$\\dfrac{\\mathrm{d}\\vec{A}}{\\mathrm{d}t}_{\\mathrm{rot}}$$ is the time derivative seen by an observer in the rotating frame. For all the following problems, the answers are referred to the rotating frame $$S'.$$\n\n**c)** Show that the time evolution of the magnetic moment follows the equation $$\\left(\\dfrac{\\mathrm{d}\\vec{\\mu}}{\\mathrm{d}t}\\right)_{\\mathrm{rot}} = -\\gamma \\vec{\\mu}\\times \\vec{B}_{\\mathrm{eff}},$$ where $$\\vec{B}_{\\mathrm{eff}} = \\vec{B} - \\dfrac{\\omega}{\\gamma} \\hat{k}'$$ is the effective magnetic field.\n\n**d)** For $$\\vec{B} = B_0 \\hat{k},$$ what is the new precession frequency $$\\Delta$$ in terms of $$\\omega_0$$ and $$\\omega?$$\n\n**e)** Now, let us consider the case of a time-varying magnetic field. Besides a constant magnetic field, we also apply a rotating magnetic field $$\\vec{b}(t) = b(\\cos \\omega t \\hat{i} + \\sin \\omega t \\hat{j}),$$ so $$\\vec{B} = B_0 \\hat{k} + \\vec{b}(t).$$\n\nShow that the new Larmor precession frequency of the magnetic moment is $$\\Omega = \\gamma \\sqrt{\\left(B_0 - \\dfrac{\\omega}{\\gamma}\\right)^2 + b^2}.$$\n\n**f)** Instead of applying the field $$\\vec{b}(t) = b(\\cos \\omega t \\hat{i} + \\sin \\omega t \\hat{j}),$$ now we apply $$\\vec{b}(t) = b(\\cos \\omega \\hat{i} - \\sin \\omega t \\hat{j}.$$ What is the effective magnetic field $$\\vec{B}_{\\mathrm{eff}}$$ for this case (in terms of the unit vectors $$\\hat{i}', \\hat{j}', \\hat{k}')?$$ What is its time average, $$\\overline{\\vec{B}}_{\\mathrm{eff}}?$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4504,7 +4504,7 @@
     "solutionUrl": null
   },
   {
-    "id": "18a94fd7-97ca-467a-83a7-6b00bf83fc85",
+    "id": "b7b62f63-7646-413e-879a-0f0a1f7486ab",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4515,7 +4515,7 @@
     "set_label": "Problem 10",
     "name": "This problem continues the previous one on spin.",
     "desc": "This problem continues the previous one on spin. For an ensemble of $$N$$ particles under the influence of a large magnetic field, the spin can have two quantum states: \"up\" and \"down\". Consequently, the total population of spin up $$N_{\\uparrow}$$ and down $$N_{\\downarrow}$$…",
-    "statement": "This problem continues the previous one on spin.\n\nFor an ensemble of $$N$$ particles under the influence of a large magnetic field, the spin can have two quantum states: \"up\" and \"down\". Consequently, the total population of spin up $$N_{\\uparrow}$$ and down $$N_{\\downarrow}$$ obeys the equation $$N_{\\uparrow} + N_{\\downarrow} = N.$$\n\nThe difference of spin up population and spin down population yields the macroscopic magnetization along the $$z$$ axis: $$ M = (N_{\\uparrow} - N_{\\downarrow}) \\mu = N\\mu_z.$$\n\nIn a real experiment, two magnetic field are usually applied, a large bias field $$B_0 \\hat{k}$$ and an oscillating field with amplitude $$2b$$ perpendicular to the bias field $$(b \\ll B_0).$$ Initially, only the large bias is applied, causing all the particles to lie in the spin up states ($$\\vec{\\mu}$$ is oriented in the $$z$$ direction at $$t=0).$$ Then, the oscillating field is turned on, where its frequency $$\\omega$$ is chosen to be in resonance with the Larmor precession frequency $$\\omega_0,$$ i.e. $$\\omega = \\omega_0.$$ In other words, the total field after time $$t=0$$ is given by $$\\vec{B}(t) = B_0 \\hat{k} + 2b \\cos \\omega_0 t \\hat{i}.$$\n\n**g)** In the totating frame $$S',$$ show that the effective field can be approximated by $$B_{\\mathrm{eff}} \\approx b \\hat{i},$$ which is commonly known as the __rotating wave approximation__. What is the precession frequency $$\\Omega$$ in frame $$S'?$$\n\n**h)** Determine the angle $$\\alpha$$ that $$\\vec{\\mu}$$ makes with $$\\vec{B}_{\\mathrm{eff}}.$$ Also, prove that the magnetization varies with time as $$M(t) = N \\mu(\\cos \\Omega t).$$\n\n**i)** Under the application of the magnetic field described above, determine the fractional population of each spin up $$P_{\\uparrow} = N_{\\uparrow}/N$$ and spin down $$P_{\\downarrow} = N_{\\downarrow}/N$$ as a function of time. Plot $$P_{\\uparrow}(t)$$ and $$P_{\\downarrow}(t)$$ on the same graph vs time $$t.$$ The alternating spin up and spin down population as a function of time is called __Rabi oscillation__.",
+    "statement": "This problem continues the previous one on spin.\n\nFor an ensemble of $$N$$ particles under the influence of a large magnetic field, the spin can have two quantum states: \"up\" and \"down\". Consequently, the total population of spin up $$N_{\\uparrow}$$ and down $$N_{\\downarrow}$$ obeys the equation $$N_{\\uparrow} + N_{\\downarrow} = N.$$\n\nThe difference of spin up population and spin down population yields the macroscopic magnetization along the $$z$$ axis: $$\\begin{aligned} M &= (N_{\\uparrow} - N_{\\downarrow}) \\mu \\\\[6pt] &= N\\mu_z. \\end{aligned}$$\n\nIn a real experiment, two magnetic field are usually applied, a large bias field $$B_0 \\hat{k}$$ and an oscillating field with amplitude $$2b$$ perpendicular to the bias field $$(b \\ll B_0).$$ Initially, only the large bias is applied, causing all the particles to lie in the spin up states ($$\\vec{\\mu}$$ is oriented in the $$z$$ direction at $$t=0).$$ Then, the oscillating field is turned on, where its frequency $$\\omega$$ is chosen to be in resonance with the Larmor precession frequency $$\\omega_0,$$ i.e. $$\\omega = \\omega_0.$$ In other words, the total field after time $$t=0$$ is given by $$\\vec{B}(t) = B_0 \\hat{k} + 2b \\cos \\omega_0 t \\hat{i}.$$\n\n**g)** In the totating frame $$S',$$ show that the effective field can be approximated by $$B_{\\mathrm{eff}} \\approx b \\hat{i},$$ which is commonly known as the __rotating wave approximation__. What is the precession frequency $$\\Omega$$ in frame $$S'?$$\n\n**h)** Determine the angle $$\\alpha$$ that $$\\vec{\\mu}$$ makes with $$\\vec{B}_{\\mathrm{eff}}.$$ Also, prove that the magnetization varies with time as $$M(t) = N \\mu(\\cos \\Omega t).$$\n\n**i)** Under the application of the magnetic field described above, determine the fractional population of each spin up $$P_{\\uparrow} = N_{\\uparrow}/N$$ and spin down $$P_{\\downarrow} = N_{\\downarrow}/N$$ as a function of time. Plot $$P_{\\uparrow}(t)$$ and $$P_{\\downarrow}(t)$$ on the same graph vs time $$t.$$ The alternating spin up and spin down population as a function of time is called __Rabi oscillation__.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4739,7 +4739,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a2010c09-6014-4cd1-a58f-e3965f678378",
+    "id": "60f66e5d-ec24-48d0-82f5-2bcfab240e8b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4769,7 +4769,7 @@
     "solutionUrl": null
   },
   {
-    "id": "58e13394-f402-422f-9c81-fd9bbae2e1db",
+    "id": "e0e3f23b-8310-4a0a-ac1b-ef16329f51a0",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4801,7 +4801,7 @@
     "solutionUrl": null
   },
   {
-    "id": "08490dc6-d6a9-4ed8-98f7-8ee59d356200",
+    "id": "4a996604-254a-444f-80e6-450ec76ec67f",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4831,7 +4831,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b19494fb-fa04-4e36-9c7b-0ead2143946c",
+    "id": "57617161-dc75-43f3-a2eb-1932fc8292f2",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4863,7 +4863,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7169d246-69c0-4a8f-8170-dc332ee5aee1",
+    "id": "855978cd-b6bf-49c3-af59-45f27f376664",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4895,7 +4895,7 @@
     "solutionUrl": null
   },
   {
-    "id": "afd5869d-6989-48ef-965c-c6436eb0ccfa",
+    "id": "58b6762d-9b04-4324-94f7-1e69d302f199",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4927,7 +4927,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fc3cb895-18c8-41cc-bcb8-85cc2863d825",
+    "id": "0db62d2a-0a1b-4831-bff1-67122c9b0295",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4959,7 +4959,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ea7ddd5b-9f84-484f-86c4-51938de50206",
+    "id": "33fc4692-3d16-44ef-9151-ae7c6e0c1202",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -4992,7 +4992,7 @@
     "solutionUrl": null
   },
   {
-    "id": "92d0d0cd-1abb-4bea-9a11-c6d37daec750",
+    "id": "13290089-ea73-421c-8519-7a1b1bf50c5c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5025,7 +5025,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4596afad-f6bd-4275-9e76-19500a42e647",
+    "id": "d3d6a103-8771-403d-9c45-9cbafe179a65",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5192,7 +5192,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a54f5139-6181-4baa-bcc5-a3ed74935e24",
+    "id": "cdb6023a-d8ae-4dc0-9204-8bdd6dbb952f",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5224,7 +5224,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fd9413c4-fe90-46cd-bb5d-2ecd5c854759",
+    "id": "5cf97e8a-2a8b-4183-b412-e015f1c0a0c8",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5256,7 +5256,7 @@
     "solutionUrl": null
   },
   {
-    "id": "97b72c15-ac0b-47a6-b3e5-ac6039c6ea9e",
+    "id": "6b01654b-eecb-43fd-b8b7-aa8a8108efea",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5288,7 +5288,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0b96bea-1470-4d8c-894b-ac92ca917524",
+    "id": "e007e05b-6ccd-4423-9752-829d77c09eb0",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5325,7 +5325,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3bef2f10-4c4a-493d-92cd-4f1a21cd92fa",
+    "id": "75ed160a-f632-46f5-bd8a-2f0b38698a29",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5358,7 +5358,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a7b7972b-6639-4d61-bcbb-21b40e54f120",
+    "id": "35e810c6-efc5-46e8-b0be-e8a3e7024566",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5369,7 +5369,7 @@
     "set_label": "Problem 6",
     "name": "**note:** This problem provides a review of geometric optics and Fermat's principle of…",
     "desc": "**note:** This problem provides a review of geometric optics and Fermat's principle of least time, but not interference and diffraction. In 1838, Samuel Birley Rowbotham placed a series of poles of known height in the Old Bedford River in England. Rowbotham found that light rays…",
-    "statement": "**note:** This problem provides a review of geometric optics and Fermat's principle of least time, but not interference and diffraction.\n\nIn 1838, Samuel Birley Rowbotham placed a series of poles of known height in the Old Bedford River in England. Rowbotham found that light rays traveled at a constant distance above the surface of the lake over the course of six miles, and concluded that the Earth is flat.\n\n**a)** Qualitatively explain why light may travel a long distance across the surface of the Earth remaining at approximately the same elevation, when traveling in a straight line would result in gaining elevation due to the Earth curving away underneath the path of the light.\n\n**b)** Estimate the temperature gradient in air, in degrees $$K$$ per meter, needed for light to follow a path with the same radius of curvature as Earth. You can take the index of refraction of air to be $$1.0003$$ at one atmosphere and $$300\\;\\mathrm{K},$$ and to vary linearly with the density of air. You may assume that difference in the density of air due to temperature are much larger than those due to differences in pressure. The radius of Earth is $$R \\approx 6.4 \\times 10^6 \\;\\mathrm{m}.$$\n\nWhen driving on a hot road, one often sees a mirage.\n\nWe will assume you are driving on a perfectly flat road.\n\n**c)** Suppose your eye is at point $$E.$$ There is some point $$B$$ which is the furthest point along the road at which light from the road still reaches your eye.\n\nSuppose the index of refraction at the air just above the road is $$n_B.$$ What is the index of refraction of the air at your eye, $$n_E?$$ Give your answer in terms of the the angle $$\\theta_E$$ that light makes with the vertical as it enters your eye.\n\n**d)** Suppose that, due to the atmosphere, the speed of light decreases linearly with height above the road. What is the trajectory of a light ray?",
+    "statement": "**note:** This problem provides a review of geometric optics and Fermat's principle of least time, but not interference and diffraction.\n\nIn 1838, Samuel Birley Rowbotham placed a series of poles of known height in the Old Bedford River in England. Rowbotham found that light rays traveled at a constant distance above the surface of the lake over the course of six miles, and concluded that the Earth is flat.\n\n**a)** Qualitatively explain why light may travel a long distance across the surface of the Earth remaining at approximately the same elevation, when traveling in a straight line would result in gaining elevation due to the Earth curving away underneath the path of the light.\n\n**b)** Estimate the temperature gradient in air, in degrees $$K$$ per meter, needed for light to follow a path with the same radius of curvature as Earth. You can take the index of refraction of air to be $$1.0003$$ at one atmosphere and $$300\\;\\mathrm{K},$$ and to vary linearly with the density of air. You may assume that difference in the density of air due to temperature are much larger than those due to differences in pressure. The radius of Earth is $$R \\approx 6.4 \\times 10^6 \\;\\mathrm{m}.$$\n\nWhen driving on a hot road, one often sees a mirage.\n\nWe will assume you are driving on a perfectly flat road.\n\n**c)** Suppose your eye is at point $$E.$$ There is some point $$B$$ which is the furthest point along the road at which light from the road still reaches your eye.\n\nSuppose the index of refraction at the air just above the road is $$n_B.$$ What is the index of refraction of the air at your eye, $$n_E?$$ Give your answer in terms of the angle $$\\theta_E$$ that light makes with the vertical as it enters your eye.\n\n**d)** Suppose that, due to the atmosphere, the speed of light decreases linearly with height above the road. What is the trajectory of a light ray?",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/mirage.jpg",
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/mirage_diagram.jpg"
@@ -5391,7 +5391,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f4a831e8-caaa-45e8-8187-5f9bac501b52",
+    "id": "b06b2594-c058-40ee-950c-9d857607eae5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5402,7 +5402,7 @@
     "set_label": "Problem 7",
     "name": "Consider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along…",
     "desc": "Consider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially transparent, designed to reduce the intensity by a factor of $$2.$$ When…",
-    "statement": "Consider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially transparent, designed to reduce the intensity by a factor of $$2.$$ When this barrier is illuminated by a plane wave in the $$z$$ direction, the amplitude of the oscillating field at $$z = 0$$ is $$f(x,y)e^{i\\omega t}$$ for \\begin{aligned} f(x,y) & = 1 ;& |y| < a \\\\ f(x,y) & = \\dfrac{1}{\\sqrt{2}} ;& a < |y| < 3a \\\\ f(x,y) & = 0 ; & 3a < |y| \\end{aligned}\n\nNear the slit, this just produces a beam which is less intense by a factor of two on the edges. Far away, however, the diffraction pattern is quite different from that of the single slit. At a fixed large distance $$R = \\sqrt{y^2 + z^2}$$ away from the slit, the intensity as a function of $$\\xi = k_y a = \\dfrac{\\omega y a}{cR}$$ is shown in the figure below for positive $$\\xi.$$\n\nThe value of the peak of $$\\xi = 0$$ is normalized to $$1,$$ but has been suppressed in the graph to show the details of the secondary maxima.\n\n**a)** Find the smallest positive value of $$\\xi$$ for which the intensity vanishes.\n\n**b)** Find the ratio of the intensity at $$\\xi = \\dfrac{\\pi}{2}$$ to that at $$\\xi = 0.$$\n\n**note**: This problem will be continued in class 13 on polarization.",
+    "statement": "Consider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially transparent, designed to reduce the intensity by a factor of $$2.$$ When this barrier is illuminated by a plane wave in the $$z$$ direction, the amplitude of the oscillating field at $$z = 0$$ is $$f(x,y)e^{i\\omega t}$$ for \\begin{aligned} f(x,y) & = 1 ;& |y| < a \\\\ f(x,y) & = \\dfrac{1}{\\sqrt{2}} ;& a < |y| < 3a \\\\ f(x,y) & = 0 ; & 3a < |y| \\end{aligned}\n\nNear the slit, this just produces a beam which is less intense by a factor of two on the edges. Far away, however, the diffraction pattern is quite different from that of the single slit. At a fixed large distance $$R = \\sqrt{y^2 + z^2}$$ away from the slit, the intensity as a function of $$\\begin{aligned} \\xi &= k_y a \\\\[6pt] &= \\dfrac{\\omega y a}{cR} \\end{aligned}$$ is shown in the figure below for positive $$\\xi.$$\n\nThe value of the peak of $$\\xi = 0$$ is normalized to $$1,$$ but has been suppressed in the graph to show the details of the secondary maxima.\n\n**a)** Find the smallest positive value of $$\\xi$$ for which the intensity vanishes.\n\n**b)** Find the ratio of the intensity at $$\\xi = \\dfrac{\\pi}{2}$$ to that at $$\\xi = 0.$$\n\n**note**: This problem will be continued in class 13 on polarization.",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/georgi_pattern.png"
     ],
@@ -5423,7 +5423,7 @@
     "solutionUrl": null
   },
   {
-    "id": "acbf237e-6bad-4397-9ca5-564b4da25acb",
+    "id": "44d308df-1c76-4263-aa15-4fae007b9f13",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5453,7 +5453,7 @@
     "solutionUrl": null
   },
   {
-    "id": "20fb19da-b620-4ec8-8c57-32c60914ab22",
+    "id": "48acf78d-7aad-484f-8f55-3505f83b55dc",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5485,7 +5485,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4d51daee-ce5f-43b3-b7ea-3fa6be398494",
+    "id": "69860838-992e-4864-8c55-6bfa9b58d320",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5496,7 +5496,7 @@
     "set_label": "Problem 10",
     "name": "Monochromatic light can be focused into a point using a holographic lens (better known as…",
     "desc": "Monochromatic light can be focused into a point using a holographic lens (better known as a __Fresnel zone plate__). This is a thin film which has a system of opaque and transparent concentric rings: the opaque rings obstruct those light waves which would arrive at the focus in…",
-    "statement": "Monochromatic light can be focused into a point using a holographic lens (better known as a __Fresnel zone plate__). This is a thin film which has a system of opaque and transparent concentric rings: the opaque rings obstruct those light waves which would arrive at the focus in the opposite phase (as compared with the light from the transparent rings). In what follows, let us assume that the diameter and focal length of such a lens are $$d = f = 10 \\;\\mathrm{cm}.$$ The wavelength of the monochromatic incident light radiation is $$\\lambda = 5\\times 10^{-7} \\;\\mathrm{m}.$$\n\n**a)** Starting enumeration from the opaque center of the lens, what is the radius of the $$m$$th transparent ring (more precisely, the circle at the middle of the ring)?\n\n**b)** Let us consider also a glass lens of the same focal length $$f$$ and diameter $$d$$, such that a parallel incident beam is collected perfectly into the focus. (The lens has aspherical surfaces.) What is the minimal possible thickness of such a lens if the coefficient of refraction of the glass is $$n = 1.5?$$\n\n**c)** If a short light pulse falls onto a lens, the behavior of the holographic lens is very different from that of the glass lens. Indeed, if we ignore the dispersion of the glass (the dependence of $$n$$ on the wavelength,) the pulse duration at the focus of the glass lens is the same as that of the incident beam. Meanwhile, in the case of a short pulse ($$\\tau = 3\\times 10^{-14} \\;\\mathrm{s}),$$ the pulse durations at the focus of the holographic lens become significantly dilated. Sketch qualitatively the light intensity $$I$$ at the focus of the holographic lens as a function of time. A scale is required for time $$t,$$ but not for $$i.$$ The speed of light is $$c = 3 \\times 10^8 \\;\\mathrm{m/s}.$$",
+    "statement": "Monochromatic light can be focused into a point using a holographic lens (better known as a __Fresnel zone plate__). This is a thin film which has a system of opaque and transparent concentric rings: the opaque rings obstruct those light waves which would arrive at the focus in the opposite phase (as compared with the light from the transparent rings). In what follows, let us assume that the diameter and focal length of such a lens are $$\\begin{aligned} d &= f \\\\[6pt] &= 10 \\;\\mathrm{cm}. \\end{aligned}$$ The wavelength of the monochromatic incident light radiation is $$\\lambda = 5\\times 10^{-7} \\;\\mathrm{m}.$$\n\n**a)** Starting enumeration from the opaque center of the lens, what is the radius of the $$m$$th transparent ring (more precisely, the circle at the middle of the ring)?\n\n**b)** Let us consider also a glass lens of the same focal length $$f$$ and diameter $$d$$, such that a parallel incident beam is collected perfectly into the focus. (The lens has aspherical surfaces.) What is the minimal possible thickness of such a lens if the coefficient of refraction of the glass is $$n = 1.5?$$\n\n**c)** If a short light pulse falls onto a lens, the behavior of the holographic lens is very different from that of the glass lens. Indeed, if we ignore the dispersion of the glass (the dependence of $$n$$ on the wavelength,) the pulse duration at the focus of the glass lens is the same as that of the incident beam. Meanwhile, in the case of a short pulse ($$\\tau = 3\\times 10^{-14} \\;\\mathrm{s}),$$ the pulse durations at the focus of the holographic lens become significantly dilated. Sketch qualitatively the light intensity $$I$$ at the focus of the holographic lens as a function of time. A scale is required for time $$t,$$ but not for $$i.$$ The speed of light is $$c = 3 \\times 10^8 \\;\\mathrm{m/s}.$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -5759,7 +5759,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d0acde9b-db9d-492d-b684-9e22a08d7650",
+    "id": "778a51f4-cfc1-438d-962f-cee5dd0f0253",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5791,7 +5791,7 @@
     "solutionUrl": null
   },
   {
-    "id": "97026f34-c1c9-4dfe-8866-22a9fac2eab1",
+    "id": "afe25d7e-2a20-4a98-80ca-f7b82ef1d393",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5821,7 +5821,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b7ae353c-67bf-48f2-b09b-a693e6fbd857",
+    "id": "94a2e637-b74f-4b9c-a443-b945ad1708e2",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5853,7 +5853,7 @@
     "solutionUrl": null
   },
   {
-    "id": "876d5038-87e6-49d8-9a76-ccf75fe5862b",
+    "id": "60633837-6877-41f3-93e7-36bbb33da34c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5885,7 +5885,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d07b1154-0e6b-4422-b844-ff28eb48795b",
+    "id": "054391f4-48a9-493c-8be9-9061eed8a453",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5915,7 +5915,7 @@
     "solutionUrl": null
   },
   {
-    "id": "794b6e49-1b14-475c-8180-5681a49f1906",
+    "id": "9de21791-4594-418d-ba12-bb2be5070b51",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5945,7 +5945,7 @@
     "solutionUrl": null
   },
   {
-    "id": "518caac2-782e-4dca-a93c-acaa0a31cabd",
+    "id": "e0abb464-297d-4ba9-987e-850afc9d6559",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -5975,7 +5975,7 @@
     "solutionUrl": null
   },
   {
-    "id": "59031eb1-0e22-46c0-aeb4-5b973047e38c",
+    "id": "c4e0c009-db2e-4377-aa2b-fe202df031e6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6005,7 +6005,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c494b35e-6dad-40d4-ac22-e11727a94c04",
+    "id": "dda36a1d-f70b-47db-96a5-2b0d02434eab",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6035,7 +6035,7 @@
     "solutionUrl": null
   },
   {
-    "id": "05229942-1d60-4613-8d86-a72292be685f",
+    "id": "fa83bfaa-067f-4d3d-88a8-9df6679ed653",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6263,7 +6263,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8801ce10-bf0c-42a1-8199-0309c3d487c2",
+    "id": "b6c80040-b746-41ce-9158-c0d15236d139",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6294,7 +6294,7 @@
     "solutionUrl": null
   },
   {
-    "id": "abf08abc-098e-4789-8436-f02c232f535e",
+    "id": "4ac4b254-dda8-4d8f-bef7-66521a9536c4",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6325,7 +6325,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ee5987d2-e720-4327-a51e-51a74c83df4e",
+    "id": "ee32e842-e501-4daa-a3fa-42a14b3bce13",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6356,7 +6356,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5595726f-f178-4794-ba5f-73a807e8fa31",
+    "id": "19e5ebfd-c116-442b-a175-4058c905c841",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6367,7 +6367,7 @@
     "set_label": "Problem 4",
     "name": "This problem continues a problem on interference from class 11.",
     "desc": "This problem continues a problem on interference from class 11. Consider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially…",
-    "statement": "This problem continues a problem on interference from class 11.\n\nConsider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially transparent, designed to reduce the intensity by a factor of $$2.$$ When this barrier is illuminated by a plane wave in the $$z$$ direction, the amplitude of the oscillating field at $$z = 0$$ is $$f(x,y)e^{i\\omega t}$$ for \\begin{aligned} f(x,y) & = 1 ;& |y| < a \\\\ f(x,y) & = \\dfrac{1}{\\sqrt{2}} ;& a < |y| < 3a \\\\ f(x,y) & = 0 ; & 3a < |y| \\end{aligned}\n\nNear the slit, this just produces a beam which is less intense by a factor of two on the edges. Far away, however, the diffraction pattern is quite different from that of the single slit. At a fixed large distance $$R = \\sqrt{y^2 + z^2}$$ away from the slit, the intensity as a function of $$\\xi = k_y a = \\dfrac{\\omega y a}{cR}$$ is shown in the figure below for positive $$\\xi.$$\n\nThe value of the peak of $$\\xi = 0$$ is normalized to $$1,$$ but has been suppressed in the graph to show the details of the secondary maxima.\n\n**a)** (done in week 11, re-presented as a reminder) Find the smallest positive value of $$\\xi$$ for which the intensity vanishes.\n\n**b)** (done in week 11, re-presented as a reminder) Find the ratio of the intensity at $$\\xi = \\dfrac{\\pi}{2}$$ to that at $$\\xi = 0.$$\n\n**c)** (new for this week) So far, we have not mentioned the polarization of the light, assuming that it is irrelevant. In fact, we get the pattern shown above for any polarization, so long as the shading doesn't affect the polarization (and $$\\xi$$ is small). However, if the light is initially polarized in the direction $$45^\\circ$$ from the $$x$$ axis, we could reduce the intensity by two by passing it through a perfect polarizer aligned with the $$y$$ axis. Suppose that our slit between $$-a$$ and $$a$$ is completely empty, but between $$-3a$$ and $$-a$$ and between $$a$$ and $$3a,$$ we put such a polarizer. Now, as before, the beam close to the slit just has the intensity on the edges reduced by a factor of $$2.$$ However, the diffraction pattern is quite different. As a function of $$\\xi,$$ the intensity at large fixed $$R$$ is $$\\propto \\dfrac{1}{10} \\left[ \\left( \\dfrac{\\sin 3\\xi}{\\xi}\\right)^2 + \\left( \\dfrac{\\sin \\xi}{\\xi}\\right)^2 \\right],$$ which looks nothing like the pattern above. Explain the difference.",
+    "statement": "This problem continues a problem on interference from class 11.\n\nConsider an opaque barrier in the $$x-y$$ plane at $$z = 0,$$ with a single slit along the $$x$$ axis of width $$2a,$$ but with regions on either side of the slit each with width $$2a$$ which are partially transparent, designed to reduce the intensity by a factor of $$2.$$ When this barrier is illuminated by a plane wave in the $$z$$ direction, the amplitude of the oscillating field at $$z = 0$$ is $$f(x,y)e^{i\\omega t}$$ for \\begin{aligned} f(x,y) & = 1 ;& |y| < a \\\\ f(x,y) & = \\dfrac{1}{\\sqrt{2}} ;& a < |y| < 3a \\\\ f(x,y) & = 0 ; & 3a < |y| \\end{aligned}\n\nNear the slit, this just produces a beam which is less intense by a factor of two on the edges. Far away, however, the diffraction pattern is quite different from that of the single slit. At a fixed large distance $$R = \\sqrt{y^2 + z^2}$$ away from the slit, the intensity as a function of $$\\begin{aligned} \\xi &= k_y a \\\\[6pt] &= \\dfrac{\\omega y a}{cR} \\end{aligned}$$ is shown in the figure below for positive $$\\xi.$$\n\nThe value of the peak of $$\\xi = 0$$ is normalized to $$1,$$ but has been suppressed in the graph to show the details of the secondary maxima.\n\n**a)** (done in week 11, re-presented as a reminder) Find the smallest positive value of $$\\xi$$ for which the intensity vanishes.\n\n**b)** (done in week 11, re-presented as a reminder) Find the ratio of the intensity at $$\\xi = \\dfrac{\\pi}{2}$$ to that at $$\\xi = 0.$$\n\n**c)** (new for this week) So far, we have not mentioned the polarization of the light, assuming that it is irrelevant. In fact, we get the pattern shown above for any polarization, so long as the shading doesn't affect the polarization (and $$\\xi$$ is small). However, if the light is initially polarized in the direction $$45^\\circ$$ from the $$x$$ axis, we could reduce the intensity by two by passing it through a perfect polarizer aligned with the $$y$$ axis. Suppose that our slit between $$-a$$ and $$a$$ is completely empty, but between $$-3a$$ and $$-a$$ and between $$a$$ and $$3a,$$ we put such a polarizer. Now, as before, the beam close to the slit just has the intensity on the edges reduced by a factor of $$2.$$ However, the diffraction pattern is quite different. As a function of $$\\xi,$$ the intensity at large fixed $$R$$ is $$\\propto \\dfrac{1}{10} \\left[ \\left( \\dfrac{\\sin 3\\xi}{\\xi}\\right)^2 + \\left( \\dfrac{\\sin \\xi}{\\xi}\\right)^2 \\right],$$ which looks nothing like the pattern above. Explain the difference.",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/georgi_pattern.png"
     ],
@@ -6389,7 +6389,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b2ca436c-c542-4813-b99b-f4b1643e7d78",
+    "id": "bd84ef9f-18fa-421f-bcdd-cd0c14b2ca5d",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6420,7 +6420,7 @@
     "solutionUrl": null
   },
   {
-    "id": "096661a0-e3f8-4f58-b3a5-7a5bb010a354",
+    "id": "20a8c037-2951-4487-b14c-ac094cabd608",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6451,7 +6451,7 @@
     "solutionUrl": null
   },
   {
-    "id": "debff3b2-b013-43f9-ac05-b46461201872",
+    "id": "a1471ed6-a893-4553-9205-28fb68f11154",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6482,7 +6482,7 @@
     "solutionUrl": null
   },
   {
-    "id": "48cc685d-6705-4266-953e-5acebe62f862",
+    "id": "76d73324-3050-4e8a-8799-906a037a92c8",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6515,7 +6515,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b83e01b3-9ae7-4bc9-ac20-d85dc533f3f8",
+    "id": "d5673643-6b64-4cbc-8205-75f05eb27b68",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6546,7 +6546,7 @@
     "solutionUrl": null
   },
   {
-    "id": "64c013ad-fe9e-46a7-bce7-eb1a1fefa08e",
+    "id": "ff19b153-1034-4907-a614-9bbd51405757",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6859,7 +6859,7 @@
     "solutionUrl": null
   },
   {
-    "id": "49dbbbcf-83c6-448b-a183-cc1c03f345cb",
+    "id": "6c79a277-be49-4207-aed3-a56485edfa48",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6889,7 +6889,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4f3a5f59-0895-4896-a915-4a6402f10048",
+    "id": "0a012eb7-8e99-4fdd-b5f5-2564b451863f",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6919,7 +6919,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d4149a74-b97a-4b4c-b1d0-d216e1bc1575",
+    "id": "c2675b46-0550-4ed1-b7c5-2c6241e611b6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6952,7 +6952,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9e72d0b9-a45b-4402-b34a-e096b3ac1c2a",
+    "id": "30317adf-1101-4aef-beb3-94621941b3cc",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -6982,7 +6982,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f59cf479-848a-4e0a-aafb-cdc054bdd8dc",
+    "id": "5b9e74d4-330e-48ea-8a58-237cb073bebf",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7012,7 +7012,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1ad5452d-e44e-40dc-b3d0-01e6aac5f28f",
+    "id": "abaec266-8922-446a-8d02-67a59ad98aa2",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7023,7 +7023,7 @@
     "set_label": "Problem 6",
     "name": "When we study quantum mechanics, we will use the Bohr model to discover that the energy…",
     "desc": "When we study quantum mechanics, we will use the Bohr model to discover that the energy levels of a hydrogen atom obey $$E_n = -\\dfrac{E_0}{n^2},$$ where $$E_0 \\approx 13.6 \\;\\mathrm{eV}$$ is the ionization energy of the hydrogen atom and $$n = 1, 2, 3, \\ldots.$$ The number of…",
-    "statement": "When we study quantum mechanics, we will use the Bohr model to discover that the energy levels of a hydrogen atom obey $$E_n = -\\dfrac{E_0}{n^2},$$ where $$E_0 \\approx 13.6 \\;\\mathrm{eV}$$ is the ionization energy of the hydrogen atom and $$n = 1, 2, 3, \\ldots.$$\n\nThe number of different states for an electron with energy $$E_n$$ is $$2n^2.$$ So there are two different ground states ($$n=1$$) for the electron (because it is in the ground state, but its spin can be either up or down). Then there are 8 different states all with the energy $$E_2.$$ If you have studied chemistry, you know these as the $$2s$$ and $$2p$$ states (which have the same energy for a hydrogen atom). There are 18 states with energy $$E_3,$$ etc.\n\nSuppose a hydrogen atom is in thermal contact with a reservoir of temperature $$T = 300 \\;\\mathrm{K},$$ about room temperature.\n\n**a)** Estimate the probability that the Hydrogen atom is not at its ground state energy. For this estimate, assume that the only two possible states are the ground state and the first excited state; ignore the higher-$$n$$ states on the ground that when $$n$$ is very large, the mathematical solution is no longer reasonable; the orbital radius would also be very large, and small influences from surroundings would ionize the atom.\n\n**b)** Find the temperature at which the electron electron is equally likely to have energy $$E_1$$ or $$E_2.$$\n\n**c)** We might expect hydrogen atoms to begin ionizing at a temperature where $$k_b T \\approx E_0,$$ but in fact significant ionization occurs at much lower temperatures, especially if the hydrogen is in a gas or plasma of very low density. Briefly explain why.",
+    "statement": "When we study quantum mechanics, we will use the Bohr model to discover that the energy levels of a hydrogen atom obey $$E_n = -\\dfrac{E_0}{n^2},$$ where $$E_0 \\approx 13.6 \\;\\mathrm{eV}$$ is the ionization energy of the hydrogen atom and $$n = 1, 2, 3, \\ldots.$$\n\nThe number of different states for an electron with energy $$E_n$$ is $$2n^2.$$ So there are two different ground states ($$n=1$$) for the electron (because it is in the ground state, but its spin can be either up or down). Then there are 8 different states all with the energy $$E_2.$$ If you have studied chemistry, you know these as the $$2s$$ and $$2p$$ states (which have the same energy for a hydrogen atom). There are 18 states with energy $$E_3,$$ etc.\n\nSuppose a hydrogen atom is in thermal contact with a reservoir of temperature $$T = 300 \\;\\mathrm{K},$$ about room temperature.\n\n**a)** Estimate the probability that the Hydrogen atom is not at its ground state energy. For this estimate, assume that the only two possible states are the ground state and the first excited state; ignore the higher-$$n$$ states on the ground that when $$n$$ is very large, the mathematical solution is no longer reasonable; the orbital radius would also be very large, and small influences from surroundings would ionize the atom.\n\n**b)** Find the temperature at which the electron is equally likely to have energy $$E_1$$ or $$E_2.$$\n\n**c)** We might expect hydrogen atoms to begin ionizing at a temperature where $$k_b T \\approx E_0,$$ but in fact significant ionization occurs at much lower temperatures, especially if the hydrogen is in a gas or plasma of very low density. Briefly explain why.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -7042,7 +7042,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2829b5f6-b50e-4944-9676-954f0a73aff0",
+    "id": "46be2ef1-71f4-4e3d-9deb-7ec3410e75d5",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7072,7 +7072,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f9d101ac-e276-4e89-8b4d-9e487db19d90",
+    "id": "628c1adb-74df-4ed0-85df-779b97f5acce",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7102,7 +7102,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3764e53f-fa98-4015-a447-96ce89a40078",
+    "id": "c9816bf6-9d79-4de0-a319-42898e608efd",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7132,7 +7132,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4534263d-99c6-4a1d-a5e1-d4973f1dabdd",
+    "id": "01734f20-3596-4b01-9750-4c904cea1b09",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7143,7 +7143,7 @@
     "set_label": "Problem 10",
     "name": "Consider two liquids, A and B, which are insoluble (they do not mix). The pressures…",
     "desc": "Consider two liquids, A and B, which are insoluble (they do not mix). The pressures $$p_i$$ ($$i = A$$ or $$B$$) of their saturated vapors obey, to a good approximation, the formula $$\\ln(p_i/p_0) = \\dfrac{\\alpha_i}{T} + \\beta_i$$ where $$p_0$$ denotes the normal atmospheric…",
-    "statement": "Consider two liquids, A and B, which are insoluble (they do not mix). The pressures $$p_i$$ ($$i = A$$ or $$B$$) of their saturated vapors obey, to a good approximation, the formula $$\\ln(p_i/p_0) = \\dfrac{\\alpha_i}{T} + \\beta_i$$ where $$p_0$$ denotes the normal atmospheric pressure, $$T$$ the absolute temperature of the vapor, and $$\\alpha_i$$ and $$\\beta_i$$ certain constants depending on the liquid.\n\nThe values of the ratio $$p_i/p_0$$ for the liquids A and B at the temperature $$40^\\circ C$$ and $$90^\\circ C$$ are given in the table below.\n\n**a)** Determine the boiling temperatures of the liquids A and B under the pressure $$p_0.$$\n\n**b)** The liquids A and B were poured into a vessel in which the layers shown in the figure below were formed. The surface of the liquid B has been covered with a thin layer of a non-volatile liquid C, which is insoluble in the liquids A and B and vice versa, thereby preventing any free evaporation from the upper surface of the liquid B. The ratio of molecular masses of the liquids A and B (in the gaseous phase) is $$\\gamma = \\dfrac{\\mu_A}{\\mu_B} = 8.$$\n\nThe masses of the liquids A and B were initially the same, each equal to $$m = 100 \\;\\mathrm{g}.$$ The heights of the layers of the liquids in the vessel and the densities of the liquids are small enough to make the assumption that the pressure in any point in the vessel is practically equal ot the normal atmospheric pressure $$p_0.$$\n\nThe system of liquids in the vessel is slowly, but continuously and uniformly heated. It was established that the temperature $$t$$ of the liquids changed with time $$\\tau$$ as shown schematically in the figure on the right above.\n\nDetermine the temperatures $$t_1$$ and $$t_2$$ corresponding to the horizontal parts of the diagram and the masses of the liquids A and B at the time $$\\tau_1.$$ The temperatures should be rounded to the nearest degree and the masses of the liquids should be determined to one tenth of a gram.\n\nAssume that the vapors of the liquids, to a good approximation, obey the rule that the pressure of a mixture of gases is equal to the sum of the partial pressures of the gases forming the mixture, and that the gases can be treated as ideal.",
+    "statement": "Consider two liquids, A and B, which are insoluble (they do not mix). The pressures $$p_i$$ ($$i = A$$ or $$B$$) of their saturated vapors obey, to a good approximation, the formula $$\\ln(p_i/p_0) = \\dfrac{\\alpha_i}{T} + \\beta_i$$ where $$p_0$$ denotes the normal atmospheric pressure, $$T$$ the absolute temperature of the vapor, and $$\\alpha_i$$ and $$\\beta_i$$ certain constants depending on the liquid.\n\nThe values of the ratio $$p_i/p_0$$ for the liquids A and B at the temperature $$40^\\circ C$$ and $$90^\\circ C$$ are given in the table below.\n\n**a)** Determine the boiling temperatures of the liquids A and B under the pressure $$p_0.$$\n\n**b)** The liquids A and B were poured into a vessel in which the layers shown in the figure below were formed. The surface of the liquid B has been covered with a thin layer of a non-volatile liquid C, which is insoluble in the liquids A and B and vice versa, thereby preventing any free evaporation from the upper surface of the liquid B. The ratio of molecular masses of the liquids A and B (in the gaseous phase) is $$\\begin{aligned} \\gamma &= \\dfrac{\\mu_A}{\\mu_B} \\\\[8pt] &= 8. \\end{aligned}$$\n\nThe masses of the liquids A and B were initially the same, each equal to $$m = 100 \\;\\mathrm{g}.$$ The heights of the layers of the liquids in the vessel and the densities of the liquids are small enough to make the assumption that the pressure in any point in the vessel is practically equal ot the normal atmospheric pressure $$p_0.$$\n\nThe system of liquids in the vessel is slowly, but continuously and uniformly heated. It was established that the temperature $$t$$ of the liquids changed with time $$\\tau$$ as shown schematically in the figure on the right above.\n\nDetermine the temperatures $$t_1$$ and $$t_2$$ corresponding to the horizontal parts of the diagram and the masses of the liquids A and B at the time $$\\tau_1.$$ The temperatures should be rounded to the nearest degree and the masses of the liquids should be determined to one tenth of a gram.\n\nAssume that the vapors of the liquids, to a good approximation, obey the rule that the pressure of a mixture of gases is equal to the sum of the partial pressures of the gases forming the mixture, and that the gases can be treated as ideal.",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/ipho_boil.png",
       "http://cdn.artofproblemsolving.com/school/crypt/00191-844ae73979bf65c168c8c745db057b68c4b208a1/files/ipho_boil2.png"
@@ -7429,7 +7429,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2f87c74a-a6e1-4293-9707-1c7219fc43ab",
+    "id": "2324b900-de82-4900-92fb-a3bd03096ac2",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7459,7 +7459,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e47bdf6d-14cf-43c0-bf70-3a093b5bd95b",
+    "id": "e6d5ba07-6125-4095-ba04-dc1e8f05c1ba",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7489,7 +7489,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e73bbae1-1699-455c-95d6-7bd44bf6ee8b",
+    "id": "10ca1790-ab76-4e84-9abb-79ebc6763fad",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7519,7 +7519,7 @@
     "solutionUrl": null
   },
   {
-    "id": "88e82ac7-732e-4a31-ba41-d04a9e053155",
+    "id": "ccc45566-4e19-4398-b003-004841ad5126",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7549,7 +7549,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2e440965-ccfb-4755-b3c6-08c1d66aabc3",
+    "id": "9e943167-092a-48ca-955b-29ebeab2b9e6",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7581,7 +7581,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e4e02289-2b7c-4e9a-a61c-6cd839dc0974",
+    "id": "1a85b5c0-010b-45a2-bf6f-66e3ed76876e",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7613,7 +7613,7 @@
     "solutionUrl": null
   },
   {
-    "id": "93453ecc-a082-4314-ad93-3f1ca29ed452",
+    "id": "8de22203-f66d-4fc1-a272-2fba1a541d58",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7643,7 +7643,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d041e0c1-28d3-4b7f-82ad-235052f1735e",
+    "id": "3e101fb2-87da-4746-a42c-acada118a89b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7673,7 +7673,7 @@
     "solutionUrl": null
   },
   {
-    "id": "be3b5ffc-5ce7-4ce4-b14c-e30d8098c74c",
+    "id": "fe6e9eb0-30b0-4086-b9d3-a3ed6f250910",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7703,7 +7703,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fd94ac2a-d181-400e-b47d-ee4ffb3c6539",
+    "id": "6bbc0d13-d203-4a65-a2ef-a686cb468c99",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -7998,7 +7998,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c38eab5a-a03f-4f93-8222-8924def3421b",
+    "id": "69ff26d5-4d8a-4ca6-a578-6a7114d33391",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8028,7 +8028,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8c7b7f43-2d70-4370-bf4a-e2f30458e649",
+    "id": "5b19307f-b081-4d7b-91d8-3e6acad07e11",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8058,7 +8058,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bcb22b14-a5f2-45ad-b9da-ee9c88ab29e2",
+    "id": "44cf94cf-1c8f-4ff6-88ae-3bd5396734f4",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8088,7 +8088,7 @@
     "solutionUrl": null
   },
   {
-    "id": "926de753-1962-446d-a3e7-69cec9d37fda",
+    "id": "eabcc35a-6a0d-4109-94c6-a4aab2ebd0a2",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8118,7 +8118,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b61ea566-b36d-404d-b687-4d3451018635",
+    "id": "d31f00b3-1b89-418b-a73e-8191d19c2a3a",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8148,7 +8148,7 @@
     "solutionUrl": null
   },
   {
-    "id": "303d69f0-bcc8-47e4-ac60-1205bc50684b",
+    "id": "0915787d-f0b7-4d7d-abae-631b61610478",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8178,7 +8178,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a6bf5f41-4da9-4cd1-a8e1-f5dc5f10fa84",
+    "id": "79d0de23-664d-45bc-a834-4ffca5a64a2c",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8208,7 +8208,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c96b9551-2c0f-4547-a77e-858035f14d89",
+    "id": "5290b5f9-e053-46bb-8fd3-e89ebcd50b8b",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8238,7 +8238,7 @@
     "solutionUrl": null
   },
   {
-    "id": "78f081a1-fac2-450f-80af-e25e60e51504",
+    "id": "2acb3255-0490-4c42-b6b1-36c42bff2948",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",
@@ -8268,7 +8268,7 @@
     "solutionUrl": null
   },
   {
-    "id": "20310f52-c528-4da7-89d6-9bbb346d9c45",
+    "id": "a605237a-25e4-46bb-8095-b51afc11ac16",
     "contest": "PhysicsWOOT 2",
     "type": "AoPS",
     "source": "homework",

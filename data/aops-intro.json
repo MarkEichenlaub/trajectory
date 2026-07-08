@@ -1,6 +1,6 @@
 [
   {
-    "id": "89543477-6cc0-4b57-aafe-a722849f508d",
+    "id": "ebc6d977-865b-4e75-af12-e2344e854af0",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -27,11 +27,10 @@
     "aops_id": "38736",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "8f1f52b6-d393-464e-bdf9-21ffd4dd79dc",
+    "id": "006d0b92-d484-4b25-8756-0a92f994498e",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -61,7 +60,7 @@
     "solutionUrl": null
   },
   {
-    "id": "70b134fd-a9b9-48e1-bebf-b2fd83865de2",
+    "id": "430a9ab3-8772-41e8-85d6-e69412432ca4",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -71,11 +70,9 @@
     "set_number": 3,
     "set_label": "Problem 3",
     "name": "In this problem, we'll practice with the law of the lever using the simulation introduced…",
-    "desc": "In this problem, we'll practice with the law of the lever using the simulation introduced in class. This simulation was built by the PhET project at the University of Colorado. In the simulation below, select \"Game\" and then \"Level 3\". 800x600 When you're ready to play, the…",
-    "statement": "In this problem, we'll practice with the law of the lever using the simulation introduced in class. This simulation was built by the PhET project at the University of Colorado.\n\nIn the simulation below, select \"Game\" and then \"Level 3\".\n\n800x600\n\nWhen you're ready to play, the simulation should look roughly like this:\n\n(The game chooses what object you have to balance first at random, you may see a different object there.)\n\nPlay through the game. It may help to remember both our forms of the law of the lever: $$M_1x_1 = M_2x_2$$ and $$\\dfrac{M_1}{M_2} = \\dfrac{x_2}{x_1}.$$\n\nOnce you are finished, enter \"done\" for this problem. (You will get credit regardless of how many stars you get in the game; it is fine to make mistakes while you're learning!)\n\nYou are also welcome to try level 4 of the game for an extra challenge.\n\nYou may want to manipulate the equations for the law of the lever on some levels. For example, suppose you want to choose the appropriate distance $$x_1$$ in some problem. Then start with the law of the lever and solve for $$x_1.$$\n\nYou can use proportional reasoning on many of the levels.\n\nIf you aren't sure which way the seesaw will tip, it will tip towards the side with the higher moment of mass.",
-    "figures": [
-      "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/01_hw_balance_game_start"
-    ],
+    "desc": "In this problem, we'll practice with the law of the lever using the simulation introduced in class. In the game below, drag the gray boxes onto the beam, finding spots for them so that the beam is balanced. When you pass all ten levels, Archimedes will tell you a password…",
+    "statement": "In this problem, we'll practice with the law of the lever using the simulation introduced in class.\n\nIn the game below, drag the gray boxes onto the beam, finding spots for them so that the beam is balanced.\n\nWhen you pass all ten levels, Archimedes will tell you a password.\n\n760x600\n\nEnter the password as your answer to this question.\n\nIt may help to remember both our form of the law of the lever: $$M_1 x_1 = M_2 x_2$$ and the form $$\\dfrac{M_1}{M_2} = \\dfrac{x_2}{x_1}.$$",
+    "figures": [],
     "has_asy": false,
     "topics": [
       "Experimental Methods"
@@ -93,7 +90,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3fbc5050-2d4b-4098-854d-9796587e47a9",
+    "id": "792b989b-740e-419f-ac6e-22abf8686def",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -125,7 +122,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1abb7d4e-efcd-4bce-bc13-b0013e244f5c",
+    "id": "c8f6ba27-0fd8-4b52-a344-b21fe129b91a",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -154,8 +151,7 @@
     "aops_id": "39854",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "cfccc92a-2aa3-44b9-9947-7d49bee60be5",
@@ -399,7 +395,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2b56dc1c-612d-497e-87c6-2189a2d49d52",
+    "id": "d4d76009-48ef-4720-956a-0f8d66f862f7",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -429,7 +425,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0a8133ca-c9ff-4de1-a870-cc6ed7915953",
+    "id": "09e1df4d-8d00-4934-b708-1187a76bfef3",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -467,7 +463,7 @@
     "solutionUrl": null
   },
   {
-    "id": "efac1e9b-09ea-4486-97f2-2c7e18f1be30",
+    "id": "3f9f2224-003f-4961-82ba-9936788e5b3c",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -497,7 +493,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3253ddc2-d48d-43af-922a-8ba8a1b993f7",
+    "id": "9e939e9b-4adc-4699-817d-c339c23f6cb6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -508,7 +504,7 @@
     "set_label": "Problem 4",
     "name": "The SI unit for volume is the $$\\mathrm{m}^3,$$ but other common units include the…",
     "desc": "The SI unit for volume is the $$\\mathrm{m}^3,$$ but other common units include the __liter__, $$\\mathrm{L},$$ and the __cubic centimeter__, $$\\mathrm{cm}^3.$$ Given that $$1000 \\;\\mathrm{L} = 1 \\;\\mathrm{m}^3,$$ what is $$6 \\;\\mathrm{dL}$$ in $$\\mathrm{cm}^3?$$ The SI prefix…",
-    "statement": "The SI unit for volume is the $$\\mathrm{m}^3,$$ but other common units include the __liter__, $$\\mathrm{L},$$ and the __cubic centimeter__, $$\\mathrm{cm}^3.$$\n\nGiven that $$1000 \\;\\mathrm{L} = 1 \\;\\mathrm{m}^3,$$ what is $$6 \\;\\mathrm{dL}$$ in $$\\mathrm{cm}^3?$$\n\nThe SI prefix $$\\mathrm{d},$$ or \"deci\", means $$\\dfrac{1}{10}.$$\n\nmathjax: \\[6 \\;\\mathrm{dL} = \\blank \\;\\mathrm{ cm^3}\\]\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
+    "statement": "The SI unit for volume is the $$\\mathrm{m}^3,$$ but other common units include the __liter__, $$\\mathrm{L},$$ and the __cubic centimeter__, $$\\mathrm{cm}^3.$$\n\nGiven that $$1000 \\;\\mathrm{L} = 1 \\;\\mathrm{m}^3,$$ what is $$6 \\;\\mathrm{dL}$$ in $$\\mathrm{cm}^3?$$\n\nThe SI prefix $$\\mathrm{d},$$ or \"deci\", means $$\\dfrac{1}{10}.$$\n\nmathjax: \\[6 \\;\\mathrm{dL} = \\blank \\;\\mathrm{ cm^3}\\]\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -527,7 +523,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a9922f97-a3c3-4355-9b1b-a6787896c4d7",
+    "id": "788d906d-bc2b-494a-99eb-1857894ed3e6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -538,7 +534,7 @@
     "set_label": "Problem 5",
     "name": "There are many old English units for volume, only a few of which are familiar today. For…",
     "desc": "There are many old English units for volume, only a few of which are familiar today. For example, $$\\begin{array}{rl} 1 \\;\\mathrm{dram} & = 60 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{teaspoon} & = 80 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{pony} & = 6 \\;\\mathrm{drams}\\\\ 1 \\;\\mathrm{tablespoon} &…",
-    "statement": "There are many old English units for volume, only a few of which are familiar today. For example, $$\\begin{array}{rl} 1 \\;\\mathrm{dram} & = 60 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{teaspoon} & = 80 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{pony} & = 6 \\;\\mathrm{drams}\\\\ 1 \\;\\mathrm{tablespoon} & = 3 \\;\\mathrm{teaspoons} \\end{array}$$\n\nGiven these conversion factors, how many drams are in a tablespoon?\n\nmathjax: \\[ 1 \\; \\mathrm{tablespoon} = \\blank \\;\\mathrm{dram} . \\]\n\nwidth: 3\n\nallowed: None",
+    "statement": "There are many old English units for volume, only a few of which are familiar today. For example, $$\\begin{array}{rl} 1 \\;\\mathrm{dram} & = 60 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{teaspoon} & = 80 \\;\\mathrm{minim}\\\\ 1 \\;\\mathrm{pony} & = 6 \\;\\mathrm{drams}\\\\ 1 \\;\\mathrm{tablespoon} & = 3 \\;\\mathrm{teaspoons} \\end{array}$$\n\nGiven these conversion factors, how many drams are in a tablespoon?\n\nmathjax: \\[ 1 \\; \\mathrm{tablespoon} = \\blank \\;\\mathrm{dram} . \\]\n\nwidth: 3",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -557,7 +553,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ce019b2e-09c4-4793-b456-f012644040f7",
+    "id": "b9886ddc-ca19-4765-acf4-454bbe32e58a",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -568,7 +564,7 @@
     "set_label": "Problem 6 (Parts A–B)",
     "name": "Part A. In this two-part problem, you'll practice figuring out how to find conversion…",
     "desc": "Part A. In this two-part problem, you'll practice figuring out how to find conversion factors given some information about units presented in paragraph form. The challenge is to read the information, understand how it can be used to create conversion factors, and then use those…",
-    "statement": "Part A. In this two-part problem, you'll practice figuring out how to find conversion factors given some information about units presented in paragraph form. The challenge is to read the information, understand how it can be used to create conversion factors, and then use those conversion factors to answer the question. Part (A) is shorter and you may or may not need a conversion factor for it. In part (B), there will be more conversions to make.\n\n-------------------------------\n\nFrom 1793 - 1805, France used the \"French Republican Calendar\" to keep track of time. Under this system, each day was divided into ten hours, each hour was divided into 100 minutes, and each minute into 100 seconds. Because these lengths of time are not the same as ordinary hours, minutes, and seconds, we can call them \"FR hours\", \"FR minutes\", and \"FR seconds\", short for \"French Republican hours\", etc. So a day was equal to ten FR hours, an FR hour was equal to 100 FR minutes, etc. The length of one day was the same in this system as in the current, modern one.\n\nFrance no longer uses this calendar. Instead, they use the same definition of hours, minutes, and seconds that people in the US and all other countries around the world do, with 24 hours in a day, 60 minutes in an hour, and 60 seconds in a minute. In this problem we'll imagine France was going to convert back to the French Republican Calendar and figure out the consequences.\n\nAside from a few highways and roads in cities, most French roads today use the same speed limit, which is currently $$80 \\dfrac{\\mathrm{km}}{\\mathrm{hour}}.$$ (France uses kilometers, not miles to measure distance. This speed limit is approximately 50 mph. France lowered the speed limit to this value in 2018 in a successful attempt to reduce traffic accident deaths. The speed limit is also lower than this when conditions are wet or otherwise dangerous.)\n\nIf France were to convert to using FR hours again, how would we write the speed limit in France, assuming drivers should go no faster or slower than before the unit change?\n\nThe definition of the kilometer does not change in this scenario.\n\nmathjax: \\[80 \\dfrac{\\text{km}}{\\text{hour}} = \\blank \\dfrac{\\text{km}}{\\text{FR hour}}\\]\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. Here, we continue to refer to the French Republican Calendar. You'll need to find multiple conversion factors in this problem.\n\n-----------------------------\n\nRecall that under this system, each day was divided into ten FR hours, each FR hour was divided into 100 FR minutes, and each FR minute was divided into 100 FR seconds. Also, days are the same in the FR system and in our modern system.\n\nSuppose you want to play a few rounds of the South African trivia game \"30 Seconds\" (in which the rounds all last 30 seconds), but you have a watch that measures FR seconds as defined in the French Republican Calendar, not ordinary seconds. You don't want to change how long a round is, so you'll need to do a unit conversion to figure out the length of a round, as measured in FR seconds.\n\nHow many FR seconds are there in 30 ordinary seconds?\n\nRound your answer to the nearest tenth of an FR second.\n\nmathjax: \\[30 \\;\\mathrm{seconds} = \\blank \\text{ FR seconds}\\]\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
+    "statement": "Part A. In this two-part problem, you'll practice figuring out how to find conversion factors given some information about units presented in paragraph form. The challenge is to read the information, understand how it can be used to create conversion factors, and then use those conversion factors to answer the question. Part (A) is shorter and you may or may not need a conversion factor for it. In part (B), there will be more conversions to make.\n\n-------------------------------\n\nFrom 1793 - 1805, France used the \"French Republican Calendar\" to keep track of time. Under this system, each day was divided into ten hours, each hour was divided into 100 minutes, and each minute into 100 seconds. Because these lengths of time are not the same as ordinary hours, minutes, and seconds, we can call them \"FR hours\", \"FR minutes\", and \"FR seconds\", short for \"French Republican hours\", etc. So a day was equal to ten FR hours, an FR hour was equal to 100 FR minutes, etc. The length of one day was the same in this system as in the current, modern one.\n\nFrance no longer uses this calendar. Instead, they use the same definition of hours, minutes, and seconds that people in the US and all other countries around the world do, with 24 hours in a day, 60 minutes in an hour, and 60 seconds in a minute. In this problem we'll imagine France was going to convert back to the French Republican Calendar and figure out the consequences.\n\nAside from a few highways and roads in cities, most French roads today use the same speed limit, which is currently $$80 \\dfrac{\\mathrm{km}}{\\mathrm{hour}}.$$ (France uses kilometers, not miles to measure distance. This speed limit is approximately 50 mph. France lowered the speed limit to this value in 2018 in a successful attempt to reduce traffic accident deaths. The speed limit is also lower than this when conditions are wet or otherwise dangerous.)\n\nIf France were to convert to using FR hours again, how would we write the speed limit in France, assuming drivers should go no faster or slower than before the unit change?\n\nThe definition of the kilometer does not change in this scenario.\n\nmathjax: \\[80 \\dfrac{\\text{km}}{\\text{hour}} = \\blank \\dfrac{\\text{km}}{\\text{FR hour}}\\]\n\nPart B. Here, we continue to refer to the French Republican Calendar. You'll need to find multiple conversion factors in this problem.\n\n-----------------------------\n\nRecall that under this system, each day was divided into ten FR hours, each FR hour was divided into 100 FR minutes, and each FR minute was divided into 100 FR seconds. Also, days are the same in the FR system and in our modern system.\n\nSuppose you want to play a few rounds of the South African trivia game \"30 Seconds\" (in which the rounds all last 30 seconds), but you have a watch that measures FR seconds as defined in the French Republican Calendar, not ordinary seconds. You don't want to change how long a round is, so you'll need to do a unit conversion to figure out the length of a round, as measured in FR seconds.\n\nHow many FR seconds are there in 30 ordinary seconds?\n\nRound your answer to the nearest tenth of an FR second.\n\nmathjax: \\[30 \\;\\mathrm{seconds} = \\blank \\text{ FR seconds}\\]\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -586,7 +582,7 @@
     "solutionUrl": null
   },
   {
-    "id": "97ca626c-6db4-49f9-83bd-af082fbbb65a",
+    "id": "8603c828-8e80-4cf2-99d0-9c21d5a370cc",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -616,7 +612,7 @@
     "solutionUrl": null
   },
   {
-    "id": "da63529b-d6b4-417c-a4a1-81074f80c70f",
+    "id": "11ba364f-47e9-4254-a923-6c8d95755873",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -649,7 +645,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c01c895f-7cab-41d8-9967-4568dbd3f248",
+    "id": "5de3c02b-8a00-46c0-8d31-880375d33388",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -660,7 +656,7 @@
     "set_label": "Problem 9",
     "name": "In this problem, you'll practice a different type of unit conversion that we did in…",
     "desc": "In this problem, you'll practice a different type of unit conversion that we did in class. You will not be able to use conversion factors in the form of a fraction equal to one. However, you can solve this problem by setting up linear equations. ------------------- Converting…",
-    "statement": "In this problem, you'll practice a different type of unit conversion that we did in class. You will not be able to use conversion factors in the form of a fraction equal to one. However, you can solve this problem by setting up linear equations.\n\n-------------------\n\nConverting between temperature scales is a little different than most unit conversions, such as those for length. This is because for temperature scales, the zero can mean different things in different scales. For example, $$0^\\circ\\mathrm{F} = -\\dfrac{160}{9}^\\circ\\mathrm{C}.$$\n\nThere are two common temperature scales that do have the same zero, called __absolute zero__. These are the Kelvin and Rankine scales.\n\nA temperature of $$0^\\circ \\mathrm{C}$$ corresponds to a temperature $$273.15 \\;\\mathrm{K}.$$ The Kelvin and Celsius scales are set up so that increasing any temperature by $$1 \\;\\mathrm{K}$$ also increases that temperature by $$1^\\circ \\mathrm{C}.$$\n\nLike the Kelvin and Celsius scales, the Fahrenheit and Rankine scales use the same step size between degrees, but have a constant offset from each other. A temperature change of $$1^\\circ \\mathrm{C}$$ is the same as a temperature increase of $$\\dfrac95^\\circ$$ in Fahrenheit or Rankine.\n\nThe Fahrenheit and Celsius scales have the same numerical value at $$-40^\\circ,$$ meaning $$-40^\\circ \\mathrm{F} = -40^\\circ \\mathrm{C}.$$\n\nAt what numerical value do the Kelvin and Fahrenheit scales have the same temperature?\n\nDo not include units in your answer for this question, since it's asking about two different units simultaneously. Just give the numerical part of the answer. Do not round your answer; the data given above about the temperature scales is exact, so your answer here should be exact and include all the decimal places.\n\nmathjax: $$ \\blank$$\n\nallowed: None",
+    "statement": "In this problem, you'll practice a different type of unit conversion that we did in class. You will not be able to use conversion factors in the form of a fraction equal to one. However, you can solve this problem by setting up linear equations.\n\n-------------------\n\nConverting between temperature scales is a little different than most unit conversions, such as those for length. This is because for temperature scales, the zero can mean different things in different scales. For example, $$0^\\circ\\mathrm{F} = -\\dfrac{160}{9}^\\circ\\mathrm{C}.$$\n\nThere are two common temperature scales that do have the same zero, called __absolute zero__. These are the Kelvin and Rankine scales.\n\nA temperature of $$0^\\circ \\mathrm{C}$$ corresponds to a temperature $$273.15 \\;\\mathrm{K}.$$ The Kelvin and Celsius scales are set up so that increasing any temperature by $$1 \\;\\mathrm{K}$$ also increases that temperature by $$1^\\circ \\mathrm{C}.$$\n\nLike the Kelvin and Celsius scales, the Fahrenheit and Rankine scales use the same step size between degrees, but have a constant offset from each other. A temperature change of $$1^\\circ \\mathrm{C}$$ is the same as a temperature increase of $$\\dfrac95^\\circ$$ in Fahrenheit or Rankine.\n\nThe Fahrenheit and Celsius scales have the same numerical value at $$-40^\\circ,$$ meaning $$-40^\\circ \\mathrm{F} = -40^\\circ \\mathrm{C}.$$\n\nAt what numerical value do the Kelvin and Fahrenheit scales have the same temperature?\n\nDo not include units in your answer for this question, since it's asking about two different units simultaneously. Just give the numerical part of the answer. Do not round your answer; the data given above about the temperature scales is exact, so your answer here should be exact and include all the decimal places.\n\nmathjax: $$ \\blank$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -679,7 +675,7 @@
     "solutionUrl": null
   },
   {
-    "id": "14b7f941-8dbc-4f5e-be4f-9e82c81f7591",
+    "id": "7d9f96cb-a04f-41a1-bce3-25249265e33f",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -709,7 +705,7 @@
     "solutionUrl": null
   },
   {
-    "id": "97552f83-f952-43cf-974d-b3d3036561b7",
+    "id": "3b5ae877-cb54-4b08-9847-af5bda8f5c06",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -720,7 +716,7 @@
     "set_label": "Problem 11 (Parts A–B)",
     "name": "Part A. In this problem, we'll practice identifying dimensions and working with…",
     "desc": "Part A. In this problem, we'll practice identifying dimensions and working with dimensions in mathematical formulas. In the next part, we'll use your result here to figure out something important about planets in around distant stars. ----------------------- Isaac Newton came up…",
-    "statement": "Part A. In this problem, we'll practice identifying dimensions and working with dimensions in mathematical formulas. In the next part, we'll use your result here to figure out something important about planets in around distant stars.\n\n-----------------------\n\nIsaac Newton came up with the following formula for the gravitational force between two objects with masses $$m_1$$ and $$m_2:$$ $$F = \\dfrac{Gm_1m_2}{r^2}.$$\n\n(Newton never wrote the formula in quite this way, but he wrote something equivalent, and this is the modern notation.)\n\nForce has dimensions $$\\left = \\mathrm{M \\cdot L \\cdot T^{-2}}.$$\n\n$$r$$ is the distance between the two objects.\n\nGiven this information, find the dimensions of $$G.$$\n\nmathjax: \\[\\left = \\mathrm{M^\\blankL^\\blankT^\\blank }\\]\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In this problem, you will use dimensions to answer a question that deals with physics you haven't previously learned. The goal of the problem is to show you how, even if you don't understand everything about a physical scenario or everything about where a formula comes from, you can still often make progress just by thinking about dimensions.\n\n-------------------------------\n\nUsing a technique called the __Doppler shift__, astronomers are able to measure how fast distant stars are moving towards or away from Earth.\n\nIn 1995, astronomers measuring star Pegasi 51 noticed that the star was coming towards Earth, then moving away, then coming towards Earth again in a regular manner. Their data looked like this:\n\n__image credit: Pearson Education__\n\nAstronomers realized that the reason the star seemed to be shaking back and forth in the sky was that it had a planet orbiting it. Although they couldn't see the planet directly, they knew that the planet's gravity was alternately tugging the star towards and away from Earth, depending on where the planet was in its orbit. It was by examining this graph that astronomers discovered the first known planets around other stars.\n\nAstronomers wanted to know more about the planet orbiting Pegasi 51. One thing they did was draw a horizontal bar beneath all the data points in the plot to indicate the __period__ $$P$$ of the orbit. This is the time it takes the planet to make one complete trip around Pegasi 51. Astronomers also knew that finding the period would help them figure out how far away the planet was from the star, which would help them figure out how hot the planet might be and whether it might support life.\n\nAccording to the theory of Newtonian mechanics, the distance $$a$$ between a star and a planet is $$a = \\left( G (m_1+m_2) \\left(\\dfrac{P}{2\\pi}\\right)^2 \\right)^n$$ for some number $$n.$$\n\nIn this equation, $$G$$ is the gravitational constant from Newton's formula in the previous part of this problem. $$m_1$$ is the mass of the planet and $$m_2$$ is the mass of the star.\n\n$$n$$ has no dimensions; it is just a number. What is the exact value of $$n?$$ (Do not use a decimal approximation for this problem.)\n\nmathjax: \\\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
+    "statement": "Part A. In this problem, we'll practice identifying dimensions and working with dimensions in mathematical formulas. In the next part, we'll use your result here to figure out something important about planets in around distant stars.\n\n-----------------------\n\nIsaac Newton came up with the following formula for the gravitational force between two objects with masses $$m_1$$ and $$m_2:$$ $$F = \\dfrac{Gm_1m_2}{r^2}.$$\n\n(Newton never wrote the formula in quite this way, but he wrote something equivalent, and this is the modern notation.)\n\nForce has dimensions $$\\left = \\mathrm{M \\cdot L \\cdot T^{-2}}.$$\n\n$$r$$ is the distance between the two objects.\n\nGiven this information, find the dimensions of $$G.$$\n\nmathjax: \\[\\left = \\mathrm{M^\\blank L^\\blank T^\\blank }\\]\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In this problem, you will use dimensions to answer a question that deals with physics you haven't previously learned. The goal of the problem is to show you how, even if you don't understand everything about a physical scenario or everything about where a formula comes from, you can still often make progress just by thinking about dimensions.\n\n-------------------------------\n\nUsing a technique called the __Doppler shift__, astronomers are able to measure how fast distant stars are moving towards or away from Earth.\n\nIn 1995, astronomers measuring star Pegasi 51 noticed that the star was coming towards Earth, then moving away, then coming towards Earth again in a regular manner. Their data looked like this:\n\n__image credit: Pearson Education__\n\nAstronomers realized that the reason the star seemed to be shaking back and forth in the sky was that it had a planet orbiting it. Although they couldn't see the planet directly, they knew that the planet's gravity was alternately tugging the star towards and away from Earth, depending on where the planet was in its orbit. It was by examining this graph that astronomers discovered the first known planets around other stars.\n\nAstronomers wanted to know more about the planet orbiting Pegasi 51. One thing they did was draw a horizontal bar beneath all the data points in the plot to indicate the __period__ $$P$$ of the orbit. This is the time it takes the planet to make one complete trip around Pegasi 51. Astronomers also knew that finding the period would help them figure out how far away the planet was from the star, which would help them figure out how hot the planet might be and whether it might support life.\n\nAccording to the theory of Newtonian mechanics, the distance $$a$$ between a star and a planet is $$a = \\left( G (m_1+m_2) \\left(\\dfrac{P}{2\\pi}\\right)^2 \\right)^n$$ for some number $$n.$$\n\nIn this equation, $$G$$ is the gravitational constant from Newton's formula in the previous part of this problem. $$m_1$$ is the mass of the planet and $$m_2$$ is the mass of the star.\n\n$$n$$ has no dimensions; it is just a number. What is the exact value of $$n?$$ (Do not use a decimal approximation for this problem.)\n\nmathjax: \\\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/02_hw_period.jpg"
     ],
@@ -740,7 +736,7 @@
     "solutionUrl": null
   },
   {
-    "id": "386be6e2-8228-41e0-865d-a8fafbc612f1",
+    "id": "c6320e4d-12f9-4494-b3c2-4381fb441099",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -767,8 +763,7 @@
     "aops_id": "39815",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "c77ae479-5fd4-42c6-ad06-a097383f701a",
@@ -1013,7 +1008,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7b3ade15-d899-4716-b69d-c7818e3a74fc",
+    "id": "2977434f-4636-43fe-9d40-4f9fa00f31ac",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1040,11 +1035,10 @@
     "aops_id": "41384",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "5bb5aa3b-cf3a-43c1-85bf-fe64ea851352",
+    "id": "1aae2d35-03c3-4069-9694-0eb8bb4ed60d",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1071,11 +1065,10 @@
     "aops_id": "42010",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "e6efbf16-79fd-4bf5-b2ea-6370ddfcd9f8",
+    "id": "c2dbdf7b-afcd-4b25-8ca6-9493950a06b3",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1102,11 +1095,10 @@
     "aops_id": "41377",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "37f21ba1-2f3c-43b9-be89-6bd843009673",
+    "id": "ae80442e-a181-4b45-97ec-c8dbb0666db4",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1136,7 +1128,7 @@
     "solutionUrl": null
   },
   {
-    "id": "22f2814c-eb40-425f-b478-859aac30e074",
+    "id": "a2a28de0-060e-4367-be49-956576ad6f70",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1166,7 +1158,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fd5b4e2f-f6b5-400b-9715-b531d99ccc88",
+    "id": "54444cad-f24b-41c5-9fd4-35e7e6c25572",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1195,7 +1187,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e22998af-e361-4deb-a6fd-b9fe70961c38",
+    "id": "bfc8e910-8c95-4446-aef1-49e6e46fc371",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1225,7 +1217,7 @@
     "solutionUrl": null
   },
   {
-    "id": "12e97ce9-3627-474d-a538-969d94546cc9",
+    "id": "fb5f1e31-fd30-4696-b909-3ec9bdf5647c",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1255,7 +1247,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7508ded5-be2a-47ae-8ac0-fb8f6b5e1273",
+    "id": "63ccad38-e004-4d3d-ad5d-62f5e44e24d4",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1282,11 +1274,10 @@
     "aops_id": "41378",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "c5a00f54-fec9-4ae3-87c6-e5bbea4ea555",
+    "id": "a80c00bb-d099-4fa0-8d55-fbeee657a5c4",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1297,7 +1288,7 @@
     "set_label": "Problem 10",
     "name": "During a previous lesson, we used dimensional analysis to determine the period of a…",
     "desc": "During a previous lesson, we used dimensional analysis to determine the period of a pendulum. We found $$T = c\\sqrt{\\dfrac{\\ell}{g}},$$ where $$T$$ is the period of the pendulum, $$\\ell$$ is the length of the pendulum, $$g$$ is Earth's gravitational acceleration, and $$c$$ is an…",
-    "statement": "During a previous lesson, we used dimensional analysis to determine the period of a pendulum. We found $$T = c\\sqrt{\\dfrac{\\ell}{g}},$$ where $$T$$ is the period of the pendulum, $$\\ell$$ is the length of the pendulum, $$g$$ is Earth's gravitational acceleration, and $$c$$ is an unknown constant. We used that model to build two pendulums such that the ratio of their periods was $$2$$.\n\nIn this discussion problem, you will design your own experiment with the pendulum, write the methods in an initial post, and review two of your peers' methods.\n\nHave you ever tried to follow someone's exact instructions and it didn't turn out the way you wanted? (https://youtu.be/FN2RM-CHkuI)\n\nAs you can see from the video, writing exact instructions can be challenging. Peer feedback is exceptionally helpful for improving the clarity of your writing. Here are a few tips: - Write simple, clear instructions with enough details for accurate replication. - Include which equipment you use. Example: \"Use a meter stick to measure the length of your pencil.\" - Do not include extraneous steps like \"measure twice, cut once\", “collect all lab equipment” or “sharpen your pencil” or “meditate to clear your mind in preparation for accurate data collection”. - Using bullet points or numbered steps is perfectly acceptable.\n\nFor your experiment, you can choose to do this either in real life with a homemade pendulum, or you may use simulations like: (https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html)\n\n**Instructions**\n\n**$$1$$) Initial Post**\n\n- Pick a (school appropriate) song. - Write out the name and artist. - Write out your methods to get the pendulum to swing to the beat of this song. Be specific enough that a peer could follow your exact instructions and get the same results. - Post methods and your song title/artist on the discussion board.\n\n**$$2$$) Peer response**\n\n- Read at least two other student posts on the discussion board and replicate their experiment using their exact methods. - Post your results. Were you able to get the pendulum to swing to the beat of the song? - Provide feedback for the methods you followed. Specifically note if any parts of the instructions were confusing.\n\n**Peer Response Tips**\n\nReviewing another person's work is a valuable way to learn. Providing quality feedback is also a useful skill to master. Here are some tips to help you provide the most helpful, accurate, and consistent feedback possible: - Remember, English isn't everyone's native language. Focus primarily on how well you were able to follow their exact instructions. - When writing critical feedback, use a constructive and polite tone. - Don't forget to write what you liked about their post.",
+    "statement": "During a previous lesson, we used dimensional analysis to determine the period of a pendulum. We found $$T = c\\sqrt{\\dfrac{\\ell}{g}},$$ where $$T$$ is the period of the pendulum, $$\\ell$$ is the length of the pendulum, $$g$$ is Earth's gravitational acceleration, and $$c$$ is an unknown constant. We used that model to build two pendulums such that the ratio of their periods was $$2$$.\n\nIn this discussion problem, you will design your own experiment with the pendulum, write the methods in an initial post, and review two of your peers' methods.\n\nHave you ever tried to follow someone's exact instructions and it didn't turn out the way you wanted? (https://youtu.be/FN2RM-CHkuI)\n\nAs you can see from the video, writing exact instructions can be challenging. Peer feedback is exceptionally helpful for improving the clarity of your writing. Here are a few tips: - Write simple, clear instructions with enough details for accurate replication. - Include which equipment you use. Example: \"Use a meter stick to measure the length of your pencil.\" - Do not include extraneous steps like \"measure twice, cut once\", “collect all lab equipment” or “sharpen your pencil” or “meditate to clear your mind in preparation for accurate data collection”. - Using bullet points or numbered steps is perfectly acceptable.\n\nFor your experiment, you can choose to do this either in real life with a homemade pendulum, or use (https://aops-curriculum.github.io/268_Introduction_to_Physics/pendulum_lab.html).\n\n**Instructions**\n\n**$$1$$) Initial Post**\n\n- Pick a (school appropriate) song. - Write out the name and artist. - Write out your methods to get the pendulum to swing to the beat of this song. Be specific enough that a peer could follow your exact instructions and get the same results. - Post methods and your song title/artist on the discussion board.\n\n**$$2$$) Peer response**\n\n- Read at least two other student posts on the discussion board and replicate their experiment using their exact methods. - Post your results. Were you able to get the pendulum to swing to the beat of the song? - Provide feedback for the methods you followed. Specifically note if any parts of the instructions were confusing.\n\n**Peer Response Tips**\n\nReviewing another person's work is a valuable way to learn. Providing quality feedback is also a useful skill to master. Here are some tips to help you provide the most helpful, accurate, and consistent feedback possible: - Remember, English isn't everyone's native language. Focus primarily on how well you were able to follow their exact instructions. - When writing critical feedback, use a constructive and polite tone. - Don't forget to write what you liked about their post.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -1529,7 +1520,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7cf80bfb-389c-4c91-aaaa-708dbb22ecbf",
+    "id": "9b0e3a46-ab39-433f-89da-0a9e9e5a97eb",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1539,8 +1530,8 @@
     "set_number": 1,
     "set_label": "Problem 1",
     "name": "For digital devices, unless there's a good reason to believe otherwise, we can take the…",
-    "desc": "For digital devices, unless there's a good reason to believe otherwise, we can take the uncertainty to be half the smallest increment on the device. We can do the same with analog devices. These measurement devices usually have marking on them to indicate different measurements…",
-    "statement": "For digital devices, unless there's a good reason to believe otherwise, we can take the uncertainty to be half the smallest increment on the device. We can do the same with analog devices. These measurement devices usually have marking on them to indicate different measurements. Half the increment between markings is a good estimate for the uncertainty.\n\nWith that rule in mind, what's the uncertainty $$\\sigma$$ when measuring distance with a ruler marked in metric, like the one shown below?\n\nThe printed numbers indicate centimeters.\n\nmathjax: $$ \\sigma = \\blank \\;\\mathrm{mm}$$\n\nallowed: None",
+    "desc": "For digital devices, unless there's a good reason to believe otherwise, we can take the uncertainty to be half the smallest increment on the device. We can do the same with analog devices. These measurement devices usually have markings on them to indicate different…",
+    "statement": "For digital devices, unless there's a good reason to believe otherwise, we can take the uncertainty to be half the smallest increment on the device. We can do the same with analog devices. These measurement devices usually have markings on them to indicate different measurements. Half the increment between markings is a good estimate for the uncertainty.\n\nWith that rule in mind, what's the uncertainty $$\\sigma$$ when measuring distance with a ruler marked in metric, like the one shown below?\n\nThe printed numbers indicate centimeters.\n\nmathjax: $$ \\sigma = \\blank \\;\\mathrm{mm}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/02_hw_metric_ruler_self.jpg"
     ],
@@ -1561,7 +1552,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9c5ff0da-6696-46f6-8315-6090aec31acc",
+    "id": "c20c6537-733a-4f25-ac9b-94d09e57cc86",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1593,7 +1584,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0799c5d-ea07-4eb5-bd03-82f81caa8e37",
+    "id": "8e684eba-1bf0-4644-bc47-730cfc702a21",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1604,7 +1595,7 @@
     "set_label": "Problem 3",
     "name": "Scientists frequently have to learn new notation for concepts they already know in some…",
     "desc": "Scientists frequently have to learn new notation for concepts they already know in some other notation. In this problem, you will first learn a new notation for writing uncertainty, then practice with it. --------------------- We've discussed writing uncertainties using the…",
-    "statement": "Scientists frequently have to learn new notation for concepts they already know in some other notation. In this problem, you will first learn a new notation for writing uncertainty, then practice with it.\n\n---------------------\n\nWe've discussed writing uncertainties using the $$\\pm$$ symbol. In this notation, $$x = 2.2 \\pm 0.3 \\;\\mathrm{m},$$ means the absolute uncertainty in $$x$$ is $$0.3 \\;\\mathrm{m}.$$\n\nAnother way scientists report uncertainties is with a notation that looks like this:\n\n$$G = 6.67430(15) \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}.$$\n\nThis is an equation for the __gravitational constant__, a number that's important to both Newton's and Einstein's theories of gravity.\n\nThe uncertainty in the last two digits of $$G$$ is represented by the parentheses. In other words, the gravitational constant is approximately $$G \\approx 6.67430 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}},$$ but the last two digits might not be $$30.$$ They are uncertain by $$15,$$ so the last two digits could be anywhere from $$15$$ to $$45$$ and $$G$$ is probably in the range $$6.67415 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}} < G < 6.67445 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}$$\n\nThe same equation written in $$\\pm$$ notation is $$G = \\left(6.67430 \\pm 0.00015 \\right) \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}.$$\n\nThe absolute uncertainty in $$G$$ is $$\\sigma_G = 0.00015 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}} = 1.5 \\times 10^{-15} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}$$\n\n----------------\n\nNow we can do a practice problem with this new notation.\n\nAccording to a group of scientists who worked on the space telescope __Planck__, the age of the universe is $$t_0 = 13.813(38) \\times 10^9 \\;\\mathrm{year}.$$\n\nWhat is the absolute uncertainty in the age of the universe, in years, according to these scientists?\n\nmathjax: $$ \\sigma_{t_0} = \\blank \\times 10^{\\blank} \\;\\mathrm{years}$$\n\nallowed: None",
+    "statement": "Scientists frequently have to learn new notation for concepts they already know in some other notation. In this problem, you will first learn a new notation for writing uncertainty, then practice with it.\n\n---------------------\n\nWe've discussed writing uncertainties using the $$\\pm$$ symbol. In this notation, $$x = 2.2 \\pm 0.3 \\;\\mathrm{m},$$ means the absolute uncertainty in $$x$$ is $$0.3 \\;\\mathrm{m}.$$\n\nAnother way scientists report uncertainties is with a notation that looks like this:\n\n$$G = 6.67430(15) \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}.$$\n\nThis is an equation for the __gravitational constant__, a number that's important to both Newton's and Einstein's theories of gravity.\n\nThe uncertainty in the last two digits of $$G$$ is represented by the parentheses. In other words, the gravitational constant is approximately $$G \\approx 6.67430 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}},$$ but the last two digits might not be $$30.$$ They are uncertain by $$15,$$ so the last two digits could be anywhere from $$15$$ to $$45$$ and $$G$$ is probably in the range $$6.67415 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}} < G < 6.67445 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}$$\n\nThe same equation written in $$\\pm$$ notation is $$G = \\left(6.67430 \\pm 0.00015 \\right) \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}}.$$\n\nThe absolute uncertainty in $$G$$ is $$\\begin{aligned} \\sigma_G &= 0.00015 \\times 10^{-11} \\;\\mathrm{m^3 \\, kg \\, s^{-2}} \\\\[6pt] &= 1.5 \\times 10^{-15} \\;\\mathrm{m^3 \\, kg \\, s^{-2}} \\end{aligned}$$\n\n----------------\n\nNow we can do a practice problem with this new notation.\n\nAccording to a group of scientists who worked on the space telescope __Planck__, the age of the universe is $$t_0 = 13.813(38) \\times 10^9 \\;\\mathrm{year}.$$\n\nWhat is the absolute uncertainty in the age of the universe, in years, according to these scientists?\n\nmathjax: $$ \\sigma_{t_0} = \\blank \\times 10^{\\blank} \\;\\mathrm{years}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -1623,7 +1614,7 @@
     "solutionUrl": null
   },
   {
-    "id": "288d05c0-b14e-4b9b-b79e-94de32f3d897",
+    "id": "59291272-0a15-4b6d-b5e3-8ccd6682bf7d",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1655,7 +1646,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bf4e473a-a787-4b69-a23d-b898ac215212",
+    "id": "80e4d918-3640-480f-ab81-a76c89d82dba",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1686,7 +1677,7 @@
     "solutionUrl": null
   },
   {
-    "id": "af5fee51-37d3-4533-8d4b-16d9dfbc0f82",
+    "id": "83e177c9-0ef9-4808-a49e-97dff2be236c",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1716,7 +1707,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9fab0c4c-a5e9-4678-98e0-757ed91aea6a",
+    "id": "839cf17c-42de-44f1-81ee-34da7a79dcbe",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1754,7 +1745,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d4ef864-ec83-4fb8-bd45-795b6cf98709",
+    "id": "73c2ff79-f389-4838-8df7-05bc15dd25a0",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -1765,7 +1756,7 @@
     "set_label": "Problem 8",
     "name": "In this problem, we'll practice the difference between __absolute error__, which we'll…",
     "desc": "In this problem, we'll practice the difference between __absolute error__, which we'll call $$\\sigma,$$ and __relative error__, which we'll call $$\\eta.$$ We'll also see some handy unit conversions that you might use later on. (But you don't need to memorize the unit…",
-    "statement": "In this problem, we'll practice the difference between __absolute error__, which we'll call $$\\sigma,$$ and __relative error__, which we'll call $$\\eta.$$ We'll also see some handy unit conversions that you might use later on. (But you don't need to memorize the unit conversions.)\n\n----------\n\nMany units are defined in terms of one another, and the conversion factors sometimes involve a large number of digits. For example, in class we saw that one pound mass in the Avoirdupois system is defined as $$ 1\\;\\mathrm{lb} = 0.45359237 \\;\\mathrm{kg}.$$\n\nUnlike a measurement reported with significant figures and uncertainty, this conversion is exact by definition.\n\nPhysical constants also sometimes have exact values as a byproduct of how units are defined. For example, the speed of light is exactly $$ c = 299{,}792{,}458 \\;\\mathrm{m/s}.$$\n\nThe precise speed of light and pound-kilogram conversion factors may be difficult to remember because they have so many digits. Many people instead remember approximate values, such as $$2.2 \\;\\mathrm{lb} \\approx 1 \\;\\mathrm{kg}$$ or $$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}.$$ Using these approximate values in a calculation will introduce some systematic error, but may be okay if the relative uncertainty in other parts of the calculation is already significantly larger than the relative error introduced by using an approximate unit conversion or physical constant.\n\nBelow is a table listing some exact physical constant and unit conversions. Below that are some approximate versions which are draggable. Order the approximate versions from greatest to least relative error.\n\nIn some cases, you may have to combine two exact conversions in order to evaluate how much relative error this is in one of the approximate conversions.\n\nRemember that the relative error in a quantity is the absolute error divided by the quantity itself. For example, the absolute error in the speed of light approximation is $$\\sigma = 300{,}000{,}000 \\;\\mathrm{m/s} - 299{,}792{,}458 \\;\\mathrm{m/s} = 207{,}542 \\;\\mathrm{m/s}$$\n\nThis may seem like a lot of error because $$207{,}542 \\;\\mathrm{m/s}$$ is a fast speed, but the relative error is $$\\eta = \\dfrac{207{,}542 \\;\\mathrm{m/s}}{299{,}792{,}458 \\;\\mathrm{m/s}} \\approx 0.00069,$$ so the relative error is quite small, and $$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}$$ is a good approximation despite the large-seeming absolute error.\n\n$$\\begin{aligned} {} & \\text{\\large Conversion or Constant} & \\text{\\large \\,\\,\\,Exact } & \\text{\\large \\,Equation} \\\\ \\hline {} & \\text{pounds to kilograms} \\quad\\quad\\quad & 1 \\;\\mathrm{lb} & = 0.45359237 \\;\\mathrm{kg} \\\\ {} & \\text{miles to inches} & 1 \\;\\mathrm{mile} &= 63{,}360 \\;\\mathrm{in} \\\\ {} & \\text{inches to centimeters} & 1 \\;\\mathrm{in} &= 2.54 \\;\\mathrm{cm} \\\\ {} & \\text{calories to joules} & 1 \\;\\mathrm{cal} &= 4.184 \\;\\mathrm{J} \\\\ {} & \\text{speed of light} & c &= 299{,}792{,}458 \\;\\mathrm{m/s} \\\\ {} & \\text{Planck's constant} & h & = 6.62607015 \\times 10^{-34} \\;\\mathrm{J \\cdot s}\\\\ {} & \\text{elementary charge} & e & = 1.602176634 \\times 10^{-19} \\;\\mathrm{C}\\\\ \\end{aligned}$$\n\ndraggables\n\n$$1 \\;\\mathrm{kg}\\approx 2.2 \\;\\mathrm{lb}$$\n\n$$5 \\;\\mathrm{km} \\approx 3.1 \\;\\mathrm{mile}$$\n\n$$1 \\;\\mathrm{J} \\approx 0.24 \\;\\mathrm{cal}$$\n\n$$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}$$\n\n$$\\dfrac{h}{2\\pi} \\approx 10^{-34} \\;\\mathrm{J \\cdot s}$$\n\n$$e \\approx 1.6 \\times 10^{-19} \\;\\mathrm{C}$$\n\nmathjax: \\[ \\text{most relative error } \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\text{ least relative error} \\]\n\noutputDisplayFormat: contentInEachDropArea\n\nrow widths: 2, 2, 2",
+    "statement": "In this problem, we'll practice the difference between __absolute error__, which we'll call $$\\sigma,$$ and __relative error__, which we'll call $$\\eta.$$ We'll also see some handy unit conversions that you might use later on. (But you don't need to memorize the unit conversions.)\n\n----------\n\nMany units are defined in terms of one another, and the conversion factors sometimes involve a large number of digits. For example, in class we saw that one pound mass in the Avoirdupois system is defined as $$ 1\\;\\mathrm{lb} = 0.45359237 \\;\\mathrm{kg}.$$\n\nUnlike a measurement reported with significant figures and uncertainty, this conversion is exact by definition.\n\nPhysical constants also sometimes have exact values as a byproduct of how units are defined. For example, the speed of light is exactly $$ c = 299{,}792{,}458 \\;\\mathrm{m/s}.$$\n\nThe precise speed of light and pound-kilogram conversion factors may be difficult to remember because they have so many digits. Many people instead remember approximate values, such as $$2.2 \\;\\mathrm{lb} \\approx 1 \\;\\mathrm{kg}$$ or $$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}.$$ Using these approximate values in a calculation will introduce some systematic error, but may be okay if the relative uncertainty in other parts of the calculation is already significantly larger than the relative error introduced by using an approximate unit conversion or physical constant.\n\nBelow is a table listing some exact physical constant and unit conversions. Below that are some approximate versions which are draggable. Order the approximate versions from greatest to least relative error.\n\nIn some cases, you may have to combine two exact conversions in order to evaluate how much relative error this is in one of the approximate conversions.\n\nRemember that the relative error in a quantity is the absolute error divided by the quantity itself. For example, the absolute error in the speed of light approximation is $$\\begin{aligned} \\sigma &= 300{,}000{,}000 \\;\\mathrm{m/s} - 299{,}792{,}458 \\;\\mathrm{m/s} \\\\[6pt] &= 207{,}542 \\;\\mathrm{m/s} \\end{aligned}$$\n\nThis may seem like a lot of error because $$207{,}542 \\;\\mathrm{m/s}$$ is a fast speed, but the relative error is $$\\begin{aligned} \\eta &= \\dfrac{207{,}542 \\;\\mathrm{m/s}}{299{,}792{,}458 \\;\\mathrm{m/s}} \\\\[6pt] &\\approx 0.00069, \\end{aligned}$$ so the relative error is quite small, and $$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}$$ is a good approximation despite the large-seeming absolute error.\n\n$$\\begin{aligned} {} & \\text{\\large Conversion or Constant} & \\text{\\large \\,\\,\\,Exact } & \\text{\\large \\,Equation} \\\\ \\hline {} & \\text{pounds to kilograms} \\quad\\quad\\quad & 1 \\;\\mathrm{lb} & = 0.45359237 \\;\\mathrm{kg} \\\\ {} & \\text{miles to inches} & 1 \\;\\mathrm{mile} &= 63{,}360 \\;\\mathrm{in} \\\\ {} & \\text{inches to centimeters} & 1 \\;\\mathrm{in} &= 2.54 \\;\\mathrm{cm} \\\\ {} & \\text{calories to joules} & 1 \\;\\mathrm{cal} &= 4.184 \\;\\mathrm{J} \\\\ {} & \\text{speed of light} & c &= 299{,}792{,}458 \\;\\mathrm{m/s} \\\\ {} & \\text{Planck's constant} & h & = 6.62607015 \\times 10^{-34} \\;\\mathrm{J \\cdot s}\\\\ {} & \\text{elementary charge} & e & = 1.602176634 \\times 10^{-19} \\;\\mathrm{C}\\\\ \\end{aligned}$$\n\ndraggables\n\n$$1 \\;\\mathrm{kg}\\approx 2.2 \\;\\mathrm{lb}$$\n\n$$5 \\;\\mathrm{km} \\approx 3.1 \\;\\mathrm{mile}$$\n\n$$1 \\;\\mathrm{J} \\approx 0.24 \\;\\mathrm{cal}$$\n\n$$c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}$$\n\n$$\\dfrac{h}{2\\pi} \\approx 10^{-34} \\;\\mathrm{J \\cdot s}$$\n\n$$e \\approx 1.6 \\times 10^{-19} \\;\\mathrm{C}$$\n\nmathjax: \\[ \\text{most relative error } \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\drag \\\\ \\text{ least relative error} \\]\n\noutputDisplayFormat: contentInEachDropArea\n\nrow widths: 2, 2, 2",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -1784,7 +1775,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d0e129f-a4a9-4e35-9b41-cea4b92a771a",
+    "id": "7aec4905-aa2e-4078-bb6b-ad981e7c1eef",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2088,7 +2079,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c54c60fb-00b3-402c-a5b3-bee0fffd0d57",
+    "id": "6269e4af-e7cf-4776-85e5-4fac47be0ab9",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2118,7 +2109,7 @@
     "solutionUrl": null
   },
   {
-    "id": "51c674ab-8a94-40ca-8413-d40aaf32893e",
+    "id": "7de75012-2663-4ce9-9452-329d3a5c4813",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2148,7 +2139,7 @@
     "solutionUrl": null
   },
   {
-    "id": "06bfff9c-a8bc-472f-973c-02c03f9817e3",
+    "id": "3bf10db6-8175-4212-a025-8c0df75ca089",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2180,7 +2171,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ef927b23-fccd-41a1-9b04-9523fd3a1484",
+    "id": "5e7bfa8d-4a4e-42c2-a192-b2120066a99a",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2210,7 +2201,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1626dc4d-a66c-4efc-ad3c-6d1bd043d19e",
+    "id": "9fb1ad52-41f1-45c2-bd6e-a5348500c9ca",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2221,7 +2212,7 @@
     "set_label": "Problem 5",
     "name": "Suppose there is a box connected to a spring sitting on the ground. There is also wind…",
     "desc": "Suppose there is a box connected to a spring sitting on the ground. There is also wind blowing on the box. The wind exerts a force on the box that compresses the spring a bit to some new equilibrium length. The distance between where the box sits at equilibrium without wind and…",
-    "statement": "Suppose there is a box connected to a spring sitting on the ground. There is also wind blowing on the box. The wind exerts a force on the box that compresses the spring a bit to some new equilibrium length.\n\nThe distance between where the box sits at equilibrium without wind and where it sits with wind is called $$\\Delta x.$$ In this problem, we will focus on magnitudes, and you can assume $$\\Delta x$$ is positive.\n\nRemember that in class, we found that the size of the force from the spring is $$|F_{\\rm spring}| = k \\Delta x,$$ and the size of the force from wind is $$|F_{\\rm wind}| = \\dfrac12 C_D \\rho A v^2.$$\n\nWe can assume there is no friction with the ground, and the only forces we need to worry about are the force from the wind on the box and the force from the spring on the box.\n\nFind an equation for $$\\Delta x$$ in terms of the other variables.\n\nmathjax: \\[ \\Delta x = \\blank C_D^{\\blank} \\rho^{\\blank} A^{\\blank} v^{\\blank} k^{\\blank}.\\]\n\nwidth: 4,4,4,4,4,4\n\nallowed: None",
+    "statement": "Suppose there is a box connected to a spring sitting on the ground. There is also wind blowing on the box. The wind exerts a force on the box that compresses the spring a bit to some new equilibrium length.\n\nThe distance between where the box sits at equilibrium without wind and where it sits with wind is called $$\\Delta x.$$ In this problem, we will focus on magnitudes, and you can assume $$\\Delta x$$ is positive.\n\nRemember that in class, we found that the size of the force from the spring is $$|F_{\\rm spring}| = k \\Delta x,$$ and the size of the force from wind is $$|F_{\\rm wind}| = \\dfrac12 C_D \\rho A v^2.$$\n\nWe can assume there is no friction with the ground, and the only forces we need to worry about are the force from the wind on the box and the force from the spring on the box.\n\nFind an equation for $$\\Delta x$$ in terms of the other variables.\n\nmathjax: \\[ \\Delta x = \\blank C_D^{\\blank} \\rho^{\\blank} A^{\\blank} v^{\\blank} k^{\\blank}.\\]\n\nwidth: 4,4,4,4,4,4",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -2240,7 +2231,7 @@
     "solutionUrl": null
   },
   {
-    "id": "608a7ee3-7457-4381-b702-b332cdda3876",
+    "id": "8dce5f80-a51b-4b1c-a4a2-cac1d969ba9e",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2251,7 +2242,7 @@
     "set_label": "Problem 6 (Parts A–B)",
     "name": "Part A. Suppose you pull the drain on a bathtub. The water will not flow out at a…",
     "desc": "Part A. Suppose you pull the drain on a bathtub. The water will not flow out at a constant rate. Instead, when the tub is very full, the weight of the water pushes water out the drain faster. As the tub empties, the rate that water flows out slows down. A simple theory says that…",
-    "statement": "Part A. Suppose you pull the drain on a bathtub. The water will not flow out at a constant rate. Instead, when the tub is very full, the weight of the water pushes water out the drain faster. As the tub empties, the rate that water flows out slows down.\n\nA simple theory says that the speed $$v$$ of water, as it leaves the bathtub, depends only on the height $$h$$ of the water level above the bottom of the tub and on the gravitational acceleration $$g.$$\n\nThe dimensions of these quantities are $$\\begin{aligned} \\left[ v\\right] & = \\mathrm{L\\cdot T^{-1}}\\\\ \\left & = \\mathrm{L\\cdot T^{-2}} \\\\ \\left[ h \\right] &= \\mathrm{L} \\end{aligned}$$\n\nWhen the bathtub is full, water leaves the bath tub at $$2.9 \\;\\mathrm{m/s}$$ through the drain.\n\nAt what speed does water leave the bathtub when it is half full?\n\nAside from a constant coefficient (whose value doesn't matter in this problem), there is only one possible formula for $$v$$ in terms of $$g$$ and $$h.$$ Use the dimensions of each quantity to find that formula, then use the formula to answer the question.\n\nmathjax: \\\n\nwidth: 5\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In the previous problem, we imagined a bathtub draining. Water would leave the tub with a speed of $$2.9 \\;\\mathrm{m/s}$$ when the tub is full.\n\nSuppose the cross sectional area of the drain is $$8.0 \\;\\mathrm{cm}^2.$$ You may assume that all water leaving the bathtub through the drain exits through the drain with the same speed, and that speed follows the theory mentioned in part (A).\n\nAlso suppose that we pour $$1.0 \\; \\mathrm{L/s}$$ of water into the bathtub. $$1 \\;\\mathrm{L}$$ stands for \"one liter\", it is defined as $$1 \\;\\mathrm{L} = 10^3 \\;\\mathrm{cm}^3.$$\n\nThen after some time, the water in the tub will come to a constant height as we continuously pour water in and it continuously leaves. We can call this the \"steady state\". What percentage of the tub will be full of water in the steady state?\n\nmathjax: \\[ \\blank \\%\\]\n\nwidth: 2\n\nallowed: None",
+    "statement": "Part A. Suppose you pull the drain on a bathtub. The water will not flow out at a constant rate. Instead, when the tub is very full, the weight of the water pushes water out the drain faster. As the tub empties, the rate that water flows out slows down.\n\nA simple theory says that the speed $$v$$ of water, as it leaves the bathtub, depends only on the height $$h$$ of the water level above the bottom of the tub and on the gravitational acceleration $$g.$$\n\nThe dimensions of these quantities are $$\\begin{aligned} \\left[ v\\right] & = \\mathrm{L\\cdot T^{-1}}\\\\ \\left & = \\mathrm{L\\cdot T^{-2}} \\\\ \\left[ h \\right] &= \\mathrm{L} \\end{aligned}$$\n\nWhen the bathtub is full, water leaves the bath tub at $$2.9 \\;\\mathrm{m/s}$$ through the drain.\n\nAt what speed does water leave the bathtub when it is half full?\n\nAside from a constant coefficient (whose value doesn't matter in this problem), there is only one possible formula for $$v$$ in terms of $$g$$ and $$h.$$ Use the dimensions of each quantity to find that formula, then use the formula to answer the question.\n\nmathjax: \\\n\nwidth: 5\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In the previous problem, we imagined a bathtub draining. Water would leave the tub with a speed of $$2.9 \\;\\mathrm{m/s}$$ when the tub is full.\n\nSuppose the cross sectional area of the drain is $$8.0 \\;\\mathrm{cm}^2.$$ You may assume that all water leaving the bathtub through the drain exits through the drain with the same speed, and that speed follows the theory mentioned in part (A).\n\nAlso suppose that we pour $$1.0 \\; \\mathrm{L/s}$$ of water into the bathtub. $$1 \\;\\mathrm{L}$$ stands for \"one liter\", it is defined as $$1 \\;\\mathrm{L} = 10^3 \\;\\mathrm{cm}^3.$$\n\nThen after some time, the water in the tub will come to a constant height as we continuously pour water in and it continuously leaves. We can call this the \"steady state\". What percentage of the tub will be full of water in the steady state?\n\nmathjax: \\[ \\blank \\%\\]\n\nwidth: 2",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -2269,7 +2260,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7b32dcd7-0ec6-4d79-9b52-c91a683dd77c",
+    "id": "ec0dd261-edf6-4daa-a108-556636247491",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2280,7 +2271,7 @@
     "set_label": "Problem 7 (Parts A–D)",
     "name": "Part A. In this multi-part problem, we will study a collision. It's possible to…",
     "desc": "Part A. In this multi-part problem, we will study a collision. It's possible to understand collisions using concepts such as __momentum, energy,__ and __reference frames__. We haven't studied those concepts yet, though. Our goal here is to demonstrate how much we can figure out…",
-    "statement": "Part A. In this multi-part problem, we will study a collision. It's possible to understand collisions using concepts such as __momentum, energy,__ and __reference frames__. We haven't studied those concepts yet, though. Our goal here is to demonstrate how much we can figure out not by applying formal theories of physics, but by combining mathematical and logical reasoning in a way similar to how we did in class. This problem is a new context, but you can figure it out in stages by thinking about what the symbols mean and using some basic intuition.\n\n---------------\n\nA ball of mass $$m$$ moving at velocity $$v$$ approaches a ball of mass $$M$$ that is sitting stationary.\n\n$$v$$ is positive for motion to the right and negative for motion to the left.\n\nHere's a picture of the situation:\n\nWe have drawn the ball of mass $$m$$ smaller than the ball of mass $$M,$$ but we imagine that either ball could be the more massive one, depending on the values of $$m$$ and $$M.$$\n\nThe balls collide and bounce off each other. The ball on the right winds up moving to the right at a velocity $$v_M$$ and the ball on the left will, in this example, bounce off to the left, moving with some velocity $$v_m.$$\n\nOver the rest of this problem (which has several parts), we'll find a formula for $$v_m.$$\n\nTo begin, we note that $$v_m$$ needs to be a function of only the variables that go into the problem: $$v, m,$$ and $$M.$$\n\nWith that in mind, what is the proportionality between $$v_m$$ and $$v?$$\n\nmathjax: \\[ v_m \\propto v^{\\blank}.\\]\n\nwidth: 3\n\nallowed: None\n\nPart B. To continue analyzing the collision problem, we introduce a __special case__. Although the entire problem is hard to tackle head on, it becomes easier if we make a simplifying assumption. That simplifying assumption is the \"special case\".\n\nLet's take the special case that the ball on the left is very small and has very little mass. (Think of a tiny ball bearing just a millimeter across bouncing off a giant ball the size of a whale.) The little ball comes in for a collision and bounces off. No energy is lost in the collision.\n\nWe can write the masses in this special case as $$m \\ll M,$$ meaning \"$$m$$ is much less than $$M\".$$\n\nUsing intuition, we can guess what will happen here. As far as the tiny ball is concerned, the large ball is almost impossible to move, like a hard wall. The tiny ball will bounce back with nearly the same speed it had coming into the collision, but it will reverse direction.\n\nThe large ball will hardly be affected, but there will be at least a tiny bit of motion because the tiny ball does impart at least a very small influence on the large ball when it bounces off.\n\nSince the large ball has a tiny bit of Kinetic energy is energy due to motion after the collision, there's a little bit less energy left over for the small ball, so although its rebound speed will be close to the speed it initially had in its approach, the rebound will be a tiny bit slower.\n\nTo practice translating this intuition into mathematical statements, select all four statements from below that are true in this special case.\n\nRemember that quantities like $$v, v_m,$$ and $$v_M$$ can be positive or negative depending on the direction of motion. The notation $$|v_m|$$ means the magnitude (like the absolute value) of $$v_m.$$ It is never negative. If $$v_m < 0,$$ then $$|v_m| = -v_m.$$ Also keep in mind that motion to the right is positive and motion to the left is negative.\n\nAlso, remember that $$\\ll$$ is different than $$<.$$ The notation $$a \\ll b$$ means $$``a$$ is much less than $$b''\\,.$$\n\nmathjax: \\begin{align*} |v_m| & \\drop |v| \\\\ {} & {} \\\\ |v_M| & \\drop |v| \\\\ {} & {} \\\\ v_m & \\drop 0 \\\\ {} & {} \\\\ v_M &\\drop 0 \\end{align*}\n\nallowed: None\n\ndropdowns\n\n$=$\n\n$\\approx$\n\n$\\ll$\n\ndropdowns\n\n$=$\n\n$\\approx$\n\n$\\ll$\n\ndropdowns\n\n$>$\n\n$<$\n\ndropdowns\n\n$>$\n\n$<$\n\nPart C. Another special case is $$m \\gg M.$$\n\nFirst, draw a picture to illustrate this case. Then use your intuition to guess what happens to the ball of mass $$m.$$ Based on your intuition, which one choices below is true in this special case?\n\n$$v_m = -v$$\n\n$$v_m \\approx -v$$\n\n$$v_m = 0$$\n\n$$v_m \\ll v$$\n\n$$v_m = v$$\n\n$$v_m \\approx v$$\n\nnew lines\n\nleft align\n\nPart D. There is one final special case that is important: $$m = M.$$\n\nThis special case corresponds to what we would see in a game of billiards.\n\nHere is an illustration of what happens:\n\nThe incoming ball stops perfectly.\n\n(In real life, there is some spinning and the collision may lose a tiny bit of energy, and the collision isn't perfectly head on. All these influences make it so the incoming ball doesn't quite perfectly stop. However, the ideal mathematical solution is $$v_m = 0$$ in this case.)\n\nWe now know: - the proportionality between $$v_m$$ and $$v$$ - how $$v_m$$ behaves when $$m \\ll M$$ - how $$v_m$$ behaves when $$m \\gg M$$ - how $$v_m$$ behaves when $$m = M$$\n\nCombine these four bits of knowledge to determine a formula for $$v_m$$ that works in every case.\n\nmathjax: \\[ v_m = \\drop \\dfrac{\\drop \\drop \\drop}{\\drop \\drop \\drop}.\\]\n\nallowed: None\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$+$\n\n$-$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$+$\n\n$-$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$",
+    "statement": "Part A. In this multi-part problem, we will study a collision. It's possible to understand collisions using concepts such as __momentum, energy,__ and __reference frames__. We haven't studied those concepts yet, though. Our goal here is to demonstrate how much we can figure out not by applying formal theories of physics, but by combining mathematical and logical reasoning in a way similar to how we did in class. This problem is a new context, but you can figure it out in stages by thinking about what the symbols mean and using some basic intuition.\n\n---------------\n\nA ball of mass $$m$$ moving at velocity $$v$$ approaches a ball of mass $$M$$ that is sitting stationary.\n\n$$v$$ is positive for motion to the right and negative for motion to the left.\n\nHere's a picture of the situation:\n\nWe have drawn the ball of mass $$m$$ smaller than the ball of mass $$M,$$ but we imagine that either ball could be the more massive one, depending on the values of $$m$$ and $$M.$$\n\nThe balls collide and bounce off each other. The ball on the right winds up moving to the right at a velocity $$v_M$$ and the ball on the left will, in this example, bounce off to the left, moving with some velocity $$v_m.$$\n\nOver the rest of this problem (which has several parts), we'll find a formula for $$v_m.$$\n\nTo begin, we note that $$v_m$$ needs to be a function of only the variables that go into the problem: $$v, m,$$ and $$M.$$\n\nWith that in mind, what is the proportionality between $$v_m$$ and $$v?$$\n\nmathjax: \\[ v_m \\propto v^{\\blank}.\\]\n\nwidth: 3\n\nPart B. To continue analyzing the collision problem, we introduce a __special case__. Although the entire problem is hard to tackle head on, it becomes easier if we make a simplifying assumption. That simplifying assumption is the \"special case\".\n\nLet's take the special case that the ball on the left is very small and has very little mass. (Think of a tiny ball bearing just a millimeter across bouncing off a giant ball the size of a whale.) The little ball comes in for a collision and bounces off. No energy is lost in the collision.\n\nWe can write the masses in this special case as $$m \\ll M,$$ meaning \"$$m$$ is much less than $$M\".$$\n\nUsing intuition, we can guess what will happen here. As far as the tiny ball is concerned, the large ball is almost impossible to move, like a hard wall. The tiny ball will bounce back with nearly the same speed it had coming into the collision, but it will reverse direction.\n\nThe large ball will hardly be affected, but there will be at least a tiny bit of motion because the tiny ball does impart at least a very small influence on the large ball when it bounces off.\n\nSince the large ball has a tiny bit of Kinetic energy is energy due to motion after the collision, there's a little bit less energy left over for the small ball, so although its rebound speed will be close to the speed it initially had in its approach, the rebound will be a tiny bit slower.\n\nTo practice translating this intuition into mathematical statements, select all four statements from below that are true in this special case.\n\nRemember that quantities like $$v, v_m,$$ and $$v_M$$ can be positive or negative depending on the direction of motion. The notation $$|v_m|$$ means the magnitude (like the absolute value) of $$v_m.$$ It is never negative. If $$v_m < 0,$$ then $$|v_m| = -v_m.$$ Also keep in mind that motion to the right is positive and motion to the left is negative.\n\nAlso, remember that $$\\ll$$ is different than $$<.$$ The notation $$a \\ll b$$ means $$``a$$ is much less than $$b''\\,.$$\n\nmathjax: \\begin{align*} |v_m| & \\drop |v| \\\\ {} & {} \\\\ |v_M| & \\drop |v| \\\\ {} & {} \\\\ v_m & \\drop 0 \\\\ {} & {} \\\\ v_M &\\drop 0 \\end{align*}\n\ndropdowns\n\n$=$\n\n$\\approx$\n\n$\\ll$\n\ndropdowns\n\n$=$\n\n$\\approx$\n\n$\\ll$\n\ndropdowns\n\n$>$\n\n$<$\n\ndropdowns\n\n$>$\n\n$<$\n\nPart C. Another special case is $$m \\gg M.$$\n\nFirst, draw a picture to illustrate this case. Then use your intuition to guess what happens to the ball of mass $$m.$$ Based on your intuition, which choice below is true in this special case?\n\n$$v_m = -v$$\n\n$$v_m \\approx -v$$\n\n$$v_m = 0$$\n\n$$v_m \\ll v$$\n\n$$v_m = v$$\n\n$$v_m \\approx v$$\n\nnew lines\n\nleft align\n\nPart D. There is one final special case that is important: $$m = M.$$\n\nThis special case corresponds to what we would see in a game of billiards.\n\nHere is an illustration of what happens:\n\nThe incoming ball stops perfectly.\n\n(In real life, there is some spinning and the collision may lose a tiny bit of energy, and the collision isn't perfectly head on. All these influences make it so the incoming ball doesn't quite perfectly stop. However, the ideal mathematical solution is $$v_m = 0$$ in this case.)\n\nWe now know: - the proportionality between $$v_m$$ and $$v$$ - how $$v_m$$ behaves when $$m \\ll M$$ - how $$v_m$$ behaves when $$m \\gg M$$ - how $$v_m$$ behaves when $$m = M$$\n\nCombine these four bits of knowledge to determine a formula for $$v_m$$ that works in every case.\n\nmathjax: \\[ v_m = \\drop \\dfrac{\\drop \\drop \\drop}{\\drop \\drop \\drop}.\\]\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$+$\n\n$-$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$\n\ndropdowns\n\n$+$\n\n$-$\n\ndropdowns\n\n$v$\n\n$m$\n\n$M$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/11_class_billiard_collision.gif"
     ],
@@ -2300,7 +2291,7 @@
     "solutionUrl": null
   },
   {
-    "id": "338d488d-756c-4fb0-8359-2ff04d9cc1d4",
+    "id": "e748f291-4249-45b2-96a8-dc17c75cff54",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2327,8 +2318,7 @@
     "aops_id": "39817",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "df9a4688-fb2d-403a-b11c-93a56dcf83ae",
@@ -2584,7 +2574,7 @@
     "solutionUrl": null
   },
   {
-    "id": "99dccfcb-bc7b-41e1-8926-ce816000d668",
+    "id": "80a56923-a528-4b82-b2fa-7988ae1a9d89",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2617,7 +2607,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6af1924d-f339-4adb-94c1-ab3c6cf5e60d",
+    "id": "92d5e9d8-5fde-4664-ab60-d484a4c34268",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2647,7 +2637,7 @@
     "solutionUrl": null
   },
   {
-    "id": "331c39bb-c46b-47f5-b29e-f4d638605a92",
+    "id": "f7023b3b-fab5-4e46-9222-f08427e3ebf6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2658,7 +2648,7 @@
     "set_label": "Problem 3 (Parts A–B)",
     "name": "Part A. For this problem, you will continue to use the traffic simulation from class and…",
     "desc": "Part A. For this problem, you will continue to use the traffic simulation from class and prereading. Recall that in class, we tested various numbers of cars on the highway, keeping the number of cells fixed at $$100.$$ Here, we'll try changing the number of cells. Keep $$p =…",
-    "statement": "Part A. For this problem, you will continue to use the traffic simulation from class and prereading.\n\nRecall that in class, we tested various numbers of cars on the highway, keeping the number of cells fixed at $$100.$$ Here, we'll try changing the number of cells. Keep $$p = 0.1.$$\n\nFor this problem, try setting the number of cells to $$50,$$ then finding the number of cars so that the long term average speed is as close as possible to $$3.0\\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nThen set the number of cells to $$200$$ and find the number of cars so that the long term average speed is again as close as possible to $$3.0\\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nYou will want to increase the simulation speed so that you don't have to wait as long for the average speed of the cars to settle down and have only small random fluctuations.\n\nmathjax: \\begin{align}\\text{cars with 50 cells: } \\blank \\\\ \\text{cars with 200 cells: } \\blank \\end{align}\n\nallowed: None\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In the part (A) of this problem, you found two points in the parameter space of the traffic model. At both of these points, the long term average speed of the cars was close to $$3.0 \\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nBased on that problem and any further experimenting with the app you find helpful, what's the relationship between number of cells and number of cars, such that the long term average speed of the cars is unchanged?\n\nWe have set this simulation up so that there are four parameters: - maximum speed of cars - number of cars - number of cells - $$p$$\n\nGiven the relationship between the number of cars and number of cells, how might you simplify this model to just three parameters in order to figure out, in the real world, when traffic jams are likely to start occurring?\n\nThis is a discussion problem, so it will help to talk to your classmates about it on the message boards.",
+    "statement": "Part A. For this problem, you will continue to use the traffic simulation from class and prereading.\n\nRecall that in class, we tested various numbers of cars on the highway, keeping the number of cells fixed at $$100.$$ Here, we'll try changing the number of cells. Keep $$p = 0.1.$$\n\nFor this problem, try setting the number of cells to $$50,$$ then finding the number of cars so that the long term average speed is as close as possible to $$3.0\\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nThen set the number of cells to $$200$$ and find the number of cars so that the long term average speed is again as close as possible to $$3.0\\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nYou will want to increase the simulation speed so that you don't have to wait as long for the average speed of the cars to settle down and have only small random fluctuations.\n\nmathjax: \\begin{align}\\text{cars with 50 cells: } \\blank \\\\ \\text{cars with 200 cells: } \\blank \\end{align}\n\ndropdowns\n\n$+$\n\n$-$\n\n$\\times$\n\n$\\div$\n\nPart B. In the part (A) of this problem, you found two points in the parameter space of the traffic model. At both of these points, the long term average speed of the cars was close to $$3.0 \\;\\mathrm{\\dfrac{cells}{timestep}}.$$\n\nBased on that problem and any further experimenting with the app you find helpful, what's the relationship between number of cells and number of cars, such that the long term average speed of the cars is unchanged?\n\nWe have set this simulation up so that there are four parameters: - maximum speed of cars - number of cars - number of cells - $$p$$\n\nGiven the relationship between the number of cars and number of cells, how might you simplify this model to just three parameters in order to figure out, in the real world, when traffic jams are likely to start occurring?\n\nThis is a discussion problem, so it will help to talk to your classmates about it on the message boards.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -2676,7 +2666,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8d81a7b9-8ef2-4c7a-a579-49e0be76d312",
+    "id": "03a9d965-daf9-46cc-af37-6d33a52d22b6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2708,7 +2698,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8655dfce-f87c-428c-b0bb-c1ced5cdaff3",
+    "id": "c90465ae-b04f-4704-a97f-428571edd5be",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2738,7 +2728,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ed6a7e9a-aa73-41ab-9387-51a5cea027a5",
+    "id": "f73c9b1e-09da-4b27-b8a8-eeb228170cd9",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2770,7 +2760,7 @@
     "solutionUrl": null
   },
   {
-    "id": "438cce7a-9004-4d07-a4ef-aebf12aa4806",
+    "id": "17a072c2-bc23-4bf8-9cfc-a6e0e0267229",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -2781,7 +2771,7 @@
     "set_label": "Problem 7 (Parts A–D)",
     "name": "Part A. For this problem, you will need a little background information on __protein…",
     "desc": "Part A. For this problem, you will need a little background information on __protein translation__, the process by which living cells create proteins. **Background on protein translation** When cells need to build new proteins, they do this using __RNA__ and __ribosomes__. The…",
-    "statement": "Part A. For this problem, you will need a little background information on __protein translation__, the process by which living cells create proteins.\n\n**Background on protein translation**\n\nWhen cells need to build new proteins, they do this using __RNA__ and __ribosomes__. The RNA molecules are copies of bits of DNA in the cell. They look like long strings. A ribosome is a molecule machine that latches onto an RNA on one side and moves steadily down the RNA. As the ribosome moves, it reads the sequence of the RNA and uses it to determine what protein to build from raw materials in the cell. This process is called __protein translation__.\n\nMany ribosomes can latch onto an RNA molecule at the same time, and they all move down the RNA building new proteins. One ribosome cannot pass by another ribosome from behind. Instead a faster-moving ribosome will have to wait behind the ribosome in front of it. In this way, ribosomes on an RNA have some similarity to cars in traffic. If too many ribosome latch onto the same RNA molecule, there will be crowding that slows things down.\n\nScientists want to know how quickly new proteins can be made with this system. We will examine a simple model for ribosomes moving down an RNA molecule to study the rate at which proteins are made.\n\n**TASEP** One model used to study protein translation is TASEP, which stands for __Totally Asymmetric Stochastic Exclusion Process__. \"Totally asymmetric\" means that the objects in the model can only move in one direction. \"Stochastic\" means that there is some randomness in the model. \"Exclusion\" means that the objects cannot pass through or by each other.\n\nYou can use an implementation of the TASEP model at this link (Open this in a new tab.)\n\nYou will see a line of gray squares represent an RNA molecule. You'll also see black dots moving through the gray squares from left to right. These represent ribosomes moving down the RNA. When a ribosome gets to the end of the RNA molecule, it can disappear from the model, representing finishing its protein and detaching from the RNA. New ribosomes appear at the beginning of the RNA molecule.\n\nThe simulation counts how many proteins are completed per unit time. This is called the flux. The long term average flux is equal to the number of ribosomes that have left the end of the mRNA molecule divided by number of timesteps the simulation has run.\n\nDirections: Complete the following sentences by dragging the correct text to the box. You may use some choices multiple times or not at all.\n\ndraggables\n\nincreases continuously\n\nincreases to some value, then flatlines\n\ndecreases to some value, then flatlines\n\nstays about the same always\n\nmathjax: \\[\\text{a. When you increase the number of cells, the flux } \\drag \\] \\[\\text{b. When you increase the }\\alpha\\text{ parameter, the flux } \\drag \\] \\[\\text{c. When you increase the }\\beta\\text{ parameter, the flux } \\drag \\]\n\noutputDisplayFormat: contentInEachDropArea\n\nreusable\n\nrow widths: 1, 1, 1\n\nPart B. **Understanding TASEP parameters**\n\nExplore the parameter space of the TASEP model at this link. (Open this in a new tab.)\n\nFor this exploration, use a large number of cells, since with a small number of cells some of the results can be distorted. Also, crank up the simulation speed so you don't have to wait too long.\n\nTake some time and observe the model. Don't forget to allow time for the simulation to run. Pay particular attention to what happens to the flux and the fraction of cells filled for different values of $$\\alpha$$ and $$\\beta.$$\n\nIn the TASEP model, scientists often use a __phase diagram__ to understand the flux and fraction of cells filled based on the values of $$\\alpha$$ and $$\\beta$$. A phase diagram is a plot where both the $$x$$ and $$y$$ axes are parameters of the system. They are both independent variables. In this case, we use $$\\alpha$$ as the $$x$$ axis and $$\\beta$$ as the $$y$$ axis. We don't plot $$y$$ against $$x.$$ Instead, we could imagine a third dimension where we plot flux or fraction of cells filled for each value of $$x$$ and $$y.$$\n\nThe phase diagram used for TASEP is shown below:\n\nFor each question, answer with $$1,2,$$ or $$3$$ to indicate the three different zones on the phase diagram. These zones are called __phases__.\n\nmathjax: \\begin{align} \\text{Which part of the diagram would be an area with the highest flux? } \\blank \\\\ \\text{Which part of the diagram would be a region where the fraction of cells filled are larger values? } \\blank \\\\ \\text{Which part of the diagram would be a region where the fraction of cells filled are smaller values? } \\blank \\end{align}\n\nwidth: 2,2,2\n\nallowed: None\n\nPart C. **Understanding TASEP parameters: when $$\\alpha = \\beta$$**\n\nFor this discussion problem and continuation of exploring the parameter space of the TASEP model [ use this link](https://glowscript.org/#/user/mark.d.eichenlaub/folder/AoPS/program/TASEP). (Open it in a new tab.)\n\nAs before, for this exploration, use a large number of cells, since with a small number of cells some of the results can be distorted.\n\n1. What happens when $$\\alpha$$ = $$\\beta,$$ for small values of $$\\alpha$$ and $$\\beta?$$ 2. What happens when $$\\alpha$$ = $$\\beta,$$ for medium values of $$\\alpha$$ and $$\\beta?$$ 3. What happens when $$\\alpha$$ = $$\\beta,$$ for large values of $$\\alpha$$ and $$\\beta?$$\n\nPart D. Connect the features of the TASEP model to the aspect of protein translation they describe.\n\nThe connections are one-to-one.\n\nTASEP feature\n\nblack dot\n\nTASEP cells (line of gray boxes)\n\n$$\\alpha$$ (alpha)\n\n$$\\beta$$ (beta)\n\nflux\n\nBiological Application\n\nHow quickly protein synthesis occurs\n\nRNA\n\nribosome\n\nHow fast ribosome binds to the beginning of the RNA\n\nHow fast ribosome detaches from the end of the RNA\n\nallowsMultipleConnections:\n\nheightPx: 500\n\nwidthPx: 700",
+    "statement": "Part A. For this problem, you will need a little background information on __protein translation__, the process by which living cells create proteins.\n\n**Background on protein translation**\n\nWhen cells need to build new proteins, they do this using __RNA__ and __ribosomes__. The RNA molecules are copies of bits of DNA in the cell. They look like long strings. A ribosome is a molecule machine that latches onto an RNA on one side and moves steadily down the RNA. As the ribosome moves, it reads the sequence of the RNA and uses it to determine what protein to build from raw materials in the cell. This process is called __protein translation__.\n\nMany ribosomes can latch onto an RNA molecule at the same time, and they all move down the RNA building new proteins. One ribosome cannot pass by another ribosome from behind. Instead a faster-moving ribosome will have to wait behind the ribosome in front of it. In this way, ribosomes on an RNA have some similarity to cars in traffic. If too many ribosome latch onto the same RNA molecule, there will be crowding that slows things down.\n\nScientists want to know how quickly new proteins can be made with this system. We will examine a simple model for ribosomes moving down an RNA molecule to study the rate at which proteins are made.\n\n**TASEP** One model used to study protein translation is TASEP, which stands for __Totally Asymmetric Stochastic Exclusion Process__. \"Totally asymmetric\" means that the objects in the model can only move in one direction. \"Stochastic\" means that there is some randomness in the model. \"Exclusion\" means that the objects cannot pass through or by each other.\n\nYou can use an implementation of the TASEP model at this link (Open this in a new tab.)\n\nYou will see a line of gray squares representing an RNA molecule. You'll also see black dots moving through the gray squares from left to right. These represent ribosomes moving down the RNA. When a ribosome gets to the end of the RNA molecule, it can disappear from the model, representing finishing its protein and detaching from the RNA. New ribosomes appear at the beginning of the RNA molecule.\n\nsdfskdjflkjasdfklj\n\nThe simulation counts how many proteins are completed per unit time. This is called the flux. The long term average flux is equal to the number of ribosomes that have left the end of the mRNA molecule divided by number of timesteps the simulation has run.\n\nDirections: Complete the following sentences by dragging the correct text to the box. You may use some choices multiple times or not at all.\n\ndraggables\n\nincreases continuously\n\nincreases to some value, then flatlines\n\ndecreases to some value, then flatlines\n\nstays about the same always\n\nmathjax: \\[\\text{a. When you increase the number of cells, the flux } \\drag \\] \\[\\text{b. When you increase the }\\alpha\\text{ parameter, the flux } \\drag \\] \\[\\text{c. When you increase the }\\beta\\text{ parameter, the flux } \\drag \\]\n\noutputDisplayFormat: contentInEachDropArea\n\nreusable\n\nrow widths: 1, 1, 1\n\nPart B. **Understanding TASEP parameters**\n\nExplore the parameter space of the TASEP model at this link. (Open this in a new tab.)\n\nFor this exploration, use a large number of cells, since with a small number of cells some of the results can be distorted. Also, crank up the simulation speed so you don't have to wait too long.\n\nTake some time and observe the model. Don't forget to allow time for the simulation to run. Pay particular attention to what happens to the flux and the fraction of cells filled for different values of $$\\alpha$$ and $$\\beta.$$\n\nIn the TASEP model, scientists often use a __phase diagram__ to understand the flux and fraction of cells filled based on the values of $$\\alpha$$ and $$\\beta$$. A phase diagram is a plot where both the $$x$$ and $$y$$ axes are parameters of the system. They are both independent variables. In this case, we use $$\\alpha$$ as the $$x$$ axis and $$\\beta$$ as the $$y$$ axis. We don't plot $$y$$ against $$x.$$ Instead, we could imagine a third dimension where we plot flux or fraction of cells filled for each value of $$x$$ and $$y.$$\n\nThe phase diagram used for TASEP is shown below:\n\nFor each question, answer with $$1,2,$$ or $$3$$ to indicate the three different zones on the phase diagram. These zones are called __phases__.\n\nmathjax: \\begin{align} \\text{Which part of the diagram would be an area with the highest flux? } \\blank \\\\ \\text{Which part of the diagram would be a region where the fraction of cells filled are larger values? } \\blank \\\\ \\text{Which part of the diagram would be a region where the fraction of cells filled are smaller values? } \\blank \\end{align}\n\nwidth: 2,2,2\n\nPart C. **Understanding TASEP parameters: when $$\\alpha = \\beta$$**\n\nThis discussion problem continues our exploration of the parameter space of the TASEP model, which you can explore below.\n\nAs before, for this exploration, use a large number of cells, since with a small number of cells some of the results can be distorted.\n\n1. What happens when $$\\alpha$$ = $$\\beta,$$ for small values of $$\\alpha$$ and $$\\beta?$$ 2. What happens when $$\\alpha$$ = $$\\beta,$$ for medium values of $$\\alpha$$ and $$\\beta?$$ 3. What happens when $$\\alpha$$ = $$\\beta,$$ for large values of $$\\alpha$$ and $$\\beta?$$\n\nPart D. Connect the features of the TASEP model to the aspect of protein translation they describe.\n\nThe connections are one-to-one.\n\nTASEP feature\n\nblack dot\n\nTASEP cells (line of gray boxes)\n\n$$\\alpha$$ (alpha)\n\n$$\\beta$$ (beta)\n\nflux\n\nBiological Application\n\nHow quickly protein synthesis occurs\n\nRNA\n\nribosome\n\nHow fast ribosome binds to the beginning of the RNA\n\nHow fast ribosome detaches from the end of the RNA\n\nallowsMultipleConnections:\n\nheightPx: 500\n\nwidthPx: 700",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -3045,7 +3035,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d0b9429a-0280-400e-8135-ed5eb7158cf5",
+    "id": "a1d50ac5-aba3-4ea9-b18b-ad4237abfd2f",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3075,7 +3065,7 @@
     "solutionUrl": null
   },
   {
-    "id": "80888429-ca8a-4a63-a50f-7c33c0b49406",
+    "id": "5721c1cf-895e-4c30-8860-2f3d7e421f29",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3107,7 +3097,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a31be893-e162-46f2-a058-887da9cb529c",
+    "id": "9b9af978-74a8-4be9-ad38-78f97bcd0038",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3136,7 +3126,7 @@
     "solutionUrl": null
   },
   {
-    "id": "35758be4-17eb-449a-95ea-18acdb3fc508",
+    "id": "05421bb4-f0cb-426d-9248-19473c070dcb",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3166,7 +3156,7 @@
     "solutionUrl": null
   },
   {
-    "id": "aef69675-0913-45bc-b3ad-c0c921e44442",
+    "id": "3d339afa-e87c-4817-8dcd-0d35277af0f0",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3197,7 +3187,7 @@
     "solutionUrl": null
   },
   {
-    "id": "016d925b-65c9-41e1-b094-2925ec287010",
+    "id": "5cb9bea8-5fdd-4e55-b6fb-0e3c81578963",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3229,7 +3219,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2b6decde-0676-4b66-9cdc-165fa9910bdd",
+    "id": "32040ed9-3cb0-44cc-9d2f-8ff4b0abec7d",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3259,7 +3249,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e3ec7fb3-373a-423b-bffc-21f0e63126a0",
+    "id": "026e3e7d-834e-43ad-8ee4-5ec226f10ee1",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3286,8 +3276,7 @@
     "aops_id": "40242",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "5ea5642d-51f9-44b1-a2b5-2f2f8ee970b0",
@@ -3568,7 +3557,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d035e62b-9c10-40c1-9792-4fb568aa169d",
+    "id": "cdfc2965-1953-4ead-952f-a5dec3866ff6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3598,7 +3587,7 @@
     "solutionUrl": null
   },
   {
-    "id": "36a931bc-6150-4e33-a638-7036a29f4570",
+    "id": "e3bb2434-c030-44ec-b6ad-afa295589262",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3628,7 +3617,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a17018b6-d58a-4890-bdd1-19c1a04f83bf",
+    "id": "3d49e169-4695-4bd6-8584-3160f58e42e5",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3639,7 +3628,7 @@
     "set_label": "Problem 3 (Parts A–F)",
     "name": "Part A. In class, we estimated that while Bob Beamon was long jumping in the Mexico City…",
     "desc": "Part A. In class, we estimated that while Bob Beamon was long jumping in the Mexico City Olympics, he jumped about $$0.1 \\;\\mathrm{m}$$ further than he would have at sea level because while he was in the airborne, he experienced less drag force in the thin air of Mexico City…",
-    "statement": "Part A. In class, we estimated that while Bob Beamon was long jumping in the Mexico City Olympics, he jumped about $$0.1 \\;\\mathrm{m}$$ further than he would have at sea level because while he was in the airborne, he experienced less drag force in the thin air of Mexico City.\n\nRemember that a long jump looks like this:\n\n\"Men's Long Jump Final | Tokyo Replays\", Olympics, YouTube\n\nThe high elevation of Mexico City could have affected Beamon's long jump in at least three other ways:\n\n**Thin air and running speed**\n\nLong jumpers begin by running down a runway as fast as they can before they jump. Beamon ran through thin air, which reduced the drag force on him while running and affected his running speed, and therefore his jump distance.\n\n**Tailwind** During Beamon's jump, there was a wind pushing at his back.\n\n**Reduced gravity** Because Mexico City is at high elevation, it is further from the center of the Earth than a city at sea level and the same latitude. This means that the gravitational acceleration in Mexico City is a bit lower that in other places, which allows jumpers to stay in the air longer during their jump.\n\nFor each effect, decide whether it likely increased or decreased the distance that Beamon jumped.\n\nIt is possible that multiple effects in the left hand column will go to the same place in the right hand column. You should not assume the connections are one-to-one.\n\nColumn 1\n\nthin air and running speed\n\ntailwind\n\nreduced gravity\n\nColumn 2\n\nincreased Beamon's jump distance\n\ndecreased Beamon's jump distance\n\nno effect on jump distance\n\nallowsMultipleConnections:\n\nheightPx: 200\n\nwidthPx: 700\n\nPart B. To continue our estimate surrounding Bob Beamon's long jump, we'll need a model for the long jump. Eventually, we will find the total distance the long jumper jumps, and this is the first step. In this part of the problem, we'll introduce a model. Your job is to think about the vertical motion of the long jumper in the model.\n\n----------------\n\nA simple model for the long jump is that first, an athlete runs as fast as they can down the runway, attaining a top speed of $$v_r.$$ This stage is called the \"run up\".\n\nNext, at the end of the runway, the athlete leaps into the air. This stage is called the \"takeoff\". During the takeoff, the athlete's goal is to jump up as high as possible. They have already attained their top horizontal speed and can't run any faster, so they don't think about adding horizontal speed during the takeoff. Instead, they maintain the same horizontal speed while adding as much vertical speed as they can. We will assume that during takeoff, the athlete jumps upward with a speed $$v_j.$$\n\nIn this model, when the athlete jumps into the air, they are moving diagonally upward and forward. They still have a forward speed $$v_r$$ from their run, and they have an upward speed $$v_j$$ from their jump.\n\nDuring the jump, we can analyze the athlete's horizontal and vertical motions separately. While in the air, the athlete moves forward with constant speed $$v_r.$$ In the vertical direction, the athlete begins with upward speed $$v_j,$$ but gravity pulls downward on the athlete, reducing their vertical speed down to zero at the height of the jump, and then down to $$-v_j$$ when the athlete hits the ground.\n\nTo find the total distance of the jump, we can consider how fast the athlete moved forward and how long they were in the air.\n\nWhich speed is more important to figuring out **how long the athlete is in the air**?\n\n$$v_r$$\n\n$$v_j$$\n\nboth are vitally important\n\nnew lines\n\nPart C. Below is a plot of the vertical part of an athlete's speed over time while they are jumping. The slope of this plot is $$-g.$$\n\nHow long will an athlete be in the air during a long jump?\n\ndraggables\n\n$$v_j$$\n\n$$v_r$$\n\n$$g$$\n\n$$2$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart D. draggables\n\n$$v_r$$\n\n$$v_j$$\n\n$$g$$\n\n$$2$$\n\nmathjax: \\[\\ell = \\dfrac{\\drag\\drag\\drag}{\\drag}\\]\n\noutputDisplayFormat: contentInEachDropArea\n\nPart E. Now that we have a model of the long jump, we can estimate how much the conditions in Mexico City affected Beamon's jump.\n\nIn Mexico City, $$g \\approx 9.78 \\;\\mathrm{m/s^2},$$ but at most sea level cities, $$g \\approx 9.81 \\;\\mathrm{m/s^2}.$$ As we mentioned earlier, the lower value of $$g$$ allowed Beamon to stay in the air longer.\n\nWe will ignore any possible influence of $$g$$ on Beamon's running speed. Remember that Beamon jumped $$8.90 \\;\\mathrm{m}.$$\n\nWith that assumption, how much extra distance did Beamon jump due to the lower value of $$g$$ in Mexico City?\n\nYour answer should be accurate to within $$1 \\;\\mathrm{cm}.$$\n\nmathjax: $$ \\Delta \\ell_{\\rm gravity} \\approx \\blank \\;\\mathrm{cm} $$\n\nallowed: None\n\nPart F. In this part, we'll estimate how the thin air and tailwind affected Beamon's running speed, and therefore his jump distance.\n\nIt is difficult to estimate how much faster an athlete can run due to reduced air drag or a tailwind because the forces involved in running are quite complicated. By studying data from sprinting competitions, scientists have found that running $$100 \\;\\mathrm{m}$$ in $$10.0 \\;\\mathrm{s}$$ at the altitude of Mexico City with a $$2.0 \\;\\mathrm{m/s}$$ tailwind is equivalent to running $$100 \\;\\mathrm{m}$$ in $$10.15 \\;\\mathrm{s}$$ at sea level with no tailwind.\n\nAssuming this is correct and that Beamon was running at a speed of about $$10 \\;\\mathrm{m/s},$$ how much did the conditions of his long jump increase his jump distance due to increasing his running speed, compared to what he could have done if jumping at sea level and without a tailwind?\n\nmathjax: $$ \\Delta \\ell_{\\rm run \\; speed} \\approx \\blank \\;\\mathrm{cm} $$\n\nallowed: None",
+    "statement": "Part A. In class, we estimated that while Bob Beamon was long jumping in the Mexico City Olympics, he jumped about $$0.1 \\;\\mathrm{m}$$ further than he would have at sea level because while he was in the airborne, he experienced less drag force in the thin air of Mexico City.\n\nRemember that a long jump looks like this:\n\n\"Men's Long Jump Final | Tokyo Replays\", Olympics, YouTube\n\nThe high elevation of Mexico City could have affected Beamon's long jump in at least three other ways:\n\n**Thin air and running speed**\n\nLong jumpers begin by running down a runway as fast as they can before they jump. Beamon ran through thin air, which reduced the drag force on him while running and affected his running speed, and therefore his jump distance.\n\n**Tailwind** During Beamon's jump, there was a wind pushing at his back.\n\n**Reduced gravity** Because Mexico City is at high elevation, it is further from the center of the Earth than a city at sea level and the same latitude. This means that the gravitational acceleration in Mexico City is a bit lower that in other places, which allows jumpers to stay in the air longer during their jump.\n\nFor each effect, decide whether it likely increased or decreased the distance that Beamon jumped.\n\nIt is possible that multiple effects in the left hand column will go to the same place in the right hand column. You should not assume the connections are one-to-one.\n\nColumn 1\n\nthin air and running speed\n\ntailwind\n\nreduced gravity\n\nColumn 2\n\nincreased Beamon's jump distance\n\ndecreased Beamon's jump distance\n\nno effect on jump distance\n\nallowsMultipleConnections:\n\nheightPx: 200\n\nwidthPx: 700\n\nPart B. To continue our estimate surrounding Bob Beamon's long jump, we'll need a model for the long jump. Eventually, we will find the total distance the long jumper jumps, and this is the first step. In this part of the problem, we'll introduce a model. Your job is to think about the vertical motion of the long jumper in the model.\n\n----------------\n\nA simple model for the long jump is that first, an athlete runs as fast as they can down the runway, attaining a top speed of $$v_r.$$ This stage is called the \"run up\".\n\nNext, at the end of the runway, the athlete leaps into the air. This stage is called the \"takeoff\". During the takeoff, the athlete's goal is to jump up as high as possible. They have already attained their top horizontal speed and can't run any faster, so they don't think about adding horizontal speed during the takeoff. Instead, they maintain the same horizontal speed while adding as much vertical speed as they can. We will assume that during takeoff, the athlete jumps upward with a speed $$v_j.$$\n\nIn this model, when the athlete jumps into the air, they are moving diagonally upward and forward. They still have a forward speed $$v_r$$ from their run, and they have an upward speed $$v_j$$ from their jump.\n\nDuring the jump, we can analyze the athlete's horizontal and vertical motions separately. While in the air, the athlete moves forward with constant speed $$v_r.$$ In the vertical direction, the athlete begins with upward speed $$v_j,$$ but gravity pulls downward on the athlete, reducing their vertical speed down to zero at the height of the jump, and then down to $$-v_j$$ when the athlete hits the ground.\n\nTo find the total distance of the jump, we can consider how fast the athlete moved forward and how long they were in the air.\n\nWhich speed is more important to figuring out **how long the athlete is in the air**?\n\n$$v_r$$\n\n$$v_j$$\n\nboth are vitally important\n\nnew lines\n\nPart C. Below is a plot of the vertical part of an athlete's speed over time while they are jumping. The slope of this plot is $$-g.$$\n\nHow long will an athlete be in the air during a long jump?\n\ndraggables\n\n$$v_j$$\n\n$$v_r$$\n\n$$g$$\n\n$$2$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart D. draggables\n\n$$v_r$$\n\n$$v_j$$\n\n$$g$$\n\n$$2$$\n\nmathjax: \\[\\ell = \\dfrac{\\drag\\drag\\drag}{\\drag}\\]\n\noutputDisplayFormat: contentInEachDropArea\n\nPart E. Now that we have a model of the long jump, we can estimate how much the conditions in Mexico City affected Beamon's jump.\n\nIn Mexico City, $$g \\approx 9.78 \\;\\mathrm{m/s^2},$$ but at most sea level cities, $$g \\approx 9.81 \\;\\mathrm{m/s^2}.$$ As we mentioned earlier, the lower value of $$g$$ allowed Beamon to stay in the air longer.\n\nWe will ignore any possible influence of $$g$$ on Beamon's running speed. Remember that Beamon jumped $$8.90 \\;\\mathrm{m}.$$\n\nWith that assumption, how much extra distance did Beamon jump due to the lower value of $$g$$ in Mexico City?\n\nYour answer should be accurate to within $$1 \\;\\mathrm{cm}.$$\n\nmathjax: $$ \\Delta \\ell_{\\rm gravity} \\approx \\blank \\;\\mathrm{cm} $$\n\nPart F. In this part, we'll estimate how the thin air and tailwind affected Beamon's running speed, and therefore his jump distance.\n\nIt is difficult to estimate how much faster an athlete can run due to reduced air drag or a tailwind because the forces involved in running are quite complicated. By studying data from sprinting competitions, scientists have found that running $$100 \\;\\mathrm{m}$$ in $$10.0 \\;\\mathrm{s}$$ at the altitude of Mexico City with a $$2.0 \\;\\mathrm{m/s}$$ tailwind is equivalent to running $$100 \\;\\mathrm{m}$$ in $$10.15 \\;\\mathrm{s}$$ at sea level with no tailwind.\n\nAssuming this is correct and that Beamon was running at a speed of about $$10 \\;\\mathrm{m/s},$$ how much did the conditions of his long jump increase his jump distance due to increasing his running speed, compared to what he could have done if jumping at sea level and without a tailwind?\n\nmathjax: $$ \\Delta \\ell_{\\rm run \\; speed} \\approx \\blank \\;\\mathrm{cm} $$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/07_hw_long_jump.gif"
     ],
@@ -3659,7 +3648,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5e0ec654-cf8b-44f3-ac56-e3db73d7c8a4",
+    "id": "7e8a7494-f345-4190-96b0-1aa166f0d393",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3670,7 +3659,7 @@
     "set_label": "Problem 4",
     "name": "We saw in the reading that stars like the sun cannot run on chemical energy. If they did…",
     "desc": "We saw in the reading that stars like the sun cannot run on chemical energy. If they did, we estimated that they would burn through all their fuel within a few thousand years. Stars run on nuclear energy. In the sun, this is almost entirely the energy given off when hydrogen…",
-    "statement": "We saw in the reading that stars like the sun cannot run on chemical energy. If they did, we estimated that they would burn through all their fuel within a few thousand years.\n\nStars run on nuclear energy. In the sun, this is almost entirely the energy given off when hydrogen fuses together to form helium.\n\nBy measuring its gravity, we know that the mass of the sun is approximately, $$m_{\\rm sun} \\approx 2 \\times 10^{30} \\;\\mathrm{kg}.$$\n\nThe mass of a single hydrogen atom is $$m_{\\rm H} \\approx 1.7 \\times 10^{-27} \\;\\mathrm{kg},$$ and every time two hydrogen atoms fuse to make one helium atom, they give off about $$2.3 \\times 10^{-13} \\;\\mathrm{J}$$ of energy.\n\nIn the prereading, we saw that the rate that the sun gives off energy, called the sun's __power__, is about $$3.6 \\times 10^{26} \\;\\mathrm{J/s}.$$\n\nEstimate the lifetime of the sun based on this information, assuming it will burn all its hydrogen into helium and then die, and assuming that it will continue shining at the same brightness that it does now for its entire life. You can assume that the sun began as pure hydrogen.\n\nmathjax: $$ \\blank \\times 10^{\\blank} \\;\\mathrm{year} $$\n\nallowed: None",
+    "statement": "We saw in the reading that stars like the sun cannot run on chemical energy. If they did, we estimated that they would burn through all their fuel within a few thousand years.\n\nStars run on nuclear energy. In the sun, this is almost entirely the energy given off when hydrogen fuses together to form helium.\n\nBy measuring its gravity, we know that the mass of the sun is approximately, $$m_{\\rm sun} \\approx 2 \\times 10^{30} \\;\\mathrm{kg}.$$\n\nThe mass of a single hydrogen atom is $$m_{\\rm H} \\approx 1.7 \\times 10^{-27} \\;\\mathrm{kg},$$ and every time two hydrogen atoms fuse to make one helium atom, they give off about $$2.3 \\times 10^{-13} \\;\\mathrm{J}$$ of energy.\n\nIn the prereading, we saw that the rate that the sun gives off energy, called the sun's __power__, is about $$3.6 \\times 10^{26} \\;\\mathrm{J/s}.$$\n\nEstimate the lifetime of the sun based on this information, assuming it will burn all its hydrogen into helium and then die, and assuming that it will continue shining at the same brightness that it does now for its entire life. You can assume that the sun began as pure hydrogen.\n\nmathjax: $$ \\blank \\times 10^{\\blank} \\;\\mathrm{year} $$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -3689,7 +3678,7 @@
     "solutionUrl": null
   },
   {
-    "id": "503d2354-189d-4bc4-8a14-68c2b2595a23",
+    "id": "2f85ad88-8cc8-462e-8459-5c55c54d7ae6",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3700,7 +3689,7 @@
     "set_label": "Problem 5 (Parts A–B)",
     "name": "Part A. We've already studied the question: \"What is the terminal velocity of an object…",
     "desc": "Part A. We've already studied the question: \"What is the terminal velocity of an object falling through air?\" If we wanted to measure terminal velocity, we could see how far something falls, measure how long that takes, and divide to get the terminal velocity. On the other hand…",
-    "statement": "Part A. We've already studied the question: \"What is the terminal velocity of an object falling through air?\"\n\nIf we wanted to measure terminal velocity, we could see how far something falls, measure how long that takes, and divide to get the terminal velocity.\n\nOn the other hand, that method would fail if the object were still accelerating up to its terminal velocity when we took the measurement. To measure terminal velocity, we want to drop something, let it fall until it reaches its terminal velocity (or gets very close to it), and only then begin measuring distance and time for the rest of the fall.\n\nTo help with this, in this problem we'll address a different question:\n\n\"How far does an object have to fall through the air before it reaches its terminal velocity?\"\n\nWe know that when we let something go, gravity pulls it to the ground. The speed of the object gets faster and faster as it falls. The rate that the speed increases is the object's __acceleration__. As we've seen, the acceleration of objects dropped near the surface of Earth (ignoring any wind drag) is $$g \\approx 10 \\;\\mathrm{m/s^2}.$$\n\nAssuming there is no air drag, the speed is $$|v| = gt,$$ where $$t$$ is the time the object has been falling.\n\nWe've already estimated the terminal velocity to be $$|v_{\\rm terminal}| \\approx \\sqrt{\\dfrac{2 mg}{\\rho A}}.$$\n\n(We have left $$C_D$$ out of this equation because we estimated that it was close to $$1,$$ and so doesn't have much effect.)\n\nAs a simple model, assume that an object that has dropped follows the equation $$|v| = gt$$ until it reaches terminal velocity. This is not completely accurate, but okay for our estimation. Combine $$|v| = gt$$ and $$v_{\\rm terminal} = \\sqrt{\\dfrac{2 mg}{\\rho A}}$$ to estimate the time it takes a falling object to reach terminal velocity.\n\nNext, multiply the terminal velocity by the time you just found. This gives an estimate for the distance $$d$$ something needs to fall before reaching a speed close to its terminal velocity. You should get an equation for $$d$$ in terms of $$m, \\rho, A, C_D,$$ and $$g.$$\n\nFind this equation, then use it to estimate how far a piece of notebook paper needs to fall through air before approximately reaching its terminal velocity.\n\nmathjax: $$ \\blank \\;\\mathrm{cm} $$\n\nallowed: None\n\nPart B. One common byproduct of doing an estimate is that you learn something new about physics. This could happen when, during an estimate, you derive a new equation. Then you could try to make sense of what the equation says, and in that way, understand the situation you were estimating in a new way.\n\nFor example, in part (A), we estimated the distance $$d$$ something needs to fall before its speed is close to terminal velocity. Imagine a student is working on that problem and finds the equation $$d \\rho A \\approx m.$$\n\nAs a reminder, $$A$$ is the cross sectional area of the object and $$\\rho$$ is the density of air.\n\nOn the right hand side of the equation, $$m$$ is the mass of the object.\n\nThe student could plug in numbers to this equation to get an estimate for $$d,$$ but they could also pause, examine the equation, and come up with an interpretation for it.\n\nWhich one of the following is a reasonable interpretation of this equation?\n\n$$\\mathbf{(a)}$$ An object needs to fall until the total mass of air it has fallen through is similar to its own mass before it is close to terminal velocity.\n\n$$\\mathbf{(b)}$$ Increasing air density in an experiment will increase the mass of objects you use in that experiment.\n\n$$\\mathbf{(c)}$$ Objects fall faster and faster until gravity stops pulling on them.\n\n$$\\mathbf{(d)}$$ Air drag is not significant if the density of an object is high.\n\nnew lines",
+    "statement": "Part A. We've already studied the question: \"What is the terminal velocity of an object falling through air?\"\n\nIf we wanted to measure terminal velocity, we could see how far something falls, measure how long that takes, and divide to get the terminal velocity.\n\nOn the other hand, that method would fail if the object were still accelerating up to its terminal velocity when we took the measurement. To measure terminal velocity, we want to drop something, let it fall until it reaches its terminal velocity (or gets very close to it), and only then begin measuring distance and time for the rest of the fall.\n\nTo help with this, in this problem we'll address a different question:\n\n\"How far does an object have to fall through the air before it reaches its terminal velocity?\"\n\nWe know that when we let something go, gravity pulls it to the ground. The speed of the object gets faster and faster as it falls. The rate that the speed increases is the object's __acceleration__. As we've seen, the acceleration of objects dropped near the surface of Earth (ignoring any wind drag) is $$g \\approx 10 \\;\\mathrm{m/s^2}.$$\n\nAssuming there is no air drag, the speed is $$|v| = gt,$$ where $$t$$ is the time the object has been falling.\n\nWe've already estimated the terminal velocity to be $$|v_{\\rm terminal}| \\approx \\sqrt{\\dfrac{2 mg}{\\rho A}}.$$\n\n(We have left $$C_D$$ out of this equation because we estimated that it was close to $$1,$$ and so doesn't have much effect.)\n\nAs a simple model, assume that an object that has dropped follows the equation $$|v| = gt$$ until it reaches terminal velocity. This is not completely accurate, but okay for our estimation. Combine $$|v| = gt$$ and $$v_{\\rm terminal} = \\sqrt{\\dfrac{2 mg}{\\rho A}}$$ to estimate the time it takes a falling object to reach terminal velocity.\n\nNext, multiply the terminal velocity by the time you just found. This gives an estimate for the distance $$d$$ something needs to fall before reaching a speed close to its terminal velocity. You should get an equation for $$d$$ in terms of $$m, \\rho, A, C_D,$$ and $$g.$$\n\nFind this equation, then use it to estimate how far a piece of notebook paper needs to fall through air before approximately reaching its terminal velocity.\n\nmathjax: $$ \\blank \\;\\mathrm{cm} $$\n\nPart B. One common byproduct of doing an estimate is that you learn something new about physics. This could happen when, during an estimate, you derive a new equation. Then you could try to make sense of what the equation says, and in that way, understand the situation you were estimating in a new way.\n\nFor example, in part (A), we estimated the distance $$d$$ something needs to fall before its speed is close to terminal velocity. Imagine a student is working on that problem and finds the equation $$d \\rho A \\approx m.$$\n\nAs a reminder, $$A$$ is the cross sectional area of the object and $$\\rho$$ is the density of air.\n\nOn the right hand side of the equation, $$m$$ is the mass of the object.\n\nThe student could plug in numbers to this equation to get an estimate for $$d,$$ but they could also pause, examine the equation, and come up with an interpretation for it.\n\nWhich one of the following is a reasonable interpretation of this equation?\n\n$$\\mathbf{(a)}$$ An object needs to fall until the total mass of air it has fallen through is similar to its own mass before it is close to terminal velocity.\n\n$$\\mathbf{(b)}$$ Increasing air density in an experiment will increase the mass of objects you use in that experiment.\n\n$$\\mathbf{(c)}$$ Objects fall faster and faster until gravity stops pulling on them.\n\n$$\\mathbf{(d)}$$ Air drag is not significant if the density of an object is high.\n\nnew lines",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -3718,7 +3707,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a591a050-e14b-4eda-882b-fdb45be2395d",
+    "id": "c23e9b2e-2ac7-48da-8668-6a97db0520ba",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3729,7 +3718,7 @@
     "set_label": "Problem 6 (Parts A–B)",
     "name": "Part A. In class, we estimated the terminal velocity of a piece of paper, but we were…",
     "desc": "Part A. In class, we estimated the terminal velocity of a piece of paper, but we were only able to make that estimate because the instructor gave us the density of air to work with. In this multi-part problem, your task is to use a falling piece of paper to estimate the density…",
-    "statement": "Part A. In class, we estimated the terminal velocity of a piece of paper, but we were only able to make that estimate because the instructor gave us the density of air to work with. In this multi-part problem, your task is to use a falling piece of paper to estimate the density of air.\n\nYou could use a plain piece of notebook paper for this experiment, but it's better to make a cone and measure the terminal velocity of that.\n\nBelow are instructions:\n\n__credit: https://craft-o-maniac.com/2012/10/diy-christmas-tree-cones.html__\n\nMake a cone like this. Drop a piece of paper, and also drop a cone. The higher you can drop things from, the better.\n\nBased on your observations, which of the reasons below is the best reason for making a cone for the estimate rather than dropping a plain piece of paper?\n\nThe cone falls faster.\n\nThe cone drops straight down as it falls, but the paper may flutter unevenly.\n\nThe cone uses some tape, which the paper does not.\n\nYou need scissors to construct the cone.\n\nabc\n\nnew lines\n\nleft align\n\nPart B. Now that you have a cone, make some measurements and estimates. Remember that in class we found $$|v_{\\rm terminal}| = \\sqrt{\\dfrac{2mg}{C_D \\rho A}}.$$\n\nMeasure $$m,$$ the mass of your cone.\n\nMeasure $$A,$$ the cross-sectional area of your cone.\n\nMeasure $$|v_{\\rm terminal}|,$$ the terminal velocity of your cone, by dropping it, timing the drop, and measuring the drop distance.\n\nFinally, use your measurements to estimate $$\\rho,$$ the density of air.\n\nYou may assume $$g \\approx 9.8 \\;\\mathrm{m/s^2}$$ and $$C_D \\approx 1.$$\n\nmathjax: $$ \\rho \\approx \\blank \\; \\mathrm{kg/m^3}$$\n\nallowed: None",
+    "statement": "Part A. In class, we estimated the terminal velocity of a piece of paper, but we were only able to make that estimate because the instructor gave us the density of air to work with. In this multi-part problem, your task is to use a falling piece of paper to estimate the density of air.\n\nYou could use a plain piece of notebook paper for this experiment, but it's better to make a cone and measure the terminal velocity of that.\n\nBelow are instructions:\n\n__credit: https://craft-o-maniac.com/2012/10/diy-christmas-tree-cones.html__\n\nMake a cone like this. Drop a piece of paper, and also drop a cone. The higher you can drop things from, the better.\n\nBased on your observations, which of the reasons below is the best reason for making a cone for the estimate rather than dropping a plain piece of paper?\n\nThe cone falls faster.\n\nThe cone drops straight down as it falls, but the paper may flutter unevenly.\n\nThe cone uses some tape, which the paper does not.\n\nYou need scissors to construct the cone.\n\nabc\n\nnew lines\n\nleft align\n\nPart B. Now that you have a cone, make some measurements and estimates. Remember that in class we found $$|v_{\\rm terminal}| = \\sqrt{\\dfrac{2mg}{C_D \\rho A}}.$$\n\nMeasure $$m,$$ the mass of your cone.\n\nMeasure $$A,$$ the cross-sectional area of your cone.\n\nMeasure $$|v_{\\rm terminal}|,$$ the terminal velocity of your cone, by dropping it, timing the drop, and measuring the drop distance.\n\nFinally, use your measurements to estimate $$\\rho,$$ the density of air.\n\nYou may assume $$g \\approx 9.8 \\;\\mathrm{m/s^2}$$ and $$C_D \\approx 1.$$\n\nmathjax: $$ \\rho \\approx \\blank \\; \\mathrm{kg/m^3}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/07_hw_make_cone.png"
     ],
@@ -3749,7 +3738,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4ca7cf7e-27d6-41be-8de0-6e6fc0d2aaa7",
+    "id": "59ccb48a-d782-4716-9fc5-5cbb9940f24d",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -3775,8 +3764,7 @@
     "aops_id": "",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "eb84a167-683c-4c13-861b-de8d669dd5aa",
@@ -3985,7 +3973,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ff6ef5ef-3675-49fd-aee0-661b1d0e2ae7",
+    "id": "aefcd646-7f41-4afb-a1d9-5f6cbb69b41c",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4012,11 +4000,10 @@
     "aops_id": "39821",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
-    "id": "aa4879e5-04f0-4c2d-8bc8-b131113465ca",
+    "id": "309e7574-03ae-4843-a332-7c6a94f721f9",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4027,9 +4014,8 @@
     "set_label": "Problem 2 (Parts A–F)",
     "name": "Part A. In our estimation class, we introduced the idea of __pressure__ as a crushing…",
     "desc": "Part A. In our estimation class, we introduced the idea of __pressure__ as a crushing force per unit area, pushing in from all sides. In SI, pressure is measured in __pascal__, $$\\mathrm{Pa}.$$ The pascal is defined so that $$1 \\;\\mathrm{Pa} = 1…",
-    "statement": "Part A. In our estimation class, we introduced the idea of __pressure__ as a crushing force per unit area, pushing in from all sides. In SI, pressure is measured in __pascal__, $$\\mathrm{Pa}.$$ The pascal is defined so that $$1 \\;\\mathrm{Pa} = 1 \\dfrac{\\mathrm{N}}{\\mathrm{m}^2}.$$\n\n(Remember that $$\\mathrm{N}$$ is the symbol for the __newton__, the SI unit for force.)\n\nThis problem is broken into several parts. By the end, we will try to get a better understanding of pressure in fluids like water and air and use this to investigate a question we asked earlier: \"How high is the atmosphere?\" Along the way, we'll build models and compare them to real data.\n\nTo begin, imagine a student has begun using this PhET simulation to measure the pressure at different depths under the surface of water. Inside the simulation, they kept gravity at its default value of $$9.8 \\;\\mathrm{m/s^2}$$ and fluid density at its default of $$1000 \\;\\mathrm{kg/m^3}$$\n\nIn the simulation, you can use the pressure meter to find the pressure at any point in the water. You can also adjust the quantity of water and turn on both a ruler that can be dragged around and a grid to help with measurements. These features are illustrated below\n\nFinish the student's data table, keeping the same number of significant figures they used.\n\nBe careful with your measurements; the app has a ruler you may find helpful. If a certain value measurement is very close to two possibilities the way $$105.5 \\;\\mathrm{kPA}$$ is close to either $$105 \\;\\mathrm{kPa}$$ or $$106 \\;\\mathrm{kPA},$$ then both will be accepted.\n\nmathjax: \\begin{array}{|r|r|} \\hline \\text{Depth (m)} & \\text{Pressure (kPa)} \\\\ \\hline 0.0 & 101 \\\\ \\hline 0.5 & 106 \\\\ \\hline 1.0 & \\blank \\\\ \\hline 1.5 & \\blank \\\\ \\hline 2.0 & \\blank \\\\ \\hline 2.5 & \\blank \\\\ \\hline 3.0 & \\blank \\\\ \\hline \\end{array}\n\nwidth: 3,3,3,3,3\n\nallowed: 1023456789\n\nPart B. The student then plotted their data and drew a best fit line. What was the slope of their line?\n\nRemember that the pascal is defined as $$1 \\;\\mathrm{Pa} = 1 \\dfrac{\\mathrm{N}}{\\mathrm{m^2}}$$ and the newton is defined as $$1 \\;\\mathrm{N} = 1 \\dfrac{\\mathrm{kg \\cdot m}}{\\mathrm{s^2}}.$$\n\nmathjax: $$ \\text{slope} = \\blank \\times 10^{\\blank} \\; \\mathrm{kg^\\blank \\cdot m^\\blank \\cdot s^\\blank}$$\n\nallowed: None\n\nPart C. The student decided to use their results to make a linear model for the pressure under water.\n\nThe variables they came up with to put into an equation for the pressure at a given depth under the water were \\begin{tabular}{l | c | r} \\text{quantity} & \\text{variable} & \\text{value} \\\\ \\hline \\text{ pressure in the water} & $$P$$\\, & \\text{varies} \\\\ \\text{ density of the water} & $$\\rho_{\\rm water}$$ & $$10^3 \\;\\mathrm{kg/m^3}$$ \\\\ \\text{ density of air} & $$\\rho_{\\rm air}$$ & $$1.2 \\;\\mathrm{kg/m^3}$$ \\\\ \\text{ gravitational acceleration} & $$g$$ & $$9.8 \\;\\mathrm{m/s^2}$$ \\\\ \\text{ atmospheric pressure} & $$P_0$$ & $$1.01 \\times 10^5 \\;\\mathrm{Pa}$$ \\\\ \\text{ depth under the water surface} & d\\, & \\text{varies} \\end{tabular}\n\nWhat equation made from these variables best models the data?\n\nYou do not need to use every variable.\n\ndraggables\n\n$$g$$\n\n$$d$$\n\n$$P_0$$\n\n$$\\rho_{\\rm water}$$\n\n$$\\rho_{\\rm air}$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart D. The student had heard that in physics, water and air are both considered __fluids__. (Although air is a gas and water is a liquid, \"fluid\" can refer to either gases or liquids in physics.)\n\nHaving already modeled the pressure under water, the student \"conjectured\" means \"guessed\" that essentially the same model could work for the atmosphere. They wanted to use a modified version of their water pressure model to estimate the height of the atmosphere.\n\nTo model pressure in the atmosphere, the student kept nearly the same equation, but changed $$\\rho_{\\rm water}$$ to $$\\rho_{\\rm air}.$$\n\nThey also had changed the variable $$d$$ to $$-h.$$ This is because $$d$$ represented a __depth__, which increases as we go further down. The student was interested in the __height__, which increases as we go further up. The minus sign reflects how depth and height increase in opposite directions.\n\nThe student decided that an estimate of the height of the atmosphere could be the height at which the model gives a pressure of zero. What was their estimate of the height of the atmosphere?\n\nmathjax: $$h_{\\rm atmosphere} \\approx \\blank \\;\\mathrm{km}$$\n\nwidth: 4\n\nallowed: 1.023456789\n\nPart E. Here is a plot of the pressure of the atmosphere versus altitude according to the __International Standard Atmosphere__ (ISA), a mathematical model created by several collaborations of scientists.\n\nThis model is validated by extensive atmospheric measurements over decades and is based on both empirical observations and physical theory.\n\nBased on what you can learn from this plot, which of the following statements about the student's linear model (from the previous part of this problem) are correct? Choose two total: one of (a), (b), or (c) and one of (d) or (e).\n\nThe student's estimate of where the pressure of the atmosphere nears zero was accurate.\n\nThe student's estimate of where the pressure of the atmosphere nears zero was an underestimate.\n\nThe student's estimate of where the pressure of the atmosphere nears zero was an overestimate.\n\nThe slope the student found was accurate at low elevations, but not high elevations.\n\nThe slope the student found was not accurate at any elevation.\n\nabc\n\nnew lines\n\nleft align\n\nPart F. The student's estimate for the height of the atmosphere was based on a linear model. That model was based on data we collected from underwater, and the model worked very well underwater.\n\nWhat do you think the differences are between air and water such that the student's model didn't work as expected when applied to air?\n\nUse the message board to share your ideas and respond to your classmates' ideas.\n\nNote: it is not enough to say \"air and water are different\". They are both fluids; how specifically are they different?\n\nAlso, the problem is not with the simulation we used. The linear model from the simulation works very well on real data taken underwater, but not very well on real data from the atmosphere.",
+    "statement": "Part A. In our estimation class, we introduced the idea of __pressure__ as a crushing force per unit area, pushing in from all sides. In SI, pressure is measured in __pascal__, $$\\mathrm{Pa}.$$ The pascal is defined so that $$1 \\;\\mathrm{Pa} = 1 \\dfrac{\\mathrm{N}}{\\mathrm{m}^2}.$$\n\n(Remember that $$\\mathrm{N}$$ is the symbol for the __newton__, the SI unit for force.)\n\nThis problem is broken into several parts. By the end, we will try to get a better understanding of pressure in fluids like water and air and use this to investigate a question we asked earlier: \"How high is the atmosphere?\" Along the way, we'll build models and compare them to real data.\n\nTo begin, imagine a student has begun using this simulation to measure the pressure at different depths under the surface of water. Inside the simulation, they kept gravity at its default value of $$9.8 \\;\\mathrm{m/s^2}$$ and fluid density at its default of $$1000 \\;\\mathrm{kg/m^3}$$\n\nIn the simulation, you can use the pressure meter to find the pressure at any point in the water. You can also adjust the quantity of water and turn on both a ruler that can be dragged around and a grid to help with measurements. These features are illustrated below\n\nprompt 3\n\nprompt 2\n\nThe meter measures the pressure at the depth indicated by the red arrowsthe left and right of the meter. (The bottom of the meter or the top of the meter would be a slightly different pressure because they're at different depths.)\n\n**Finish the student's data table, keeping the same number of significant figures they used.**\n\nBe careful with your measurements; zooming in can help.\n\nIf a certain value measurement is very close to two possibilities the way $$105.5 \\;\\mathrm{kPA}$$ is close to either $$105 \\;\\mathrm{kPa}$$ or $$106 \\;\\mathrm{kPA},$$ then both will be accepted.\n\nmathjax: \\begin{array}{|r|r|} \\hline \\text{Depth (m)} & \\text{Pressure (kPa)} \\\\ \\hline 0.0 & 101 \\\\ \\hline 0.5 & 106 \\\\ \\hline 1.0 & \\blank \\\\ \\hline 1.5 & \\blank \\\\ \\hline 2.0 & \\blank \\\\ \\hline 2.5 & \\blank \\\\ \\hline 3.0 & \\blank \\\\ \\hline \\end{array}\n\nwidth: 3,3,3,3,3\n\nallowed: 1023456789\n\nPart B. The student then plotted their data and drew a best fit line. What was the slope of their line?\n\nRemember that the pascal is defined as $$1 \\;\\mathrm{Pa} = 1 \\dfrac{\\mathrm{N}}{\\mathrm{m^2}}$$ and the newton is defined as $$1 \\;\\mathrm{N} = 1 \\dfrac{\\mathrm{kg \\cdot m}}{\\mathrm{s^2}}.$$\n\nmathjax: $$ \\text{slope} = \\blank \\times 10^{\\blank} \\; \\mathrm{kg^\\blank \\cdot m^\\blank \\cdot s^\\blank}$$\n\nPart C. The student decided to use their results to make a linear model for the pressure under water.\n\nThe variables they came up with to put into an equation for the pressure at a given depth under the water were \\begin{tabular}{l | c | r} \\text{quantity} & \\text{variable} & \\text{value} \\\\ \\hline \\text{ pressure in the water} & $$P$$\\, & \\text{varies} \\\\ \\text{ density of the water} & $$\\rho_{\\rm water}$$ & $$10^3 \\;\\mathrm{kg/m^3}$$ \\\\ \\text{ density of air} & $$\\rho_{\\rm air}$$ & $$1.2 \\;\\mathrm{kg/m^3}$$ \\\\ \\text{ gravitational acceleration} & $$g$$ & $$9.8 \\;\\mathrm{m/s^2}$$ \\\\ \\text{ atmospheric pressure} & $$P_0$$ & $$1.01 \\times 10^5 \\;\\mathrm{Pa}$$ \\\\ \\text{ depth under the water surface} & d\\, & \\text{varies} \\end{tabular}\n\nWhat equation made from these variables best models the data?\n\nYou do not need to use every variable.\n\ndraggables\n\n$$g$$\n\n$$d$$\n\n$$P_0$$\n\n$$\\rho_{\\rm water}$$\n\n$$\\rho_{\\rm air}$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart D. The student had heard that in physics, water and air are both considered __fluids__. (Although air is a gas and water is a liquid, \"fluid\" can refer to either gases or liquids in physics.)\n\nHaving already modeled the pressure under water, the student \"conjectured\" means \"guessed\" that essentially the same model could work for the atmosphere. They wanted to use a modified version of their water pressure model to estimate the height of the atmosphere.\n\nTo model pressure in the atmosphere, the student kept nearly the same equation, but changed $$\\rho_{\\rm water}$$ to $$\\rho_{\\rm air}.$$\n\nThey also had changed the variable $$d$$ to $$-h.$$ This is because $$d$$ represented a __depth__, which increases as we go further down. The student was interested in the __height__, which increases as we go further up. The minus sign reflects how depth and height increase in opposite directions.\n\nThe student decided that an estimate of the height of the atmosphere could be the height at which the model gives a pressure of zero. What was their estimate of the height of the atmosphere?\n\nmathjax: $$h_{\\rm atmosphere} \\approx \\blank \\;\\mathrm{km}$$\n\nwidth: 4\n\nallowed: 1.023456789\n\nPart E. Here is a plot of the pressure of the atmosphere versus altitude according to the __International Standard Atmosphere__ (ISA), a mathematical model created by several collaborations of scientists.\n\nThis model is validated by extensive atmospheric measurements over decades and is based on both empirical observations and physical theory.\n\nBased on what you can learn from this plot, which of the following statements about the student's linear model (from the previous part of this problem) are correct? Choose two total: one of (a), (b), or (c) and one of (d) or (e).\n\nThe student's estimate of where the pressure of the atmosphere nears zero was accurate.\n\nThe student's estimate of where the pressure of the atmosphere nears zero was an underestimate.\n\nThe student's estimate of where the pressure of the atmosphere nears zero was an overestimate.\n\nThe slope the student found was accurate at low elevations, but not high elevations.\n\nThe slope the student found was not accurate at any elevation.\n\nabc\n\nnew lines\n\nleft align\n\nPart F. The student's estimate for the height of the atmosphere was based on a linear model. That model was based on data we collected from underwater, and the model worked very well underwater.\n\nWhat do you think the differences are between air and water such that the student's model didn't work as expected when applied to air?\n\nUse the message board to share your ideas and respond to your classmates' ideas.\n\nNote: it is not enough to say \"air and water are different\". They are both fluids; how specifically are they different?\n\nAlso, the problem is not with the simulation we used. The linear model from the simulation works very well on real data taken underwater, but not very well on real data from the atmosphere.",
     "figures": [
-      "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/09_hw_use_pressure_sim.gif",
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/08_hw_pressure_model.png"
     ],
     "has_asy": false,
@@ -4048,7 +4034,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a54933a6-7f6a-43f0-83ec-7af3d2729f92",
+    "id": "c7b8bb67-74af-4e6d-97cf-2f65bd5d880a",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4059,7 +4045,7 @@
     "set_label": "Problem 3 (Parts A–G)",
     "name": "Part A. If you look at the stars in the night sky, you may notice that they are different…",
     "desc": "Part A. If you look at the stars in the night sky, you may notice that they are different colors. In this multipart problem, we'll study why stars are different colors and how those colors can be modeled. We know from the previous class that the energy stars give off comes from…",
-    "statement": "Part A. If you look at the stars in the night sky, you may notice that they are different colors. In this multipart problem, we'll study why stars are different colors and how those colors can be modeled.\n\nWe know from the previous class that the energy stars give off comes from nuclear fusion in the star. Fusion reactions happen deep in the core of the star. We can't observe them directly, and the light given off by those reactions never reaches us because it all gets absorbed by the outer layers of the star.\n\nThe light we see from the star is the glowing of the outer layers of the star due to its temperature. This phenomenon is called __black-body radiation__ (even though stars are not black). Everything gives off black-body radiation. The colder something is, the longer the Light travels through space as a wave. The wavelength $$\\lambda$$ of a wave is the distance between any two of its peaks of the blackbody radiation it gives off. We normally use $$\\lambda,$$ lower case Greek lambda, as the variable for a wavelength.\n\nMeasuring the wavelength of light coming off an object lets us determine its temperature. Red light has the longest wavelength we can see, and red stars are the coolest stars we can see. White stars are hotter and blue stars are even hotter.\n\nImagine that, in an experiment on black-body radiation, a scientist collected the data on temperature and Black bodies give off light at many wavelengths simultaneously. Here, we're reporting the approximate wavelength where the object gives off the most light. wavelength of a hot glowing body.\n\n\\begin{tabular}{|r|r|} \\text{temperature } $$(10^3 \\;\\mathrm{K})$$ & \\text{peak wavelength} $$(10^2 \\;\\mathrm{nm})$$ \\\\ \\hline $$1.0$$ & $$29$$ \\\\ $$2.0$$ & $$14$$ \\\\ $$3.0$$ & $$9.7$$ \\\\ $$4.0$$ & $$7.2$$ \\\\ $$5.0$$ & $$5.8$$ \\\\ $$6.0$$ & $$4.8$$ \\\\ $$7.0$$ & $$4.1$$ \\\\ $$8.0$$ & $$3.6$$ \\end{tabular}\n\nWhich of the following is a good description of this data? Choose two total: one of (a) or (b) and one of (c) or (d).\n\nPeak wavelength increases with temperature.\n\nPeak wavelength decreases with temperature.\n\nThe relationship is approximately linear.\n\nThe relationship is not close to linear.\n\nabc\n\nnew lines\n\nleft align\n\nPart B. As we saw in part (A), the color of light can be described by its wavelength, but another description is via the light's __frequency__ $$f.$$\n\nFrequency is the rate at which peaks of a wave pass a given point.\n\nIn the above animation, we see an illustration of a wave moving, and a pendulum has been synced up to the wave. The pendulum oscillates $$25$$ full trips in $$60 \\;\\mathrm{s}.$$ That makes the frequency of both the pendulum and the wave\n\n$$f = \\dfrac{25}{60 \\;\\mathrm{s}} \\approx 0.42 \\;\\mathrm{s}^{-1}.$$\n\nFrequency can be measured in the unit __hertz__, which has the symbol $$\\mathrm{Hz}.$$ The definition is $$1 \\;\\mathrm{Hz} = 1 \\;\\mathrm{s}^{-1}.$$\n\nThe frequency of the wave in the gif can be written $$f = 0.42 \\;\\mathrm{Hz}.$$\n\nThe frequency in hertz is the number of wave peaks that pass any given point in one second. Soon, we will use the frequency of light to take a second look at the blackbody radiation data, but first let's orient ourselves to the relationship between frequency and wavelength.\n\nImagine a wave that always has the same wavelength, but can travel either at high speed or at low speed. When would it have higher frequency?\n\nhigh speed\n\nlow speed\n\nthe speed wouldn't matter\n\nabc\n\nnew lines\n\nleft align\n\nPart C. Before we return to the blackbody data, we need to understand the relationship between frequency and wavelength of a wave.\n\nAs an example, imagine a simple wave that travels at $$v = 8 \\;\\mathrm{m/s}.$$ Suppose the wavelength of the wave is $$\\lambda = 2 \\;\\mathrm{m}.$$ What would the frequency of the wave be in hertz?\n\nmathjax: \\[ f = \\blank \\;\\mathrm{Hz}. \\]\n\nwidth: 2\n\nallowed: 1023456789\n\nPart D. draggables\n\n$$v$$\n\n$$\\lambda$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart E. Sometimes, how easy it is to find a quantitative model for data depends on what variables you choose to relate. We've already looked at the relationship between temperature and wavelength in black-body radiation. Now let's extend that to frequency.\n\nBelow is the same data table we saw in part (a), but with an extra column added for frequency of the light. Fill out this extra column. You'll need your result from part (D).\n\nRemember that for light, $$v = c \\approx 3 \\times 10^8 \\;\\mathrm{m/s}.$$\n\nmathjax: \\begin{array}{|r|r|r|} \\text{temperature } (10^3 \\;\\mathrm{K}) & \\text{peak wavelength } (10^2 \\;\\mathrm{nm}) & \\text{frequency } (10^{14} \\;\\mathrm{Hz}) \\\\ \\hline 1.0 & 29 & 1.0 \\\\ 2.0 & 14 & 2.1 \\\\ 3.0 & 9.7 & \\blank \\\\ 4.0 & 7.2 & \\blank\\\\ 5.0 & 5.8 & \\blank\\\\ 6.0 & 4.8 & \\blank\\\\ 7.0 & 4.1 & \\blank\\\\ 8.0 & 3.6 & \\blank \\end{array}\n\nwidth: 3,3,3,3,3,3\n\nallowed: 1.023456789\n\nPart F. The relationship between temperature and frequency of the peak wavelength of light coming off a star was discovered empirically by American astronomer Samuel Langley. Langley had no theory behind the relationship, though.\n\nUsing your data table from the previous problem, plot the frequency versus temperature of a star, with frequency on the vertical and temperature on the horizontal. Find a best fit line. This line has a slope, which Langley could have found. What is the slope of the line?\n\nmathjax: $$ \\blank \\times 10^{\\blank} \\;\\mathrm{s}^\\blank \\cdot \\mathrm{K}^{\\blank} $$\n\nallowed: None\n\nPart G. German physicist Max Planck built a theory of black body radiation and used it to help start the field of __quantum mechanics__.\n\nPlanck's theory predicted: $$f_{\\rm peak} = 2.821 \\dfrac{k_B T}{h}.$$\n\nIn this formula, $$f_{\\rm peak}$$ is the peak frequency of radiation coming from a black body like a star or the one in the experiment we've been analyzing. $$k_B$$ is a constant from thermodynamics that allows scientists to convert from temperatures to energies. In Planck's time, it was known to be $$k_B \\approx 1.38 \\times 10^{-23} \\;\\mathrm{m^2 \\cdot kg \\cdot s^{-2} \\cdot K^{-1}}.$$\n\nBased on your analysis of the temperature and frequency data, what value does this experiment give for $$h?$$\n\nmathjax: $$ h = \\blank \\times 10^{\\blank} \\; \\;\\mathrm{kg}^{\\blank} \\;\\mathrm{m}^{\\blank} \\;\\mathrm{s}^{\\blank}$$\n\nallowed: None",
+    "statement": "Part A. If you look at the stars in the night sky, you may notice that they are different colors. In this multipart problem, we'll study why stars are different colors and how those colors can be modeled.\n\nWe know from the previous class that the energy stars give off comes from nuclear fusion in the star. Fusion reactions happen deep in the core of the star. We can't observe them directly, and the light given off by those reactions never reaches us because it all gets absorbed by the outer layers of the star.\n\nThe light we see from the star is the glowing of the outer layers of the star due to its temperature. This phenomenon is called __black-body radiation__ (even though stars are not black). Everything gives off black-body radiation. The colder something is, the longer the Light travels through space as a wave. The wavelength $$\\lambda$$ of a wave is the distance between any two of its peaks of the blackbody radiation it gives off. We normally use $$\\lambda,$$ lower case Greek lambda, as the variable for a wavelength.\n\nMeasuring the wavelength of light coming off an object lets us determine its temperature. Red light has the longest wavelength we can see, and red stars are the coolest stars we can see. White stars are hotter and blue stars are even hotter.\n\nImagine that, in an experiment on black-body radiation, a scientist collected the data on temperature and Black bodies give off light at many wavelengths simultaneously. Here, we're reporting the approximate wavelength where the object gives off the most light. wavelength of a hot glowing body.\n\n\\begin{tabular}{|r|r|} \\text{temperature } $$(10^3 \\;\\mathrm{K})$$ & \\text{peak wavelength} $$(10^2 \\;\\mathrm{nm})$$ \\\\ \\hline $$1.0$$ & $$29$$ \\\\ $$2.0$$ & $$14$$ \\\\ $$3.0$$ & $$9.7$$ \\\\ $$4.0$$ & $$7.2$$ \\\\ $$5.0$$ & $$5.8$$ \\\\ $$6.0$$ & $$4.8$$ \\\\ $$7.0$$ & $$4.1$$ \\\\ $$8.0$$ & $$3.6$$ \\end{tabular}\n\nWhich of the following is a good description of this data? Choose two total: one of (a) or (b) and one of (c) or (d).\n\nPeak wavelength increases with temperature.\n\nPeak wavelength decreases with temperature.\n\nThe relationship is approximately linear.\n\nThe relationship is not close to linear.\n\nabc\n\nnew lines\n\nleft align\n\nPart B. As we saw in part (A), the color of light can be described by its wavelength, but another description is via the light's __frequency__ $$f.$$\n\nFrequency is the rate at which peaks of a wave pass a given point.\n\nIn the above animation, we see an illustration of a wave moving, and a pendulum has been synced up to the wave. The pendulum oscillates $$25$$ full trips in $$60 \\;\\mathrm{s}.$$ That makes the frequency of both the pendulum and the wave\n\n$$\\begin{aligned} f &= \\dfrac{25}{60 \\;\\mathrm{s}} \\\\[6pt] &\\approx 0.42 \\;\\mathrm{s}^{-1}. \\end{aligned}$$\n\nFrequency can be measured in the unit __hertz__, which has the symbol $$\\mathrm{Hz}.$$ The definition is $$1 \\;\\mathrm{Hz} = 1 \\;\\mathrm{s}^{-1}.$$\n\nThe frequency of the wave in the GIF can be written $$f = 0.42 \\;\\mathrm{Hz}.$$\n\nThe frequency in hertz is the number of wave peaks that pass any given point in one second. Soon, we will use the frequency of light to take a second look at the blackbody radiation data, but first let's orient ourselves to the relationship between frequency and wavelength.\n\nImagine a wave that always has the same wavelength, but can travel either at high speed or at low speed. When would it have higher frequency?\n\nhigh speed\n\nlow speed\n\nthe speed wouldn't matter\n\nabc\n\nnew lines\n\nleft align\n\nPart C. Before we return to the blackbody data, we need to understand the relationship between frequency and wavelength of a wave.\n\nAs an example, imagine a simple wave that travels at $$v = 8 \\;\\mathrm{m/s}.$$ Suppose the wavelength of the wave is $$\\lambda = 2 \\;\\mathrm{m}.$$ What would the frequency of the wave be in hertz?\n\nmathjax: \\[ f = \\blank \\;\\mathrm{Hz}. \\]\n\nwidth: 2\n\nallowed: 1023456789\n\nPart D. draggables\n\n$$v$$\n\n$$\\lambda$$\n\nmathjax: \\\n\noutputDisplayFormat: contentInEachDropArea\n\nPart E. Sometimes, how easy it is to find a quantitative model for data depends on what variables you choose to relate. We've already looked at the relationship between temperature and wavelength in black-body radiation. Now let's extend that to frequency.\n\nBelow is the same data table we saw in part (a), but with an extra column added for frequency of the light. Fill out this extra column. You'll need your result from part (D).\n\nRemember that for light, $$\\begin{aligned} v &= c \\\\[6pt] &\\approx 3 \\times 10^8 \\;\\mathrm{m/s}. \\end{aligned}$$\n\nmathjax: \\begin{array}{|r|r|r|} \\text{temperature } (10^3 \\;\\mathrm{K}) & \\text{peak wavelength } (10^2 \\;\\mathrm{nm}) & \\text{frequency } (10^{14} \\;\\mathrm{Hz}) \\\\ \\hline 1.0 & 29 & 1.0 \\\\ 2.0 & 14 & 2.1 \\\\ 3.0 & 9.7 & \\blank \\\\ 4.0 & 7.2 & \\blank\\\\ 5.0 & 5.8 & \\blank\\\\ 6.0 & 4.8 & \\blank\\\\ 7.0 & 4.1 & \\blank\\\\ 8.0 & 3.6 & \\blank \\end{array}\n\nwidth: 3,3,3,3,3,3\n\nallowed: 1.023456789\n\nPart F. The relationship between temperature and frequency of the peak wavelength of light coming off a star was discovered empirically by American astronomer Samuel Langley. Langley had no theory behind the relationship, though.\n\nUsing your data table from the previous problem, plot the frequency versus temperature of a star, with frequency on the vertical and temperature on the horizontal. Find a best fit line. This line has a slope, which Langley could have found. What is the slope of the line?\n\nmathjax: $$ \\blank \\times 10^{\\blank} \\;\\mathrm{s}^\\blank \\cdot \\mathrm{K}^{\\blank} $$\n\nPart G. German physicist Max Planck built a theory of black body radiation and used it to help start the field of __quantum mechanics__.\n\nPlanck's theory predicted: $$f_{\\rm peak} = 2.821 \\dfrac{k_B T}{h}.$$\n\nIn this formula, $$f_{\\rm peak}$$ is the peak frequency of radiation coming from a black body like a star or the one in the experiment we've been analyzing. $$k_B$$ is a constant from thermodynamics that allows scientists to convert from temperatures to energies. In Planck's time, it was known to be $$k_B \\approx 1.38 \\times 10^{-23} \\;\\mathrm{m^2 \\cdot kg \\cdot s^{-2} \\cdot K^{-1}}.$$\n\nBased on your analysis of the temperature and frequency data, what value does this experiment give for $$h?$$\n\nmathjax: $$ h = \\blank \\times 10^{\\blank} \\; \\;\\mathrm{kg}^{\\blank} \\;\\mathrm{m}^{\\blank} \\;\\mathrm{s}^{\\blank}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/08_hw_wavelength_definition.png",
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/08_hw_frequency_animation.gif"
@@ -4361,7 +4347,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d4ea743-7130-4b6c-a29e-01085d4a4c1a",
+    "id": "346ccbb7-be95-4bf1-856e-01e1126bb994",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4391,7 +4377,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cbe72162-8b64-443f-9781-61b2be24d000",
+    "id": "7229b06d-da71-4f1a-b477-b434fd55f8f3",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4422,7 +4408,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8c3936b3-f4eb-4776-bb02-bf66993ba825",
+    "id": "4aba91bd-e537-461d-ae18-576d74c0c4bd",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4431,14 +4417,10 @@
     "week": 10,
     "set_number": 3,
     "set_label": "Problem 3 (Parts A–C)",
-    "name": "Part A. The pendulum simulation we used in our class on uncertainty is available here…",
-    "desc": "Part A. The pendulum simulation we used in our class on uncertainty is available here: https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html The simulation allows you to imagine you are on \"Planet X,\" where gravitational acceleration is some unknown value…",
-    "statement": "Part A. The pendulum simulation we used in our class on uncertainty is available here: https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html\n\nThe simulation allows you to imagine you are on \"Planet X,\" where gravitational acceleration is some unknown value we will call $$g_x.$$ In this multi-part problem, we will find $$g_x$$ by making measurements of the pendulum.\n\nYou'll need to know that __for small amplitudes__, $$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}},$$ where $$T$$ is the period of a pendulum and $$\\ell$$ is its length.\n\nIt would be more accurate to say $$T \\approx 2\\pi \\sqrt{\\dfrac{\\ell}{g}}$$ in Newton's model of mechanics, but you can treat it as an equality for the purposes of this problem; the approximation is close enough that any deviation from it doesn't matter, as long as you only let the pendulum undergo small swings.\n\nIn the simulation, select \"Intro\", then change the gravity to \"Planet X\".\n\nYou can measure the period of the pendulum using a stopwatch on the lower left.\n\nYou can also change the length of the pendulum using the slider bar in the upper right.\n\nFill out the data table below with the period $$T$$ of the pendulum for different lengths $$\\ell.$$ You should be accurate to within $$0.03 \\;\\mathrm{s},$$ so take steps to reduce your random and systematic uncertainty.\n\nYou may want to write your values down somewhere, then fill in the data table. That will make it easier to re-enter the values if one of them is off on your first try.\n\nIn this problem, you are practicing the skill of making precision measurements. You will need to be within $$0.03 \\;\\mathrm{s}$$ of the correct answer for every box to be marked correct.\n\nmathjax: \\begin{array}{r|r} \\ell \\text{ (m)} & T \\text{ (s)} \\\\ \\hline 0.1 & \\blank \\\\ 0.2 & \\blank \\\\ 0.3 & \\blank \\\\ 0.4 & \\blank \\\\ 0.5 & \\blank \\\\ 0.6 & \\blank \\\\ 0.7 & \\blank \\\\ 0.8 & \\blank \\\\ 0.9 & \\blank \\\\ 1.0 & \\blank \\end{array}\n\nwidth: 5,5,5,5,5,5,5,5,5,5\n\nallowed: None\n\nPart B. You now have some data that can be used to figure out $$g_x,$$ the gravitational acceleration on Planet X.\n\nTo do that, you will have to perform a transformation on either $$T$$ or $$\\ell$$ to linearize your data. Then you can plot the data and use the slope of the plot to determine $$g_x.$$\n\nOn the left are choices for which variables to plot on which axes of a graph. Some of these result in linearized data for the experiment and some do not.\n\nFor the choices on the left which **do linearize the data**, connect them to the slope of the graph on the right. For choices on the left which **do not linearize the data**, do nothing.\n\nRemember $$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}}$$\n\nGraph\n\n$$T$$ on the vertical axis and $$\\ell$$ on the horizontal axis\n\n$$T$$ on the vertical axis and $$\\sqrt{\\ell}$$ on the horizontal axis\n\n$$T^2$$ on the vertical axis and $$\\ell$$ on the horizontal axis\n\n$$T$$ on the vertical axis and $$\\ell^2$$ on the horizontal axis\n\nSlope\n\n$$\\dfrac{2\\pi}{\\sqrt{g}}$$\n\n$$2\\pi$$\n\n$$\\dfrac{4\\pi^2}{g}$$\n\n$$4\\pi^2$$\n\n$$\\sqrt{\\dfrac{2\\pi}{g}}$$\n\n$$g$$\n\nallowsMultipleConnections:\n\nheightPx: 500\n\nwidthPx: 700\n\nPart C. Make a linearized plot of your data from part (A) using one of the choices in part (B). Find the slope of your plot and use it to compute $$g_x,$$ the gravitational acceleration on Planet X.\n\nWhat value do you get?\n\nYour answer should be accurate to within $$0.5 \\;\\mathrm{m/s^2}.$$\n\nmathjax: $$ g_x = \\blank \\;\\mathrm{m/s^2}$$\n\nwidth: 4\n\nallowed: 1.023456789",
-    "figures": [
-      "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/10_hw_planetx.gif",
-      "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/10_hw_stopwatch.gif",
-      "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/10_hw_length_adjust.gif"
-    ],
+    "name": "Part A. The pendulum simulation we used in our class on uncertainty is…",
+    "desc": "Part A. The pendulum simulation we used in our class on uncertainty is…",
+    "statement": "Part A. The pendulum simulation we used in our class on uncertainty is (https://aops-curriculum.github.io/268_Introduction_to_Physics/pendulum_lab.html?stopwatch=1&swfixed=1&noslow=1&marks=1&nostop=1&noplayer=1&panel=true&planet=x&nofriction=1&notools=1&nogravity=1&nomass=1&noreset=1)\n\nThe simulation allows you to imagine you are on \"Planet X,\" where gravitational acceleration is some unknown value we will call $$g_x.$$ In this multi-part problem, we will find $$g_x$$ by making measurements of the pendulum.\n\nYou'll need to know that __for small amplitudes__, $$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}},$$ where $$T$$ is the period of a pendulum and $$\\ell$$ is its length.\n\nIt would be more accurate to say $$T \\approx 2\\pi \\sqrt{\\dfrac{\\ell}{g}}$$ in Newton's model of mechanics, but you can treat it as an equality for the purposes of this problem; the approximation is close enough that any deviation from it doesn't matter, as long as you only let the pendulum undergo small swings.\n\nYou can measure the period of the pendulum using a stopwatch on the lower left.\n\nYou can also change the length of the pendulum using the slider bar in the upper right.\n\nFill out the data table below with the period $$T$$ of the pendulum for different lengths $$\\ell.$$ You should be accurate to within $$0.03 \\;\\mathrm{s},$$ so take steps to reduce your random and systematic uncertainty.\n\nYou may want to write your values down somewhere, then fill in the data table. That will make it easier to re-enter the values if one of them is off on your first try.\n\nIn this problem, you are practicing the skill of making precision measurements. You will need to be within $$0.03 \\;\\mathrm{s}$$ of the correct answer for every box to be marked correct.\n\nmathjax: \\begin{array}{r|r} \\ell \\text{ (m)} & T \\text{ (s)} \\\\ \\hline 0.1 & \\blank \\\\ 0.2 & \\blank \\\\ 0.3 & \\blank \\\\ 0.4 & \\blank \\\\ 0.5 & \\blank \\\\ 0.6 & \\blank \\\\ 0.7 & \\blank \\\\ 0.8 & \\blank \\\\ 0.9 & \\blank \\\\ 1.0 & \\blank \\end{array}\n\nwidth: 5,5,5,5,5,5,5,5,5,5\n\nPart B. You now have some data that can be used to figure out $$g_x,$$ the gravitational acceleration on Planet X.\n\nTo do that, you will have to perform a transformation on either $$T$$ or $$\\ell$$ to linearize your data. Then you can plot the data and use the slope of the plot to determine $$g_x.$$\n\nOn the left are choices for which variables to plot on which axes of a graph. Some of these result in linearized data for the experiment and some do not.\n\nFor the choices on the left which **do linearize the data**, connect them to the slope of the graph on the right. For choices on the left which **do not linearize the data**, do nothing.\n\nRemember $$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}}$$\n\nGraph\n\n$$T$$ on the vertical axis and $$\\ell$$ on the horizontal axis\n\n$$T$$ on the vertical axis and $$\\sqrt{\\ell}$$ on the horizontal axis\n\n$$T^2$$ on the vertical axis and $$\\ell$$ on the horizontal axis\n\n$$T$$ on the vertical axis and $$\\ell^2$$ on the horizontal axis\n\nSlope\n\n$$\\dfrac{2\\pi}{\\sqrt{g}}$$\n\n$$2\\pi$$\n\n$$\\dfrac{4\\pi^2}{g}$$\n\n$$4\\pi^2$$\n\n$$\\sqrt{\\dfrac{2\\pi}{g}}$$\n\n$$g$$\n\nallowsMultipleConnections:\n\nheightPx: 500\n\nwidthPx: 700\n\nPart C. Make a linearized plot of your data from part (A) using one of the choices in part (B). Find the slope of your plot and use it to compute $$g_x,$$ the gravitational acceleration on Planet X.\n\nWhat value do you get?\n\nYour answer should be accurate to within $$0.5 \\;\\mathrm{m/s^2}.$$\n\nmathjax: $$ g_x = \\blank \\;\\mathrm{m/s^2}$$\n\nwidth: 4\n\nallowed: 1.023456789",
+    "figures": [],
     "has_asy": false,
     "topics": [
       "Experimental Methods"
@@ -4455,7 +4437,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b546e055-f6b7-44e8-b37e-8f73c7c7c443",
+    "id": "6ddfa049-a876-4960-b63e-52607a5f3404",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4485,7 +4467,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b4905441-b7c7-4a74-8610-497a7d60182b",
+    "id": "edf291b0-e4d0-4828-87eb-9ee007fdd2ba",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4512,8 +4494,7 @@
     "aops_id": "39822",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "fe1566e9-6558-4d56-aa9f-4aba8dc5a346",
@@ -4725,7 +4706,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b84bad5e-cc67-4927-afc3-b10fb7d562da",
+    "id": "a26b8142-5dc3-4e20-93b4-4df86f949ef1",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4755,7 +4736,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c28b547b-4a00-45b3-bff4-34cc8f6615cd",
+    "id": "13873b5c-af7f-453a-810e-1ad047bfffc0",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4766,7 +4747,7 @@
     "set_label": "Problem 2 (Parts A–C)",
     "name": "Part A. Galileo's (fictional) rival, Professor Impetus the Impetuous, learned about…",
     "desc": "Part A. Galileo's (fictional) rival, Professor Impetus the Impetuous, learned about Galileo's thought experiment on falling bodies. Remember that Galileo's thought experiment was designed to show a logical inconsistency in Aristotle's idea that more massive things fall to the…",
-    "statement": "Part A. Galileo's (fictional) rival, Professor Impetus the Impetuous, learned about Galileo's thought experiment on falling bodies. Remember that Galileo's thought experiment was designed to show a logical inconsistency in Aristotle's idea that more massive things fall to the ground more quickly when dropped and pulled by gravity.\n\nProfessor Impetus agrees with Galileo that Aristotle is wrong, but believes that Galileo is wrong, too! Her theory is that the acceleration of an object due to gravity depends on the average The density of an object is defined as its mass divided by its volume. of the object. The more dense the object, the greater its acceleration. In fact, objects of very low density may even have negative acceleration towards the ground, according to Impetus.\n\nA third scientist, Dr. Vacuum, is trying to decide whose hypothesis fits in better with some observations they've made and some facts they know. That means Dr. Vacuum is trying to decide whether density affects gravitational acceleration or not. However, Dr. Vacuum doesn't fully understand the difference between thought experiments and the real world. Dr. Vacuum doesn't consider whether effects like air drag, or other non-gravity influences that are excluded in the thought experiments, are interfering with the observations.\n\nDr. Vacuum writes down a list of observations and facts. That list is shown below. Sort each item on the list by whether Dr. Vacuum thinks it agrees with Galileo's hypothesis, Professor Impetus's hypothesis, both, or neither.\n\n**(a)** Take a piece of paper. Wad it up into a ball, but loosely. Drop it and see how long it takes to fall. Next, wad the same paper up more tightly, so it makes a smaller ball. Then drop it again. It will take less time to fall to the ground in the second case, when it's tightly wadded. Vacuum considers the paper ball more dense when wadded up. **(b)** Kepler's laws give a very accurate description of the motion of planets, despite Kepler not knowing the planets' densities. Kepler's laws can be derived mathematically from Newton's theory of gravity, and Newton's theory of gravity predicts that all objects will accelerate near the surface of Earth with the same acceleration. **(c)** A skydiver falls more quickly in a head first position than in a spreadeagle position, even though their density is the same in both positions. **(d)** Astronaut David Scott found that a hammer and feather take the same amount of time to fall from a given height when dropped on the moon, despite having different densities. **(e)** Some objects, like helium balloons, do not fall at all. They rise up through the air, despite not spending any energy to fly the way birds or airplanes do. This happens only with objects of very low density. **(f)** A helium balloon will not float on the moon. It will fall down in the same amount of time as a hammer or feather. **(g)** A small lead ball and a large lead ball, when dropped off a tower (as described in Galileo's thought experiment), really do hit the ground at almost exactly the same time. These balls have the same density.\n\ncategories\n\nGalileo\n\nImpetus\n\nBoth\n\nNeither\n\ndraggables\n\n(a) paper wad\n\n(b) Kepler's laws\n\n(c) skydiver\n\n(d) hammer and feather\n\n(e) balloon floating\n\n(f) balloon on moon\n\n(g) lead balls\n\nheight: 400\n\nrow numbers: 3, 3\n\nPart B. In order to make quantitative predictions with their hypotheses, Galileo and Professor Impetus agree to write their hypotheses as equations.\n\nIn equations, Galileo believes $$a_{\\rm gravity; \\; Galileo} = g,$$ that the acceleration due to gravity of all objects near Earth's surface is the same and equal to some constant called $$g.$$\n\nProfessor Impetus believes $$a_{\\rm gravity; \\; Impetus} = c_g \\cdot (\\rho - \\rho_0),$$ where $$\\rho$$ is the density of an object and $$c_g$$ and $$\\rho_0$$ are constants that are the same for all objects.\n\n$$c_g$$ takes the place of $$g$$ in Professor Impetus' hypothesis, but it is not an acceleration.\n\nWhat are the dimensions of $$c_g?$$\n\nmathjax: \\[ \\left = \\mathrm{M}^{\\blank} \\cdot \\mathrm{L}^{\\blank} \\cdot \\mathrm{T}^{\\blank} \\]\n\nallowed: None\n\nPart C. We know that Galileo's hypothesis on falling bodies is well-supported by real world evidence and logically consistent. On the other hand, Professor Impetus's idea that acceleration due to gravity depends on density disagrees with both experiment and mathematical theory, such as Newton's laws and Newton's theory of gravity.\n\nStill, can a thought experiment alone show that Impetus' idea is logically inconsistent?\n\nOn the message board, participate in the conversation with the class on this topic. You might want to:\n\n- Suggest a thought experiment that shows that Impetus's hypothesis is logically inconsistent or absurd - Explain why you think a thought experiment can't show Impetus's hypothesis is inconsistent, even if it is shown wrong by real world experiments - Respond to your classmates' thought experiments and arguments",
+    "statement": "Part A. Galileo's (fictional) rival, Professor Impetus the Impetuous, learned about Galileo's thought experiment on falling bodies. Remember that Galileo's thought experiment was designed to show a logical inconsistency in Aristotle's idea that more massive things fall to the ground more quickly when dropped and pulled by gravity.\n\nProfessor Impetus agrees with Galileo that Aristotle is wrong, but believes that Galileo is wrong, too! Her theory is that the acceleration of an object due to gravity depends on the average The density of an object is defined as its mass divided by its volume. of the object. The more dense the object, the greater its acceleration. In fact, objects of very low density may even have negative acceleration towards the ground, according to Impetus.\n\nA third scientist, Dr. Vacuum, is trying to decide whose hypothesis fits in better with some observations they've made and some facts they know. That means Dr. Vacuum is trying to decide whether density affects gravitational acceleration or not. However, Dr. Vacuum doesn't fully understand the difference between thought experiments and the real world. Dr. Vacuum doesn't consider whether effects like air drag, or other non-gravity influences that are excluded in the thought experiments, are interfering with the observations.\n\nDr. Vacuum writes down a list of observations and facts. That list is shown below. Sort each item on the list by whether Dr. Vacuum thinks it agrees with Galileo's hypothesis, Professor Impetus's hypothesis, both, or neither.\n\n**(a)** Take a piece of paper. Wad it up into a ball, but loosely. Drop it and see how long it takes to fall. Next, wad the same paper up more tightly, so it makes a smaller ball. Then drop it again. It will take less time to fall to the ground in the second case, when it's tightly wadded. Vacuum considers the paper ball more dense when wadded up. **(b)** Kepler's laws give a very accurate description of the motion of planets, despite Kepler not knowing the planets' densities. Kepler's laws can be derived mathematically from Newton's theory of gravity, and Newton's theory of gravity predicts that all objects will accelerate near the surface of Earth with the same acceleration. **(c)** A skydiver falls more quickly in a head first position than in a spreadeagle position, even though their density is the same in both positions. **(d)** Astronaut David Scott found that a hammer and feather take the same amount of time to fall from a given height when dropped on the moon, despite having different densities. **(e)** Some objects, like helium balloons, do not fall at all. They rise up through the air, despite not spending any energy to fly the way birds or airplanes do. This happens only with objects of very low density. **(f)** A helium balloon will not float on the moon. It will fall down in the same amount of time as a hammer or feather. **(g)** A small lead ball and a large lead ball, when dropped off a tower (as described in Galileo's thought experiment), really do hit the ground at almost exactly the same time. These balls have the same density.\n\ncategories\n\nGalileo\n\nImpetus\n\nBoth\n\nNeither\n\ndraggables\n\n(a) paper wad\n\n(b) Kepler's laws\n\n(c) skydiver\n\n(d) hammer and feather\n\n(e) balloon floating\n\n(f) balloon on moon\n\n(g) lead balls\n\nheight: 400\n\nrow numbers: 3, 3\n\nPart B. In order to make quantitative predictions with their hypotheses, Galileo and Professor Impetus agree to write their hypotheses as equations.\n\nIn equations, Galileo believes $$a_{\\rm gravity; \\; Galileo} = g,$$ that the acceleration due to gravity of all objects near Earth's surface is the same and equal to some constant called $$g.$$\n\nProfessor Impetus believes $$a_{\\rm gravity; \\; Impetus} = c_g \\cdot (\\rho - \\rho_0),$$ where $$\\rho$$ is the density of an object and $$c_g$$ and $$\\rho_0$$ are constants that are the same for all objects.\n\n$$c_g$$ takes the place of $$g$$ in Professor Impetus' hypothesis, but it is not an acceleration.\n\nWhat are the dimensions of $$c_g?$$\n\nmathjax: \\[ \\left = \\mathrm{M}^{\\blank} \\cdot \\mathrm{L}^{\\blank} \\cdot \\mathrm{T}^{\\blank} \\]\n\nPart C. We know that Galileo's hypothesis on falling bodies is well-supported by real world evidence and logically consistent. On the other hand, Professor Impetus's idea that acceleration due to gravity depends on density disagrees with both experiment and mathematical theory, such as Newton's laws and Newton's theory of gravity.\n\nStill, can a thought experiment alone show that Impetus' idea is logically inconsistent?\n\nOn the message board, participate in the conversation with the class on this topic. You might want to:\n\n- Suggest a thought experiment that shows that Impetus's hypothesis is logically inconsistent or absurd - Explain why you think a thought experiment can't show Impetus's hypothesis is inconsistent, even if it is shown wrong by real world experiments - Respond to your classmates' thought experiments and arguments",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4784,7 +4765,7 @@
     "solutionUrl": null
   },
   {
-    "id": "57e50145-547e-4235-a9a9-fc698c7f089a",
+    "id": "0c0c35f2-d0f7-489d-bc12-fb20ce03c44e",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4814,7 +4795,7 @@
     "solutionUrl": null
   },
   {
-    "id": "acc1e702-ae59-4cfe-bcb8-11ac72ec7fef",
+    "id": "c3dc9f19-4e02-4fcd-9351-7e73fcda658c",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4844,7 +4825,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7faf04d2-6769-4b8a-b649-51893ab1b371",
+    "id": "af3f50ae-df93-40ca-9925-8c161061c3d5",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4876,7 +4857,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e4e7f34a-289c-431a-b377-c7ad566bf005",
+    "id": "ccee5c7d-fa3b-4c99-a1f9-720e7ef4926a",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -4903,8 +4884,7 @@
     "aops_id": "39824",
     "active": true,
     "problemUrl": "",
-    "solutionUrl": null,
-    "nonPhysics": true
+    "solutionUrl": null
   },
   {
     "id": "e82d78ba-2e02-4178-a010-69243b4a6682",
@@ -5150,7 +5130,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f4b6dae3-b906-42c6-b5fd-fb39068647e5",
+    "id": "546669eb-8dc3-4213-acc8-8e8aabc16c84",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -5182,7 +5162,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b144b056-c005-4b35-bb27-ead260759aec",
+    "id": "40780769-4a7f-49c6-8358-66881b286708",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -5213,7 +5193,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e9e6c80d-0e0f-48ac-ab7f-7111e216d5cf",
+    "id": "39a329ea-061d-4df3-a433-e6f996c15808",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -5224,7 +5204,7 @@
     "set_label": "Problem 3",
     "name": "The goal of this problem is to combine your skills in estimation with your knowledge of…",
     "desc": "The goal of this problem is to combine your skills in estimation with your knowledge of energy conservation. Dolphins are athletic animals which can jump high out of the water, as captured in this photo __Martin Ruegner, Getty Images__ These adult bottlenose dolphins are…",
-    "statement": "The goal of this problem is to combine your skills in estimation with your knowledge of energy conservation.\n\nDolphins are athletic animals which can jump high out of the water, as captured in this photo\n\n__Martin Ruegner, Getty Images__\n\nThese adult bottlenose dolphins are approximately 4 meters long.\n\nA dolphin jumps by swimming upward toward the surface of the water.\n\nEstimate the speed these dolphins were swimming in the upward direction just before leaving the water. You can ignore their sideways motion.\n\nmathjax: $$v \\approx \\blank \\;\\mathrm{m/s}$$\n\nallowed: None",
+    "statement": "The goal of this problem is to combine your skills in estimation with your knowledge of energy conservation.\n\nDolphins are athletic animals which can jump high out of the water, as captured in this photo\n\n__Martin Ruegner, Getty Images__\n\nThese adult bottlenose dolphins are approximately 4 meters long.\n\nA dolphin jumps by swimming upward toward the surface of the water.\n\nEstimate the speed these dolphins were swimming in the upward direction just before leaving the water. You can ignore their sideways motion.\n\nmathjax: $$v \\approx \\blank \\;\\mathrm{m/s}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00268-5aaef100339f0a68f2a364ddc2eb80306679d9b3/files/12_hw_bottlenose_jump.jpg"
     ],
@@ -5246,7 +5226,7 @@
     "solutionUrl": null
   },
   {
-    "id": "41792ea6-5679-4bcc-a53a-95d7ce5a0fa5",
+    "id": "d91f846a-fb4a-4ff7-9ecf-bc5212fea7a7",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -5257,7 +5237,7 @@
     "set_label": "Problem 4 (Parts A–B)",
     "name": "Part A. You stand on the roof of a building holding three identical rocks, which you are…",
     "desc": "Part A. You stand on the roof of a building holding three identical rocks, which you are using for an experiment. The area below the building has been secured specifically for your experiment; no people are nearby to get hit in the head by falling rocks, and the relevant safety…",
-    "statement": "Part A. You stand on the roof of a building holding three identical rocks, which you are using for an experiment.\n\nThe area below the building has been secured specifically for your experiment; no people are nearby to get hit in the head by falling rocks, and the relevant safety authorities have approved your project. You also have adult supervision while on the building.\n\nYou take your first rock and throw it perfectly horizontally off the building.\n\nNext, you throw your second rock straight upward from just past the edge of the building.\n\nFinally, you throw the third rock straight downward off the building.\n\nYou throw all three rocks with the same initial speed and from the same initial height. None hit the building or any other obstacles; they all continue their trajectories until they hit the ground. The ground is level. You can assume that air resistance and other forces besides gravity are negligible.\n\nWhich rock hits the ground with the greatest speed?\n\nrock 1 (horizontal throw)\n\nrock 2 (upward throw)\n\nrock 3 (downward throw)\n\nall will have the same speed\n\nrocks 2 and 3 will tie, and be faster than rock 1\n\nabc\n\nnew lines\n\nleft align\n\nPart B. You have a fourth rock. You drop it off the building with an initial speed of zero, but from the same height that you threw the first three rocks.\n\nThe fourth rock hits the ground with a speed of $$12 \\;\\mathrm{m/s}.$$ Also, the rock you threw horizontally hit the ground with a speed of $$13 \\;\\mathrm{m/s}.$$\n\nWhat is $$v_0,$$ the initial speed at which you threw the first three rocks?\n\nmathjax: $$ v_0 = \\blank \\;\\mathrm{m/s}$$\n\nallowed: None",
+    "statement": "Part A. You stand on the roof of a building holding three identical rocks, which you are using for an experiment.\n\nThe area below the building has been secured specifically for your experiment; no people are nearby to get hit in the head by falling rocks, and the relevant safety authorities have approved your project. You also have adult supervision while on the building.\n\nYou take your first rock and throw it perfectly horizontally off the building.\n\nNext, you throw your second rock straight upward from just past the edge of the building.\n\nFinally, you throw the third rock straight downward off the building.\n\nYou throw all three rocks with the same initial speed and from the same initial height. None hit the building or any other obstacles; they all continue their trajectories until they hit the ground. The ground is level. You can assume that air resistance and other forces besides gravity are negligible.\n\nWhich rock hits the ground with the greatest speed?\n\nrock 1 (horizontal throw)\n\nrock 2 (upward throw)\n\nrock 3 (downward throw)\n\nall will have the same speed\n\nrocks 2 and 3 will tie, and be faster than rock 1\n\nabc\n\nnew lines\n\nleft align\n\nPart B. You have a fourth rock. You drop it off the building with an initial speed of zero, but from the same height that you threw the first three rocks.\n\nThe fourth rock hits the ground with a speed of $$12 \\;\\mathrm{m/s}.$$ Also, the rock you threw horizontally hit the ground with a speed of $$13 \\;\\mathrm{m/s}.$$\n\nWhat is $$v_0,$$ the initial speed at which you threw the first three rocks?\n\nmathjax: $$ v_0 = \\blank \\;\\mathrm{m/s}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -5276,7 +5256,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bf431ec6-86d7-4b57-9202-9f1e0539c74c",
+    "id": "e208542d-90e4-4eca-8c03-3871e41727cc",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
@@ -5286,8 +5266,8 @@
     "set_number": 5,
     "set_label": "Problem 5",
     "name": "What should the mass of ball 2 be in order to balance the pulley system shown?",
-    "desc": "What should the mass of ball 2 be in order to balance the pulley system shown? Pulley $$A$$ is fixed in space. Pulleys $$B$$ and $$C$$ can move vertically. Assume the strings are massless and there is no friction. mathjax: $$ m_2 = \\blank m_1 $$ width: 4 allowed: None",
-    "statement": "What should the mass of ball 2 be in order to balance the pulley system shown?\n\nPulley $$A$$ is fixed in space. Pulleys $$B$$ and $$C$$ can move vertically. Assume the strings are massless and there is no friction.\n\nmathjax: $$ m_2 = \\blank m_1 $$\n\nwidth: 4\n\nallowed: None",
+    "desc": "What should the mass of ball 2 be in order to balance the pulley system shown? Pulley $$A$$ is fixed in space. Pulleys $$B$$ and $$C$$ can move vertically. Assume the strings are massless and there is no friction. mathjax: $$ m_2 = \\blank m_1 $$ width: 4",
+    "statement": "What should the mass of ball 2 be in order to balance the pulley system shown?\n\nPulley $$A$$ is fixed in space. Pulleys $$B$$ and $$C$$ can move vertically. Assume the strings are massless and there is no friction.\n\nmathjax: $$ m_2 = \\blank m_1 $$\n\nwidth: 4",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -5307,7 +5287,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8acab404-45d5-4cd7-9179-baf2f5e36095",
+    "id": "3044c3e0-81a4-48c4-a2be-db5b9d235721",
     "contest": "Introduction to Physics",
     "type": "AoPS",
     "source": "homework",
