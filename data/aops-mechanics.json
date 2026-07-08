@@ -373,7 +373,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9eb32e35-8499-419d-b9ff-543d77293318",
+    "id": "d72b58ee-eaa3-4d1b-a781-832b2573752b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -393,7 +393,10 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "average speed",
+      "unit conversion",
+      "sanity checks"
     ],
     "year": 0,
     "country": "",
@@ -403,7 +406,7 @@
     "solutionUrl": null
   },
   {
-    "id": "092a929b-8e31-4ec5-8e1c-05a180e0f770",
+    "id": "2011cd00-8ef3-41b7-9f72-e820127f29ac",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -423,7 +426,9 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "average speed",
+      "graphs"
     ],
     "year": 0,
     "country": "",
@@ -433,7 +438,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b3b00663-ad76-4984-ab41-69ae12639023",
+    "id": "ba812e5b-7cd6-440c-8526-8f6c90fbf865",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -456,7 +461,9 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "position",
+      "coordinates"
     ],
     "year": 0,
     "country": "",
@@ -466,7 +473,7 @@
     "solutionUrl": null
   },
   {
-    "id": "84191328-7bc6-43df-9220-5e8a2190ed40",
+    "id": "90984765-55a2-42d7-b334-10aa77213d20",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -488,7 +495,9 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "speed of light",
+      "measurement"
     ],
     "year": 0,
     "country": "",
@@ -498,7 +507,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0d8abe8e-9401-4808-9b53-2852fdb8f281",
+    "id": "54d25c11-f9ab-488f-b0f0-7fc1f07c29c3",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -520,7 +529,10 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "light",
+      "least time",
+      "refraction"
     ],
     "year": 0,
     "country": "",
@@ -530,7 +542,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e4b5d40f-305d-423e-b85d-a04a6f741edb",
+    "id": "a8dcdd54-a2d1-4214-abc1-d19cb20e3254",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -552,7 +564,9 @@
     "tags": [
       "script",
       "MCH01",
-      "velocity"
+      "velocity",
+      "Hubble's law",
+      "proportional reasoning"
     ],
     "year": 0,
     "country": "",
@@ -840,7 +854,7 @@
     "solutionUrl": null
   },
   {
-    "id": "416f4165-08f2-48d8-92c1-7f5fe56d7267",
+    "id": "4e62ace7-f805-4179-bb6a-8714c03ff34f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -874,7 +888,7 @@
     "solutionUrl": null
   },
   {
-    "id": "948b079b-6682-49b4-aa2f-9a89d3315c1c",
+    "id": "186ed2e9-5b8e-4bf7-935a-0ae3dd3a1864",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -905,7 +919,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e7b5766d-5538-45a1-869f-9968c4269131",
+    "id": "8ba0fc23-a715-41b6-91dd-35fcaf28e30a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -938,7 +952,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f706eed4-a85e-447b-82d7-53c16140f32d",
+    "id": "99574987-93bc-49d3-8aed-a2a420392427",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -972,7 +986,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c5cd00bf-42f7-4713-8dcf-b82d7796e09a",
+    "id": "850bf90e-2b8d-4ca3-89bb-97bd6f9899d2",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1006,7 +1020,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bbfb1f38-17f1-4790-b559-8487a3abf52c",
+    "id": "0102be3a-026c-43eb-9b97-09b305f596f6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1041,7 +1055,7 @@
     "solutionUrl": null
   },
   {
-    "id": "06e4d0d2-f0b9-4a02-b63c-df3aaca77a2d",
+    "id": "883b453b-3d7f-40ab-a2d9-65ff445ec0f2",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1076,7 +1090,7 @@
     "solutionUrl": null
   },
   {
-    "id": "80a431f2-988c-4b3b-aa0d-66dc556e409e",
+    "id": "9387ff6b-dd29-4238-81de-1781dd04841b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1441,7 +1455,7 @@
     "solutionUrl": null
   },
   {
-    "id": "69d5ff99-cb7a-4028-af87-5427b6ec589a",
+    "id": "7a8db5f5-3a41-4dc3-bea1-02810d24b909",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1476,7 +1490,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8df9144c-bb3b-4779-bf59-7c5b1302faf4",
+    "id": "0e906b60-4187-429f-9344-2d3125c1c55b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1511,7 +1525,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5bd9ae70-2736-4946-bc09-2c9e15384fcf",
+    "id": "e6121113-3631-40ce-9501-78ee04356590",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1545,7 +1559,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4910458e-da58-41a0-99b8-7112ea9a9219",
+    "id": "e16c20bd-8bc3-4244-851d-7bc257489e9c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1579,7 +1593,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1be53b18-181d-4fbc-a0ed-6a34619670de",
+    "id": "95e65554-0fa1-4277-a9f2-0fdbfc80f31d",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1613,7 +1627,7 @@
     "solutionUrl": null
   },
   {
-    "id": "966bbf94-1889-4886-877a-c39e4e27de00",
+    "id": "83a9e8d5-c750-4830-9e9f-3848a02336e6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1649,7 +1663,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f6627be9-e8ba-4d0f-87e1-cc0812b8aff4",
+    "id": "de9ad23b-203b-487b-bc92-391edfcef054",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1684,7 +1698,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f9eb5c96-a123-4db0-b6dc-1c7e4e1cf1fe",
+    "id": "97b4227e-f331-4862-98c9-1679044f5c7d",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -1718,7 +1732,7 @@
     "solutionUrl": null
   },
   {
-    "id": "73919056-5dfd-467b-85fe-dca5cf6b5521",
+    "id": "019a16ed-e004-461e-95e6-10c0ecf2d4f3",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2056,7 +2070,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eadf49e8-1233-477b-8bd8-46529cfabf2b",
+    "id": "cd57eb1b-5335-4c49-ab92-224824640fde",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2088,7 +2102,7 @@
     "solutionUrl": null
   },
   {
-    "id": "893eeedb-c6f4-4732-90e2-3c9392fa9710",
+    "id": "8907b75b-eccf-4c78-b1f7-3630f6a77e58",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2122,7 +2136,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a0343f9d-4a87-45bb-a3d1-afcd79f53491",
+    "id": "bdb865a8-f61b-45ef-abf8-43f0b8132f60",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2153,7 +2167,7 @@
     "solutionUrl": null
   },
   {
-    "id": "395bd330-cf03-4565-bd79-3ab46f85d2d9",
+    "id": "6bba2475-ad7f-4713-8e55-2efd3640920f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2184,7 +2198,7 @@
     "solutionUrl": null
   },
   {
-    "id": "78339421-6bb0-4cbe-a5c9-9b862e791cb6",
+    "id": "d0eb0310-ce8b-423f-98bf-bcd90fbb413c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2216,7 +2230,7 @@
     "solutionUrl": null
   },
   {
-    "id": "618b327d-1838-42fa-96a6-8db8ceeaef3e",
+    "id": "aa8dac6a-b925-4514-9843-51983adf6678",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2248,7 +2262,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e6487ed5-9c93-41e3-851a-c41f09e9e4e0",
+    "id": "91936557-0074-400a-828e-378ae059981b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2408,7 +2422,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7aa180ec-f3c6-404e-a28b-09c2772e5252",
+    "id": "9a65c66f-6bb0-44fe-9e25-8a9ca498b27f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2444,7 +2458,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1e5f0608-ebf0-4680-b14f-3d7f123176a1",
+    "id": "f7617694-27dc-4213-a641-d3339f9ac272",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2479,7 +2493,7 @@
     "solutionUrl": null
   },
   {
-    "id": "22ce0317-4628-4671-9a36-d167778f5b60",
+    "id": "c5d13d18-d2dd-4f52-a5d4-93deecc8b671",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2512,7 +2526,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7ac36b75-f6ed-44bb-bb3d-2bbe6792c560",
+    "id": "4cf5ea5b-be41-479c-bbee-e9d7f29f3996",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2547,7 +2561,7 @@
     "solutionUrl": null
   },
   {
-    "id": "65e891a1-45d9-4627-ae7e-5f9c87456e06",
+    "id": "998092b6-b88b-4203-b9d3-433d9994a5fc",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2582,7 +2596,7 @@
     "solutionUrl": null
   },
   {
-    "id": "03542ecb-9384-4e8b-8700-d70cf9c7f294",
+    "id": "b6a161c5-a17b-4f0a-84ff-0fea042c88fa",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2615,7 +2629,7 @@
     "solutionUrl": null
   },
   {
-    "id": "747e320a-c20f-4e2f-9d3b-5a704927c49b",
+    "id": "24f77e27-a444-44b7-9fe9-1cddaef4d685",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2860,7 +2874,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c1eb3a2b-ea64-435e-ae9c-3fdd52fee234",
+    "id": "25a35e93-30ee-4f79-92b5-f8e1aa19eefb",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2896,7 +2910,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e3f1bc02-ae37-4c2a-b200-a73fa866d0e9",
+    "id": "b15e2aaf-3a75-4ec1-8284-4b827fd5f211",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2929,7 +2943,7 @@
     "solutionUrl": null
   },
   {
-    "id": "61021c9c-8bd9-4f72-bedb-090778695eb4",
+    "id": "9d99cd8b-3c43-4d59-b621-bcfd13f3c942",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2961,7 +2975,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a0a5cf9f-0184-4b7d-bf7c-3c617d5cfbfc",
+    "id": "c47d95f0-2dd3-41ac-acb0-6c63319b27e2",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -2997,7 +3011,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d3f2490-e681-4719-8ae8-3bcba74fb131",
+    "id": "6c3cf3a7-3f03-4613-903d-71a2a0b62ca8",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3031,7 +3045,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ce033b84-e8d9-40e8-9d19-be6c79e01f82",
+    "id": "877583e2-dd87-4124-b61d-ed21edd8ee0b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3068,7 +3082,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1537acc3-6989-4bda-850d-7f5c0cd53946",
+    "id": "d1f2c8ed-4866-4036-8cb9-240ae28e8cef",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3292,7 +3306,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9307f222-d6dd-4a4b-adc9-7563bec5584c",
+    "id": "b6613da2-2abb-404f-b807-359e40eb5af6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3324,7 +3338,7 @@
     "solutionUrl": null
   },
   {
-    "id": "30ff90d7-8487-461b-a6c0-11e18dc9fc5c",
+    "id": "69a86558-da59-48fc-b0b8-adaeb9f660e5",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3356,7 +3370,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3aa96035-2209-4e51-8325-ca76314bdf42",
+    "id": "25d84bae-79c5-4a97-b086-ce6e72480fce",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3392,7 +3406,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eb0c5058-4b68-4600-9d10-d937cd4f005b",
+    "id": "dfa478f0-2473-4533-bd69-c21d114986fc",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3426,7 +3440,7 @@
     "solutionUrl": null
   },
   {
-    "id": "465d5547-cb8d-4fac-9e58-bc54eace5ddf",
+    "id": "9e6eb32f-0a23-4bbf-991a-ea6788162fb8",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3462,7 +3476,7 @@
     "solutionUrl": null
   },
   {
-    "id": "699707ea-59c6-400d-a369-17c4ebed9779",
+    "id": "2e66f41b-f464-400d-ac85-ac470dad4f7e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3497,7 +3511,7 @@
     "solutionUrl": null
   },
   {
-    "id": "68dcd3f7-d72d-4930-baa2-6b4b1a833f73",
+    "id": "86a0cc3e-7054-40c2-bb31-3e53db7a13b9",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3745,7 +3759,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d1088b0-73e8-4eb3-9b21-4e73466e4728",
+    "id": "296b1e77-1e45-4a56-805f-d51173ea843a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3780,7 +3794,7 @@
     "solutionUrl": null
   },
   {
-    "id": "357dcaf0-2ec7-479e-93f1-911017f933b3",
+    "id": "2d53bf56-7559-4592-938b-8367a4ea4568",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3815,7 +3829,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3f80d3ef-a7dc-47f2-97d8-174760d5c4f5",
+    "id": "9c4ced1a-a673-4436-864e-72cebe4cae99",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3849,7 +3863,7 @@
     "solutionUrl": null
   },
   {
-    "id": "40cab335-f322-4ac2-9833-f3cce5820985",
+    "id": "d5e828bf-7ebd-4ebe-a73c-01c0854714a4",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3882,7 +3896,7 @@
     "solutionUrl": null
   },
   {
-    "id": "102b5801-8183-4b63-8a26-df738023d848",
+    "id": "9cf1d3cf-f911-4218-9f17-e730d8b81839",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3917,7 +3931,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f5386e47-5ab6-447f-bbcf-f8982e805eb4",
+    "id": "e2a8f626-c5e3-4938-966d-2fb98678719e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3949,7 +3963,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7ac27c1f-1619-4b73-983c-e30f12484ffc",
+    "id": "99981572-0861-481c-8259-b7cb2a7d31e5",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -3985,7 +3999,7 @@
     "solutionUrl": null
   },
   {
-    "id": "00847531-72fd-43b8-95fb-cd1a763cc701",
+    "id": "f9046c69-5081-4b63-8cd9-0b159779e6e7",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4340,7 +4354,7 @@
     "solutionUrl": null
   },
   {
-    "id": "708b8496-a1c3-4260-bde8-dabb8c3148e2",
+    "id": "ca2b5571-c40a-413d-9b7f-58d35783916c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4377,7 +4391,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e3bd011a-d03c-440a-ad70-ebd13bc9e052",
+    "id": "74f70df4-84ba-4940-abc1-ca533f00eb5b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4412,7 +4426,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3a94cc90-0835-4f76-bcb2-5f242f834656",
+    "id": "a62c73a2-5d03-4a14-9d17-e41b94a72eaf",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4447,7 +4461,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d2b67a8d-299b-40f5-ac30-e1aa8d9cb898",
+    "id": "17629fbd-e0f1-4111-a03a-65aece297652",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4481,7 +4495,7 @@
     "solutionUrl": null
   },
   {
-    "id": "84cccaf9-c35b-4a71-b53c-e6fa0437aa84",
+    "id": "4dbb109a-660f-4348-8b8c-c5fc99b28061",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4518,7 +4532,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0c9241c7-f980-4c88-8727-7f67eca49cb8",
+    "id": "6b156960-b87c-470a-832a-1ebd380f9b61",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4552,7 +4566,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b6fd3194-d1e2-4b2f-9df7-1e8ab4a5a5ab",
+    "id": "b2abd204-4c16-49c7-b340-f26255dfeb10",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4587,7 +4601,7 @@
     "solutionUrl": null
   },
   {
-    "id": "dd7abb4c-fb03-455c-b135-5fb40eb7b48f",
+    "id": "f50c91e5-c253-4d0a-a90a-32b564895861",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4870,7 +4884,7 @@
     "solutionUrl": null
   },
   {
-    "id": "517106eb-3d11-43c7-b3de-b86a91c48e4f",
+    "id": "887dcb10-7614-4f21-8a3e-85248b068d93",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4905,7 +4919,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fcb6c513-3cdb-49a5-9f3d-37580fdeaba4",
+    "id": "dd5a08e7-83ee-445e-a875-27ba24b74b2e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4940,7 +4954,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0e1a9146-e601-401b-b90e-c7974b914a3f",
+    "id": "13450615-2e61-4913-adf8-160137063dfc",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -4976,7 +4990,7 @@
     "solutionUrl": null
   },
   {
-    "id": "558cf502-e07d-464b-b706-10e2fe0fb809",
+    "id": "884f0c14-23ac-434c-863f-f4cb6acbf8ad",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5012,7 +5026,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8873f86a-df15-41ba-868e-03b2bc9df9c8",
+    "id": "7d919e63-4b16-4c97-bbcf-71fb6cc56018",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5045,7 +5059,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a7206da3-7acf-4a16-bdff-9744cadf1844",
+    "id": "4fd09e52-1dd6-4914-b6c2-a85a408fdd4e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5079,7 +5093,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1280b1a0-60a1-4624-990d-d00070ca4d4d",
+    "id": "1c9b4b77-832a-413c-bb24-68c4acf33f3b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5415,7 +5429,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9f48dc4b-a89b-4354-9139-0b85ecb36f05",
+    "id": "4b7ce4d9-5536-471b-967a-3920d374273b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5450,7 +5464,7 @@
     "solutionUrl": null
   },
   {
-    "id": "025bf65b-5d01-430c-884f-85b806160e73",
+    "id": "109efa02-f565-49d3-847e-13725ee2957f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5486,7 +5500,7 @@
     "solutionUrl": null
   },
   {
-    "id": "45dba1af-d1c4-48ee-9861-8dfc6fc22653",
+    "id": "d417f9e4-1c02-4cd5-b49d-3d5cd54eb5fe",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5523,7 +5537,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f6c0fb62-7d9b-44d0-af94-ef3d14ac5443",
+    "id": "eda22f52-959e-4827-a731-867386891a94",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5556,7 +5570,7 @@
     "solutionUrl": null
   },
   {
-    "id": "24e87944-3774-48c5-b83d-ab096c8280df",
+    "id": "803d795e-713f-429f-a40f-196afa0e0f34",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5592,7 +5606,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f90897f5-0c34-4958-8de4-9debebacb29b",
+    "id": "fbcd45df-c0b2-414d-814c-dc3c7879e308",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5809,7 +5823,7 @@
     "solutionUrl": null
   },
   {
-    "id": "20285e7e-e5ad-4918-99db-97dabcc4fc50",
+    "id": "2fdee10d-7386-410b-88fe-d2678143b619",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5843,7 +5857,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e9550892-1e83-44e7-b977-45362d91f12a",
+    "id": "649b9112-6c20-4491-816a-15b8b2f3376e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5878,7 +5892,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e874f1f1-4df0-49fc-9320-b395ca243272",
+    "id": "26cbf3bb-4320-49de-9ed6-be7d1b634ad6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5911,7 +5925,7 @@
     "solutionUrl": null
   },
   {
-    "id": "dd8151a5-3a0a-4397-bb95-f0eab1fafac2",
+    "id": "b8786753-2b2f-49e2-9ff4-8b29e88aeadf",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5945,7 +5959,7 @@
     "solutionUrl": null
   },
   {
-    "id": "74e973f6-3711-4db8-a8b9-bd06ec69a9bf",
+    "id": "2c6ee2a4-32c2-44c9-b40d-c633cb9eb522",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -5981,7 +5995,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c401d5d6-760d-4442-9646-f6d0f120ad71",
+    "id": "261aa174-a3a0-455f-93e1-2852fd490f2d",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6014,7 +6028,7 @@
     "solutionUrl": null
   },
   {
-    "id": "895071b1-86f8-4f1d-8972-f559dd689851",
+    "id": "fb46d253-8cc4-4d0c-919b-512b9e95431b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6261,7 +6275,7 @@
     "solutionUrl": null
   },
   {
-    "id": "904787ba-7c88-4e7b-9af2-f25e21126ef8",
+    "id": "04e5082f-190d-4989-b3da-a20f1aaf40c6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6296,7 +6310,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5c1edc73-aa69-4d45-bf1c-dfe6fd20ab6e",
+    "id": "4c4c779a-057b-4525-bd8e-c88b829fdfeb",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6330,7 +6344,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ace81840-39ec-4a00-9604-01c5cf181cbb",
+    "id": "2abf58ec-bd30-4507-bd08-15c887fcbd6c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6363,7 +6377,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8c08b41b-f455-4da4-bb2a-ec33b760675c",
+    "id": "9915c0c6-439b-447c-8e8a-220ad66c7917",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6398,7 +6412,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6b926516-63fa-410e-894e-c3be3d5de0f4",
+    "id": "e5b5e3d3-0859-4cf4-a411-c8e21dec48d0",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6432,7 +6446,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7693ecd9-3a0a-4a44-a6ee-030ca0bda2ca",
+    "id": "60c278e3-b617-44a2-a38b-df4b41e8af02",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6466,7 +6480,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d81a57d0-a94b-48a0-8f70-4c6866f300ee",
+    "id": "c2c1f4d1-c767-4f98-8ece-8a6ca9b1f9a4",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6628,7 +6642,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e9eaeab9-2c28-4525-9ff6-13be6a986afb",
+    "id": "dc8b5162-5ff7-4900-82d7-f8ed1a9ff722",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6664,7 +6678,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8299aec9-c884-4797-9bbb-4f1678c04392",
+    "id": "9fdc0d17-752b-4377-ab07-cb780c7fb049",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6698,7 +6712,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0e206958-018e-4b87-b5f7-711d7e9f378a",
+    "id": "c209616e-c329-476e-851e-d470a2de5c0c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6734,7 +6748,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f71a9ac1-6ddc-4778-ad82-df2b66dc8e35",
+    "id": "77b965d2-dfee-4bc7-aa89-356bcf26b1e4",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6769,7 +6783,7 @@
     "solutionUrl": null
   },
   {
-    "id": "99c73d61-bc13-4e1c-b157-6ecc6afc1685",
+    "id": "b1883eac-8693-4ec2-adfb-183f56ccbd9a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -6801,7 +6815,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3cdda2fb-9919-407e-8c5e-f5c9a8749835",
+    "id": "c024c74b-4a2a-4bc1-9f7c-eadcc03ca3d3",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7063,7 +7077,7 @@
     "solutionUrl": null
   },
   {
-    "id": "388a0b8d-b412-4092-89ae-00ee5ad338ba",
+    "id": "01acfbed-fbb5-4cb7-b477-968132488e98",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7099,7 +7113,7 @@
     "solutionUrl": null
   },
   {
-    "id": "acbeaf9a-b589-4dd1-9b2d-f98f868659ab",
+    "id": "619029c0-7970-4357-8755-c23daf769c5b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7137,7 +7151,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a22f46dc-e610-431a-ac25-d54e7f180a41",
+    "id": "95de5c6d-69d2-4e7e-a2e0-41f04c7f7cb0",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7172,7 +7186,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c5e903ba-d2c0-4b6e-b889-182c5053fc18",
+    "id": "757e8367-8eab-4a99-b326-af41d8ccddee",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7208,7 +7222,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7611acb8-90f7-4179-8c85-e0afa62a9ed2",
+    "id": "86904a2d-5854-4c26-b3c0-03d9f62a50e1",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7244,7 +7258,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5bf2d6d3-604b-4cfd-bf1c-cfc9aa3abc59",
+    "id": "a656ada2-b4e5-4f17-92ee-9e5c466a3d06",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7279,7 +7293,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e36ce851-ce63-4ab2-bf8c-c5cea96911bd",
+    "id": "56c36013-edc2-428e-a431-fe07a06f0fd7",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7471,7 +7485,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0e91b25f-84fa-4df3-a9aa-50236558f6c1",
+    "id": "d682100b-33a6-4c33-b4de-7ecbeb9d6f30",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7506,7 +7520,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d1728d0-ddc0-4eee-80dd-43f9f79ddbb9",
+    "id": "02658c84-6fd1-412b-8716-06ff86fa2b09",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7543,7 +7557,7 @@
     "solutionUrl": null
   },
   {
-    "id": "51f4fd64-837c-421b-9a7a-cafb507acaec",
+    "id": "2ebb5bac-defd-456f-b51a-64ffa3307939",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7576,7 +7590,7 @@
     "solutionUrl": null
   },
   {
-    "id": "959f75db-21a6-4fa5-b111-4fb2508a251a",
+    "id": "ab9356ac-9dbe-4074-af8a-d687397db2e6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7611,7 +7625,7 @@
     "solutionUrl": null
   },
   {
-    "id": "52a4b720-859b-405d-a585-fceaeec19479",
+    "id": "eb5e35a9-1a6c-46ce-b29d-11f0928792e6",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7644,7 +7658,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2c9acdef-91b6-4aa5-9cf5-fbc4810ecf14",
+    "id": "4a2bda0c-ceb3-47ed-959a-e3e60fe0d710",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7677,7 +7691,7 @@
     "solutionUrl": null
   },
   {
-    "id": "39cec622-83b4-4055-b7f2-702a5a259fc2",
+    "id": "df292c54-6a99-428f-8b05-d2dbfadfd35b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -7710,7 +7724,7 @@
     "solutionUrl": null
   },
   {
-    "id": "713cb0e5-2358-46cc-a0fe-ef228f0cfa1f",
+    "id": "263cfc8b-950f-409d-86ee-7f83e701d74a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8030,7 +8044,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a6ed3fa4-6e7e-45f5-8a38-5abe5d1fd28d",
+    "id": "3622b5f4-ef3a-456a-b413-40d1fd7d8e4b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8065,7 +8079,7 @@
     "solutionUrl": null
   },
   {
-    "id": "78af1f9e-ceff-4dd4-a1a0-5800217e3297",
+    "id": "9c87f3e8-1ff9-4596-8702-5dfe3e90bd26",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8101,7 +8115,7 @@
     "solutionUrl": null
   },
   {
-    "id": "39549d60-c8e8-4299-a85b-33060d845131",
+    "id": "d738eaf3-9c94-4c4d-a8a1-d806307ab580",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8138,7 +8152,7 @@
     "solutionUrl": null
   },
   {
-    "id": "02b24393-ff45-4225-93f6-7e5e3fba3be4",
+    "id": "bf173996-014c-4d9d-936a-67ebb64aaf45",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8175,7 +8189,7 @@
     "solutionUrl": null
   },
   {
-    "id": "59a831f9-5dbf-4257-bdfa-03296538d894",
+    "id": "6567b4bd-e483-466c-9d6d-0e2d80de922f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8210,7 +8224,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eb167b96-162e-45b7-bf37-b0d325b5c35a",
+    "id": "72a2dd56-56dd-4f7d-aaca-3460d94db796",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8246,7 +8260,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a5d5700a-518b-4437-b0f2-f205cf70e500",
+    "id": "dbf90bbf-2897-4d05-974b-db88e49b08e0",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8532,7 +8546,7 @@
     "solutionUrl": null
   },
   {
-    "id": "663a8491-9a0a-45b5-850d-0fd74499eb12",
+    "id": "e0c2c299-20c5-4fd3-99b1-76513b595fcd",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8567,7 +8581,7 @@
     "solutionUrl": null
   },
   {
-    "id": "41dbc7f6-710d-42e2-a4a1-95fcf29cec86",
+    "id": "651b1b01-b23b-40c0-b37d-64b865ad958e",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8601,7 +8615,7 @@
     "solutionUrl": null
   },
   {
-    "id": "215208f0-0fe1-4358-8c19-86cb2cd4f4a6",
+    "id": "57c01558-a8d4-44d0-9b2e-10fee4566d21",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8636,7 +8650,7 @@
     "solutionUrl": null
   },
   {
-    "id": "995d7d92-388e-4551-8e9a-86d6776cf6df",
+    "id": "36284e87-5f57-4c6f-9414-b629f710504c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8672,7 +8686,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b89cbccf-a90d-460a-81cb-7528eac18947",
+    "id": "cd371fed-a64b-49ff-8ea6-d782b9171b72",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8708,7 +8722,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0ecc91c-84b7-42e7-ba9e-67577228a1dd",
+    "id": "6436c627-6e2b-45ea-941a-8ad05c80658f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8743,7 +8757,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f3d72b30-f0f5-40b2-a71d-8df393deec42",
+    "id": "5628867b-faa9-435f-893f-9fc5bc44b113",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -8961,7 +8975,7 @@
     "solutionUrl": null
   },
   {
-    "id": "29b84df7-df6c-46e6-9084-8c6d771a68b0",
+    "id": "d948c51b-13c2-4ed5-b21d-ab2d13cfb1bf",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9000,7 +9014,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9f985779-3bc3-4aec-8a13-c70efdb6a382",
+    "id": "825dd1c5-9be6-4c3d-a99c-5fc38a15d6b0",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9035,7 +9049,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8e8cc4f7-68fa-4ac3-b70c-85318e2daec8",
+    "id": "0686e044-69ca-4933-acf4-d75d43c4de5a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9071,7 +9085,7 @@
     "solutionUrl": null
   },
   {
-    "id": "87c9058a-1a72-4221-aec0-784dec3e0282",
+    "id": "fe3b92f0-3859-4060-91fe-2191128b7b30",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9107,7 +9121,7 @@
     "solutionUrl": null
   },
   {
-    "id": "730ea6ea-6fb7-4ee9-8db7-e02389ca4af6",
+    "id": "78f9b93c-f594-434b-a819-226558a2baff",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9320,7 +9334,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6e25f8d5-74b3-4fea-8c5d-6d21105840dd",
+    "id": "6b0573b5-cb27-42c0-a2d4-ef969cb7eced",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9357,7 +9371,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a99d2ddc-f6a0-4fae-b70f-a991e499b322",
+    "id": "298df7c7-12de-4701-81a6-44b16515859b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9392,7 +9406,7 @@
     "solutionUrl": null
   },
   {
-    "id": "60197e17-6f23-4242-b0df-6d07fc370d56",
+    "id": "bff3ef7d-ef95-4531-aa49-ca24e29a3287",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9427,7 +9441,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c4bbf141-9dc6-4ad8-aacf-b8b050326bf0",
+    "id": "e2bab1e0-0dbf-46fb-a48a-8d5deb4c8555",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9460,7 +9474,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7fa2a5f0-d586-4859-9d22-84e5916aa403",
+    "id": "8f263604-faf2-4793-a13b-c6a47ef1e0b4",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9493,7 +9507,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c226a0f9-c200-4059-a39f-6eb093f664d2",
+    "id": "979801f7-f4e4-42db-8fc2-6254e552b32f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9528,7 +9542,7 @@
     "solutionUrl": null
   },
   {
-    "id": "027a91c8-2489-4aa9-9514-979b510ecf26",
+    "id": "2099980a-173d-42eb-9474-411b6bcb1101",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9844,7 +9858,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eefeb53d-25b9-4c05-a6cd-addcb8679bf6",
+    "id": "a9018737-a06d-4772-9369-89500b5179af",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9879,7 +9893,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d69ffe16-0527-48f4-abf4-0fd5ce139261",
+    "id": "cac4b8f1-d6c8-41e5-945c-ab9fc398fb11",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9911,7 +9925,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fbda1b45-e7a0-4321-878f-4ff22c030b67",
+    "id": "5aa9dbeb-3d75-4cbc-95d7-f3f263e1dc92",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9946,7 +9960,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2882d609-6cc8-4075-89b4-86ef9a7898fb",
+    "id": "dd961a6e-7528-4ce6-8838-4b02cf0bda7a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -9982,7 +9996,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ba3c3476-2fd9-4183-a4aa-9cc33d78576b",
+    "id": "fd75ae6e-80ba-4796-9a2a-e0768fd771cf",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10014,7 +10028,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2c9de6c4-e8cb-4575-a029-36b0499b7fba",
+    "id": "66183edb-bc96-4e94-9b6f-1926400f796c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10048,7 +10062,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7e9f8e25-482f-4cfd-a4a4-b6a4763798ed",
+    "id": "ea44d14b-4829-4079-bde7-9bf7a279c9d7",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10082,7 +10096,7 @@
     "solutionUrl": null
   },
   {
-    "id": "54f8bffc-8ff1-472b-b27b-fe39aa2c5e3c",
+    "id": "d1cb76bc-5685-4306-a3b0-9a08773a36ce",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10331,7 +10345,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7cdaa8b6-86dd-43e5-b83d-e108ea177874",
+    "id": "1a63db10-6977-49b0-ac36-8992ae9c7e37",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10366,7 +10380,7 @@
     "solutionUrl": null
   },
   {
-    "id": "07e24251-d792-48c9-801e-9ef219fc7ac6",
+    "id": "2f44ef08-66e7-491d-8b79-2add4abd1a2a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10403,7 +10417,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8fa68926-b46d-4b6d-99f2-d38407c01cba",
+    "id": "38e0f601-ee73-4503-9377-0b9064117b2b",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10439,7 +10453,7 @@
     "solutionUrl": null
   },
   {
-    "id": "da20336b-81e3-4878-a8c0-78ea0169ef59",
+    "id": "89c86798-14b8-4bb4-afd4-c5877ec5248c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10471,7 +10485,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ea608bb4-94aa-4992-b09c-df504d73cba0",
+    "id": "0c18dec3-4026-4eab-8f17-3e7af009b91c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10507,7 +10521,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9095668f-68e5-45f3-a9b4-b74e5a6ec3f6",
+    "id": "73e33dfa-9e7a-470b-b4ad-e64d3f2a65c8",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10541,7 +10555,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8a1b7817-067b-4e36-9bcd-dcaa570ee93d",
+    "id": "ac7db394-1cb0-4f1a-9780-b866c884fd81",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10575,7 +10589,7 @@
     "solutionUrl": null
   },
   {
-    "id": "09467fc6-9dd9-4ece-b699-1a4d6f590f10",
+    "id": "93118312-93c3-48bc-965d-dfd800a10bfb",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10847,7 +10861,7 @@
     "solutionUrl": null
   },
   {
-    "id": "51402052-bc9f-48af-8bfc-9e8f9db72f76",
+    "id": "e7e2306c-47fa-4931-9377-01dd676cc67f",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10880,7 +10894,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d727bcdb-7ae6-4fb0-b5d3-a3de38e835a0",
+    "id": "a32249b4-09db-44c9-a9ae-5a8de6a89056",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10915,7 +10929,7 @@
     "solutionUrl": null
   },
   {
-    "id": "dfe12c8d-0d4d-4611-9c51-df9d8815e38c",
+    "id": "485845ba-5a84-4139-a524-22f9d7256bff",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10948,7 +10962,7 @@
     "solutionUrl": null
   },
   {
-    "id": "07c33a76-68d7-4bf2-9222-f3312e2cc9cd",
+    "id": "b81332e3-4ab4-4e19-bd6c-ef27561ccd22",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -10983,7 +10997,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d1c80200-794e-444b-b60a-c2175e3ceef9",
+    "id": "ceee4ad8-4b15-43cc-b745-5424a6f53e3d",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11018,7 +11032,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e16434cd-0693-4a06-94a5-073a9f415374",
+    "id": "d69db27f-318f-4467-bc79-d595205715bb",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11054,7 +11068,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9a74b237-4edd-459c-bfbe-46a4789a964a",
+    "id": "1b5d687b-b819-4d4a-b0ea-dec2570a275a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11092,7 +11106,7 @@
     "solutionUrl": null
   },
   {
-    "id": "30e08941-54be-43cf-9466-de3a9b24720a",
+    "id": "1a364ea9-aa98-4b91-860a-561a0aac6c5c",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11128,7 +11142,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bd6d05f1-7cc7-4714-9b23-33b444811f38",
+    "id": "b3a57edd-2ad9-4a77-a7a0-12dd679c1048",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11288,7 +11302,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a1757326-737c-4b10-9690-ead29b8962c4",
+    "id": "a2bc2168-3cde-478e-ad9a-54d163163f27",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11322,7 +11336,7 @@
     "solutionUrl": null
   },
   {
-    "id": "70295000-3cf0-4ae5-9acc-9a33ac16382c",
+    "id": "4d881092-9e43-4795-bfc3-45cb8acf4673",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11358,7 +11372,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ed662133-d3d0-40bd-9d3c-cd42fa2b2ba8",
+    "id": "2e30fef1-c3c2-43e6-952e-c62d7fc3f4a7",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11395,7 +11409,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5523edc5-7016-4ee8-90b2-ea147c8f4c5b",
+    "id": "abe8504d-9edf-4dbe-86c1-0ee24f733991",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11429,7 +11443,7 @@
     "solutionUrl": null
   },
   {
-    "id": "37cbe2e5-752d-4a55-99eb-1ecad8cedb77",
+    "id": "ebbd244e-f394-4001-a42d-4a24c166955a",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
@@ -11461,7 +11475,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e342d692-6c7c-4248-9f8c-223dad866156",
+    "id": "16563087-6199-4310-97df-33b083446779",
     "contest": "Physics 1: Mechanics",
     "type": "AoPS Script",
     "source": "script",
