@@ -35,7 +35,6 @@
   support: (
     "Celebrate the IPhO for what it is — a milestone Borna earned a place at — regardless of how the scores land; the experience itself is a real part of the education.",
     "Protect his sleep and a steady rhythm around the heavier prep weeks; this work rewards stamina far more than cramming.",
-    "Ask him to explain one problem from the week out loud at home — teaching it back is one of the strongest ways to make a technique stick.",
     "Keep the long view in mind: Borna has two more years of IPhO eligibility ahead, and the foundation is now in place to make each of them count."
   ),
   sessions: (
