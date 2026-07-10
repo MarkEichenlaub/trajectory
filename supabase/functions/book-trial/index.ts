@@ -106,7 +106,7 @@ async function sendIcsEmail(params: {
 }
 
 async function sendPlainEmail(params: {
-  to: string[]; subject: string; text: string
+  to: string[]; subject: string; text: string; replyTo?: string
 }): Promise<void> {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -116,6 +116,7 @@ async function sendPlainEmail(params: {
       to: params.to,
       subject: params.subject,
       text: params.text,
+      ...(params.replyTo ? { reply_to: params.replyTo } : {}),
     }),
   })
   if (!res.ok) console.error('Email failed:', res.status, await res.text())
@@ -300,13 +301,14 @@ Deno.serve(async (req) => {
     '',
     miroBoardUrl ? `Miro: ${miroBoardUrl}` : '(Miro board creation failed)',
     '',
-    `Reply to ${trimmedEmail} to follow up with a rate and next steps.`,
+    `Hit reply to follow up with ${trimmedEmail} with a rate and next steps.`,
   ].join('\n')
 
   await sendPlainEmail({
     to: [MARK_EMAIL],
     subject: `New trial session: ${trimmedName} – ${when}`,
     text: markText,
+    replyTo: `${trimmedName} <${trimmedEmail}>`,
   })
 
   return json({ ok: true, gcal_event_id: gcalEventId, miro_board_url: miroBoardUrl })
