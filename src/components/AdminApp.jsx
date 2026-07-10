@@ -840,6 +840,7 @@ export default function AdminApp({ userId }) {
             sessionProblems={sessionProblems}
             allProblems={allProblems}
             onSessionsChange={async () => setSessions(await fetchSessions())}
+            onStudentsChange={async () => setStudents(await fetchStudents())}
             onDeleteSessionProblem={handleDeleteSessionProblem}
             showToast={showToast}
           />

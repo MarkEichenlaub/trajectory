@@ -83,8 +83,13 @@ export async function updateSession(id, updates) {
   if (error) throw new Error(error.message)
 }
 
+// Routes through the delete_session RPC (SECURITY DEFINER, admin-guarded) rather
+// than a plain table delete: the RPC also refunds the session credit if the
+// session had already been billed, so a deleted session never counts against the
+// student's balance. Callers should refresh students afterward to show the new
+// balance.
 export async function deleteSession(id) {
-  const { error } = await adminClient().from('sessions').delete().eq('id', id)
+  const { error } = await adminClient().rpc('delete_session', { p_session_id: id })
   if (error) throw new Error(error.message)
 }
 

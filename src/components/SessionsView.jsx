@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { saveSession, updateSession, deleteSession } from '../utils/supabase'
 
-export default function SessionsView({ sessions, students, activeStudentId, sessionProblems, allProblems, onSessionsChange, onDeleteSessionProblem, showToast }) {
+export default function SessionsView({ sessions, students, activeStudentId, sessionProblems, allProblems, onSessionsChange, onStudentsChange, onDeleteSessionProblem, showToast }) {
   const [editingId, setEditingId] = useState(null)
   const [draft, setDraft] = useState({})
 
@@ -71,11 +71,19 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
     }
   }
 
-  async function handleDelete(id) {
+  async function handleDelete(s) {
+    // If the session was already billed, deleting it refunds the credit so the
+    // student isn't charged for a session that didn't happen.
+    const willRefund = s.balance_decremented === true
+    const msg = willRefund
+      ? `Delete this session? The session credit will be added back to ${student.name}'s balance.`
+      : 'Delete this session?'
+    if (!confirm(msg)) return
     try {
-      await deleteSession(id)
+      await deleteSession(s.id)
       await onSessionsChange()
-      showToast('Session deleted')
+      if (willRefund) await onStudentsChange?.()
+      showToast(willRefund ? 'Session deleted — credit restored' : 'Session deleted')
     } catch (e) {
       showToast(e.message, 'error')
     }
@@ -177,7 +185,7 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
                         Edit
                       </button>
                       <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px' }}
-                        onClick={() => handleDelete(s.id)}>✕</button>
+                        title="Delete session" onClick={() => handleDelete(s)}>✕</button>
                     </div>
                   </div>
                   <div>
@@ -245,7 +253,7 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
                     Edit
                   </button>
                   <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px' }}
-                    onClick={() => handleDelete(s.id)}>✕</button>
+                    title="Delete session" onClick={() => handleDelete(s)}>✕</button>
                 </div>
               </div>
               {s.summary && (
