@@ -321,9 +321,6 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
             )}
             {isAdmin ? (
               <>
-                {selectedSession.cal_uid && (
-                  <a href={`https://cal.com/reschedule/${selectedSession.cal_uid}`} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>Reschedule ↗</a>
-                )}
                 <button className="sm danger" style={{ fontSize: 11 }} onClick={() => {
                   setCancelingSession(selectedSession)
                   setSelectedSession(null)
