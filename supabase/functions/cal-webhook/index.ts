@@ -64,7 +64,7 @@ function fmtWhen(iso: string): string {
   return new Date(iso).toLocaleString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
     hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
-    timeZone: 'America/Los_Angeles',
+    timeZone: 'America/New_York',
   })
 }
 
