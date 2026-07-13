@@ -201,9 +201,15 @@ Deno.serve(async (req) => {
     ].filter(Boolean).join('\n'),
     start: { dateTime: slotDate.toISOString(), timeZone: TIMEZONE },
     end: { dateTime: endDate.toISOString(), timeZone: TIMEZONE },
+    conferenceData: {
+      createRequest: {
+        requestId: crypto.randomUUID(),
+        conferenceSolutionKey: { type: 'hangoutsMeet' },
+      },
+    },
   }
 
-  const calRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+  const calRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1', {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(gcalBody),
@@ -213,8 +219,14 @@ Deno.serve(async (req) => {
     console.error('GCal create failed:', calRes.status, text)
     return json({ error: 'Failed to create calendar event', detail: text }, 500)
   }
-  const calEvent = await calRes.json() as { id: string }
+  const calEvent = await calRes.json() as {
+    id: string; hangoutLink?: string
+    conferenceData?: { entryPoints?: { entryPointType?: string; uri?: string }[] }
+  }
   const gcalEventId = calEvent.id
+  const meetUrl = calEvent.hangoutLink
+    || calEvent.conferenceData?.entryPoints?.find(e => e.entryPointType === 'video')?.uri
+    || ''
 
   // Create Miro board
   let miroBoardUrl = ''
@@ -253,9 +265,11 @@ Deno.serve(async (req) => {
 
   // Send ICS calendar invite to the prospect
   const icsUid = `trial-${gcalEventId}@eichenlaubphysics.com`
-  const icsDescription = miroBoardUrl
-    ? `30-minute intro session with Mark Eichenlaub\n\nMiro whiteboard: ${miroBoardUrl}`
-    : '30-minute intro session with Mark Eichenlaub'
+  const icsDescription = [
+    '30-minute intro session with Mark Eichenlaub',
+    meetUrl ? `Google Meet: ${meetUrl}` : '',
+    miroBoardUrl ? `Miro whiteboard: ${miroBoardUrl}` : '',
+  ].filter(Boolean).join('\n\n')
 
   const icsContent = buildIcs({
     uid: icsUid,
@@ -273,6 +287,7 @@ Deno.serve(async (req) => {
     `Your trial session is confirmed for:`,
     `  ${when}`,
     '',
+    meetUrl ? `Join by video (Google Meet): ${meetUrl}` : '',
     miroBoardUrl ? `Miro whiteboard (we'll use this during the session): ${miroBoardUrl}` : '',
     '',
     `I'll be in touch before your session. Feel free to reply to this email with any questions.`,
@@ -299,6 +314,7 @@ Deno.serve(async (req) => {
     `About them:`,
     trimmedNotes || '(No notes provided)',
     '',
+    meetUrl ? `Google Meet: ${meetUrl}` : '',
     miroBoardUrl ? `Miro: ${miroBoardUrl}` : '(Miro board creation failed)',
     '',
     `Hit reply to follow up with ${trimmedEmail} with a rate and next steps.`,
@@ -311,5 +327,5 @@ Deno.serve(async (req) => {
     replyTo: `${trimmedName} <${trimmedEmail}>`,
   })
 
-  return json({ ok: true, gcal_event_id: gcalEventId, miro_board_url: miroBoardUrl })
+  return json({ ok: true, gcal_event_id: gcalEventId, miro_board_url: miroBoardUrl, meet_url: meetUrl })
 })
