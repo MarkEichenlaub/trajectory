@@ -1,6 +1,6 @@
 [
   {
-    "id": "996e1e74-78cf-4c37-8faa-dac02cf2f693",
+    "id": "96b57e37-3381-43a0-af16-aa654e2da5cd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -30,7 +30,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d9df2747-b55d-43de-a9af-87874c278e16",
+    "id": "f65163a7-929a-4aa3-a763-39ec92b05c3f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -62,7 +62,7 @@
     "solutionUrl": null
   },
   {
-    "id": "468322d8-9fbb-4331-a19c-40e36e4ebd11",
+    "id": "d6d03836-bcc6-4417-b54c-3f0cf4f2a614",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -94,7 +94,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6cb9051b-e994-4fe6-af76-aec6444cd940",
+    "id": "814aebd8-0ce1-4974-8092-819c9212ed1b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -126,7 +126,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d135758a-5801-4ace-a19a-bb3bfaed8a12",
+    "id": "c9ef929c-f0cc-4f48-9594-dd206e067c39",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -156,7 +156,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3449fb61-dcb5-4805-ae12-49d71ac875d3",
+    "id": "8811e489-ffb0-45af-9d15-fbaf4060bb6a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -165,9 +165,9 @@
     "week": 1,
     "set_number": 6,
     "set_label": "Problem 6",
-    "name": "A ball is thrown upward from ground height and passes a window on its way up.",
+    "name": "A ball is thrown upward from ground height and passes a window on its way up…",
     "desc": "A ball is thrown upward from ground height and passes a window on its way up. $$0.3\\;\\mathrm{s}$$ pass between when the ball reaches the bottom of the window and when it reaches the top of the window. The distance from the bottom of the window to the top is $$1.2 \\;\\mathrm{m}.$$…",
-    "statement": "A ball is thrown upward from ground height and passes a window on its way up.\n\n$$0.3\\;\\mathrm{s}$$ pass between when the ball reaches the bottom of the window and when it reaches the top of the window. The distance from the bottom of the window to the top is $$1.2 \\;\\mathrm{m}.$$ Find the height above the top of the window to which the ball rises.\n\n(a) $$0.31\\;\\mathrm{m}$$ (b) $$0.80\\;\\mathrm{m}$$ (c) $$1.2\\;\\mathrm{m}$$ (d) $$5.6\\;\\mathrm{m}$$ (e) $$21.3\\;\\mathrm{m}$$",
+    "statement": "A ball is thrown upward from ground height and passes a window on its way up. $$0.3\\;\\mathrm{s}$$ pass between when the ball reaches the bottom of the window and when it reaches the top of the window. The distance from the bottom of the window to the top is $$1.2 \\;\\mathrm{m}.$$ Find the height above the top of the window to which the ball rises.\n\n(a) $$0.31\\;\\mathrm{m}$$ (b) $$0.80\\;\\mathrm{m}$$ (c) $$1.2\\;\\mathrm{m}$$ (d) $$5.6\\;\\mathrm{m}$$ (e) $$21.3\\;\\mathrm{m}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -186,7 +186,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e89326fc-772e-4c64-b414-91d7edb98699",
+    "id": "37c78045-1fb7-4a6d-9a5f-9099a583acd0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -216,7 +216,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a61c61e2-4c8a-4f23-853d-771df3077126",
+    "id": "13c6ab8b-fa15-45aa-990f-07fdfc108db0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -246,7 +246,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a0dd0e72-2d89-481d-b138-e6ae44376048",
+    "id": "81298e82-dd96-4f37-b8bd-57557c97d12f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -276,7 +276,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d8b1b2fa-a149-417a-a3f1-18ad5a663a14",
+    "id": "68829a56-8355-4695-87f5-03c1667d14e8",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -306,7 +306,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3aedbe97-6990-4d27-8f38-1d888f7e52ce",
+    "id": "506c89dd-a902-499a-aaab-1f4c0dc12179",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -336,7 +336,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5fdb39ef-75c0-49b3-a5e6-331cf9e8923d",
+    "id": "cad30a0a-701e-412f-aec2-b438055eef3d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -366,7 +366,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bd7298e7-556e-45bb-a6b0-7eea1fff0ce8",
+    "id": "30ef750c-e14e-4699-ab78-8f871c9b71be",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -693,7 +693,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ac300e4a-bbe8-4e85-8859-c21da12dbe84",
+    "id": "7f2449d5-8a22-406b-82df-190e59c104f0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -702,9 +702,9 @@
     "week": 2,
     "set_number": 1,
     "set_label": "Problem 1",
-    "name": "A particle moves in the plane according to",
-    "desc": "A particle moves in the plane according to \\begin{aligned} x & = R\\sin(\\omega t) + \\omega R t \\\\ y & = R \\cos(\\omega t) + R \\end{aligned} Which of the following graphs shows the motion of the particle? You may assume $$R>0.$$ (A) (B) (C) (D) (E)",
-    "statement": "A particle moves in the plane according to\n\n\\begin{aligned} x & = R\\sin(\\omega t) + \\omega R t \\\\ y & = R \\cos(\\omega t) + R \\end{aligned}\n\nWhich of the following graphs shows the motion of the particle?\n\nYou may assume $$R>0.$$\n\n(A)\n\n(B)\n\n(C)\n\n(D)\n\n(E)",
+    "name": "A particle moves in the plane according to $$\\begin{aligned} x & = R\\sin(\\omega t) +…",
+    "desc": "A particle moves in the plane according to $$\\begin{aligned} x & = R\\sin(\\omega t) + \\omega R t \\\\ y & = R \\cos(\\omega t) + R \\end{aligned}$$ Which of the following graphs shows the motion of the particle? You may assume $$R>0.$$ (A) (B) (C) (D) (E)",
+    "statement": "A particle moves in the plane according to $$\\begin{aligned} x & = R\\sin(\\omega t) + \\omega R t \\\\ y & = R \\cos(\\omega t) + R \\end{aligned}$$\n\nWhich of the following graphs shows the motion of the particle?\n\nYou may assume $$R>0.$$\n\n(A)\n\n(B)\n\n(C)\n\n(D)\n\n(E)",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -723,7 +723,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c64efaa9-1b9d-4cc1-b410-66a8c93292f9",
+    "id": "c735471d-3e9d-4049-a490-858201917080",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -734,7 +734,7 @@
     "set_label": "Problem 2",
     "name": "A $$600 \\;\\mathrm{m}$$ wide river flows directly south at $$4.0 \\;\\mathrm{m/s}.$$ A small…",
     "desc": "A $$600 \\;\\mathrm{m}$$ wide river flows directly south at $$4.0 \\;\\mathrm{m/s}.$$ A small motor boat travels at $$5.0 \\;\\mathrm{m/s}$$ in still water and points in such a direction so that it will travel directly east relative to the land. The time it takes to cross the river is…",
-    "statement": "A $$600 \\;\\mathrm{m}$$ wide river flows directly south at $$4.0 \\;\\mathrm{m/s}.$$ A small motor boat travels at $$5.0 \\;\\mathrm{m/s}$$ in still water and points in such a direction so that it will travel directly east relative to the land.\n\nThe time it takes to cross the river is closest to\n\na) $$67 \\;\\mathrm{s}$$ b) $$120 \\;\\mathrm{s}$$ c) $$150 \\;\\mathrm{s}$$ d) $$200 \\;\\mathrm{s}$$ e) $$600 \\;\\mathrm{s}$$",
+    "statement": "A $$600 \\;\\mathrm{m}$$ wide river flows directly south at $$4.0 \\;\\mathrm{m/s}.$$ A small motor boat travels at $$5.0 \\;\\mathrm{m/s}$$ in still water and points in such a direction so that it will travel directly east relative to the land.\n\nThe time it takes to cross the river is closest to\n\na) $$67 \\;\\mathrm{s}$$ b) $$120 \\;\\mathrm{s}$$ c) $$150 \\;\\mathrm{s}$$ d) $$200 \\;\\mathrm{s}$$\\ne) $$600 \\;\\mathrm{s}$$",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -753,7 +753,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d096c1e9-af70-42e2-8abb-151ceb75fb10",
+    "id": "c4c44571-c84d-4356-a453-51791eb84fe5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -764,7 +764,7 @@
     "set_label": "Problem 3",
     "name": "A pilot flew his airplane at a constant altitude and uniform speed $$v$$ due east for a…",
     "desc": "A pilot flew his airplane at a constant altitude and uniform speed $$v$$ due east for a time $$t.$$ He turned left through an angle $$\\theta,$$ without changing speed or altitude, and flew for an equal time $$t.$$ The magnitude of his displacement from his starting point after…",
-    "statement": "A pilot flew his airplane at a constant altitude and uniform speed $$v$$ due east for a time $$t.$$ He turned left through an angle $$\\theta,$$ without changing speed or altitude, and flew for an equal time $$t.$$ The magnitude of his displacement from his starting point after the first leg of the flight was the same as the magnitude of his displacement from his starting point after the second leg of the flight. What was the smallest possible measure of the angle $$\\theta?$$\n\na) $$180^\\circ$$ b) $$120^\\circ$$ c) $$90^\\circ$$ d) $$45^\\circ$$ e) $$30^\\circ$$",
+    "statement": "A pilot flew his airplane at a constant altitude and uniform speed $$v$$ due east for a time $$t.$$ He turned left through an angle $$\\theta,$$ without changing speed or altitude, and flew for an equal time $$t.$$ The magnitude of his displacement from his starting point after the first leg of the flight was the same as the magnitude of his displacement from his starting point after the second leg of the flight. What was the smallest possible measure of the angle $$\\theta?$$\n\na) $$180^\\circ$$ b) $$120^\\circ$$ c) $$90^\\circ$$ d) $$45^\\circ$$\\ne) $$30^\\circ$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -783,7 +783,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f25a4a01-59df-44bb-a7a4-63d706b0b0a2",
+    "id": "13c02c2c-1b27-4f7c-8e6d-d38274b4e6f4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -794,7 +794,7 @@
     "set_label": "Problem 4",
     "name": "A bullet is fired horizontally from a gun a height $$h$$ above the ground. At the same…",
     "desc": "A bullet is fired horizontally from a gun a height $$h$$ above the ground. At the same moment, a second bullet is dropped from the same height. Which is true about the order in which the bullets hit the ground? Assume that forces from the air can be ignored, gravity is uniform…",
-    "statement": "A bullet is fired horizontally from a gun a height $$h$$ above the ground. At the same moment, a second bullet is dropped from the same height. Which is true about the order in which the bullets hit the ground?\n\nAssume that forces from the air can be ignored, gravity is uniform, and the ground is perfectly flat.\n\na) The bullets hit at the same time. b) The bullet fired from the gun hits the ground first. c) The bullet that was dropped hits the ground first. d) The order in which the bullets hit the ground depends on the gun speed. e) It depends on the masses of the bullets.",
+    "statement": "A bullet is fired horizontally from a gun a height $$h$$ above the ground. At the same moment, a second bullet is dropped from the same height. Which is true about the order in which the bullets hit the ground?\n\nAssume that forces from the air can be ignored, gravity is uniform, and the ground is perfectly flat.\n\na) The bullets hit at the same time. b) The bullet fired from the gun hits the ground first. c) The bullet that was dropped hits the ground first. d) The order in which the bullets hit the ground depends on the gun speed.\\ne) It depends on the masses of the bullets.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -813,7 +813,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1b3d7bc0-cbd7-4f96-970a-042e67779cdb",
+    "id": "e3a8b8d5-a38e-4d60-aabf-df78aeea685a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -824,7 +824,7 @@
     "set_label": "Problem 5",
     "name": "A movie director wants a scene in which a car appears to fly off a cliff at $$50…",
     "desc": "A movie director wants a scene in which a car appears to fly off a cliff at $$50 \\;\\mathrm{mph}.$$ To simulate this, the director will make a $$1/100$$ scale model of a car and cliff, and have the model car fly off the model cliff. By what factor should the film be sped up or…",
-    "statement": "A movie director wants a scene in which a car appears to fly off a cliff at $$50 \\;\\mathrm{mph}.$$ To simulate this, the director will make a $$1/100$$ scale model of a car and cliff, and have the model car fly off the model cliff.\n\nBy what factor should the film be sped up or slowed down in order to look realistic, and what should the real speed of the toy car be as it approaches the cliff?\n\na) The video should be slowed by a factor of $$100$$ and the model car should go $$50\\;\\mathrm{mph}.$$ b) The video should be slowed by a factor of $$100$$ and the model car should go $$5\\;\\mathrm{mph}.$$ c) The video should be slowed by a factor of $$100$$ and the model car should go $$0.5\\;\\mathrm{mph}.$$ d) The video should be slowed by a factor of $$10$$ and the model car should go $$5\\;\\mathrm{mph}.$$ e) The video should be slowed by a factor of $$10$$ and the model car should go $$0.5\\;\\mathrm{mph}.$$",
+    "statement": "A movie director wants a scene in which a car appears to fly off a cliff at $$50 \\;\\mathrm{mph}.$$ To simulate this, the director will make a $$1/100$$ scale model of a car and cliff, and have the model car fly off the model cliff.\n\nBy what factor should the film be sped up or slowed down in order to look realistic, and what should the real speed of the toy car be as it approaches the cliff?\n\na) The video should be slowed by a factor of $$100$$ and the model car should go $$50\\;\\mathrm{mph}.$$ b) The video should be slowed by a factor of $$100$$ and the model car should go $$5\\;\\mathrm{mph}.$$ c) The video should be slowed by a factor of $$100$$ and the model car should go $$0.5\\;\\mathrm{mph}.$$ d) The video should be slowed by a factor of $$10$$ and the model car should go $$5\\;\\mathrm{mph}.$$\\ne) The video should be slowed by a factor of $$10$$ and the model car should go $$0.5\\;\\mathrm{mph}.$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -843,7 +843,7 @@
     "solutionUrl": null
   },
   {
-    "id": "257691f0-b387-4e0d-ab70-86e3aca4d32b",
+    "id": "e386ad03-9df2-4976-a43b-6a4bfb49f64e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -854,7 +854,7 @@
     "set_label": "Problem 6",
     "name": "A certain football quarterback can throw a football at a maximum speed, the same for all…",
     "desc": "A certain football quarterback can throw a football at a maximum speed, the same for all angles. The maximum range the quarterback can throw the football is $$80 \\;\\mathrm{m}$$ on level ground. What is the highest height reached by the football if thrown this maximum range?…",
-    "statement": "A certain football quarterback can throw a football at a maximum speed, the same for all angles. The maximum range the quarterback can throw the football is $$80 \\;\\mathrm{m}$$ on level ground. What is the highest height reached by the football if thrown this maximum range? Ignore air friction. Assume the football is caught at the same height it is released from.\n\na) $$10 \\;\\mathrm{m}$$ b) $$20 \\;\\mathrm{m}$$ c) $$30 \\;\\mathrm{m}$$ d) $$40 \\;\\mathrm{m}$$ e) $$50 \\;\\mathrm{m}$$",
+    "statement": "A certain football quarterback can throw a football at a maximum speed, the same for all angles. The maximum range the quarterback can throw the football is $$80 \\;\\mathrm{m}$$ on level ground. What is the highest height reached by the football if thrown this maximum range? Ignore air friction. Assume the football is caught at the same height it is released from.\n\na) $$10 \\;\\mathrm{m}$$ b) $$20 \\;\\mathrm{m}$$ c) $$30 \\;\\mathrm{m}$$ d) $$40 \\;\\mathrm{m}$$\\ne) $$50 \\;\\mathrm{m}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -873,7 +873,7 @@
     "solutionUrl": null
   },
   {
-    "id": "35348a02-0306-42d5-9d33-a7d4a46f7b10",
+    "id": "a87758d9-8c62-497f-9421-7d51c8665474",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -884,7 +884,7 @@
     "set_label": "Problem 7",
     "name": "In 1936, Jesse Owens set a new world long jump record of $$8.09 \\;\\mathrm{m}$$ at the…",
     "desc": "In 1936, Jesse Owens set a new world long jump record of $$8.09 \\;\\mathrm{m}$$ at the Olympics in Berlin, where $$g = 9.8128 \\;\\mathrm{m/s^2}.$$ Assuming his running speed and takeoff angle would be unchanged, how much different would the record have been if he had jumped in…",
-    "statement": "In 1936, Jesse Owens set a new world long jump record of $$8.09 \\;\\mathrm{m}$$ at the Olympics in Berlin, where $$g = 9.8128 \\;\\mathrm{m/s^2}.$$ Assuming his running speed and takeoff angle would be unchanged, how much different would the record have been if he had jumped in Melbourne, where $$g = 9.7999 \\;\\mathrm{m/s^2}?$$ (You can ignore air resistance during the jump.)\n\na) $$1.06 \\;\\mathrm{cm}$$ b) $$2.12 \\;\\mathrm{cm}$$ c) $$2.33 \\; \\mathrm{cm}$$ d) $$4.50 \\;\\mathrm{cm}$$ e) $$1.13 \\;\\mathrm{m}$$",
+    "statement": "In 1936, Jesse Owens set a new world long jump record of $$8.09 \\;\\mathrm{m}$$ at the Olympics in Berlin, where $$g = 9.8128 \\;\\mathrm{m/s^2}.$$ Assuming his running speed and takeoff angle would be unchanged, how much different would the record have been if he had jumped in Melbourne, where $$g = 9.7999 \\;\\mathrm{m/s^2}?$$ (You can ignore air resistance during the jump.)\n\na) $$1.06 \\;\\mathrm{cm}$$ b) $$2.12 \\;\\mathrm{cm}$$ c) $$2.33 \\; \\mathrm{cm}$$ d) $$4.50 \\;\\mathrm{cm}$$\\ne) $$1.13 \\;\\mathrm{m}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -903,7 +903,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0dac2fc3-679e-4188-be3a-2f1f6cfba757",
+    "id": "1e745769-ddce-4add-9589-8a034e8b738d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -914,7 +914,7 @@
     "set_label": "Problem 8",
     "name": "A $$470 \\;\\mathrm{g}$$ lead ball is launched at a $$60^\\circ$$ angle above the horizontal…",
     "desc": "A $$470 \\;\\mathrm{g}$$ lead ball is launched at a $$60^\\circ$$ angle above the horizontal with an initial speed of $$100 \\;\\mathrm{m/s}$$ directly toward a target on a vertical cliff wall that is $$150 \\;\\mathrm{m}$$ away as shown in the figure. Ignoring air friction, by what…",
-    "statement": "A $$470 \\;\\mathrm{g}$$ lead ball is launched at a $$60^\\circ$$ angle above the horizontal with an initial speed of $$100 \\;\\mathrm{m/s}$$ directly toward a target on a vertical cliff wall that is $$150 \\;\\mathrm{m}$$ away as shown in the figure.\n\nIgnoring air friction, by what distance does the lead ball miss the target when it hits the cliff wall?\n\na) $$1.3 \\;\\mathrm{m}$$ b) $$2.2 \\;\\mathrm{m}$$ c) $$5.0 \\;\\mathrm{m}$$ d) $$7.1 \\;\\mathrm{m}$$ e) $$11 \\;\\mathrm{m}$$",
+    "statement": "A $$470 \\;\\mathrm{g}$$ lead ball is launched at a $$60^\\circ$$ angle above the horizontal with an initial speed of $$100 \\;\\mathrm{m/s}$$ directly toward a target on a vertical cliff wall that is $$150 \\;\\mathrm{m}$$ away as shown in the figure.\n\nIgnoring air friction, by what distance does the lead ball miss the target when it hits the cliff wall?\n\na) $$1.3 \\;\\mathrm{m}$$ b) $$2.2 \\;\\mathrm{m}$$ c) $$5.0 \\;\\mathrm{m}$$ d) $$7.1 \\;\\mathrm{m}$$\\ne) $$11 \\;\\mathrm{m}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/fma_2015_5.jpg"
     ],
@@ -935,7 +935,7 @@
     "solutionUrl": null
   },
   {
-    "id": "386cdf5b-b11a-43f7-913b-304f69b5854d",
+    "id": "3b7ab774-3cf4-45f9-a481-9a2dc2cb1ef0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -946,7 +946,7 @@
     "set_label": "Problem 9",
     "name": "A person throws a ball with speed $$v_0$$ at a $$45^\\circ$$ angle and hits a given…",
     "desc": "A person throws a ball with speed $$v_0$$ at a $$45^\\circ$$ angle and hits a given target. At what angle should the ball be thrown with the same initial speed $$v_0$$ so that it makes the trajectory consisting of two identical bumps, as shown below? (Assume there is no loss of…",
-    "statement": "A person throws a ball with speed $$v_0$$ at a $$45^\\circ$$ angle and hits a given target. At what angle should the ball be thrown with the same initial speed $$v_0$$ so that it makes the trajectory consisting of two identical bumps, as shown below? (Assume there is no loss of speed during the bounce.)\n\na) $$10^\\circ$$ b) $$15^\\circ$$ c) $$22.5^\\circ$$ d) $$30^\\circ$$ e) $$45^\\circ$$",
+    "statement": "A person throws a ball with speed $$v_0$$ at a $$45^\\circ$$ angle and hits a given target. At what angle should the ball be thrown with the same initial speed $$v_0$$ so that it makes the trajectory consisting of two identical bumps, as shown below? (Assume there is no loss of speed during the bounce.)\n\na) $$10^\\circ$$ b) $$15^\\circ$$ c) $$22.5^\\circ$$ d) $$30^\\circ$$\\ne) $$45^\\circ$$",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -965,7 +965,7 @@
     "solutionUrl": null
   },
   {
-    "id": "56737690-bd39-4696-8a13-54bac0d636a6",
+    "id": "61a06717-bf00-4c5c-bfb2-3652dd595af9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -976,7 +976,7 @@
     "set_label": "Problem 10",
     "name": "A wall has height $$h$$ and is a distance $$\\ell$$ away. You wish to throw a ball over…",
     "desc": "A wall has height $$h$$ and is a distance $$\\ell$$ away. You wish to throw a ball over the wall with a trajectory such that the ball barely clears the wall at the top of its parabolic motion. What initial speed is required? Assume the ball is thrown from ground level and the…",
-    "statement": "A wall has height $$h$$ and is a distance $$\\ell$$ away. You wish to throw a ball over the wall with a trajectory such that the ball barely clears the wall at the top of its parabolic motion. What initial speed is required? Assume the ball is thrown from ground level and the ground is flat. Ignore the ball's radius.\n\na) $$\\sqrt{2gh}$$ b) $$\\sqrt{4gh}$$ c) $$\\sqrt{g\\ell^2/2h}$$ d) $$\\sqrt{2gh + g\\ell^2/2h}$$ e) $$\\sqrt{4gh + g\\ell^2/2h}$$",
+    "statement": "A wall has height $$h$$ and is a distance $$\\ell$$ away. You wish to throw a ball over the wall with a trajectory such that the ball barely clears the wall at the top of its parabolic motion. What initial speed is required? Assume the ball is thrown from ground level and the ground is flat. Ignore the ball's radius.\n\na) $$\\sqrt{2gh}$$ b) $$\\sqrt{4gh}$$ c) $$\\sqrt{g\\ell^2/2h}$$ d) $$\\sqrt{2gh + g\\ell^2/2h}$$\\ne) $$\\sqrt{4gh + g\\ell^2/2h}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -995,7 +995,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d7f4ec37-ae7f-4a04-afb0-ed9ae11d689e",
+    "id": "bb397b9e-6dd6-4061-afe3-202bec258900",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1287,7 +1287,7 @@
     "solutionUrl": null
   },
   {
-    "id": "be24010f-88e1-4f70-b067-c5da0379f54a",
+    "id": "33b039d4-49e9-4e67-8565-571ea7e683f0",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1317,7 +1317,7 @@
     "solutionUrl": null
   },
   {
-    "id": "21515afd-d9a7-46e0-af79-e7a9337ac275",
+    "id": "32d51874-8199-4b58-88ad-aef50502a435",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1347,7 +1347,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5473def1-0c51-41e8-98f1-92adc95802a3",
+    "id": "3c94f9ff-17cd-4c30-b71c-dd31691d660b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1377,7 +1377,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c0f744f3-018b-41ce-b1d4-dc56258212b7",
+    "id": "b21a684c-d9b2-4434-bb47-3f5ef3a3778e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1407,7 +1407,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a3aa6fb0-738e-4919-a22e-bbaa0e088dd1",
+    "id": "faeedaee-0ec1-4b8e-aabd-9a7588fe8b64",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1437,7 +1437,7 @@
     "solutionUrl": null
   },
   {
-    "id": "3bdccdc7-b7ee-4883-aa56-dc58fc8f8c38",
+    "id": "d6b30542-8203-4b1e-9e5e-14ab1df3ded5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1469,7 +1469,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e55d43aa-bccd-479a-bff8-e3668f062444",
+    "id": "980f3a3b-512a-4456-ae29-9b2b5a920342",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1501,7 +1501,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a2cddbc5-cde5-449b-87bc-bd3bfceb0d06",
+    "id": "814d62fa-c803-4af8-af44-ebc16fae5975",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1531,7 +1531,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7e258932-df72-48d5-ab9b-64ae9d604359",
+    "id": "b81a183a-0dd7-49b0-8d6a-4aaa2453311e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1561,7 +1561,7 @@
     "solutionUrl": null
   },
   {
-    "id": "333acdf1-9c35-44bb-aaf1-61f500a663b3",
+    "id": "d785df2c-b621-4f6b-bed9-acfc76653e8a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1591,7 +1591,7 @@
     "solutionUrl": null
   },
   {
-    "id": "240bd7cd-f727-4fe2-bb44-c4257e800e99",
+    "id": "7879eb26-eb4e-4405-a1cd-8cf20e9658fe",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1926,7 +1926,7 @@
     "solutionUrl": null
   },
   {
-    "id": "36c21ba4-0b81-4818-a20e-0fb32359f7e3",
+    "id": "62eac9d0-5dbc-46a5-9039-30ddc3a5e68f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1956,7 +1956,7 @@
     "solutionUrl": null
   },
   {
-    "id": "91de8d1a-5a19-4f95-a38c-4a623f7c8d9f",
+    "id": "3c22c7f2-b014-4176-baa0-8ebd5b472dbe",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -1986,7 +1986,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a115884e-6231-41ee-999a-e6077e77940b",
+    "id": "c4f05da0-ab33-4cb2-aeb8-6df72135de79",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2016,7 +2016,7 @@
     "solutionUrl": null
   },
   {
-    "id": "acfc80c6-d9f8-4ee7-9a75-60dc8d290795",
+    "id": "6e893ed2-5349-4d3c-b4a6-e63d57b02327",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2046,7 +2046,7 @@
     "solutionUrl": null
   },
   {
-    "id": "ec84970d-d7c1-4a90-9ba1-ff216e4c6e63",
+    "id": "6649bd96-4f3c-4153-8b15-ad7d69c97855",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2076,7 +2076,7 @@
     "solutionUrl": null
   },
   {
-    "id": "aa1b5b89-e1f2-4c62-a583-dc9ffd12c80c",
+    "id": "04edf641-510e-4572-b927-5abd86f97f6d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2106,7 +2106,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d016ebf6-1251-44e1-8ae8-078b21312830",
+    "id": "0af2da86-43e1-4910-b793-102da702634d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2136,7 +2136,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7ea7d05b-5d74-4641-91bc-3df0944982d2",
+    "id": "201be4cb-8333-4626-be13-7545a6d7af4d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2146,8 +2146,8 @@
     "set_number": 8,
     "set_label": "Problem 8",
     "name": "A \"stiff\" spring has a force law given by $$F = -kx^3$$. The work required to stretch the…",
-    "desc": "A \"stiff\" spring has a force law given by $$F = -kx^3$$. The work required to stretch the spring from the relaxed state $$x = 0$$ to $$x = l$$ is $$W_0$$. In terms of $$W_0$$, how much work is required to extend the spring from the stretched length $$l$$ to the length $$2l$$?…",
-    "statement": "A \"stiff\" spring has a force law given by $$F = -kx^3$$. The work required to stretch the spring from the relaxed state $$x = 0$$ to $$x = l$$ is $$W_0$$. In terms of $$W_0$$, how much work is required to extend the spring from the stretched length $$l$$ to the length $$2l$$?\n\n(a) $$W_0$$ (b) $$3W_0$$ (c) $$7W_0$$ (d) $$8W_0$$ (e) $$15W_0$$",
+    "desc": "A \"stiff\" spring has a force law given by $$F = -kx^3$$. The work required to stretch the spring from the relaxed state $$x = 0$$ to $$x = \\ell$$ is $$W_0$$. In terms of $$W_0$$, how much work is required to extend the spring from the stretched length $$\\ell$$ to the length…",
+    "statement": "A \"stiff\" spring has a force law given by $$F = -kx^3$$. The work required to stretch the spring from the relaxed state $$x = 0$$ to $$x = \\ell$$ is $$W_0$$. In terms of $$W_0$$, how much work is required to extend the spring from the stretched length $$\\ell$$ to the length $$2\\ell$$?\n\n(a) $$W_0$$ (b) $$3W_0$$ (c) $$7W_0$$ (d) $$8W_0$$ (e) $$15W_0$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -2166,7 +2166,7 @@
     "solutionUrl": null
   },
   {
-    "id": "4c5483aa-2a16-49d7-9925-ebb4f54cdcbf",
+    "id": "2612837c-93c3-4f7a-bade-f239448ee577",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2196,7 +2196,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2ef24a25-3d96-4edc-895f-98e5fbc0fb7d",
+    "id": "3e028abe-0127-45c6-a5d7-865183228565",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2226,7 +2226,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6f5314e5-9d7b-47df-be87-36d7d3967065",
+    "id": "a70577f2-f266-44a1-b934-45975c87c77a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2237,7 +2237,7 @@
     "set_label": "Problem 11",
     "name": "In this week's USAPhO-style problem, we will examine the basic physics behind the flight…",
     "desc": "In this week's USAPhO-style problem, we will examine the basic physics behind the flight of a bird. Imagine an bird viewed from the frame where the bird is stationary and wind rushes past the bird at speed $$v.$$ (For convenience, we ignore the flapping of the birds wings and…",
-    "statement": "In this week's USAPhO-style problem, we will examine the basic physics behind the flight of a bird. Imagine an bird viewed from the frame where the bird is stationary and wind rushes past the bird at speed $$v.$$ (For convenience, we ignore the flapping of the birds wings and think of them as fixed, with an ability to push air past them.)\n\nThe density of the air is $$\\rho.$$ The bird has wings of length $$l$$ (direction of its wingspan) and depth $$d.$$ (The thickness of the bird's wings is not considered in this model.)\n\n**a)** Suppose the wings are angled at some angle $$\\theta$$ with respect to the incoming wind. The wings interact with all the air that is on a direct collision course with some part of the wing. Below, the incoming air is blue and the tilted wing is black. The length $$l$$ of the wing is into and out of your monitor.\n\nHow much air (in mass of air per unit time) do the wings interact with, as a function of $$v, \\rho, l, d,$$ and $$\\theta?$$\n\n**b)** Suppose that as air flows past the wing, it is deflected downward by an angle $$\\theta$$ while keeping constant speed. Find the weight $$W$$ of the bird in terms of $$v, \\rho, l, d,$$ and $$\\theta.$$\n\n**c)** Suppose two birds have the same shape, but bird $$B$$ is twice the size of bird $$A$$ in every dimension. Assuming $$\\theta$$ is the same for both birds, if bird $$A$$ flies at speed $$v,$$ what speed must bird $$B$$ fly?\n\n**d)** The upward force from the air to the bird is called the **lift**. There is also a backwards force on the bird, called the **drag**. Generally, birds can be considered to have a fixed ratio of lift force magnitude to drag force magnitude. Call this ratio $$\\alpha.$$ Find the power bird must provide as a function of $$v, \\rho, l, d, \\theta,$$ and $$\\alpha.$$\n\n**e)** Some data on the weight $$(W),$$ given in Newtons, and wing area $$(S),$$ given in square meters, and flying speed of various birds is provided in the chart below. Make a plot of the data on this chart showing how well the theory outlined in part (b) matches the real-world data. Your plot should be set up so that if the model is perfectly accurate, you will see a straight line on the plot.\n\n__data source: Tennekes, Hendrik. The simple science of flight: from insects to jumbo jets. MIT press, 2009.__",
+    "statement": "In this week's USAPhO-style problem, we will examine the basic physics behind the flight of a bird. Imagine an bird viewed from the frame where the bird is stationary and wind rushes past the bird at speed $$v.$$ (For convenience, we ignore the flapping of the birds wings and think of them as fixed, with an ability to push air past them.)\n\nThe density of the air is $$\\rho.$$ The bird has wings of length $$\\ell$$ (direction of its wingspan) and depth $$d.$$ (The thickness of the bird's wings is not considered in this model.)\n\n**a)** Suppose the wings are angled at some angle $$\\theta$$ with respect to the incoming wind. The wings interact with all the air that is on a direct collision course with some part of the wing. Below, the incoming air is blue and the tilted wing is black. The length $$\\ell$$ of the wing is into and out of your monitor.\n\nHow much air (in mass of air per unit time) do the wings interact with, as a function of $$v, \\rho, \\ell, d,$$ and $$\\theta?$$\n\n**b)** Suppose that as air flows past the wing, it is deflected downward by an angle $$\\theta$$ while keeping constant speed. Find the weight $$W$$ of the bird in terms of $$v, \\rho, \\ell, d,$$ and $$\\theta.$$\n\n**c)** Suppose two birds have the same shape, but bird $$B$$ is twice the size of bird $$A$$ in every dimension. Assuming $$\\theta$$ is the same for both birds, if bird $$A$$ flies at speed $$v,$$ what speed must bird $$B$$ fly?\n\n**d)** The upward force from the air to the bird is called the **lift**. There is also a backwards force on the bird, called the **drag**. Generally, birds can be considered to have a fixed ratio of lift force magnitude to drag force magnitude. Call this ratio $$\\alpha.$$ Find the power bird must provide as a function of $$v, \\rho, \\ell, d, \\theta,$$ and $$\\alpha.$$\n\n**e)** Some data on the weight $$(W),$$ given in Newtons, and wing area $$(S),$$ given in square meters, and flying speed of various birds is provided in the chart below. Make a plot of the data on this chart showing how well the theory outlined in part (b) matches the real-world data. Your plot should be set up so that if the model is perfectly accurate, you will see a straight line on the plot.\n\n__data source: Tennekes, Hendrik. The simple science of flight: from insects to jumbo jets. MIT press, 2009.__",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/bird_chart.jpg"
     ],
@@ -2390,7 +2390,7 @@
     "solutionUrl": null
   },
   {
-    "id": "076642a3-cb17-4426-827f-eab5219df438",
+    "id": "15f1caac-b3b1-4050-ae8a-9dc65d496433",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2420,7 +2420,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6e9a232c-b26a-49a0-9e86-9453cb871d75",
+    "id": "4dcea911-7f65-4914-8f5c-b84ee071707b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2450,7 +2450,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6ccf95fc-14cf-4ade-828f-0d9c72bc958d",
+    "id": "b99900a2-1c9d-4b2a-8dae-4c8b0f2b67ce",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2480,7 +2480,7 @@
     "solutionUrl": null
   },
   {
-    "id": "68a63645-24d7-441f-beb7-db055247b4e7",
+    "id": "c04f3ee2-e048-4647-8c93-23e5817978d5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2510,7 +2510,7 @@
     "solutionUrl": null
   },
   {
-    "id": "08bf2078-69d8-4a54-88da-bd156cb32be0",
+    "id": "d3c3eba5-2b97-4611-9286-67a4987504c9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2540,7 +2540,7 @@
     "solutionUrl": null
   },
   {
-    "id": "82d0f322-c1f4-412d-9608-fedc81ecdbf9",
+    "id": "25f8f5a2-c87b-4bbf-b7f3-575e67da6bb3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2570,7 +2570,7 @@
     "solutionUrl": null
   },
   {
-    "id": "165d9449-3e12-4abd-85ca-f4c2e7009bbc",
+    "id": "74790635-15ff-42f1-8f4d-7d8758246404",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2600,7 +2600,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1fe98e54-6678-437d-84e5-4fb19bf30823",
+    "id": "436dba56-a3e8-412f-927a-79330438082f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2630,7 +2630,7 @@
     "solutionUrl": null
   },
   {
-    "id": "bab3264a-d777-44d3-b45a-3e0afbff2150",
+    "id": "a8edae00-386b-4b41-85f3-8b822e598615",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2660,7 +2660,7 @@
     "solutionUrl": null
   },
   {
-    "id": "67b6b5a0-32f9-462a-ba90-3ef7b28f222e",
+    "id": "de638c4b-0b3e-4f1f-af29-234541601108",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2690,7 +2690,7 @@
     "solutionUrl": null
   },
   {
-    "id": "578dd9a1-8eef-4ebe-8738-1ea18040b736",
+    "id": "2254eab7-aea4-4fbf-bda8-9ce1bb03159c",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2700,8 +2700,8 @@
     "set_number": 11,
     "set_label": "Problem 11",
     "name": "A block of wood with a mass of $$M = 2.5 \\;\\mathrm{kg}$$ is suspended from fixed pegs by…",
-    "desc": "A block of wood with a mass of $$M = 2.5 \\;\\mathrm{kg}$$ is suspended from fixed pegs by vertical strings $$l = 3.0 \\;\\mathrm{m},$$ in a set up known as a ballistic pendulum. A bullet with a mass of $$m = 10 \\;\\mathrm{g}$$ and moving horizontally with a velocity $$v = 300…",
-    "statement": "A block of wood with a mass of $$M = 2.5 \\;\\mathrm{kg}$$ is suspended from fixed pegs by vertical strings $$l = 3.0 \\;\\mathrm{m},$$ in a set up known as a ballistic pendulum. A bullet with a mass of $$m = 10 \\;\\mathrm{g}$$ and moving horizontally with a velocity $$v = 300 \\;\\mathrm{m/s}$$ enters and remains in the block. Find the maximum angle $$\\theta$$ to the vertical through which the block swings.\n\n(a) $$3.1^\\circ$$ (b) $$13^\\circ$$ (c) $$21^\\circ$$ (d) $$28^\\circ$$ (e) $$180^\\circ$$",
+    "desc": "A block of wood with a mass of $$M = 2.5 \\;\\mathrm{kg}$$ is suspended from fixed pegs by vertical strings $$\\ell = 3.0 \\;\\mathrm{m},$$ in a set up known as a ballistic pendulum. A bullet with a mass of $$m = 10 \\;\\mathrm{g}$$ and moving horizontally with a velocity $$v = 300…",
+    "statement": "A block of wood with a mass of $$M = 2.5 \\;\\mathrm{kg}$$ is suspended from fixed pegs by vertical strings $$\\ell = 3.0 \\;\\mathrm{m},$$ in a set up known as a ballistic pendulum. A bullet with a mass of $$m = 10 \\;\\mathrm{g}$$ and moving horizontally with a velocity $$v = 300 \\;\\mathrm{m/s}$$ enters and remains in the block. Find the maximum angle $$\\theta$$ to the vertical through which the block swings.\n\n(a) $$3.1^\\circ$$ (b) $$13^\\circ$$ (c) $$21^\\circ$$ (d) $$28^\\circ$$ (e) $$180^\\circ$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -2720,7 +2720,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1741a4bb-4508-491b-8de2-17c996b4e22b",
+    "id": "d3131856-626d-41f9-92c2-1fe2e56bd71a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -2731,7 +2731,7 @@
     "set_label": "Problem 12",
     "name": "This problem investigates **Compton scattering**, which is when a particle of light…",
     "desc": "This problem investigates **Compton scattering**, which is when a particle of light collides with a charged particle, usually an electron. During this process, the light particle gives some of its energy to the electron. This means the photon's energy goes down, which in turn…",
-    "statement": "This problem investigates **Compton scattering**, which is when a particle of light collides with a charged particle, usually an electron. During this process, the light particle gives some of its energy to the electron. This means the photon's energy goes down, which in turn means its wavelength gets longer. The explanation of Compton scattering (by Arthur Compton) in 1923 gave additional credence to the then-young idea that light consists of particles, which we know today as photons.\n\nThis is a type of 2D, elastic collision. In this collision, both momentum and energy are conserved. However, the formulas for momentum and energy are those used in special relativity and quantum mechanics, so not everything we've learned about collisions applies to Compton scattering.\n\nA photon does not have mass, but it does have energy and momentum. Its energy is $$E = \\dfrac{hc}{\\lambda}.$$ Here, $$h$$ is a constant known as **Planck's constant**, which is used ubiquitously in quantum mechanics. $$c$$ is the speed of light, and $$\\lambda$$ is the wavelength of the photon.\n\nThe magnitude of the momentum of a photon is $$p = \\dfrac{E}{c}.$$\n\nAn electron does have mass, which we will call $$m.$$ The equations of special relativity tell us that the momentum and energy of an electron moving with velocity $$\\mathbf{v}$$ are\n\n$$\\mathbf{p} = \\dfrac{m\\mathbf{v}}{\\sqrt{1-\\dfrac{v^2}{c^2}}}$$\n\nand\n\n$$E =\\sqrt{p^2c^2 + m^2 c^4}$$\n\nWe will consider a stationary electron and a photon which approaches from the left. The photon and electron collides, and the photon winds up traveling away up and to the right, at an angle $$\\theta$$ with its previous trajectory. The photon's wavelength after the collision has increased to $$\\lambda',$$ and the electron moves down and to the right.\n\n__By JabberWok, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=2078004__\n\n**a)** Find an equation for energy conservation in the scattering process described above. You may need to introduce new variables for the speed and angle between the electron's final direction of motion and the original direction of motion of the photon.\n\n**b)** Find an equation for momentum conservation in the original direction of travel of the photon.\n\n**c)** Find an equation for momentum conservation in the direction perpendicular to the direction of travel of the photon.\n\n**d)** Define $$\\lambda_c = \\dfrac{h}{mc}.$$ This is called the **Compton wavelength** of the electron. Also define $$\\lambda_e$$ so that $$p = \\dfrac{h}{\\lambda_e}$$ for an electron. Rewrite the above formulas using these definitions. Eliminate $$h, c, v, m$$ and any variables other than the angles and the various $$\\lambda's (\\lambda, \\lambda', \\lambda_e, \\lambda_c)$$ from your equations.\n\n**e)** Eliminate the variable you introduced for the angle of motion of the electron. You may need to use the fact that $$\\cos^2x + \\sin^2 x = 1.$$ Solve the remaining equations to find $$\\lambda' - \\lambda,$$ the change in wavelength of the photon as a function of $$\\lambda_c$$ and $$\\theta.$$",
+    "statement": "This problem investigates **Compton scattering**, which is when a particle of light collides with a charged particle, usually an electron. During this process, the light particle gives some of its energy to the electron. This means the photon's energy goes down, which in turn means its wavelength gets longer. The explanation of Compton scattering (by Arthur Compton) in 1923 gave additional credence to the then-young idea that light consists of particles, which we know today as photons.\n\nThis is a type of 2D, elastic collision. In this collision, both momentum and energy are conserved. However, the formulas for momentum and energy are those used in special relativity and quantum mechanics, so not everything we've learned about collisions applies to Compton scattering.\n\nA photon does not have mass, but it does have energy and momentum. Its energy is $$E = \\dfrac{hc}{\\lambda}.$$ Here, $$h$$ is a constant known as **Planck's constant**, which is used ubiquitously in quantum mechanics. $$c$$ is the speed of light, and $$\\lambda$$ is the wavelength of the photon.\n\nThe magnitude of the momentum of a photon is $$p = \\dfrac{E}{c}.$$\n\nAn electron does have mass, which we will call $$m.$$ The equations of special relativity tell us that the momentum and energy of an electron moving with velocity $$\\mathbf{v}$$ are $$\\mathbf{p} = \\dfrac{m\\mathbf{v}}{\\sqrt{1-\\dfrac{v^2}{c^2}}}$$\n\nand $$E =\\sqrt{p^2c^2 + m^2 c^4}$$\n\nWe will consider a stationary electron and a photon which approaches from the left. The photon and electron collides, and the photon winds up traveling away up and to the right, at an angle $$\\theta$$ with its previous trajectory. The photon's wavelength after the collision has increased to $$\\lambda',$$ and the electron moves down and to the right.\n\n__By JabberWok, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=2078004__\n\n**a)** Find an equation for energy conservation in the scattering process described above. You may need to introduce new variables for the speed and angle between the electron's final direction of motion and the original direction of motion of the photon.\n\n**b)** Find an equation for momentum conservation in the original direction of travel of the photon.\n\n**c)** Find an equation for momentum conservation in the direction perpendicular to the direction of travel of the photon.\n\n**d)** Define $$\\lambda_c = \\dfrac{h}{mc}.$$ This is called the **Compton wavelength** of the electron. Also define $$\\lambda_e$$ so that $$p = \\dfrac{h}{\\lambda_e}$$ for an electron. Rewrite the above formulas using these definitions. Eliminate $$h, c, v, m$$ and any variables other than the angles and the various $$\\lambda's (\\lambda, \\lambda', \\lambda_e, \\lambda_c)$$ from your equations.\n\n**e)** Eliminate the variable you introduced for the angle of motion of the electron. You may need to use the fact that $$\\cos^2x + \\sin^2 x = 1.$$ Solve the remaining equations to find $$\\lambda' - \\lambda,$$ the change in wavelength of the photon as a function of $$\\lambda_c$$ and $$\\theta.$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/compton_scattering.jpg"
     ],
@@ -3055,7 +3055,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d1f0ab82-df6a-49ce-a1c2-2d0718192015",
+    "id": "f017efa2-6d8f-492b-81ea-fb934e4c7aae",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3086,7 +3086,7 @@
     "solutionUrl": null
   },
   {
-    "id": "65286a87-db45-459c-88f6-f02792b0bab1",
+    "id": "33154288-8549-4845-8d35-2f1f8547cb4c",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3117,7 +3117,7 @@
     "solutionUrl": null
   },
   {
-    "id": "337feb00-ea95-4f3c-ae99-b770c994cad6",
+    "id": "e767f903-77df-4b6e-b300-ae230c1fffff",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3148,7 +3148,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d5af22e6-4389-492b-ab4a-7a6bc4f2f752",
+    "id": "31737478-8c36-4176-b288-a46b98a8bb81",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3179,7 +3179,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d8d0be6c-efe5-4ca5-876c-31bfa9a3c8fd",
+    "id": "4161ab95-3965-46b8-ba23-01874e654500",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3210,7 +3210,7 @@
     "solutionUrl": null
   },
   {
-    "id": "33dc1099-ee65-46f0-8d38-e99aeea1f8d6",
+    "id": "2b5b84d0-fb18-4385-8e41-a67ff394af21",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3241,7 +3241,7 @@
     "solutionUrl": null
   },
   {
-    "id": "277943fe-5a7e-4324-b196-e1c7900dad15",
+    "id": "9d97f89b-8779-43e5-8171-8d5bc9817f7b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3272,7 +3272,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cf629818-ef77-4ca7-9911-a03e2c1b4a03",
+    "id": "71e9d4b2-a7a6-4da0-a54e-015382f8b23f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3303,7 +3303,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c393006a-5b04-4fb5-a38a-1e22f614f58d",
+    "id": "2baa29a9-5039-4139-863a-36d522ee20f4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3334,7 +3334,7 @@
     "solutionUrl": null
   },
   {
-    "id": "16681604-6bc3-4e83-aee2-fa685abc5e14",
+    "id": "42a55b2b-0485-4ead-934c-4296d7928d64",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3365,7 +3365,7 @@
     "solutionUrl": null
   },
   {
-    "id": "31ff61c0-13fc-4293-a3d7-771e5d19722f",
+    "id": "8b144c99-a105-4672-91d5-6ef8c48f8399",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3645,8 +3645,8 @@
     "set_number": 8,
     "set_label": "Script Problem 8",
     "name": "Measuring g with a Pendulum (2018 F=ma A Exam) — The following problem is from the 2018 F=ma A exam. A group…",
-    "desc": "The following problem is from the 2018 F=ma A exam. A group of students wish to measure the acceleration of gravity with a simple pendulum. They take one length measurement of the pendulum to be $$l = 1.00 \\pm 0.05\\;\\mathrm{m}.$$ They then measure the period of a single swing to…",
-    "statement": "The following problem is from the 2018 F=ma A exam. A group of students wish to measure the acceleration of gravity with a simple pendulum. They take one length measurement of the pendulum to be $$l = 1.00 \\pm 0.05\\;\\mathrm{m}.$$ They then measure the period of a single swing to be $$T = 2.00 \\pm 0.10\\;\\mathrm{s}.$$ Assume that all uncertainties are Gaussian. The computed acceleration of gravity from this experiment, illustrating the range of possible values, should be recorded as:\n\n(A) $$9.87 \\pm 0.10\\;\\mathrm{m/s^2}$$ (B) $$9.87 \\pm 0.15\\;\\mathrm{m/s^2}$$ (C) $$9.9 \\pm 0.25\\;\\mathrm{m/s^2}$$ (D) $$9.9 \\pm 1.1\\;\\mathrm{m/s^2}$$ (E) $$9.9 \\pm 1.5\\;\\mathrm{m/s^2}$$\n\nUseful facts: the angular frequency of a simple pendulum is $$\\omega = \\sqrt{\\dfrac{g}{l}},$$ and angular frequency is related to the period by $$\\omega = \\dfrac{2\\pi}{T}.$$ For error propagation: scaling by an exact constant (like $$4\\pi^2$$) leaves the relative error unchanged; when independent quantities are multiplied or divided, their relative errors add in quadrature; and if $$u = x^n,$$ then $$\\dfrac{\\Delta u}{u} = |n|\\,\\dfrac{\\Delta x}{x}.$$\n\n__(a)__ Combine the two pendulum formulas to express $$g$$ in terms of $$l$$ and $$T,$$ and compute the best estimate of $$g.$$\n\n__(b)__ Propagate the uncertainties to find $$\\Delta g,$$ and choose the correct answer.",
+    "desc": "The following problem is from the 2018 F=ma A exam. A group of students wish to measure the acceleration of gravity with a simple pendulum. They take one length measurement of the pendulum to be $$\\ell = 1.00 \\pm 0.05\\;\\mathrm{m}.$$ They then measure the period of a single swing…",
+    "statement": "The following problem is from the 2018 F=ma A exam. A group of students wish to measure the acceleration of gravity with a simple pendulum. They take one length measurement of the pendulum to be $$\\ell = 1.00 \\pm 0.05\\;\\mathrm{m}.$$ They then measure the period of a single swing to be $$T = 2.00 \\pm 0.10\\;\\mathrm{s}.$$ Assume that all uncertainties are Gaussian. The computed acceleration of gravity from this experiment, illustrating the range of possible values, should be recorded as:\n\n(A) $$9.87 \\pm 0.10\\;\\mathrm{m/s^2}$$ (B) $$9.87 \\pm 0.15\\;\\mathrm{m/s^2}$$ (C) $$9.9 \\pm 0.25\\;\\mathrm{m/s^2}$$ (D) $$9.9 \\pm 1.1\\;\\mathrm{m/s^2}$$ (E) $$9.9 \\pm 1.5\\;\\mathrm{m/s^2}$$\n\nUseful facts: the angular frequency of a simple pendulum is $$\\omega = \\sqrt{\\dfrac{g}{\\ell}},$$ and angular frequency is related to the period by $$\\omega = \\dfrac{2\\pi}{T}.$$ For error propagation: scaling by an exact constant (like $$4\\pi^2$$) leaves the relative error unchanged; when independent quantities are multiplied or divided, their relative errors add in quadrature; and if $$u = x^n,$$ then $$\\dfrac{\\Delta u}{u} = |n|\\,\\dfrac{\\Delta x}{x}.$$\n\n__(a)__ Combine the two pendulum formulas to express $$g$$ in terms of $$\\ell$$ and $$T,$$ and compute the best estimate of $$g.$$\n\n__(b)__ Propagate the uncertainties to find $$\\Delta g,$$ and choose the correct answer.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -3669,7 +3669,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b7de6b1c-c079-4030-adf2-0c4bda729f7b",
+    "id": "0abc519e-8ac4-4f17-a978-cd98195915a7",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3699,7 +3699,7 @@
     "solutionUrl": null
   },
   {
-    "id": "38654f3b-6868-4463-9c9c-5d9e02e546ad",
+    "id": "d2f86546-712e-42c1-9741-51a857b88017",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3729,7 +3729,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0a8c97fb-ccea-4ebb-b48f-48d4064b7405",
+    "id": "080c735d-a6ee-4cbe-8097-44182df69d7b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3759,7 +3759,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2a6189d9-a660-408b-9ada-46df4d956081",
+    "id": "ceebada5-b8f6-4f97-8e78-4c8021b984d6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3789,7 +3789,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7e08a407-7cff-4c0a-b993-91f2357b1ed2",
+    "id": "701a6927-0d9a-4ddb-ad4c-d05040252d7f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3819,7 +3819,7 @@
     "solutionUrl": null
   },
   {
-    "id": "b27923c3-47de-4e52-960d-3ede090f307d",
+    "id": "7db47704-de72-4de1-bbbc-13b5caa65ac5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3849,7 +3849,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f38796a2-7742-450a-8b7b-ec201f979f33",
+    "id": "00a3ca2b-2ce7-48e5-9bfe-d08457145bec",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3879,7 +3879,7 @@
     "solutionUrl": null
   },
   {
-    "id": "738db65b-610b-4ad5-8e6e-3455f6d56003",
+    "id": "dc02ddff-f154-462c-a5fc-ad4d4b3f260d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3909,7 +3909,7 @@
     "solutionUrl": null
   },
   {
-    "id": "11e3bf50-15bd-4066-915c-c947f8021419",
+    "id": "fc110511-bb0d-4594-a49f-bdb995edd77a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3939,7 +3939,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9b0fd509-0a05-4864-ab60-4d9c409fc39d",
+    "id": "2507c273-07de-4782-8da3-35ca2b85cf6a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -3969,7 +3969,7 @@
     "solutionUrl": null
   },
   {
-    "id": "d38f8447-1155-42e9-9be7-cbb95c44cdb9",
+    "id": "3f91c023-fd2d-43cf-8ed4-e0e209a20b29",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4337,7 +4337,7 @@
     "solutionUrl": null
   },
   {
-    "id": "069511c7-9ec2-4719-9c83-0207f6f506b5",
+    "id": "5eb7a423-f2a2-4c4a-969d-b9d344e384f3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4367,7 +4367,7 @@
     "solutionUrl": null
   },
   {
-    "id": "cb00dfc3-4087-45e7-8fb6-f64ed5ff7d43",
+    "id": "4779f5b6-ab87-4cf9-bd5d-44870bc23fa9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4397,7 +4397,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f08e98cc-6918-461f-8743-31da8673f6e5",
+    "id": "2e89bb5d-355f-4610-a443-3c4ca0e0c9bd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4427,7 +4427,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e9077c0e-36cb-4b5f-b574-0e0f285bf24e",
+    "id": "dd8350ed-ce7f-4130-ba2f-5aed702cb408",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4457,7 +4457,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1e734ede-4c42-4106-800c-163e9b956050",
+    "id": "d484df31-6f7a-45c6-999b-dff38668c982",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4487,7 +4487,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f6b057aa-6ab5-4dd4-a7a6-cba9a4385052",
+    "id": "e2db3a5e-582e-46f1-9413-f36eb805c5ce",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4517,7 +4517,7 @@
     "solutionUrl": null
   },
   {
-    "id": "298fc53b-1433-42d8-a4d2-1ed2cc597bf1",
+    "id": "51ef10be-855d-4830-a53a-a997264769dd",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4547,7 +4547,7 @@
     "solutionUrl": null
   },
   {
-    "id": "443e9975-90e5-4c47-8472-5a064fe918dd",
+    "id": "eed35dbf-7281-4dd8-bf8e-ecd4a8af6a1e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4577,7 +4577,7 @@
     "solutionUrl": null
   },
   {
-    "id": "25d19bea-2bf3-4c08-8afb-cb207496613c",
+    "id": "c6e48753-db9a-4d1b-a6ef-77698d51404a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4607,7 +4607,7 @@
     "solutionUrl": null
   },
   {
-    "id": "70084ca5-578b-47b4-8d35-2ccbb59c3595",
+    "id": "6f51be3b-0e98-41bf-8880-8d3a62f2983b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4637,7 +4637,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1137453a-df63-4dfa-ba7f-f0915b8ac435",
+    "id": "1bc1cddd-538c-4bd5-af21-4fd5f59f4ea4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -4647,8 +4647,8 @@
     "set_number": 11,
     "set_label": "Problem 11",
     "name": "In this week's USAPhO-Style problem, we will study some basic physics related to the…",
-    "desc": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn. **a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: \\begin{aligned} G &=…",
-    "statement": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn.\n\n**a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: \\begin{aligned} G &= \\text{Newton's gravitational constant} \\\\ M & = \\text{mass of Saturn} \\\\ \\rho & = \\text{density of rings} \\\\ r & = \\text{inner radius of the ring}\\\\ R &= \\text{outer radius of the ring} \\\\ \\omega &=\\text{angular frequency of orbit of the ring}\\\\ t &= \\text{thickness of the rings} \\end{aligned}\n\nFind $$\\omega$$ such that the midline of the ring (the strip at distance $$\\dfrac{r+R}{2}$$ from its center) is in orbit around Saturn.\n\n**b)** Assume the ring is in the orbit you found in part (a). Find the angular frequency of orbits at the inner edge of the ring and at the outer edge of the ring.\n\n**c)** Suppose a small stone were placed on the inside edge of the ring, stationary relative to the ring. Ignore gravitational force from the ring itself. Would the stone fall towards Saturn or away from Saturn? Answer the same question for a stone at the outer edge of the ring.\n\n**d)** Suppose the stone on the inside edge of the ring (from part (c)) is held to the inside edge of the ring by a short string. If the mass of the stone is $$m,$$ find the tension in the string.\n\n**e)** The values of the variables in this problem may be assumed to be \\begin{aligned} G &= 6.67 \\times 10^{-11} \\;\\mathrm{N \\cdot m^2 \\cdot kg^{-2}} \\\\ M &=5.68 \\times 10^{26} \\;\\mathrm{kg} \\\\ \\rho &= 4\\times 10^3 \\;\\mathrm{kg \\cdot m^{-3}} \\\\ r &= 1.2 \\times 10^5 \\;\\mathrm{km} \\\\ R &= 4.0 \\times 10^5 \\;\\mathrm{km} \\\\ t &= 100 \\;\\mathrm{m} \\end{aligned}\n\nAdditionally, if a rock experiences a tension force greater than about $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ it will tear apart.\n\nSuppose we make the following model of the ring: [*] Take two rocks, each of mass $$m.$$ Tie a massless rope between them. [*] Place them in orbit around Saturn so that they have orbital angular frequency $$\\omega,$$ as calculated in part (a). Spin the rope so that the same rock is always closest to Saturn. Adjust the length of the rope so that the inner rock is at distance $$r$$ from the planet and the outer rock is at a distance $$R$$ from the planet. [*] Make many copies of this rock-rope-rock system and place them alongside each other to form a ring all around Saturn. [*] The number of copies should be such that the total mass in the rocks is equal to the mass of the rings of Saturn. [*] The thickness of the ropes is set so that the total cross-sectional area of all the ropes is equal to $$2\\pi r t.$$ [*] If the tension per unit cross-sectional area in a rope exceeds $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ the rope snaps.\n\nBased on this model, is it possible for the rings of Saturn to be a single solid object, or would the rocks that make up the ring tear apart?\n\n**f)** The model in part (e) is simplified to allow us to make calculations on it. Although a more-accurate model is possible, it would also be more complicated. Briefly discuss some of the inaccuracies in the model from part (e). Do you think the conclusion stands despite these inaccuracies?",
+    "desc": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn. **a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: $$\\begin{aligned} G &=…",
+    "statement": "In this week's USAPhO-Style problem, we will study some basic physics related to the rings of Saturn.\n\n**a)** Imagine the rings of Saturn to a single disk with a hole cut out in the middle (Saturn itself is in the hole). Define the following variables: $$\\begin{aligned} G &= \\text{Newton's gravitational constant} \\\\ M & = \\text{mass of Saturn} \\\\ \\rho & = \\text{density of rings} \\\\ r & = \\text{inner radius of the ring}\\\\ R &= \\text{outer radius of the ring} \\\\ \\omega &=\\text{angular frequency of orbit of the ring}\\\\ t &= \\text{thickness of the rings} \\end{aligned}$$\n\nFind $$\\omega$$ such that the midline of the ring (the strip at distance $$\\dfrac{r+R}{2}$$ from its center) is in orbit around Saturn.\n\n**b)** Assume the ring is in the orbit you found in part (a). Find the angular frequency of orbits at the inner edge of the ring and at the outer edge of the ring.\n\n**c)** Suppose a small stone were placed on the inside edge of the ring, stationary relative to the ring. Ignore gravitational force from the ring itself. Would the stone fall towards Saturn or away from Saturn? Answer the same question for a stone at the outer edge of the ring.\n\n**d)** Suppose the stone on the inside edge of the ring (from part (c)) is held to the inside edge of the ring by a short string. If the mass of the stone is $$m,$$ find the tension in the string.\n\n**e)** The values of the variables in this problem may be assumed to be $$\\begin{aligned} G &= 6.67 \\times 10^{-11} \\;\\mathrm{N \\cdot m^2 \\cdot kg^{-2}} \\\\ M &=5.68 \\times 10^{26} \\;\\mathrm{kg} \\\\ \\rho &= 4\\times 10^3 \\;\\mathrm{kg \\cdot m^{-3}} \\\\ r &= 1.2 \\times 10^5 \\;\\mathrm{km} \\\\ R &= 4.0 \\times 10^5 \\;\\mathrm{km} \\\\ t &= 100 \\;\\mathrm{m} \\end{aligned}$$\n\nAdditionally, if a rock experiences a tension force greater than about $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ it will tear apart.\n\nSuppose we make the following model of the ring: [*] Take two rocks, each of mass $$m.$$ Tie a massless rope between them. [*] Place them in orbit around Saturn so that they have orbital angular frequency $$\\omega,$$ as calculated in part (a). Spin the rope so that the same rock is always closest to Saturn. Adjust the length of the rope so that the inner rock is at distance $$r$$ from the planet and the outer rock is at a distance $$R$$ from the planet. [*] Make many copies of this rock-rope-rock system and place them alongside each other to form a ring all around Saturn. [*] The number of copies should be such that the total mass in the rocks is equal to the mass of the rings of Saturn. [*] The thickness of the ropes is set so that the total cross-sectional area of all the ropes is equal to $$2\\pi r t.$$ [*] If the tension per unit cross-sectional area in a rope exceeds $$10^7 \\;\\mathrm{N \\cdot m^{-2}},$$ the rope snaps.\n\nBased on this model, is it possible for the rings of Saturn to be a single solid object, or would the rocks that make up the ring tear apart?\n\n**f)** The model in part (e) is simplified to allow us to make calculations on it. Although a more-accurate model is possible, it would also be more complicated. Briefly discuss some of the inaccuracies in the model from part (e). Do you think the conclusion stands despite these inaccuracies?",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -4972,7 +4972,7 @@
     "solutionUrl": null
   },
   {
-    "id": "02753398-d9b5-4f65-aab2-824d5e8fc32b",
+    "id": "6f5266c7-65c5-4f89-83d5-37365e85810e",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5002,7 +5002,7 @@
     "solutionUrl": null
   },
   {
-    "id": "478667b5-2725-4391-a583-a90a211a00f5",
+    "id": "753244c8-142f-4f60-bc28-8ac3829caba9",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5034,7 +5034,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5905e0af-04c4-4859-9c11-d1f9fc4074a4",
+    "id": "18f45265-440f-45ad-8545-90b868a2dae4",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5064,7 +5064,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a4c0c61e-e311-4d33-8018-107e685e3836",
+    "id": "0b3ca5a1-a9de-44c7-8dbe-d2c9bcd0c8ce",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5096,7 +5096,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6e781846-f5cc-4310-bd56-11bab432a1f0",
+    "id": "2fb48f24-16bd-4fd1-bd59-83f26c3dc88d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5126,7 +5126,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0fc77c99-82a2-4c60-8f5a-9980f7a6e7d4",
+    "id": "0f965821-e9a8-447c-a2c8-6b6edafe7147",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5156,7 +5156,7 @@
     "solutionUrl": null
   },
   {
-    "id": "664c908c-e398-4da2-beec-8ecf5d696aba",
+    "id": "03c1c62c-e844-46af-8475-0225a07e7a9d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5186,7 +5186,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1ec04c5b-b0cc-4fd3-a71b-3d59227ee424",
+    "id": "b89e9944-4472-4b7f-8f33-ee03cfb3710b",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5196,8 +5196,8 @@
     "set_number": 8,
     "set_label": "Problem 8",
     "name": "Three point masses $$m$$ are attached together by identical springs. When placed at rest…",
-    "desc": "Three point masses $$m$$ are attached together by identical springs. When placed at rest on a horizontal surface, the masses form an equilateral triangle with side length $$l.$$ When the assembly is rotated about its center at angular velocity $$\\omega,$$ the masses form a…",
-    "statement": "Three point masses $$m$$ are attached together by identical springs. When placed at rest on a horizontal surface, the masses form an equilateral triangle with side length $$l.$$ When the assembly is rotated about its center at angular velocity $$\\omega,$$ the masses form a triangle with side length $$2l.$$ What is the spring constant $$k$$ of the springs?\n\n(a) $$2 m \\omega^2.$$ (b) $$\\dfrac{2}{\\sqrt{3}}\\omega^2.$$ (c) $$\\dfrac23 m \\omega^2.$$ (d) $$\\dfrac{1}{\\sqrt{3}} m \\omega^2.$$ (e) $$\\dfrac13 m \\omega^2.$$",
+    "desc": "Three point masses $$m$$ are attached together by identical springs. When placed at rest on a horizontal surface, the masses form an equilateral triangle with side length $$\\ell.$$ When the assembly is rotated about its center at angular velocity $$\\omega,$$ the masses form a…",
+    "statement": "Three point masses $$m$$ are attached together by identical springs. When placed at rest on a horizontal surface, the masses form an equilateral triangle with side length $$\\ell.$$ When the assembly is rotated about its center at angular velocity $$\\omega,$$ the masses form a triangle with side length $$2\\ell.$$ What is the spring constant $$k$$ of the springs?\n\n(a) $$2 m \\omega^2.$$ (b) $$\\dfrac{2}{\\sqrt{3}}\\omega^2.$$ (c) $$\\dfrac23 m \\omega^2.$$ (d) $$\\dfrac{1}{\\sqrt{3}} m \\omega^2.$$ (e) $$\\dfrac13 m \\omega^2.$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -5216,7 +5216,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f8dd3dd8-0611-4351-991b-be17d72dd411",
+    "id": "958a5d16-0f7b-425e-bcfa-8af5f1279eb1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5246,7 +5246,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e2c4b792-3ba0-4c40-a810-23acecaf1c93",
+    "id": "7af76f56-38cf-4039-8f19-4dd95c07b2b6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5276,7 +5276,7 @@
     "solutionUrl": null
   },
   {
-    "id": "0dc994a5-a3a7-401d-a5df-37c41e74eb66",
+    "id": "2c43808f-89a7-4379-a80b-6d0338080a9c",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5286,8 +5286,8 @@
     "set_number": 11,
     "set_label": "Problem 11",
     "name": "In many physics labs, we generate $$(x,y)$$ data. This means we have a long list…",
-    "desc": "In many physics labs, we generate $$(x,y)$$ data. This means we have a long list $$(x_i,y_i),$$ where $$i$$ is an index that runs from $$1$$ to $$n,$$ the number of observations. For example, if $$n = 100:$$ \\begin{aligned} (x_1,y_1) &= (2.2,3.6) \\\\ (x_2,y_2) &= (-3.4, -2.9) \\\\…",
-    "statement": "In many physics labs, we generate $$(x,y)$$ data. This means we have a long list $$(x_i,y_i),$$ where $$i$$ is an index that runs from $$1$$ to $$n,$$ the number of observations. For example, if $$n = 100:$$ \\begin{aligned} (x_1,y_1) &= (2.2,3.6) \\\\ (x_2,y_2) &= (-3.4, -2.9) \\\\ (x_3,y_3) &= (1.8, 2.8) \\\\ & \\vdotswithin{=} \\\\ (x_{100},y_{100}) &= (12.4, 15.1) \\end{aligned}\n\nOften, the data can be plotted as something close to a straight line. This is true even when the original relationship between variables is not linear because we can plot some transformation of the variable. For example, in a previous week's USAPhO-style problem, we plotted the square of the velocity of a bird's flight versus its weight to find a straight line.\n\nWe often draw a line through the data by eye, but it would be useful to have a more rigorous method. To do that, we need some way of defining the best line through a given set of data points. A common solution to this problem is **least squares linear regression**.\n\nUsually, no line will go through all the data points. Instead, the line will have some error for each data point as shown below.\n\n__By Sewaqu - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=11967659__\n\nIn least squares linear regression, we draw the line that has the smallest value for the sum of the square of the errors. Here is what this means.\n\nFor each data point $$(x_i, y_i)$$ and given a best fit line $$y = mx + b,$$ we define the error $$e_i$$ as $$e_i = y_i - (mx_i + b).$$\n\nThe sum of the squares of the errors is $$ S = \\sum_{i=1}^n e_i^2.$$\n\nIn least squares linear regression, we find the line that minimizes $$S.$$ This means we choose $$m$$ and $$b$$ to make $$S$$ as small as possible. It would be convenient to find formulas for $$m$$ and $$b$$ that do this. The formulas should give $$m$$ and $$b$$ in terms of the values of the data points.\n\nIn this problem, we will derive such formulas for least squares linear regression using the physics of static equilibrium.\n\n**a)** Considering that errors are signed, briefly explain why is it not sufficient to simply minimize the total error to find the best-fit line. That is, why is it not enough to find $$m$$ and $$b$$ to satisfy $$\\sum_{i=1}^n e_i = 0?$$\n\n**b)** Suppose that each error shown in the diagram above is replaced by an ideal spring which obey's Hooke's law. The line itself is replaced by a rigid rod. Gravity is ignored. The springs are constrained to be vertical. Write an equation for the potential energy of the system of springs.\n\n**c)** Briefly explain the relationship between your result, the equilibrium position of the rod, and least-squares linear regression.\n\n**d)** Find equations for force and torque that must be satisfied when the rod is at equilibrium. These equations will be sums over $$i.$$\n\n**e)** Solve your equations to find equations for the slope and y-intercept of the least-square linear regression line. Your answer will be in terms of sums over $$i$$ of $$x_i, y_i,$$ and combinations of them. You may also want to use the average values of $$x$$ and $$y,$$ defined by \\begin{aligned} \\bar{x} &= \\dfrac{1}{n} \\sum_{i=1}^n x_i \\\\ \\bar{y} &= \\dfrac{1}{n}\\sum_{i=1}^n y_i \\end{aligned} in your answer calculations.\n\nIf you want, you may use the following definitions for the **variance** and **covariance** to simplify your answer: \\begin{aligned} \\mathrm{var}(x) & = \\dfrac{1}{n} \\left(\\sum_{i=1}^n x_i^2\\right) - \\bar{x}^2 \\\\ \\mathrm{var}(y) & = \\dfrac{1}{n} \\left(\\sum_{i=1}^n y_i^2\\right) - \\bar{y}^2 \\\\ \\mathrm{cov}(x,y) &= \\dfrac{1}{n} \\left(\\sum_{i=1}^n x_iy_i\\right) - \\bar{x}\\bar{y} \\end{aligned}",
+    "desc": "In many physics labs, we generate $$(x,y)$$ data. This means we have a long list $$(x_i,y_i),$$ where $$i$$ is an index that runs from $$1$$ to $$n,$$ the number of observations. For example, if $$n = 100:$$ $$\\begin{aligned} (x_1,y_1) &= (2.2,3.6) \\\\ (x_2,y_2) &= (-3.4, -2.9)…",
+    "statement": "In many physics labs, we generate $$(x,y)$$ data. This means we have a long list $$(x_i,y_i),$$ where $$i$$ is an index that runs from $$1$$ to $$n,$$ the number of observations. For example, if $$n = 100:$$ $$\\begin{aligned} (x_1,y_1) &= (2.2,3.6) \\\\ (x_2,y_2) &= (-3.4, -2.9) \\\\ (x_3,y_3) &= (1.8, 2.8) \\\\ & \\vdotswithin{=} \\\\ (x_{100},y_{100}) &= (12.4, 15.1) \\end{aligned}$$\n\nOften, the data can be plotted as something close to a straight line. This is true even when the original relationship between variables is not linear because we can plot some transformation of the variable. For example, in a previous week's USAPhO-style problem, we plotted the square of the velocity of a bird's flight versus its weight to find a straight line.\n\nWe often draw a line through the data by eye, but it would be useful to have a more rigorous method. To do that, we need some way of defining the best line through a given set of data points. A common solution to this problem is **least squares linear regression**.\n\nUsually, no line will go through all the data points. Instead, the line will have some error for each data point as shown below.\n\n__By Sewaqu - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=11967659__\n\nIn least squares linear regression, we draw the line that has the smallest value for the sum of the square of the errors. Here is what this means.\n\nFor each data point $$(x_i, y_i)$$ and given a best fit line $$y = mx + b,$$ we define the error $$e_i$$ as $$e_i = y_i - (mx_i + b).$$\n\nThe sum of the squares of the errors is $$ S = \\sum_{i=1}^n e_i^2.$$\n\nIn least squares linear regression, we find the line that minimizes $$S.$$ This means we choose $$m$$ and $$b$$ to make $$S$$ as small as possible. It would be convenient to find formulas for $$m$$ and $$b$$ that do this. The formulas should give $$m$$ and $$b$$ in terms of the values of the data points.\n\nIn this problem, we will derive such formulas for least squares linear regression using the physics of static equilibrium.\n\n**a)** Considering that errors are signed, briefly explain why is it not sufficient to simply minimize the total error to find the best-fit line. That is, why is it not enough to find $$m$$ and $$b$$ to satisfy $$\\sum_{i=1}^n e_i = 0?$$\n\n**b)** Suppose that each error shown in the diagram above is replaced by an ideal spring which obey's Hooke's law. The line itself is replaced by a rigid rod. Gravity is ignored. The springs are constrained to be vertical. Write an equation for the potential energy of the system of springs.\n\n**c)** Briefly explain the relationship between your result, the equilibrium position of the rod, and least-squares linear regression.\n\n**d)** Find equations for force and torque that must be satisfied when the rod is at equilibrium. These equations will be sums over $$i.$$\n\n**e)** Solve your equations to find equations for the slope and y-intercept of the least-square linear regression line. Your answer will be in terms of sums over $$i$$ of $$x_i, y_i,$$ and combinations of them. You may also want to use the average values of $$x$$ and $$y,$$ defined by $$\\begin{aligned} \\bar{x} &= \\dfrac{1}{n} \\sum_{i=1}^n x_i \\\\ \\bar{y} &= \\dfrac{1}{n}\\sum_{i=1}^n y_i \\end{aligned}$$ in your answer calculations.\n\nIf you want, you may use the following definitions for the **variance** and **covariance** to simplify your answer: $$\\begin{aligned} \\mathrm{var}(x) & = \\dfrac{1}{n} \\left(\\sum_{i=1}^n x_i^2\\right) - \\bar{x}^2 \\\\ \\mathrm{var}(y) & = \\dfrac{1}{n} \\left(\\sum_{i=1}^n y_i^2\\right) - \\bar{y}^2 \\\\ \\mathrm{cov}(x,y) &= \\dfrac{1}{n} \\left(\\sum_{i=1}^n x_iy_i\\right) - \\bar{x}\\bar{y} \\end{aligned}$$",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/least_square_wiki.jpg"
     ],
@@ -5577,7 +5577,7 @@
     "solutionUrl": null
   },
   {
-    "id": "35200e73-6cee-471d-b14b-1e7e0cebc8af",
+    "id": "93679df0-78e5-4731-b5e3-d406e080482d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5607,7 +5607,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6634d265-916f-4486-9f0a-e9a321fe3f35",
+    "id": "975a412b-3a8c-4df8-89b5-35a5981d2da3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5637,7 +5637,7 @@
     "solutionUrl": null
   },
   {
-    "id": "584588c2-de83-4a3a-b311-9b19ca98de4b",
+    "id": "bdf65a84-5f8c-4f1e-b301-e98dd4de6f59",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5667,7 +5667,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6c12180d-d23b-4479-8d80-81dfa1cb9bbd",
+    "id": "ca534de6-f0c1-4614-b41d-b8fa0c844951",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5697,7 +5697,7 @@
     "solutionUrl": null
   },
   {
-    "id": "a031d6f2-588a-47b1-9565-4e04b4c8d08e",
+    "id": "dc11bfee-e68f-47e3-9c61-52cb479f330f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5727,7 +5727,7 @@
     "solutionUrl": null
   },
   {
-    "id": "91f70e9d-62ef-451e-8684-eb210e061ac1",
+    "id": "0f754363-bcc7-43e5-9863-8794fc914666",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5757,7 +5757,7 @@
     "solutionUrl": null
   },
   {
-    "id": "e1537a28-9cd4-40fc-8054-3a5c431c2146",
+    "id": "f200e880-5863-4317-97c1-ac3316bf3924",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5787,7 +5787,7 @@
     "solutionUrl": null
   },
   {
-    "id": "20ad4f6b-cf9c-4642-b600-6dc7e530fa98",
+    "id": "118e88eb-017d-4e82-8be8-dc08913ea431",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5817,7 +5817,7 @@
     "solutionUrl": null
   },
   {
-    "id": "42797953-4ada-4988-a979-8e71f407430e",
+    "id": "2c4c505b-a3a7-40cb-8277-dbe6fb0c370a",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5847,7 +5847,7 @@
     "solutionUrl": null
   },
   {
-    "id": "63c9e214-822e-4a2d-b36b-079121059b73",
+    "id": "ed8b0da8-d893-4b29-bbd0-c047e5324f0d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -5856,9 +5856,9 @@
     "week": 10,
     "set_number": 10,
     "set_label": "Problem 10",
-    "name": "A solid copper cylinder of rest length $$l$$ is suspended vertically. The Young's modulus…",
-    "desc": "A solid copper cylinder of rest length $$l$$ is suspended vertically. The Young's modulus of the cylinder is $$Y$$. By what fraction does the volume of the cylinder increase? You can assume the radius of the cylinder does not change much and set the density of copper to…",
-    "statement": "A solid copper cylinder of rest length $$l$$ is suspended vertically. The Young's modulus of the cylinder is $$Y$$. By what fraction does the volume of the cylinder increase? You can assume the radius of the cylinder does not change much and set the density of copper to $$\\rho.$$\n\n(a) $$\\dfrac{\\rho l g}{2Y}$$\n\n(b) $$\\dfrac{2Y}{\\rho l g}$$\n\n(c) $$\\dfrac{\\rho l g}{Y}$$\n\n(d) $$\\dfrac{Y}{\\rho l g}$$\n\n(e) $$\\left(\\dfrac{\\rho l g}{Y}\\right)^{1/2}$$",
+    "name": "A solid copper cylinder of rest length $$\\ell$$ is suspended vertically. The Young's…",
+    "desc": "A solid copper cylinder of rest length $$\\ell$$ is suspended vertically. The Young's modulus of the cylinder is $$Y$$. By what fraction does the volume of the cylinder increase? You can assume the radius of the cylinder does not change much and set the density of copper to…",
+    "statement": "A solid copper cylinder of rest length $$\\ell$$ is suspended vertically. The Young's modulus of the cylinder is $$Y$$. By what fraction does the volume of the cylinder increase? You can assume the radius of the cylinder does not change much and set the density of copper to $$\\rho.$$\n\n(a) $$\\dfrac{\\rho \\ell g}{2Y}$$\n\n(b) $$\\dfrac{2Y}{\\rho \\ell g}$$\n\n(c) $$\\dfrac{\\rho \\ell g}{Y}$$\n\n(d) $$\\dfrac{Y}{\\rho \\ell g}$$\n\n(e) $$\\left(\\dfrac{\\rho \\ell g}{Y}\\right)^{1/2}$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -5877,7 +5877,7 @@
     "solutionUrl": null
   },
   {
-    "id": "59fe74b2-f01a-4ed2-b6e4-61c895afde82",
+    "id": "16bebdbf-56c7-4e55-9f6e-1d4dc81604ca",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6190,7 +6190,7 @@
     "set_label": "Script Problem 9",
     "name": "How Much Does a Cable Stretch? — Any solid object deforms a little when forces act on it — every material…",
     "desc": "Any solid object deforms a little when forces act on it — every material behaves like a very stiff spring. In this problem we build up, by pure proportional reasoning, the law governing how much a cable stretches. Take $$g = 10\\;\\mathrm{m/s^2}.$$ A cable $$1\\;\\mathrm{m}$$ long…",
-    "statement": "Any solid object deforms a little when forces act on it — every material behaves like a very stiff spring. In this problem we build up, by pure proportional reasoning, the law governing how much a cable stretches. Take $$g = 10\\;\\mathrm{m/s^2}.$$\n\nA cable $$1\\;\\mathrm{m}$$ long, of negligible weight, supports a hanging mass of $$100\\;\\mathrm{kg}$$ and stretches by $$0.5\\;\\mathrm{mm}.$$\n\n__(a)__ How much would the same cable stretch if it supported $$200\\;\\mathrm{kg}$$ instead? (Materials under modest loads obey Hooke's law: stretch is proportional to the applied force.)\n\n__(b)__ Keeping the $$200\\;\\mathrm{kg}$$ load, suppose the cable is replaced by one twice as long — $$2\\;\\mathrm{m}$$ — made of the same material with the same radius. What is the stretch now? (Hint: think of the $$2\\;\\mathrm{m}$$ cable as two $$1\\;\\mathrm{m}$$ cables joined end to end.)\n\n__(c)__ Keeping everything from part (b), now double the radius of the cable. What is the stretch? (Hint: think of the thick cable as several of the original cables banded together side by side.)\n\n__(d)__ Keeping everything from part (c), replace the material with one twice as stiff — i.e. one that produces twice the tension for a given stretch. What is the stretch?\n\n__(e)__ Combine the patterns from (a)-(d): a cable of length $$l$$ and cross-sectional area $$A,$$ made of a material whose stiffness is described by a single constant $$Y$$ (the __Young's modulus__), supports a load $$F.$$ Write the formula for the stretch $$\\Delta l$$ (by convention, no extra numerical factor — that convention is what defines $$Y$$). Then rearrange the formula into the form $$\\dfrac{F}{A} = Y\\,\\dfrac{\\Delta l}{l},$$ and give the names and interpretations of the quantities $$\\dfrac{F}{A}$$ and $$\\dfrac{\\Delta l}{l}.$$",
+    "statement": "Any solid object deforms a little when forces act on it — every material behaves like a very stiff spring. In this problem we build up, by pure proportional reasoning, the law governing how much a cable stretches. Take $$g = 10\\;\\mathrm{m/s^2}.$$\n\nA cable $$1\\;\\mathrm{m}$$ long, of negligible weight, supports a hanging mass of $$100\\;\\mathrm{kg}$$ and stretches by $$0.5\\;\\mathrm{mm}.$$\n\n__(a)__ How much would the same cable stretch if it supported $$200\\;\\mathrm{kg}$$ instead? (Materials under modest loads obey Hooke's law: stretch is proportional to the applied force.)\n\n__(b)__ Keeping the $$200\\;\\mathrm{kg}$$ load, suppose the cable is replaced by one twice as long — $$2\\;\\mathrm{m}$$ — made of the same material with the same radius. What is the stretch now? (Hint: think of the $$2\\;\\mathrm{m}$$ cable as two $$1\\;\\mathrm{m}$$ cables joined end to end.)\n\n__(c)__ Keeping everything from part (b), now double the radius of the cable. What is the stretch? (Hint: think of the thick cable as several of the original cables banded together side by side.)\n\n__(d)__ Keeping everything from part (c), replace the material with one twice as stiff — i.e. one that produces twice the tension for a given stretch. What is the stretch?\n\n__(e)__ Combine the patterns from (a)-(d): a cable of length $$\\ell$$ and cross-sectional area $$A,$$ made of a material whose stiffness is described by a single constant $$Y$$ (the __Young's modulus__), supports a load $$F.$$ Write the formula for the stretch $$\\Delta \\ell$$ (by convention, no extra numerical factor — that convention is what defines $$Y$$). Then rearrange the formula into the form $$\\dfrac{F}{A} = Y\\,\\dfrac{\\Delta \\ell}{\\ell},$$ and give the names and interpretations of the quantities $$\\dfrac{F}{A}$$ and $$\\dfrac{\\Delta \\ell}{\\ell}.$$",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -6223,7 +6223,7 @@
     "set_label": "Script Problem 10",
     "name": "The Tightrope Walker's Cable — A massless cable of diameter $$2.54\\;\\mathrm{cm}$$ is tied horizontally…",
     "desc": "A massless cable of diameter $$2.54\\;\\mathrm{cm}$$ is tied horizontally between two trees $$18.0\\;\\mathrm{m}$$ apart. A tightrope walker with a mass of $$80\\;\\mathrm{kg}$$ stands at the center of the cable. The cable stretches and makes an angle of $$1.50^\\circ$$ with the…",
-    "statement": "A massless cable of diameter $$2.54\\;\\mathrm{cm}$$ is tied horizontally between two trees $$18.0\\;\\mathrm{m}$$ apart. A tightrope walker with a mass of $$80\\;\\mathrm{kg}$$ stands at the center of the cable. The cable stretches and makes an angle of $$1.50^\\circ$$ with the horizontal. What is the cable's Young's modulus? Take $$g = 10\\;\\mathrm{m/s^2}.$$\n\nDefinitions you'll need: the __stress__ in a cable of tension $$T$$ and cross-sectional area $$A$$ is $$\\sigma = \\dfrac{T}{A}$$; the __strain__ is the fractional increase in length, $$e = \\dfrac{\\Delta l}{l}$$; and the __Young's modulus__ is their ratio, $$Y = \\dfrac{\\sigma}{e}.$$ Work through the following plan:\n\n__(a)__ The walker hangs from two cable segments, one on each side, each with tension $$T$$ and each at $$1.50^\\circ$$ below the horizontal. Find $$T.$$\n\n__(b)__ Find the stress in the cable.\n\n__(c)__ Find the strain: by what fraction is each segment longer than its unstretched (horizontal) length? (Hint: compare each segment's stretched length to the $$9.0\\;\\mathrm{m}$$ horizontal distance it spans.)\n\n__(d)__ Combine your results to find the Young's modulus.",
+    "statement": "A massless cable of diameter $$2.54\\;\\mathrm{cm}$$ is tied horizontally between two trees $$18.0\\;\\mathrm{m}$$ apart. A tightrope walker with a mass of $$80\\;\\mathrm{kg}$$ stands at the center of the cable. The cable stretches and makes an angle of $$1.50^\\circ$$ with the horizontal. What is the cable's Young's modulus? Take $$g = 10\\;\\mathrm{m/s^2}.$$\n\nDefinitions you'll need: the __stress__ in a cable of tension $$T$$ and cross-sectional area $$A$$ is $$\\sigma = \\dfrac{T}{A}$$; the __strain__ is the fractional increase in length, $$e = \\dfrac{\\Delta \\ell}{\\ell}$$; and the __Young's modulus__ is their ratio, $$Y = \\dfrac{\\sigma}{e}.$$ Work through the following plan:\n\n__(a)__ The walker hangs from two cable segments, one on each side, each with tension $$T$$ and each at $$1.50^\\circ$$ below the horizontal. Find $$T.$$\n\n__(b)__ Find the stress in the cable.\n\n__(c)__ Find the strain: by what fraction is each segment longer than its unstretched (horizontal) length? (Hint: compare each segment's stretched length to the $$9.0\\;\\mathrm{m}$$ horizontal distance it spans.)\n\n__(d)__ Combine your results to find the Young's modulus.",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/young_modulus_trees.jpg"
     ],
@@ -6247,7 +6247,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6f0afb47-79d7-4d49-97b6-999df62b3e53",
+    "id": "b3dd6240-08b7-4127-9460-fad0220824e1",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6277,7 +6277,7 @@
     "solutionUrl": null
   },
   {
-    "id": "43b899ce-ad2e-472a-a465-8f49d491ed73",
+    "id": "2d0e0a15-fa0c-4674-95ac-f42876b7a864",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6307,7 +6307,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f7883ba5-7b77-47c9-9cda-6e5ab9065059",
+    "id": "33ae0f43-6e8d-45a1-9d0a-b81ee7c845f3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6337,7 +6337,7 @@
     "solutionUrl": null
   },
   {
-    "id": "602d59ee-9be2-47c3-bb2a-ed123b75b6fa",
+    "id": "8a5c594e-6a58-4f37-92fb-c840de218f64",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6367,7 +6367,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f4b34895-838d-49c9-a203-d770ad351b8f",
+    "id": "71ce4ebc-a199-4052-a0b2-9aa22f2e2ce3",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6397,7 +6397,7 @@
     "solutionUrl": null
   },
   {
-    "id": "1b4eb46e-7a19-45eb-b7ac-15800333b175",
+    "id": "b4cb298f-d987-4eac-a689-92a56aa04756",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6427,7 +6427,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eb833a98-aaff-4b44-9c51-ea9dd1465f79",
+    "id": "ce467178-0e89-4e78-a42b-0db9c76a40e2",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6457,7 +6457,7 @@
     "solutionUrl": null
   },
   {
-    "id": "2ae7cf61-9cff-4126-8ea6-02424302c4ed",
+    "id": "b9356e05-9461-42c9-b2be-4e82bd74205d",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6487,7 +6487,7 @@
     "solutionUrl": null
   },
   {
-    "id": "9ed32b22-79e5-47a5-9773-43692449cb40",
+    "id": "db8a503d-3f2d-4414-8888-934fbef22165",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6517,7 +6517,7 @@
     "solutionUrl": null
   },
   {
-    "id": "de58fd1e-5138-481a-a61e-22dc816494fd",
+    "id": "00703c24-49b8-403b-8752-5be5179f560f",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6547,7 +6547,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5cbf0020-d987-4453-a732-86e2b8d050ac",
+    "id": "2852d29d-1a30-4af7-8c88-cbc45b929a83",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6558,7 +6558,7 @@
     "set_label": "Problem 11",
     "name": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance…",
     "desc": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass. **a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$…",
-    "statement": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass.\n\n**a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$\n\n**b)** Similarly, draw a plot of the moment of inertia of the pendulum about the point of suspension as a function of $$R.$$ The moment of inertia of a rod about its center of $$\\dfrac{1}{12} ML^2.$$\n\n**c)** Based on the plots you drew in parts (a) and (b), will the rod's period be shortest for very small $$R, (R \\ll L),$$ very long $$R (R = \\dfrac{L}{2}),$$ or somewhere in the middle? Briefly explain your answer.\n\n**d)** Find an equation for the period of the rod as a function of $$R.$$\n\n**e)** The following data on the period of the rod was collected in an experiment: \\begin{tabular}{cc} $$R$$ ($$\\mathrm{m}$$) & $$T$$ ($$\\mathrm{s}$$) \\\\ \\hline 0.050 & 3.842 \\\\ 0.075 & 3.164 \\\\ 0.102 & 2.747 \\\\ 0.156 & 2.301 \\\\ 0.198 & 2.115 \\\\ 0.211 & 2.074 \\\\ 0.302 & 1.905 \\\\ 0.387 & 1.855 \\\\ 0.451 & 1.853 \\\\ 0.588 & 1.900 \\end{tabular} We would like to use a graph of this data to determine both $$g,$$ the local gravitational acceleration, and $$L,$$ the length of the rod.\n\nThis will be difficult using a plot of $$T$$ vs $$R.$$ Instead, we will plot some combination of $$T$$ and $$R$$ on the $$y$$ axis and some function of $$R$$ on the $$x$$ axis.\n\nFind an appropriate combination of $$T$$ and $$R$$ to plot on the $$y$$ axis and an appropriate function of $$R$$ to plot on the $$x$$ axis so that, according to the equation you found in part (d), the data should lie on a straight line. Do this by manipulating the equation from part (d) until it is of the form $$y = mx + b$$ where $$y$$ is a combination of $$T$$ and $$R,$$ $$x$$ is a function of $$R,$$ and $$m$$ and $$b$$ are functions of $$l, g,$$ and constants.\n\n**f)** Add two extra columns to the data table, one with your combination of $$T$$ and $$R$$ that forms $$y$$ and one with your function of $$R$$ that forms $$x.$$\n\n**g)** Draw a plot of the data. Draw a best-fit line through the data. From the slope and intercept of the line, estimate $$g$$ and $$L$$ for the rod.\n\nMake sure that your plot has labels and units on the axes. Plot the scale of your axes so that the data takes up almost the entire piece of paper you use, but all the data fits on the plot.",
+    "statement": "A thin, uniform rod of length $$L$$ and mass $$M$$ is suspended from a point a distance $$R$$ away from its center of mass.\n\n**a)** Suppose the pendulum is rotated by an angle $$\\theta.$$ Draw a plot of torque on the pendulum about the point of suspension as a function of $$R.$$\n\n**b)** Similarly, draw a plot of the moment of inertia of the pendulum about the point of suspension as a function of $$R.$$ The moment of inertia of a rod about its center of $$\\dfrac{1}{12} ML^2.$$\n\n**c)** Based on the plots you drew in parts (a) and (b), will the rod's period be shortest for very small $$R, (R \\ll L),$$ very long $$R (R = \\dfrac{L}{2}),$$ or somewhere in the middle? Briefly explain your answer.\n\n**d)** Find an equation for the period of the rod as a function of $$R.$$\n\n**e)** The following data on the period of the rod was collected in an experiment: \\begin{tabular}{cc} $$R$$ ($$\\mathrm{m}$$) & $$T$$ ($$\\mathrm{s}$$) \\\\ \\hline 0.050 & 3.842 \\\\ 0.075 & 3.164 \\\\ 0.102 & 2.747 \\\\ 0.156 & 2.301 \\\\ 0.198 & 2.115 \\\\ 0.211 & 2.074 \\\\ 0.302 & 1.905 \\\\ 0.387 & 1.855 \\\\ 0.451 & 1.853 \\\\ 0.588 & 1.900 \\end{tabular} We would like to use a graph of this data to determine both $$g,$$ the local gravitational acceleration, and $$L,$$ the length of the rod.\n\nThis will be difficult using a plot of $$T$$ vs $$R.$$ Instead, we will plot some combination of $$T$$ and $$R$$ on the $$y$$ axis and some function of $$R$$ on the $$x$$ axis.\n\nFind an appropriate combination of $$T$$ and $$R$$ to plot on the $$y$$ axis and an appropriate function of $$R$$ to plot on the $$x$$ axis so that, according to the equation you found in part (d), the data should lie on a straight line. Do this by manipulating the equation from part (d) until it is of the form $$y = mx + b$$ where $$y$$ is a combination of $$T$$ and $$R,$$ $$x$$ is a function of $$R,$$ and $$m$$ and $$b$$ are functions of $$\\ell, g,$$ and constants.\n\n**f)** Add two extra columns to the data table, one with your combination of $$T$$ and $$R$$ that forms $$y$$ and one with your function of $$R$$ that forms $$x.$$\n\n**g)** Draw a plot of the data. Draw a best-fit line through the data. From the slope and intercept of the line, estimate $$g$$ and $$L$$ for the rod.\n\nMake sure that your plot has labels and units on the axes. Plot the scale of your axes so that the data takes up almost the entire piece of paper you use, but all the data fits on the plot.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -6619,8 +6619,8 @@
     "set_number": 2,
     "set_label": "Script Problem 2",
     "name": "The Period of a Simple Pendulum — A simple pendulum consists of a point mass $$m$$ attached to the end of a…",
-    "desc": "A simple pendulum consists of a point mass $$m$$ attached to the end of a string of length $$l$$ whose other end is fixed at a pivot. The pendulum is displaced by a small angle and released. Find the period of the resulting oscillations. Treat the pendulum as a rotational…",
-    "statement": "A simple pendulum consists of a point mass $$m$$ attached to the end of a string of length $$l$$ whose other end is fixed at a pivot. The pendulum is displaced by a small angle and released. Find the period of the resulting oscillations.\n\nTreat the pendulum as a rotational oscillator: if the restoring torque about the pivot has the Hooke's-Law form $$\\tau = -\\kappa\\theta,$$ then the oscillation has angular frequency $$\\omega_f = \\sqrt{\\kappa/I}$$ and period $$T = 2\\pi/\\omega_f,$$ where $$I$$ is the moment of inertia about the pivot. The figure shows a snapshot with the pendulum displaced by an angle $$\\theta$$ from the vertical, along with the forces acting on the mass.\n\n__(a)__ Two forces act on the mass: the string tension and gravity. Which of them exerts a torque about the pivot? Also explain why, for the pendulum to oscillate, the torque and the angular displacement $$\\theta$$ must always have __opposite__ signs.\n\n__(b)__ Show that the torque about the pivot is $$\\tau = -mgl\\sin\\theta.$$\n\n__(c)__ The torque in part (b) is proportional to $$\\sin\\theta,$$ not to $$\\theta,$$ so it is not yet in the form $$\\tau = -\\kappa\\theta.$$ The __small angle approximation__ fixes this: for small $$\\theta$$ measured in __radians__, $$\\sin\\theta \\approx \\theta.$$ The graph below shows $$y = \\theta$$ and $$y = \\sin\\theta$$; notice how the two are nearly identical near $$\\theta = 0.$$ Use the approximation to put the torque in Hooke's-Law form and identify $$\\kappa.$$\n\n__(d)__ Find the moment of inertia of the pendulum about the pivot, and then find the angular frequency and the period of the oscillations.",
+    "desc": "A simple pendulum consists of a point mass $$m$$ attached to the end of a string of length $$\\ell$$ whose other end is fixed at a pivot. The pendulum is displaced by a small angle and released. Find the period of the resulting oscillations. Treat the pendulum as a rotational…",
+    "statement": "A simple pendulum consists of a point mass $$m$$ attached to the end of a string of length $$\\ell$$ whose other end is fixed at a pivot. The pendulum is displaced by a small angle and released. Find the period of the resulting oscillations.\n\nTreat the pendulum as a rotational oscillator: if the restoring torque about the pivot has the Hooke's-Law form $$\\tau = -\\kappa\\theta,$$ then the oscillation has angular frequency $$\\omega_f = \\sqrt{\\kappa/I}$$ and period $$T = 2\\pi/\\omega_f,$$ where $$I$$ is the moment of inertia about the pivot. The figure shows a snapshot with the pendulum displaced by an angle $$\\theta$$ from the vertical, along with the forces acting on the mass.\n\n__(a)__ Two forces act on the mass: the string tension and gravity. Which of them exerts a torque about the pivot? Also explain why, for the pendulum to oscillate, the torque and the angular displacement $$\\theta$$ must always have __opposite__ signs.\n\n__(b)__ Show that the torque about the pivot is $$\\tau = -mg\\ell\\sin\\theta.$$\n\n__(c)__ The torque in part (b) is proportional to $$\\sin\\theta,$$ not to $$\\theta,$$ so it is not yet in the form $$\\tau = -\\kappa\\theta.$$ The __small angle approximation__ fixes this: for small $$\\theta$$ measured in __radians__, $$\\sin\\theta \\approx \\theta.$$ The graph below shows $$y = \\theta$$ and $$y = \\sin\\theta$$; notice how the two are nearly identical near $$\\theta = 0.$$ Use the approximation to put the torque in Hooke's-Law form and identify $$\\kappa.$$\n\n__(d)__ Find the moment of inertia of the pendulum about the pivot, and then find the angular frequency and the period of the oscillations.",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -6651,9 +6651,9 @@
     "week": 11,
     "set_number": 3,
     "set_label": "Script Problem 3",
-    "name": "A Pivoted Rod and a Very Long Spring (2016 F=ma #14) — A uniform rod of length $$l$$ lies on a frictionless…",
-    "desc": "A uniform rod of length $$l$$ lies on a frictionless horizontal surface. One end of the rod is attached to a pivot, about which it is free to rotate. An unstretched spring of length $$L \\gg l$$ (much longer than the rod) lies on the surface perpendicular to the rod; one end of…",
-    "statement": "A uniform rod of length $$l$$ lies on a frictionless horizontal surface. One end of the rod is attached to a pivot, about which it is free to rotate. An unstretched spring of length $$L \\gg l$$ (much longer than the rod) lies on the surface perpendicular to the rod; one end of the spring is attached to the movable end of the rod, and the other end is attached to a fixed post. The spring constant is $$k.$$ When the rod is rotated slightly about the pivot, it oscillates at frequency $$f.$$\n\nThe spring attachment is then moved to the __midpoint__ of the rod, and the post is moved so that the spring remains unstretched and perpendicular to the rod, as in the right panel below. The system is again set into small oscillations. What is the new frequency of oscillation? (2016 F=ma exam, Problem 14.)\n\n(A) $$f/2$$ (B) $$f/\\sqrt{2}$$ (C) $$f$$ (D) $$\\sqrt{2}f$$ (E) $$2f$$\n\nFind the frequency of each setup separately, then compare. Throughout, use $$f = \\dfrac{\\omega_f}{2\\pi}$$ with $$\\omega_f = \\sqrt{\\kappa/I},$$ where $$\\kappa$$ is the torsional constant in $$\\tau = -\\kappa\\theta$$ and $$I$$ is the rod's moment of inertia about the pivot. You may leave $$I$$ as a symbol — it is the same in both setups, since the rod itself is unchanged.\n\n__(a)__ Take a snapshot of the original setup with the rod displaced by a small angle $$\\theta,$$ as in the figure below. Show that the components of the spring's length along and perpendicular to its original direction are $$L + l\\sin\\theta$$ and $$l(1-\\cos\\theta).$$ Then avoid the Pythagorean theorem by using this fact about right triangles: if the shorter leg is much smaller than the longer leg, the hypotenuse is essentially equal to the longer leg (for example, legs $$1$$ and $$1000$$ give a hypotenuse of $$1000.0005$$ — the increase is negligible). Conclude that the spring's elongation is approximately $$l\\theta.$$\n\n__(b)__ Because the spring is very long and the oscillations are small, the spring force stays very nearly perpendicular to the rod at all times, so you may treat it as exactly perpendicular. Find the torque on the rod, identify the torsional constant $$\\kappa,$$ and write the frequency $$f$$ of the original setup in terms of $$k,$$ $$l,$$ and $$I.$$\n\n__(c)__ Repeat the analysis for the midpoint setup: find the spring's elongation, the torque, the new torsional constant, and the new frequency. Which answer choice is correct?",
+    "name": "A Pivoted Rod and a Very Long Spring (2016 F=ma #14) — A uniform rod of length $$\\ell$$ lies on a…",
+    "desc": "A uniform rod of length $$\\ell$$ lies on a frictionless horizontal surface. One end of the rod is attached to a pivot, about which it is free to rotate. An unstretched spring of length $$L \\gg \\ell$$ (much longer than the rod) lies on the surface perpendicular to the rod; one…",
+    "statement": "A uniform rod of length $$\\ell$$ lies on a frictionless horizontal surface. One end of the rod is attached to a pivot, about which it is free to rotate. An unstretched spring of length $$L \\gg \\ell$$ (much longer than the rod) lies on the surface perpendicular to the rod; one end of the spring is attached to the movable end of the rod, and the other end is attached to a fixed post. The spring constant is $$k.$$ When the rod is rotated slightly about the pivot, it oscillates at frequency $$f.$$\n\nThe spring attachment is then moved to the __midpoint__ of the rod, and the post is moved so that the spring remains unstretched and perpendicular to the rod, as in the right panel below. The system is again set into small oscillations. What is the new frequency of oscillation? (2016 F=ma exam, Problem 14.)\n\n(A) $$f/2$$ (B) $$f/\\sqrt{2}$$ (C) $$f$$ (D) $$\\sqrt{2}f$$ (E) $$2f$$\n\nFind the frequency of each setup separately, then compare. Throughout, use $$f = \\dfrac{\\omega_f}{2\\pi}$$ with $$\\omega_f = \\sqrt{\\kappa/I},$$ where $$\\kappa$$ is the torsional constant in $$\\tau = -\\kappa\\theta$$ and $$I$$ is the rod's moment of inertia about the pivot. You may leave $$I$$ as a symbol — it is the same in both setups, since the rod itself is unchanged.\n\n__(a)__ Take a snapshot of the original setup with the rod displaced by a small angle $$\\theta,$$ as in the figure below. Show that the components of the spring's length along and perpendicular to its original direction are $$L + \\ell\\sin\\theta$$ and $$\\ell(1-\\cos\\theta).$$ Then avoid the Pythagorean theorem by using this fact about right triangles: if the shorter leg is much smaller than the longer leg, the hypotenuse is essentially equal to the longer leg (for example, legs $$1$$ and $$1000$$ give a hypotenuse of $$1000.0005$$ — the increase is negligible). Conclude that the spring's elongation is approximately $$\\ell\\theta.$$\n\n__(b)__ Because the spring is very long and the oscillations are small, the spring force stays very nearly perpendicular to the rod at all times, so you may treat it as exactly perpendicular. Find the torque on the rod, identify the torsional constant $$\\kappa,$$ and write the frequency $$f$$ of the original setup in terms of $$k,$$ $$\\ell,$$ and $$I.$$\n\n__(c)__ Repeat the analysis for the midpoint setup: find the spring's elongation, the torque, the new torsional constant, and the new frequency. Which answer choice is correct?",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -6684,9 +6684,9 @@
     "week": 11,
     "set_number": 4,
     "set_label": "Script Problem 4",
-    "name": "Moving the Post in Line with the Rod (2016 F=ma #15) — A uniform rod of length $$l$$ lies on a frictionless…",
-    "desc": "A uniform rod of length $$l$$ lies on a frictionless horizontal surface, attached at one end to a pivot about which it is free to rotate. A spring with constant $$k$$ and unstretched length $$L \\gg l$$ is attached to the free end of the rod. When the spring is perpendicular to…",
-    "statement": "A uniform rod of length $$l$$ lies on a frictionless horizontal surface, attached at one end to a pivot about which it is free to rotate. A spring with constant $$k$$ and unstretched length $$L \\gg l$$ is attached to the free end of the rod. When the spring is perpendicular to the rod (anchored to a fixed post a distance $$L$$ away), small oscillations of the rod have frequency $$f$$; in that configuration the restoring torque is $$\\tau = -kl^2\\theta,$$ i.e. the torsional constant is $$\\kappa = kl^2,$$ and $$f = \\dfrac{1}{2\\pi}\\sqrt{\\dfrac{kl^2}{I}}$$ where $$I$$ is the rod's moment of inertia about the pivot.\n\nNow the post is instead placed __in line__ with the rod and the pivot, at the position where the spring is unstretched, and is then moved directly away from the pivot by an additional distance $$l,$$ stretching the spring by $$l.$$ The rod is set into small oscillations. What is the new frequency of oscillation? (2016 F=ma exam, Problem 15.)\n\n(A) $$f/3$$ (B) $$f/\\sqrt{3}$$ (C) $$f$$ (D) $$\\sqrt{3}f$$ (E) $$3f$$\n\nThe figure shows a snapshot with the rod displaced by a small angle $$\\theta.$$\n\n__(a)__ Show that the components of the spring's length along and perpendicular to the pivot-post line are $$l(1-\\cos\\theta) + (L+l)$$ and $$l\\sin\\theta.$$ Then use the long-leg/short-leg fact (in a right triangle whose shorter leg is much smaller than its longer leg, the hypotenuse is essentially the longer leg) to approximate the spring's length.\n\n__(b)__ The term $$l(1-\\cos\\theta)$$ is also negligible, but for a different reason. The graph below shows that near $$\\theta = 0,$$ the function $$1 - \\cos\\theta$$ matches the quadratic $$\\dfrac{\\theta^2}{2}.$$ A term proportional to $$\\theta^2$$ is called a __second-order term__: when $$\\theta$$ is much less than $$1,$$ squaring it produces something far smaller still. Ignoring second-order (and higher) terms is called a __first-order approximation__. Use this to conclude that the spring's length is approximately $$L + l,$$ and find the magnitude and direction of the spring force.\n\n__(c)__ Find the lever arm of the spring force about the pivot, the restoring torque, and the torsional constant $$\\kappa.$$ What is the new frequency of oscillation? Which answer choice is correct?\n\n__(d)__ Rigorize the long-leg/short-leg fact from part (a). For a right triangle with legs $$x \\ll L,$$ multiply $$\\sqrt{L^2 + x^2} - L$$ by the conjugate $$\\dfrac{\\sqrt{L^2+x^2}+L}{\\sqrt{L^2+x^2}+L}$$ to show that $$\\sqrt{L^2 + x^2} - L \\approx \\dfrac{x^2}{2L}.$$ Why does this justify dropping the short leg in a first-order approximation?",
+    "name": "Moving the Post in Line with the Rod (2016 F=ma #15) — A uniform rod of length $$\\ell$$ lies on a…",
+    "desc": "A uniform rod of length $$\\ell$$ lies on a frictionless horizontal surface, attached at one end to a pivot about which it is free to rotate. A spring with constant $$k$$ and unstretched length $$L \\gg \\ell$$ is attached to the free end of the rod. When the spring is…",
+    "statement": "A uniform rod of length $$\\ell$$ lies on a frictionless horizontal surface, attached at one end to a pivot about which it is free to rotate. A spring with constant $$k$$ and unstretched length $$L \\gg \\ell$$ is attached to the free end of the rod. When the spring is perpendicular to the rod (anchored to a fixed post a distance $$L$$ away), small oscillations of the rod have frequency $$f$$; in that configuration the restoring torque is $$\\tau = -k\\ell^2\\theta,$$ i.e. the torsional constant is $$\\kappa = k\\ell^2,$$ and $$f = \\dfrac{1}{2\\pi}\\sqrt{\\dfrac{k\\ell^2}{I}}$$ where $$I$$ is the rod's moment of inertia about the pivot.\n\nNow the post is instead placed __in line__ with the rod and the pivot, at the position where the spring is unstretched, and is then moved directly away from the pivot by an additional distance $$\\ell,$$ stretching the spring by $$\\ell.$$ The rod is set into small oscillations. What is the new frequency of oscillation? (2016 F=ma exam, Problem 15.)\n\n(A) $$f/3$$ (B) $$f/\\sqrt{3}$$ (C) $$f$$ (D) $$\\sqrt{3}f$$ (E) $$3f$$\n\nThe figure shows a snapshot with the rod displaced by a small angle $$\\theta.$$\n\n__(a)__ Show that the components of the spring's length along and perpendicular to the pivot-post line are $$\\ell(1-\\cos\\theta) + (L+\\ell)$$ and $$\\ell\\sin\\theta.$$ Then use the long-leg/short-leg fact (in a right triangle whose shorter leg is much smaller than its longer leg, the hypotenuse is essentially the longer leg) to approximate the spring's length.\n\n__(b)__ The term $$\\ell(1-\\cos\\theta)$$ is also negligible, but for a different reason. The graph below shows that near $$\\theta = 0,$$ the function $$1 - \\cos\\theta$$ matches the quadratic $$\\dfrac{\\theta^2}{2}.$$ A term proportional to $$\\theta^2$$ is called a __second-order term__: when $$\\theta$$ is much less than $$1,$$ squaring it produces something far smaller still. Ignoring second-order (and higher) terms is called a __first-order approximation__. Use this to conclude that the spring's length is approximately $$L + \\ell,$$ and find the magnitude and direction of the spring force.\n\n__(c)__ Find the lever arm of the spring force about the pivot, the restoring torque, and the torsional constant $$\\kappa.$$ What is the new frequency of oscillation? Which answer choice is correct?\n\n__(d)__ Rigorize the long-leg/short-leg fact from part (a). For a right triangle with legs $$x \\ll L,$$ multiply $$\\sqrt{L^2 + x^2} - L$$ by the conjugate $$\\dfrac{\\sqrt{L^2+x^2}+L}{\\sqrt{L^2+x^2}+L}$$ to show that $$\\sqrt{L^2 + x^2} - L \\approx \\dfrac{x^2}{2L}.$$ Why does this justify dropping the short leg in a first-order approximation?",
     "figures": [],
     "has_asy": true,
     "topics": [
@@ -6718,7 +6718,7 @@
     "set_label": "Script Problem 5",
     "name": "What Increases a Pendulum's Period? (2011 F=ma #10) — Which of the following changes will result in an…",
     "desc": "Which of the following changes will result in an __increase__ in the period of a simple pendulum? (2011 F=ma exam, Problem 10.) (A) Decrease the length of the pendulum. (B) Increase the mass of the pendulum. (C) Increase the amplitude of the pendulum swing. (D) Operate the…",
-    "statement": "Which of the following changes will result in an __increase__ in the period of a simple pendulum? (2011 F=ma exam, Problem 10.)\n\n(A) Decrease the length of the pendulum.\n\n(B) Increase the mass of the pendulum.\n\n(C) Increase the amplitude of the pendulum swing.\n\n(D) Operate the pendulum in an elevator that is accelerating upward.\n\n(E) Operate the pendulum in an elevator that is moving downward at constant speed.\n\nUseful background: for __small__ oscillations, the period of a simple pendulum of length $$l$$ is $$T = 2\\pi\\sqrt{\\dfrac{l}{g}}.$$ This formula is derived from the restoring torque $$\\tau = -mgl\\sin\\theta$$ by using the small angle approximation $$\\sin\\theta \\approx \\theta.$$\n\n__(a)__ Use the period formula to evaluate choices (A) and (B).\n\n__(b)__ Evaluate choices (D) and (E). For (D), recall that physics inside a reference frame accelerating upward with magnitude $$a$$ is the same as physics in a stronger gravitational field $$g + a$$ — this is why astronauts during a rocket launch are said to experience \"$$6$$ G's,\" meaning their frame behaves as if $$g = 6g_{\\rm earth}.$$ For (E), think about what is special about reference frames moving at constant velocity.\n\n__(c)__ Now consider choice (C). The amplitude $$\\theta_{\\rm max}$$ does not appear in the period formula — but the formula was derived using an approximation. The strength of the restoring effect is indicated by the __slope__ of the graph of the torque magnitude $$mgl\\sin\\theta$$ versus $$\\theta.$$ By comparing $$\\sin\\theta$$ to the straight line $$\\theta$$ over the range $$[-\\theta_{\\rm max}, \\theta_{\\rm max}],$$ decide qualitatively whether a large amplitude makes the period longer or shorter, and select the answer to the problem.",
+    "statement": "Which of the following changes will result in an __increase__ in the period of a simple pendulum? (2011 F=ma exam, Problem 10.)\n\n(A) Decrease the length of the pendulum.\n\n(B) Increase the mass of the pendulum.\n\n(C) Increase the amplitude of the pendulum swing.\n\n(D) Operate the pendulum in an elevator that is accelerating upward.\n\n(E) Operate the pendulum in an elevator that is moving downward at constant speed.\n\nUseful background: for __small__ oscillations, the period of a simple pendulum of length $$\\ell$$ is $$T = 2\\pi\\sqrt{\\dfrac{\\ell}{g}}.$$ This formula is derived from the restoring torque $$\\tau = -mg\\ell\\sin\\theta$$ by using the small angle approximation $$\\sin\\theta \\approx \\theta.$$\n\n__(a)__ Use the period formula to evaluate choices (A) and (B).\n\n__(b)__ Evaluate choices (D) and (E). For (D), recall that physics inside a reference frame accelerating upward with magnitude $$a$$ is the same as physics in a stronger gravitational field $$g + a$$ — this is why astronauts during a rocket launch are said to experience \"$$6$$ G's,\" meaning their frame behaves as if $$g = 6g_{\\rm earth}.$$ For (E), think about what is special about reference frames moving at constant velocity.\n\n__(c)__ Now consider choice (C). The amplitude $$\\theta_{\\rm max}$$ does not appear in the period formula — but the formula was derived using an approximation. The strength of the restoring effect is indicated by the __slope__ of the graph of the torque magnitude $$mg\\ell\\sin\\theta$$ versus $$\\theta.$$ By comparing $$\\sin\\theta$$ to the straight line $$\\theta$$ over the range $$[-\\theta_{\\rm max}, \\theta_{\\rm max}],$$ decide qualitatively whether a large amplitude makes the period longer or shorter, and select the answer to the problem.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -6740,7 +6740,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8c471f2d-a74a-4fff-a9ae-52150de2bc07",
+    "id": "23589044-2c98-43a9-a29a-eac5ec332295",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6770,7 +6770,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fc47673d-eb80-4634-b48f-ea1032be36aa",
+    "id": "89edfba8-6f5e-47ff-93f1-f6484ceea563",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6800,7 +6800,7 @@
     "solutionUrl": null
   },
   {
-    "id": "6ca151dc-358e-4790-8050-be8cbbd13630",
+    "id": "8d89b177-6159-435b-843f-89b19002e805",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6830,7 +6830,7 @@
     "solutionUrl": null
   },
   {
-    "id": "7d0d3fa9-703c-4f37-a996-eae430141401",
+    "id": "e2da35fa-f1ce-45e2-ad4e-f245f0186846",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6860,7 +6860,7 @@
     "solutionUrl": null
   },
   {
-    "id": "f7d2391a-81a1-4055-b4e7-25c9b4eefa2d",
+    "id": "48d21583-616c-4426-b0ce-866688b43228",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6890,7 +6890,7 @@
     "solutionUrl": null
   },
   {
-    "id": "fa2a6e4f-7327-4806-a371-c28969d4e55e",
+    "id": "701b4624-69f8-4cd9-a1b6-f4304c097e65",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6920,7 +6920,7 @@
     "solutionUrl": null
   },
   {
-    "id": "c472526e-f467-488b-baf9-d2180e1c754a",
+    "id": "5af3c3cc-97cc-49b8-9794-6d273b239052",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6950,7 +6950,7 @@
     "solutionUrl": null
   },
   {
-    "id": "5369220a-1ed1-4d7c-b99b-fca99d191584",
+    "id": "b1b5be87-020c-4d2a-b3f4-f490c3b04825",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -6980,7 +6980,7 @@
     "solutionUrl": null
   },
   {
-    "id": "57a1a94f-d485-483c-87da-698b7d9c648e",
+    "id": "128d4ed2-fd96-4f05-bd28-a3078bdee732",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -7010,7 +7010,7 @@
     "solutionUrl": null
   },
   {
-    "id": "eac1c59c-92e9-43cc-91f3-d8588eb94838",
+    "id": "be2ff87e-cc37-4716-8731-963309773cb5",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -7040,7 +7040,7 @@
     "solutionUrl": null
   },
   {
-    "id": "8bbd6f23-fd14-43b9-9623-c8a234736765",
+    "id": "a99abdf4-2572-4e71-a57d-99a26fbb63c6",
     "contest": "F=ma Problem Series",
     "type": "AoPS",
     "source": "homework",
@@ -7051,7 +7051,7 @@
     "set_label": "Problem 11",
     "name": "In our final USAPhO-style problem, we'll examine surface tension, a phenomenon that…",
     "desc": "In our final USAPhO-style problem, we'll examine surface tension, a phenomenon that occurs at all interfaces between fluids. Molecules in the interior of a fluid form bonds with their neighboring molecules. This puts them into a lower-energy state, as bonded states are lower in…",
-    "statement": "In our final USAPhO-style problem, we'll examine surface tension, a phenomenon that occurs at all interfaces between fluids.\n\nMolecules in the interior of a fluid form bonds with their neighboring molecules. This puts them into a lower-energy state, as bonded states are lower in energy than free (unbonded) states.\n\nWhen a molecule moves to the surface of a fluid, it cannot bond with as many of its neighbors as it could when in the interior of the fluid. This means there is an energy cost to creating more surface to a fluid.\n\n**a)** The dimensions of surface tension $$\\sigma$$ are $$ [\\sigma] = M T^{-2} .$$ Suppose we were to define dimensions not in terms of mass, length, and time($$M,L,T$$), but instead in terms of force, length, and time $$(F,L,T).$$ What would the dimensions of surface tension be in this system? What if we defined dimensions in terms of energy, length, and time $$(E,L,T)?$$\n\n**b)** At small length scales, surface tension is often the dominant force. A drop of water dominated by surface tension will pull itself into a sphere to minimize surface area. However, a larger drop, dominated by gravity, will spread out flat (because gravitational forces pull it down).\n\nImagine a drop of water of radius $$r,$$ surface tension $$\\sigma,$$ density $$\\rho,$$ and subjected to gravitational acceleration $$g.$$ Find the approximate size $$r$$ at which the drop transitions from being surface-tension dominate to gravity dominated.\n\n(This is not a sudden transition, but a gradual one.) Does this length scale seem reasonable for the transition? For example, do drops of water around this size or smaller have a roughly-spherical shape?\n\nIn order to evaluate your answer, use \\begin{aligned} \\rho &= 1000 \\;\\mathrm{kg \\cdot m^{-3}}, \\\\ g & = 10 \\;\\mathrm{m/s^2}, \\\\ \\sigma &= 7.2 \\times 10^{-2} \\;\\mathrm{kg \\cdot s^{-2}}. \\end{aligned}\n\n**c)** Now let's consider waves on the surface of water. Long wavelengths, like large drops, propagate due to the gravitational forces on them. Short wavelengths propagate due to surface tension forces.\n\nFor short wavelengths driven by surface tension, the speed of the waves, $$v,$$ is a function of the wavenumber $$k,$$ (defined as $$k = \\dfrac{2\\pi}{\\lambda},$$ where $$\\lambda$$ is the wavelength of the wave), the surface tension $$\\sigma,$$ and the density $$\\rho.$$ Find an approximate formula for $$v$$ for surface-tension-driven waves.\n\n**d)** For gravity-driven surface waves (in deep water), the wave speed is determined by $$g$$ and $$k.$$ Find an approximate formula for $$v$$ for gravity-driven surface waves.\n\n**e)** Estimate the minimum speed of waves on the surface of water. If, for example, an insect moves across the surface of the water at a speed slower than this, it will not excite surface waves.",
+    "statement": "In our final USAPhO-style problem, we'll examine surface tension, a phenomenon that occurs at all interfaces between fluids.\n\nMolecules in the interior of a fluid form bonds with their neighboring molecules. This puts them into a lower-energy state, as bonded states are lower in energy than free (unbonded) states.\n\nWhen a molecule moves to the surface of a fluid, it cannot bond with as many of its neighbors as it could when in the interior of the fluid. This means there is an energy cost to creating more surface to a fluid.\n\n**a)** The dimensions of surface tension $$\\sigma$$ are $$ [\\sigma] = M T^{-2} .$$ Suppose we were to define dimensions not in terms of mass, length, and time($$M,L,T$$), but instead in terms of force, length, and time $$(F,L,T).$$ What would the dimensions of surface tension be in this system? What if we defined dimensions in terms of energy, length, and time $$(E,L,T)?$$\n\n**b)** At small length scales, surface tension is often the dominant force. A drop of water dominated by surface tension will pull itself into a sphere to minimize surface area. However, a larger drop, dominated by gravity, will spread out flat (because gravitational forces pull it down).\n\nImagine a drop of water of radius $$r,$$ surface tension $$\\sigma,$$ density $$\\rho,$$ and subjected to gravitational acceleration $$g.$$ Find the approximate size $$r$$ at which the drop transitions from being surface-tension dominate to gravity dominated.\n\n(This is not a sudden transition, but a gradual one.) Does this length scale seem reasonable for the transition? For example, do drops of water around this size or smaller have a roughly-spherical shape?\n\nIn order to evaluate your answer, use $$\\begin{aligned} \\rho &= 1000 \\;\\mathrm{kg \\cdot m^{-3}}, \\\\ g & = 10 \\;\\mathrm{m/s^2}, \\\\ \\sigma &= 7.2 \\times 10^{-2} \\;\\mathrm{kg \\cdot s^{-2}}. \\end{aligned}$$\n\n**c)** Now let's consider waves on the surface of water. Long wavelengths, like large drops, propagate due to the gravitational forces on them. Short wavelengths propagate due to surface tension forces.\n\nFor short wavelengths driven by surface tension, the speed of the waves, $$v,$$ is a function of the wavenumber $$k,$$ (defined as $$k = \\dfrac{2\\pi}{\\lambda},$$ where $$\\lambda$$ is the wavelength of the wave), the surface tension $$\\sigma,$$ and the density $$\\rho.$$ Find an approximate formula for $$v$$ for surface-tension-driven waves.\n\n**d)** For gravity-driven surface waves (in deep water), the wave speed is determined by $$g$$ and $$k.$$ Find an approximate formula for $$v$$ for gravity-driven surface waves.\n\n**e)** Estimate the minimum speed of waves on the surface of water. If, for example, an insect moves across the surface of the water at a speed slower than this, it will not excite surface waves.",
     "figures": [],
     "has_asy": false,
     "topics": [
@@ -7305,7 +7305,7 @@
     "set_label": "Script Problem 8",
     "name": "Scaling the Pitch of a Tuning Fork — Two tuning forks are made of the same material and have the same shape…",
     "desc": "Two tuning forks are made of the same material and have the same shape, but the second is $$1.5$$ times the size of the first in every dimension. The first fork rings at $$440\\;\\mathrm{Hz}.$$ With little knowledge of the physics of tuning forks, dimensional analysis still…",
-    "statement": "Two tuning forks are made of the same material and have the same shape, but the second is $$1.5$$ times the size of the first in every dimension. The first fork rings at $$440\\;\\mathrm{Hz}.$$ With little knowledge of the physics of tuning forks, dimensional analysis still predicts the second fork's frequency. The relevant variables are the material's Young's modulus $$Y$$ (a stiffness that, like pressure, has dimensions $$=ML^{-1}T^{-2}$$), the density $$\\rho$$ with $$[\\rho]=ML^{-3},$$ and the fork's length $$l.$$ A frequency has $$=T^{-1}.$$\n\n__(a)__ Construct a formula for $$f$$ in terms of $$Y,\\rho,$$ and $$l$$ (up to a dimensionless constant $$\\alpha$$).\n\n__(b)__ Use the scaling of your formula to find the frequency of the larger fork.\n\n__(c)__ The combination $$\\sqrt{Y/\\rho}$$ resembles the speed of sound $$\\sqrt{P/\\rho}$$ in a gas. Interpret $$\\sqrt{Y/\\rho}$$ for the solid fork, and give a physical meaning to the relation $$f=\\alpha\\dfrac1l\\sqrt{Y/\\rho}$$ (equivalently $$T=\\dfrac1\\alpha\\dfrac{l}{\\sqrt{Y/\\rho}}$$). A vibrating stretched string behaves the same way:",
+    "statement": "Two tuning forks are made of the same material and have the same shape, but the second is $$1.5$$ times the size of the first in every dimension. The first fork rings at $$440\\;\\mathrm{Hz}.$$ With little knowledge of the physics of tuning forks, dimensional analysis still predicts the second fork's frequency. The relevant variables are the material's Young's modulus $$Y$$ (a stiffness that, like pressure, has dimensions $$=ML^{-1}T^{-2}$$), the density $$\\rho$$ with $$[\\rho]=ML^{-3},$$ and the fork's length $$\\ell.$$ A frequency has $$=T^{-1}.$$\n\n__(a)__ Construct a formula for $$f$$ in terms of $$Y,\\rho,$$ and $$\\ell$$ (up to a dimensionless constant $$\\alpha$$).\n\n__(b)__ Use the scaling of your formula to find the frequency of the larger fork.\n\n__(c)__ The combination $$\\sqrt{Y/\\rho}$$ resembles the speed of sound $$\\sqrt{P/\\rho}$$ in a gas. Interpret $$\\sqrt{Y/\\rho}$$ for the solid fork, and give a physical meaning to the relation $$f=\\alpha\\dfrac1\\ell\\sqrt{Y/\\rho}$$ (equivalently $$T=\\dfrac1\\alpha\\dfrac{\\ell}{\\sqrt{Y/\\rho}}$$). A vibrating stretched string behaves the same way:",
     "figures": [
       "http://cdn.artofproblemsolving.com/school/crypt/00175-14450214f7b411a67047f49f29b16ffe5845b343/files/string_vibrate.gif"
     ],
