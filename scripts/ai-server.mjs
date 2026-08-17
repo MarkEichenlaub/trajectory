@@ -84,7 +84,8 @@ const DB_HEADERS = {
 // ── Core analysis pipeline ────────────────────────────────────────────────────
 
 // Takes a screenshot of a Miro board using Playwright with saved auth state.
-// Returns a Buffer (JPEG), or null if auth state is missing or Playwright fails.
+// Returns { buffer, blank } — blank is true when the board has nothing on it —
+// or null if auth state is missing or Playwright fails.
 // One-time setup: run  node scripts/miro-auth-setup.mjs
 async function screenshotMiroBoard(boardId) {
   try {
@@ -108,7 +109,16 @@ async function screenshotMiroBoard(boardId) {
     headless: true,
     args: ['--use-gl=swiftshader'], // software GL so Canvas works in headless mode
   })
-  const context = await browser.newContext({ storageState: MIRO_AUTH_STATE })
+  // These boards are tall columns of handwriting, so a portrait viewport wastes
+  // the least space once the whole board is in view: measured fit-to-screen zoom
+  // on a representative board was 31% at 1400x1400 but 38% here, i.e. noticeably
+  // larger writing. 2x scale supersamples the strokes, which survives the
+  // downscale the vision model applies far better than a 1x capture.
+  const context = await browser.newContext({
+    storageState: MIRO_AUTH_STATE,
+    viewport: { width: 1100, height: 1700 },
+    deviceScaleFactor: 2,
+  })
   const page = await context.newPage()
   try {
     await page.goto(boardUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 })
@@ -119,17 +129,49 @@ async function screenshotMiroBoard(boardId) {
     // it), then add a paint buffer so the handwriting is actually rendered.
     await page.waitForLoadState('networkidle', { timeout: 45_000 }).catch(() => {})
     await page.waitForTimeout(12_000)
-    // Fit the whole board into view so off-screen content isn't cut off. The
-    // shortcut is dropped unless the canvas has focus, so click it first (a single
-    // select-tool click never edits the board; Escape clears any incidental
-    // selection before the shot).
-    await page.mouse.click(960, 640)
-    await page.keyboard.press('Escape')
-    await page.keyboard.press('Control+Shift+H') // Miro "fit board to screen"
+
+    // Miro covers the canvas with an AI "Hey Mark, what are we working on today?"
+    // panel, which it only offers on boards it considers empty. Dismiss it so it
+    // can never land in the screenshot, and remember that it appeared — that is
+    // one of the two signals we use to call a board blank. Match the exact label
+    // and require visibility: [aria-label*="lose"] also matches a hidden toast
+    // close button, and clicking that leaves the panel sitting there.
+    let aiPanelShown = false
+    const closers = page.getByRole('button', { name: 'Close', exact: true })
+    for (let i = 0, n = await closers.count(); i < n; i++) {
+      const btn = closers.nth(i)
+      if (await btn.isVisible().catch(() => false)) {
+        await btn.click({ timeout: 3_000 }).catch(() => {})
+        aiPanelShown = true
+      }
+    }
+    await page.waitForTimeout(1_000)
+
+    // Fit the whole board into view so off-screen content isn't cut off.
+    // Control+Shift+H did nothing whatsoever here: Miro doesn't bind it (its own
+    // shortcut is Shift+1), and Playwright's synthetic key events don't reach the
+    // canvas regardless — so for months every board was captured cropped to
+    // whatever happened to sit in the viewport at 100%. Drive the real menu item.
+    const readZoom = () => page.evaluate(() =>
+      document.querySelector('[data-testid="canvas-controls-zoom-display"]')?.textContent?.trim() || '')
+    const zoomBefore = await readZoom()
+    await page.locator('[data-testid="canvas-controls-zoom-button"]')
+      .click({ timeout: 5_000 }).catch(() => {})
+    await page.waitForTimeout(1_200)
+    await page.locator('[data-testid="action-item__ZOOM_CONTROLS-fitToScreen"]')
+      .click({ timeout: 5_000 }).catch(() => {})
     await page.waitForTimeout(3_000)
+    const zoomAfter = await readZoom()
+
+    // Fit-to-screen is a no-op when there is nothing to fit, so an unchanged zoom
+    // plus Miro's own "this board is empty" AI panel is a confident blank verdict.
+    // Requiring both keeps a board that merely happens to fit at 100% from being
+    // written off. Detecting it here means we never pay for a claude call just to
+    // be told the board is empty.
+    const blank = aiPanelShown && zoomAfter === zoomBefore
     const buf = await page.screenshot({ type: 'jpeg', quality: 80 })
-    console.log(`[snapshot] Captured ${buf.length} bytes`)
-    return buf
+    console.log(`[snapshot] Captured ${buf.length} bytes (zoom ${zoomBefore} → ${zoomAfter}${blank ? ', board is empty' : ''})`)
+    return { buffer: buf, blank }
   } catch (e) {
     console.error(`[snapshot] Playwright screenshot failed: ${e.message}`)
     return null
@@ -172,8 +214,8 @@ async function getSessionContent(sessionId, boardId) {
   // No uploaded snapshot — take a live screenshot via Playwright. This is the path
   // that actually works for most handwritten boards.
   if (boardId) {
-    const screenshot = await screenshotMiroBoard(boardId)
-    if (screenshot) return { type: 'screenshot', content: screenshot }
+    const shot = await screenshotMiroBoard(boardId)
+    if (shot) return { type: 'screenshot', content: shot.buffer, blank: shot.blank }
   }
   // Last resort: typed text (usually sparse on handwritten boards).
   if (data.boardText) return { type: 'text', content: data.boardText }
@@ -260,6 +302,37 @@ async function saveSessionSummary(sessionId, summary, tags) {
   if (!res.ok) throw new Error(`DB update failed: ${res.status}`)
 }
 
+// ── Blank-board backoff ───────────────────────────────────────────────────────
+
+// A session whose board was never drawn on stays in the "needs a summary" query
+// forever, so every 15-minute pass re-launched a headless Chromium for it and
+// re-asked the model to describe an empty canvas — four boards did this on a
+// loop for weeks. Blank boards do sometimes get filled in later (Mark can open
+// an old board and write on it), so we can't drop them permanently; instead,
+// back off to a daily re-check after a few consecutive blank readings.
+const BLANK_STATE_FILE = resolve(ROOT, '.miro-blank-state.json')
+const BLANK_STREAK_BEFORE_BACKOFF = 3
+const BLANK_RECHECK_HOURS = 24
+
+async function loadBlankState() {
+  try {
+    return JSON.parse(await readFile(BLANK_STATE_FILE, 'utf8'))
+  } catch {
+    return {}
+  }
+}
+
+async function saveBlankState(state) {
+  await writeFile(BLANK_STATE_FILE, JSON.stringify(state, null, 2)).catch(e =>
+    console.error(`[blank] could not persist state: ${e.message}`))
+}
+
+function blankBackoffActive(entry) {
+  if (!entry || entry.count < BLANK_STREAK_BEFORE_BACKOFF) return false
+  const hours = (Date.now() - new Date(entry.lastChecked).getTime()) / 3_600_000
+  return hours < BLANK_RECHECK_HOURS
+}
+
 // ── Auto-summarization loop ───────────────────────────────────────────────────
 
 let autoRunning = false
@@ -306,23 +379,52 @@ async function runAutoSummarize() {
     }
 
     console.log(`[auto] Found ${sessions.length} session(s) to summarize.`)
+    const blankState = await loadBlankState()
+    let blankStateDirty = false
+
     for (const session of sessions) {
       try {
-        console.log(`[auto] Processing ${session.id}...`)
-        const sessionContent = await getSessionContent(session.id, session.miro_board_id)
-        const { summary, tags } = await analyzeContent(sessionContent)
-        // Blank board → leave the summary null so the next run retries once a
-        // panel snapshot has been captured (rather than locking in an empty one).
-        if (!summary.trim()) {
-          console.log(`[auto] – ${session.id}: board looks blank, will retry later`)
+        if (blankBackoffActive(blankState[session.id])) {
+          console.log(`[auto] – ${session.id}: still blank as of last check, next re-check in ~${BLANK_RECHECK_HOURS}h`)
           continue
         }
+        console.log(`[auto] Processing ${session.id}...`)
+        const sessionContent = await getSessionContent(session.id, session.miro_board_id)
+
+        // Detected without asking the model, so an untouched board costs one page
+        // load rather than a full summarization call.
+        if (sessionContent.blank) {
+          const prev = blankState[session.id]?.count || 0
+          blankState[session.id] = { count: prev + 1, lastChecked: new Date().toISOString() }
+          blankStateDirty = true
+          console.log(`[auto] – ${session.id}: board is empty (${prev + 1}x), skipped without an AI call`)
+          continue
+        }
+
+        const { summary, tags } = await analyzeContent(sessionContent)
+        // The model can still judge a non-empty board unreadable; leave the summary
+        // null so a later pass retries, but count it toward the same backoff so it
+        // can't spin every 15 minutes forever either.
+        if (!summary.trim()) {
+          const prev = blankState[session.id]?.count || 0
+          blankState[session.id] = { count: prev + 1, lastChecked: new Date().toISOString() }
+          blankStateDirty = true
+          console.log(`[auto] – ${session.id}: board unreadable to the model (${prev + 1}x), will retry later`)
+          continue
+        }
+
         await saveSessionSummary(session.id, summary, tags)
+        if (blankState[session.id]) {
+          delete blankState[session.id] // it has content now; resume normal cadence
+          blankStateDirty = true
+        }
         console.log(`[auto] ✓ ${session.id} — tags: ${tags.join(', ')}`)
       } catch (e) {
         console.error(`[auto] ✗ ${session.id}: ${e.message}`)
       }
     }
+
+    if (blankStateDirty) await saveBlankState(blankState)
   } finally {
     autoRunning = false
   }
@@ -333,6 +435,21 @@ async function runAutoSummarize() {
 // Wrap so a rejection from the loop can never escape as an unhandled rejection
 // (the original crash path).
 const safeRun = () => runAutoSummarize().catch((e) => console.error(`[auto] run failed: ${e.message}`))
+
+// `--shot <boardId>` captures a single board through the real production code
+// path and writes the JPEG out, so a capture regression can be eyeballed without
+// touching the database or waiting for a scheduled pass.
+const shotIndex = process.argv.indexOf('--shot')
+if (shotIndex !== -1) {
+  const boardId = process.argv[shotIndex + 1]
+  if (!boardId) { console.error('usage: --shot <boardId>'); process.exit(1) }
+  const shot = await screenshotMiroBoard(boardId)
+  if (!shot) { console.error('[shot] capture failed'); process.exit(1) }
+  const out = resolve(ROOT, `miro-capture-${boardId.replace(/[^a-z0-9]/gi, '')}.jpg`)
+  await writeFile(out, shot.buffer)
+  console.log(`[shot] blank=${shot.blank}  ${shot.buffer.length} bytes → ${out}`)
+  process.exit(0)
+}
 
 if (RUN_ONCE) {
   // Scheduled-Task mode: do exactly one pass, then exit so the task completes.
