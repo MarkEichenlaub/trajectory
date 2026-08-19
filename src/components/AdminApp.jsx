@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
 import { buildEmailBody } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -168,6 +168,17 @@ export default function AdminApp({ userId }) {
   useEffect(() => {
     if (view === VIEWS.HANDOUTS) refreshHandouts()
   }, [view])
+
+  // Exams digitized into the F=ma runner. The assignment email links these to
+  // the page the student sits the test on rather than to the exam PDF.
+  const [takeableExamIds, setTakeableExamIds] = useState(new Set())
+  useEffect(() => {
+    let cancelled = false
+    fetchFmaExams()
+      .then(e => { if (!cancelled) setTakeableExamIds(new Set(e.map(x => x.id))) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
 
   const allProblems = useMemo(() => {
     const bank = assembleProblemBank({ problems, aopsProblems, handouts })
@@ -600,7 +611,7 @@ export default function AdminApp({ userId }) {
     setEmailDraft({
       to: recipients.join(', '),
       subject: `${firstName} physics problems ${dateStr}`,
-      body: buildEmailBody(activeStudent, assignedProblems),
+      body: buildEmailBody(activeStudent, assignedProblems, takeableExamIds),
     })
   }
 

@@ -3,9 +3,12 @@ export function openGmailDraft({ to, subject, body }) {
   window.open(`https://mail.google.com/mail/?${params.toString()}`, '_blank')
 }
 
+const PORTAL_URL = 'https://portal.eichenlaubphysics.com'
+
 function resourceLabel(p) {
   if (p.type === 'Book') return 'Book'
   if (p.type === 'Handout') return 'Handout'
+  if (p.type === 'Exam') return 'Test PDF'
   return 'Problem'
 }
 
@@ -42,18 +45,26 @@ const OPENING_LINES = [
   (name) => `Hi ${name}, Here's your next set of problems — see you soon!`,
 ]
 
-export function buildEmailBody(student, problems) {
+// `takeableExamIds` are exams that have been digitized into the portal's F=ma
+// runner. Those get a link to the page the student actually sits the test on
+// rather than to the exam PDF, which they can't answer on.
+export function buildEmailBody(student, problems, takeableExamIds = new Set()) {
   const firstName = student.first_name || student.name.split(' ')[0]
   const opener = OPENING_LINES[Math.floor(Math.random() * OPENING_LINES.length)](firstName)
   const lines = [opener, '']
   problems.forEach((p, i) => {
-    const isResource = p.type === 'Book' || p.type === 'Handout'
+    const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'
     const header = isResource
       ? `${i + 1}. ${p.name} (${p.contest})`
       : `${i + 1}. ${p.name} (${p.contest} ${p.year} ${p.label})`
     lines.push(header)
     if (p.assignmentNote) lines.push(`   ${p.assignmentNote}`)
-    if (p.problemUrl) lines.push(`   ${resourceLabel(p)}: ${p.problemUrl}`)
+    if (takeableExamIds.has(p.id)) {
+      // The F=ma tab opens on whichever exam is assigned, so no deep link needed.
+      lines.push(`   Take the test: ${PORTAL_URL}/fma-progress`)
+    } else if (p.problemUrl) {
+      lines.push(`   ${resourceLabel(p)}: ${p.problemUrl}`)
+    }
     lines.push('')
   })
   lines.push('-Mark')
