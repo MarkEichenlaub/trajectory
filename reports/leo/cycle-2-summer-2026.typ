@@ -8,8 +8,8 @@
   summary: (
     "Leo is preparing for the F=ma exam in February.",
     "He is nearly finished with the AoPS F=ma course, and has a very high homework score.",
-    "Leo still needs a second, systematic pass through the material — the Fundamentals sessions will cover this using Problems and Solutions in Introductory Mechanics by Morin.",
-    "In parallel, Leo is ready to begin Practice Tests.",
+    "Leo still needs a second, systematic pass through the material. We'll do this with a series of Fundamentals sessions stretching up to the exam.",
+    "In parallel, Leo is ready to begin a series of Practice Test sessions.",
     "In Practice Tests, we'll track Leo's progress, record his accuracy and time taken, break questions down by topic, and link related questions to give Leo personalized, targeted practice.",
     "With two modes of study — Fundamentals and Practice Tests — we could do either one or two sessions per week.",
   ),
@@ -53,6 +53,21 @@
     "When he takes a practice exam at home, encourage him to treat it like the real thing: timed, no notes, scratch work saved (the portal records this automatically now).",
     "Leo is still quite young and new to physics compared to most students who pass the F=ma exam. If he makes progress and learns new techniques, this year is a success.",
     "His interest in nuclear physics is still a driving force, so any opportunities for him to keep exploring that will help his practice stay interesting and rewarding.",
+  ),
+
+  // The ten sessions this cycle covers, oldest first. Each line condenses the
+  // session summary recorded in the portal at the time.
+  sessions: (
+    ("Apr 1, 2026", "Logarithm product, quotient, and power rules, plus the change-of-base formula, applied to evaluating logarithms by hand.", ""),
+    ("Apr 15, 2026", "Combinatorics — permutations versus combinations, and deriving the formula for n choose k — alongside continued work on logarithm rules.", ""),
+    ("Apr 22, 2026", "Derived the interior-angle formula for regular polygons, and used a right-triangle construction to find a sine from a given tangent.", ""),
+    ("Apr 29, 2026", "Complex numbers: the Argand diagram, conjugates, division, powers of i via periodicity, and the complex conjugate root theorem.", ""),
+    ("May 27, 2026", "Constant-speed motion along a curved path via velocity components, and a first look at the epsilon-delta definition of a limit.", ""),
+    ("Jun 4, 2026", "Derived the Taylor series for sine and cosine from first principles, then used the cosine series to show a pendulum behaves like a spring at small angles.", ""),
+    ("Jun 8, 2026", "Worked through Blue Morin, beginning Taylor series.", ""),
+    ("Jun 10, 2026", "Applied Taylor series to practical estimation: first-order kinematics, the binomial approximation, and square roots without a calculator.", ""),
+    ("Jul 14, 2026", "Measurement uncertainty, and how error propagates when many uncertain quantities are added together.", ""),
+    ("Aug 18, 2026", "Two Morin mechanics problems: maximum speed of a mass on a spring by energy conservation, and terminal velocity under linear drag analyzed with a Taylor expansion.", ""),
   ),
 )
 
