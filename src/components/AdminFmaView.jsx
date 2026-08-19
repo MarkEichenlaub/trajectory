@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { fetchFmaAttempts, fetchFmaAttemptDetail } from '../utils/supabase'
 import FmaAttemptDetail from './portal/FmaAttemptDetail'
+import { FmaChart, TagBreakdown } from './portal/FmaProgress'
 
 export default function AdminFmaView({ studentId, studentName }) {
   const [attempts, setAttempts] = useState([])
@@ -38,6 +39,21 @@ export default function AdminFmaView({ studentId, studentName }) {
     <div style={{ maxWidth: 720 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 12 }}>{err}</div>}
       <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>{studentName}'s F=ma practice tests</h3>
+
+      {/* The tutor should see at least what the student sees. */}
+      {attempts.length > 0 && (
+        <>
+          <div style={{ marginBottom: 20 }}>
+            <FmaChart attempts={attempts} onSelect={handleView} />
+          </div>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Performance by tag</h3>
+          <div style={{ marginBottom: 24 }}>
+            <TagBreakdown attempts={attempts} />
+          </div>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Attempts</h3>
+        </>
+      )}
+
       {attempts.length === 0 ? (
         <div className="empty-state">No practice tests taken yet.</div>
       ) : (

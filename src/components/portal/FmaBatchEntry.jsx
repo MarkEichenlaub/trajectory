@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt } from '../../utils/supabase'
+import ScratchWorkLink from './ScratchWorkLink'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 
@@ -76,14 +77,14 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
         <div style={{ marginTop: 4 }}>Each answer saves as you tap it.</div>
       </div>
 
-      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <div className="fma-card" style={{ padding: 16 }}>
         {questions.map(q => (
-          <div key={q.id} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', padding: '3px 0' }}>
-            <div style={{ width: 24, fontSize: 12, color: 'var(--text-dim)', flexShrink: 0 }}>{q.question_num}.</div>
+          <div key={q.id} className="fma-bubble-row">
+            <div className="num">{q.question_num}.</div>
             {CHOICES.map(c => (
-              <label key={c} style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', padding: '6px 8px', borderRadius: 4, background: answers[q.id] === c ? 'var(--accent-dim)' : 'transparent' }}>
+              <label key={c} className={answers[q.id] === c ? 'on' : ''}>
                 <input type="radio" name={`bq-${q.id}`} checked={answers[q.id] === c} onChange={() => handleChoose(q.id, c)} />
-                <span style={{ fontSize: 12 }}>{c}</span>
+                <span>{c}</span>
               </label>
             ))}
           </div>
@@ -94,7 +95,7 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
         <button className="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
           {uploading ? 'Uploading…' : scratchUrl ? 'Replace scratch work' : 'Upload scratch work (whole test)'}
         </button>
-        {scratchUrl && <a href={scratchUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>View ↗</a>}
+        <ScratchWorkLink path={scratchUrl} label="View ↗" />
       </div>
 
       <div style={{ marginTop: 16 }}>

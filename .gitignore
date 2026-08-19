@@ -8,3 +8,7 @@ logs
 .miro-blank-state.json
 miro-capture-*.jpg
 supabase/.temp/
+
+# F=ma figure cropping scratch space (PDFs + rendered crops, regenerable)
+work/
+scripts/__pycache__/

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
+import ScratchWorkLink from './ScratchWorkLink'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 
@@ -29,9 +30,7 @@ export default function FmaAttemptDetail({ detail, onBack }) {
           <div style={{ fontSize: 14, fontWeight: 500 }}>{attempt.handouts?.name || attempt.exam_id}</div>
           <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{date} · {attempt.mode.replace('_', ' ')}</div>
         </div>
-        {attempt.scratch_work_url && (
-          <a href={attempt.scratch_work_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, marginLeft: 'auto' }}>Scratch work ↗</a>
-        )}
+        <ScratchWorkLink path={attempt.scratch_work_url} style={{ marginLeft: 'auto' }} />
       </div>
 
       {attempt.mode === 'score_only' ? (
@@ -73,7 +72,8 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                   ))}
                 </div>
                 {ans?.scratch_work_url && (
-                  <a href={ans.scratch_work_url} target="_blank" rel="noreferrer" style={{ fontSize: 11, marginTop: 8, display: 'inline-block' }}>Scratch work for this question ↗</a>
+                  <ScratchWorkLink path={ans.scratch_work_url} label="Scratch work for this question ↗"
+                    style={{ marginTop: 8, display: 'inline-block' }} />
                 )}
               </div>
             )

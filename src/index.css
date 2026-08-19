@@ -498,3 +498,124 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
   background: var(--surface3); border-radius: 100px;
   padding: 0 5px; color: var(--muted);
 }
+
+/* ── F=ma practice test runner ──────────────────────────────────────────────
+   Modelled on the online exam platform the real F=ma now uses: one question at
+   a time, a numbered navigator showing what's answered and flagged, the ability
+   to cross out choices you've ruled out, and a review screen before submitting.
+   Sized for touch throughout -- Leo may well sit a practice test on a tablet. */
+
+.fma-runner { max-width: 760px; }
+
+.fma-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; margin-bottom: 14px; flex-wrap: wrap;
+}
+
+.fma-err {
+  font-size: 12px; color: var(--red); background: var(--red-bg);
+  border: 1px solid var(--red-line); border-radius: var(--radius);
+  padding: 8px 10px; margin-bottom: 12px;
+}
+
+/* Question navigator */
+.fma-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+.fma-grid-btn {
+  position: relative;
+  width: 36px; height: 36px; padding: 0;
+  font-size: 12px; line-height: 1;
+  border-radius: 6px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border-strong);
+}
+.fma-grid-btn.answered { background: var(--accent-dim); border-color: var(--accent); font-weight: 600; }
+.fma-grid-btn.flagged  { border-color: var(--yellow); }
+.fma-grid-btn.current  { outline: 2px solid var(--accent); outline-offset: 1px; font-weight: 700; }
+.fma-flag-dot {
+  position: absolute; top: 2px; right: 2px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--yellow);
+}
+
+.fma-legend {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  font-size: 11px; color: var(--text-dim); margin: 8px 0 14px;
+}
+.fma-legend .swatch {
+  display: inline-block; width: 11px; height: 11px; border-radius: 3px;
+  vertical-align: -1px; margin-right: 4px;
+  background: var(--surface); border: 1px solid var(--border-strong);
+}
+.fma-legend .swatch.answered { background: var(--accent-dim); border-color: var(--accent); }
+.fma-legend .swatch.flagged  { border-color: var(--yellow); border-width: 2px; }
+
+.fma-qhead {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 10px; flex-wrap: wrap;
+  font-size: 12px; color: var(--text-dim); margin-bottom: 8px;
+}
+.fma-flagbtn.on { background: var(--yellow-bg); border-color: var(--yellow-line); color: var(--yellow); }
+
+.fma-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.fma-figure {
+  display: block; max-width: 100%; height: auto;
+  border: 1px solid var(--border); border-radius: 4px;
+  margin: 14px 0; background: #fff;
+}
+
+/* Choices: whole row is a tap target; the ✕ crosses one out. */
+.fma-choices { display: flex; flex-direction: column; gap: 6px; margin-top: 18px; }
+.fma-choice { display: flex; align-items: stretch; gap: 6px; border-radius: 6px; }
+.fma-choice > label {
+  flex: 1; display: flex; gap: 10px; align-items: center;
+  padding: 10px 12px; min-height: 44px; cursor: pointer; border-radius: 6px;
+  border: 1px solid transparent;
+}
+.fma-choice.picked > label { background: var(--accent-dim); border-color: var(--accent); }
+.fma-choice > label:hover { background: var(--surface2); }
+.fma-choice.picked > label:hover { background: var(--accent-dim); }
+.fma-choice.out > label { opacity: 0.45; text-decoration: line-through; }
+
+.fma-strike {
+  flex: 0 0 auto; width: 40px; min-height: 44px; padding: 0;
+  font-size: 13px; color: var(--muted);
+  background: transparent; border: 1px solid transparent; border-radius: 6px;
+}
+.fma-choice:hover .fma-strike { border-color: var(--border); }
+.fma-strike:hover { background: var(--surface2); color: var(--red); }
+.fma-choice.out .fma-strike { color: var(--accent); border-color: var(--border); }
+
+.fma-scratch {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px;
+}
+
+.fma-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px; margin-top: 18px; flex-wrap: wrap;
+}
+/* Deliberately not styled like Next: submitting is irreversible, and the two
+   used to sit in the same place with the same styling. */
+.fma-review-btn { border-color: var(--green-line); color: var(--green); background: var(--green-bg); }
+.fma-review-btn:hover { background: var(--green-bg); border-color: var(--green); }
+
+/* Paper-first bubble sheet */
+.fma-bubble-row {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 2px 0; border-bottom: 1px solid transparent;
+}
+.fma-bubble-row .num { width: 26px; flex-shrink: 0; font-size: 12px; color: var(--text-dim); }
+.fma-bubble-row label {
+  display: flex; align-items: center; gap: 4px; cursor: pointer;
+  padding: 8px 10px; min-height: 40px; border-radius: 6px; font-size: 12px;
+}
+.fma-bubble-row label:hover { background: var(--surface2); }
+.fma-bubble-row label.on { background: var(--accent-dim); font-weight: 600; }
+
+@media (max-width: 640px) {
+  .fma-card { padding: 14px; }
+  .fma-grid-btn { width: 40px; height: 40px; font-size: 13px; }
+  .fma-nav { flex-direction: column-reverse; align-items: stretch; }
+  .fma-nav button { width: 100%; }
+  .fma-choice > label { padding: 12px; }
+}

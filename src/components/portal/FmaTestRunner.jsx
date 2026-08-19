@@ -1,45 +1,121 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
-import { saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt, logFmaQuestionView } from '../../utils/supabase'
+import ScratchWorkLink from './ScratchWorkLink'
+import {
+  saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt, logFmaQuestionView,
+  setFmaFlag, setFmaEliminated,
+} from '../../utils/supabase'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
+const LIMIT_SEC = 75 * 60
 
-function Stopwatch({ startedAt }) {
+function fmt(sec) {
+  const s = Math.abs(Math.round(sec))
+  const mm = String(Math.floor(s / 60)).padStart(2, '0')
+  const ss = String(s % 60).padStart(2, '0')
+  return `${mm}:${ss}`
+}
+
+// The real exam is 75 minutes. This counts down like a live sitting and warns as
+// the time goes, but never submits for you -- on a practice test, losing work to
+// the clock teaches nothing.
+function Countdown({ startedAt }) {
   const [now, setNow] = useState(Date.now())
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(id)
   }, [])
-  const elapsedSec = Math.max(0, Math.floor((now - new Date(startedAt).getTime()) / 1000))
-  const mm = String(Math.floor(elapsedSec / 60)).padStart(2, '0')
-  const ss = String(elapsedSec % 60).padStart(2, '0')
-  const over = elapsedSec > 75 * 60
+  const elapsed = Math.max(0, (now - new Date(startedAt).getTime()) / 1000)
+  const left = LIMIT_SEC - elapsed
+  const over = left < 0
+  const warn = !over && left <= 10 * 60
+
+  let label, note
+  if (over) {
+    // Resuming a day later shouldn't render a nonsense figure.
+    label = elapsed > 6 * 3600 ? 'over time' : `+${fmt(-left)}`
+    note = 'past 75:00'
+  } else {
+    label = fmt(left)
+    note = left <= 60 ? 'under a minute' : warn ? `${Math.ceil(left / 60)} min left` : 'of 75:00'
+  }
+
   return (
-    <span style={{ fontSize: 13, fontFamily: 'var(--font-mono, monospace)', color: over ? 'var(--yellow)' : 'var(--text-dim)' }}>
-      {mm}:{ss} <span style={{ opacity: 0.7 }}>/ 75:00 (soft limit)</span>
+    <span
+      role="timer"
+      style={{
+        fontSize: 15, fontVariantNumeric: 'tabular-nums', fontFamily: 'var(--font-mono, monospace)',
+        fontWeight: over || warn ? 700 : 500,
+        color: over ? 'var(--red)' : warn ? 'var(--yellow)' : 'var(--text-dim)',
+      }}
+    >
+      {label} <span style={{ opacity: 0.75, fontWeight: 400, fontSize: 12 }}>{note}</span>
     </span>
   )
 }
 
-export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, onDone, onCancel }) {
+function Navigator({ questions, answers, flags, index, onJump }) {
+  return (
+    <div>
+      <div className="fma-grid">
+        {questions.map((q, i) => {
+          const answered = !!answers[q.id]
+          const flagged = !!flags[q.id]
+          return (
+            <button
+              key={q.id}
+              className={`fma-grid-btn${answered ? ' answered' : ''}${flagged ? ' flagged' : ''}${i === index ? ' current' : ''}`}
+              onClick={() => onJump(i)}
+              aria-label={`Question ${q.question_num}${answered ? `, answered ${answers[q.id]}` : ', not answered'}${flagged ? ', flagged' : ''}`}
+              aria-current={i === index ? 'true' : undefined}
+            >
+              {q.question_num}
+              {flagged && <span className="fma-flag-dot" aria-hidden="true" />}
+            </button>
+          )
+        })}
+      </div>
+      <div className="fma-legend">
+        <span><i className="swatch answered" /> answered</span>
+        <span><i className="swatch" /> unanswered</span>
+        <span><i className="swatch flagged" /> flagged</span>
+      </div>
+    </div>
+  )
+}
+
+export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, initialFlags, initialEliminated, onDone, onCancel }) {
   const [index, setIndex] = useState(0)
-  const [answers, setAnswers] = useState(initialAnswers || {}) // questionId -> choice
+  const [answers, setAnswers] = useState(initialAnswers || {})
+  const [flags, setFlags] = useState(initialFlags || {})
+  const [eliminated, setEliminated] = useState(initialEliminated || {})
   const [uploading, setUploading] = useState(false)
   const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
   const [submitting, setSubmitting] = useState(false)
-  const [confirming, setConfirming] = useState(false)
+  const [reviewing, setReviewing] = useState(false)
   const [err, setErr] = useState(null)
   const fileInputRef = useRef(null)
 
   const q = questions[index]
   const answeredCount = Object.keys(answers).length
   const unanswered = questions.filter(x => !answers[x.id])
+  const flagged = questions.filter(x => flags[x.id])
 
-  // Mark which question is on screen, so time-per-question reflects the question
-  // actually being read rather than the gap between answer clicks.
   useEffect(() => {
-    if (q) logFmaQuestionView(attempt.id, q.id)
-  }, [attempt.id, q?.id])
+    if (q && !reviewing) logFmaQuestionView(attempt.id, q.id)
+  }, [attempt.id, q?.id, reviewing])
+
+  // Warm the neighbouring questions' figures. These are a few hundred KB each,
+  // and without this every Next press waits on a cold fetch and the layout jumps
+  // when the image finally lands.
+  useEffect(() => {
+    for (const n of [index + 1, index - 1]) {
+      for (const url of questions[n]?.figure_urls || []) {
+        const img = new Image()
+        img.src = url
+      }
+    }
+  }, [index, questions])
 
   async function handleChoose(choice) {
     setAnswers(prev => ({ ...prev, [q.id]: choice }))
@@ -47,9 +123,30 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     try {
       await saveFmaAnswer(attempt.id, q.id, choice)
     } catch (e) {
-      // The optimistic tick above would otherwise imply this was recorded.
       setAnswers(prev => { const next = { ...prev }; delete next[q.id]; return next })
       setErr(`Couldn't save that answer — check your connection and tap it again. (${e.message})`)
+    }
+  }
+
+  async function toggleFlag() {
+    const next = !flags[q.id]
+    setFlags(prev => ({ ...prev, [q.id]: next }))
+    try {
+      await setFmaFlag(attempt.id, q.id, next)
+    } catch {
+      setFlags(prev => ({ ...prev, [q.id]: !next }))
+    }
+  }
+
+  // Crossing out an option you've ruled out, as the real platform allows.
+  async function toggleEliminate(choice) {
+    const current = eliminated[q.id] || []
+    const next = current.includes(choice) ? current.filter(c => c !== choice) : [...current, choice]
+    setEliminated(prev => ({ ...prev, [q.id]: next }))
+    try {
+      await setFmaEliminated(attempt.id, q.id, next)
+    } catch {
+      setEliminated(prev => ({ ...prev, [q.id]: current }))
     }
   }
 
@@ -77,114 +174,127 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     } catch (e) {
       setErr(e.message)
       setSubmitting(false)
-      setConfirming(false)
     }
   }
 
   const html = useMemo(() => renderStatementHtml(q?.statement), [q])
-
   if (!q) return null
 
+  const header = (
+    <div className="fma-bar">
+      <button className="sm" onClick={onCancel}>← Save &amp; exit</button>
+      <Countdown startedAt={attempt.started_at} />
+    </div>
+  )
+
+  if (reviewing) {
+    return (
+      <div className="fma-runner">
+        {header}
+        <h3 style={{ fontSize: 16, fontWeight: 600, margin: '8px 0 4px' }}>Review your test</h3>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
+          Tap any question to go back to it.
+        </div>
+        {err && <div className="fma-err">{err}</div>}
+
+        <Navigator questions={questions} answers={answers} flags={flags} index={-1}
+          onJump={i => { setIndex(i); setReviewing(false) }} />
+
+        <div className="fma-card" style={{ marginTop: 16 }}>
+          <div style={{ fontSize: 13, marginBottom: 10 }}>
+            <strong>{answeredCount}</strong> of {questions.length} answered
+          </div>
+          {unanswered.length > 0 && (
+            <div style={{ fontSize: 13, marginBottom: 10, color: 'var(--yellow)' }}>
+              Unanswered: {unanswered.map(x => x.question_num).join(', ')}
+              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
+                There's no penalty for guessing on the F=ma — a blank scores the same as a wrong answer.
+              </div>
+            </div>
+          )}
+          {flagged.length > 0 && (
+            <div style={{ fontSize: 13, marginBottom: 10 }}>
+              Flagged for review: {flagged.map(x => x.question_num).join(', ')}
+            </div>
+          )}
+          <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 14 }}>
+            Once submitted the test is graded and can't be changed.
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <button className="primary" disabled={submitting} onClick={handleSubmit}>
+              {submitting ? 'Submitting…' : 'Submit test'}
+            </button>
+            <button className="sm" disabled={submitting} onClick={() => setReviewing(false)}>Keep working</button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const gone = eliminated[q.id] || []
+
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div className="fma-runner">
       <input ref={fileInputRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleFileChange} />
+      {header}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <button className="sm" onClick={onCancel}>← Save &amp; exit</button>
-        <Stopwatch startedAt={attempt.started_at} />
+      <Navigator questions={questions} answers={answers} flags={flags} index={index} onJump={setIndex} />
+
+      {err && <div className="fma-err">{err}</div>}
+
+      <div className="fma-qhead">
+        <span>Question {q.question_num} of {questions.length} · {answeredCount} answered</span>
+        <button className={`sm fma-flagbtn${flags[q.id] ? ' on' : ''}`} onClick={toggleFlag}
+          aria-pressed={flags[q.id] ? 'true' : 'false'}>
+          {flags[q.id] ? '★ Flagged' : '☆ Flag for review'}
+        </button>
       </div>
 
-      <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 12 }}>
-        Every answer is saved as you tap it — you can leave and pick up where you left off.
-      </div>
-
-      {err && <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 12 }}>{err}</div>}
-
-      {/* Jump grid: reviewing Q3 from Q25 shouldn't take 22 clicks of Previous. */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
-        {questions.map((x, i) => (
-          <button
-            key={x.id}
-            onClick={() => setIndex(i)}
-            title={answers[x.id] ? `Answered ${answers[x.id]}` : 'Not answered'}
-            style={{
-              width: 28, height: 28, padding: 0, fontSize: 11, borderRadius: 4, cursor: 'pointer',
-              border: i === index ? '2px solid var(--accent)' : '1px solid var(--border)',
-              background: answers[x.id] ? 'var(--accent-dim)' : 'var(--surface)',
-              fontWeight: i === index ? 700 : 400,
-            }}
-          >
-            {x.question_num}
-          </button>
-        ))}
-      </div>
-
-      <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 8 }}>
-        Question {q.question_num} of {questions.length} · {answeredCount} answered
-      </div>
-
-      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 20 }}>
+      <div className="fma-card">
         <div dangerouslySetInnerHTML={{ __html: html }} />
         {(q.figure_urls || []).map(url => (
-          <img key={url} src={url} alt="" loading="lazy" style={{ maxWidth: '100%', border: '1px solid var(--border)', borderRadius: 4, margin: '12px 0' }} />
+          <img key={url} src={url} alt="Figure for this question" className="fma-figure" />
         ))}
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 16 }}>
-          {CHOICES.map(c => (
-            <label key={c} style={{ display: 'flex', gap: 10, alignItems: 'center', cursor: 'pointer', padding: '8px 10px', borderRadius: 6, background: answers[q.id] === c ? 'var(--accent-dim)' : 'transparent' }}>
-              <input type="radio" name={`q-${q.id}`} checked={answers[q.id] === c} onChange={() => handleChoose(c)} />
-              <strong>{c}</strong>
-              <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
-            </label>
-          ))}
+        <div className="fma-choices">
+          {CHOICES.map(c => {
+            const out = gone.includes(c)
+            const picked = answers[q.id] === c
+            return (
+              <div key={c} className={`fma-choice${picked ? ' picked' : ''}${out ? ' out' : ''}`}>
+                <label>
+                  <input type="radio" name={`q-${q.id}`} checked={picked} onChange={() => handleChoose(c)} />
+                  <strong>{c}</strong>
+                  <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
+                </label>
+                <button
+                  className="fma-strike"
+                  onClick={() => toggleEliminate(c)}
+                  title={out ? `Restore choice ${c}` : `Cross out choice ${c}`}
+                  aria-label={out ? `Restore choice ${c}` : `Cross out choice ${c}`}
+                  aria-pressed={out ? 'true' : 'false'}
+                >
+                  {out ? '↺' : '✕'}
+                </button>
+              </div>
+            )
+          })}
         </div>
       </div>
 
-      <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div className="fma-scratch">
         <button className="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
           {uploading ? 'Uploading…' : scratchUrl ? 'Replace scratch work' : 'Upload scratch work (whole test)'}
         </button>
-        {scratchUrl && <a href={scratchUrl} target="_blank" rel="noreferrer" style={{ fontSize: 12 }}>View ↗</a>}
+        <ScratchWorkLink path={scratchUrl} label="View ↗" />
+        <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Answers save as you tap them.</span>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 16 }}>
+      <div className="fma-nav">
         <button disabled={index === 0} onClick={() => setIndex(i => i - 1)}>← Previous</button>
-        {index < questions.length - 1 ? (
-          <button className="primary" onClick={() => setIndex(i => i + 1)}>Next →</button>
-        ) : (
-          <button onClick={() => setConfirming(true)} style={{ borderColor: 'var(--green, #22c55e)', color: 'var(--green, #22c55e)' }}>
-            Finish &amp; submit
-          </button>
-        )}
+        <button className="fma-review-btn" onClick={() => setReviewing(true)}>Review &amp; submit</button>
+        <button className="primary" disabled={index === questions.length - 1} onClick={() => setIndex(i => i + 1)}>Next →</button>
       </div>
-
-      {confirming && (
-        <div style={{ marginTop: 16, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16 }}>
-          <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Submit this test?</div>
-          {unanswered.length > 0 ? (
-            <div style={{ fontSize: 13, marginBottom: 12 }}>
-              <span style={{ color: 'var(--yellow)' }}>
-                {unanswered.length} question{unanswered.length === 1 ? '' : 's'} still unanswered:
-              </span>{' '}
-              {unanswered.map(x => x.question_num).join(', ')}
-              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 6 }}>
-                There's no penalty for guessing on the F=ma — tap a number above to go back.
-              </div>
-            </div>
-          ) : (
-            <div style={{ fontSize: 13, marginBottom: 12 }}>All {questions.length} questions answered.</div>
-          )}
-          <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
-            Once submitted the test is graded and can't be changed.
-          </div>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button className="primary" disabled={submitting} onClick={handleSubmit}>
-              {submitting ? 'Submitting…' : 'Yes, submit'}
-            </button>
-            <button className="sm" disabled={submitting} onClick={() => setConfirming(false)}>Keep working</button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

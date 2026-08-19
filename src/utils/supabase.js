@@ -688,6 +688,23 @@ export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
     .then(({ error: evErr }) => { if (evErr) console.warn('fma: answer event not logged', evErr.message) })
 }
 
+// Flag / unflag a question for review. A flag may exist before any answer, so
+// this upserts a row that can legitimately carry a null selected_choice.
+export async function setFmaFlag(attemptId, questionId, flagged) {
+  const { error } = await supabase
+    .from('fma_attempt_answers')
+    .upsert({ attempt_id: attemptId, question_id: questionId, flagged }, { onConflict: 'attempt_id,question_id' })
+  if (error) throw new Error(error.message)
+}
+
+// Crossed-out choices for one question, as an array of 'A'..'E'.
+export async function setFmaEliminated(attemptId, questionId, eliminated) {
+  const { error } = await supabase
+    .from('fma_attempt_answers')
+    .upsert({ attempt_id: attemptId, question_id: questionId, eliminated_choices: eliminated }, { onConflict: 'attempt_id,question_id' })
+  if (error) throw new Error(error.message)
+}
+
 // Records that a question became the one on screen. Together with 'answer'
 // events this gives an honest per-question time: a question is "active" from
 // the moment it is shown until the next event on a different question. Purely
@@ -734,12 +751,26 @@ export async function uploadFmaScratchWork(studentId, attemptId, file) {
     .from('fma-scratch-work')
     .upload(path, file, { upsert: true, contentType: file.type })
   if (error) throw new Error(error.message)
-  const { data } = supabase.storage.from('fma-scratch-work').getPublicUrl(path)
-  const url = data.publicUrl
+  // The bucket is private, so we persist the object path and sign it on demand
+  // rather than storing a permanent world-readable URL.
   const { error: aErr } = await supabase
-    .from('fma_attempts').update({ scratch_work_url: url }).eq('id', attemptId)
+    .from('fma_attempts').update({ scratch_work_url: path }).eq('id', attemptId)
   if (aErr) throw new Error(aErr.message)
-  return url
+  return path
+}
+
+// Short-lived link to a scratch-work file. Accepts a stored path, or a legacy
+// full public URL from before the bucket was made private.
+export async function signFmaScratchWork(pathOrUrl, expiresInSec = 3600) {
+  if (!pathOrUrl) return null
+  const marker = '/fma-scratch-work/'
+  const path = pathOrUrl.includes(marker)
+    ? pathOrUrl.slice(pathOrUrl.indexOf(marker) + marker.length)
+    : pathOrUrl
+  const { data, error } = await supabase.storage
+    .from('fma-scratch-work').createSignedUrl(path, expiresInSec)
+  if (error) throw new Error(error.message)
+  return data.signedUrl
 }
 
 // Grades a live/paper-first attempt. The grading itself runs in a SECURITY

@@ -21,7 +21,7 @@ const MODES = [
 
 const MODE_LABEL = { live: 'live entry', paper_first: 'paper first', score_only: 'score only' }
 
-function FmaChart({ attempts, onSelect }) {
+export function FmaChart({ attempts, onSelect }) {
   const scored = attempts
     .filter(a => a.score != null && (a.submitted_at || a.started_at))
     .sort((a, b) => new Date(a.submitted_at || a.started_at) - new Date(b.submitted_at || b.started_at))
@@ -87,7 +87,7 @@ function FmaChart({ attempts, onSelect }) {
   )
 }
 
-function TagBreakdown({ attempts }) {
+export function TagBreakdown({ attempts }) {
   const [breakdown, setBreakdown] = useState(null)
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
@@ -164,7 +164,7 @@ export default function FmaProgress({ studentId, isPreview }) {
 
   const [activeAttempt, setActiveAttempt] = useState(null)
   const [activeQuestions, setActiveQuestions] = useState([])
-  const [activeAnswers, setActiveAnswers] = useState({})
+  const [activeState, setActiveState] = useState({ answers: {}, flags: {}, eliminated: {} })
   const [detail, setDetail] = useState(null)
 
   useEffect(() => {
@@ -182,12 +182,14 @@ export default function FmaProgress({ studentId, isPreview }) {
   const finished = attempts.filter(a => a.status !== 'in_progress')
   const examById = useMemo(() => Object.fromEntries(exams.map(e => [e.id, e])), [exams])
 
-  function enterAttempt(attempt, questions, answers) {
+  function enterAttempt(attempt, questions, state) {
     setActiveAttempt(attempt)
     setActiveQuestions(questions)
-    setActiveAnswers(answers)
+    setActiveState(state)
     setView(attempt.mode === 'live' ? 'live' : attempt.mode === 'paper_first' ? 'batch' : 'score')
   }
+
+  const EMPTY_STATE = { answers: {}, flags: {}, eliminated: {} }
 
   async function handleStart() {
     if (!selectedExamId || isPreview) return
@@ -196,7 +198,7 @@ export default function FmaProgress({ studentId, isPreview }) {
     try {
       const attempt = await createFmaAttempt(studentId, selectedExamId, selectedMode)
       const questions = selectedMode === 'score_only' ? [] : await fetchFmaQuestions(selectedExamId)
-      enterAttempt(attempt, questions, {})
+      enterAttempt(attempt, questions, EMPTY_STATE)
     } catch (e) {
       setErr(e.message)
     } finally {
@@ -213,9 +215,15 @@ export default function FmaProgress({ studentId, isPreview }) {
         attempt.mode === 'score_only' ? Promise.resolve([]) : fetchFmaQuestions(attempt.exam_id),
         fetchFmaAttemptAnswers(attempt.id),
       ])
-      const answers = {}
-      for (const a of saved) if (a.selected_choice) answers[a.question_id] = a.selected_choice
-      enterAttempt(attempt, questions, answers)
+      // Flags and crossed-out choices are restored alongside the answers, so a
+      // resumed test looks exactly as it did when the student stepped away.
+      const state = { answers: {}, flags: {}, eliminated: {} }
+      for (const a of saved) {
+        if (a.selected_choice) state.answers[a.question_id] = a.selected_choice
+        if (a.flagged) state.flags[a.question_id] = true
+        if (a.eliminated_choices?.length) state.eliminated[a.question_id] = a.eliminated_choices
+      }
+      enterAttempt(attempt, questions, state)
     } catch (e) {
       setErr(e.message)
     } finally {
@@ -229,7 +237,7 @@ export default function FmaProgress({ studentId, isPreview }) {
       setDetail(await fetchFmaAttemptDetail(attemptId))
       setActiveAttempt(null)
       setActiveQuestions([])
-      setActiveAnswers({})
+      setActiveState(EMPTY_STATE)
       setView('detail')
     } catch (e) {
       // The submit itself succeeded; don't strand the student on a dead screen.
@@ -257,7 +265,7 @@ export default function FmaProgress({ studentId, isPreview }) {
     setView('list')
     setActiveAttempt(null)
     setActiveQuestions([])
-    setActiveAnswers({})
+    setActiveState(EMPTY_STATE)
     setDetail(null)
     if (attempt) {
       try {
@@ -276,10 +284,12 @@ export default function FmaProgress({ studentId, isPreview }) {
   if (loading) return <div style={{ color: 'var(--text-dim)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
 
   if (view === 'live') {
-    return <FmaTestRunner studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeAnswers} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
+    return <FmaTestRunner studentId={studentId} attempt={activeAttempt} questions={activeQuestions}
+      initialAnswers={activeState.answers} initialFlags={activeState.flags} initialEliminated={activeState.eliminated}
+      onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'batch') {
-    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeAnswers} examPdfUrl={examById[activeAttempt?.exam_id]?.pdf_url} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
+    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeState.answers} examPdfUrl={examById[activeAttempt?.exam_id]?.pdf_url} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'score') {
     return <FmaScoreOnly attempt={activeAttempt} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
