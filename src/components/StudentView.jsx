@@ -11,9 +11,10 @@ import { ContactsTab } from './portal/ContactsPanel'
 import InvoicesTab from './portal/InvoicesTab'
 import ProblemBankBrowser from './portal/ProblemBankBrowser'
 import ProgressAndPlanTab from './portal/ProgressAndPlanTab'
+import FmaProgress from './portal/FmaProgress'
 import SchedulingTab from './portal/SchedulingTab'
 
-const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'invoices', 'account'])
+const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'fma-progress', 'invoices', 'account'])
 
 export default function StudentView({ student, assignments, sessions, problems, accessibleSources, sessionProblems, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
@@ -141,6 +142,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['sessions', 'Past Sessions', pastSessions.length],
     ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
+    ['fma-progress', 'F=ma Progress', null],
     ...(canBill ? [['invoices', 'Invoices', null]] : []),
     ['account', 'Account', null],
   ]
@@ -221,6 +223,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
       {tab === 'progress-plan' ? (
         <ProgressAndPlanTab studentId={student.id} />
+      ) : tab === 'fma-progress' ? (
+        <FmaProgress studentId={student.id} isPreview={isPreview} />
       ) : tab === 'scheduling' ? (
         <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} />
       ) : tab === 'invoices' ? (

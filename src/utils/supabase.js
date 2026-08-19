@@ -618,14 +618,16 @@ export async function markMyProblemCompleted(studentId, problemId) {
   const date = new Date().toISOString().slice(0, 10)
   const { data: existing } = await supabase
     .from('assignments').select('id, status').eq('student_id', studentId).eq('problem_id', problemId)
-    .limit(1).maybeSingle()
-  if (existing?.status === 'completed') return null
-  if (existing) {
+  // A book/source can have several independent assignment rows (e.g. separate
+  // chapters); complete the still-open one rather than whichever row sorts first.
+  const pending = (existing || []).find(a => a.status !== 'completed')
+  if (pending) {
     const { error } = await supabase
-      .from('assignments').update({ status: 'completed', completed_date: date }).eq('id', existing.id)
+      .from('assignments').update({ status: 'completed', completed_date: date }).eq('id', pending.id)
     if (error) throw new Error(error.message)
-    return { ...existing, status: 'completed', completed_date: date }
+    return { ...pending, status: 'completed', completed_date: date }
   }
+  if (existing && existing.length > 0) return null
   const id = `${Date.now()}-${Math.random().toString(36).slice(2)}-${problemId.slice(-8)}`
   const { data, error } = await supabase
     .from('assignments')
@@ -633,4 +635,133 @@ export async function markMyProblemCompleted(studentId, problemId) {
     .select().single()
   if (error) throw new Error(error.message)
   return data
+}
+
+// ── F=ma practice tests ────────────────────────────────────────────────────
+
+// Exams that have digitized questions (pilot: fma-2024, fma-2025).
+export async function fetchFmaExams() {
+  const { data, error } = await supabase
+    .from('fma_questions').select('exam_id, handouts:exam_id(id, name, year)')
+  if (error) throw new Error(error.message)
+  const byId = new Map()
+  for (const row of data || []) {
+    if (!byId.has(row.exam_id)) byId.set(row.exam_id, row.handouts)
+  }
+  return [...byId.values()].sort((a, b) => (b.year || 0) - (a.year || 0))
+}
+
+export async function fetchFmaQuestions(examId) {
+  const { data, error } = await supabase
+    .from('fma_questions').select('*').eq('exam_id', examId).order('question_num')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function createFmaAttempt(studentId, examId, mode) {
+  const { data, error } = await supabase
+    .from('fma_attempts').insert({ student_id: studentId, exam_id: examId, mode }).select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+// Upserts the student's selected choice for one question (live or paper-first mode).
+export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
+  const { error } = await supabase
+    .from('fma_attempt_answers')
+    .upsert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice }, { onConflict: 'attempt_id,question_id' })
+  if (error) throw new Error(error.message)
+}
+
+// Scratch-work upload. questionId is set for a per-question (live-mode) upload;
+// omit it for a single whole-attempt (paper-first mode) upload.
+export async function uploadFmaScratchWork(studentId, attemptId, file, questionId) {
+  const ext = file.name.split('.').pop() || 'bin'
+  const path = questionId
+    ? `${studentId}/${attemptId}-${questionId}.${ext}`
+    : `${studentId}/${attemptId}.${ext}`
+  const { error } = await supabase.storage
+    .from('fma-scratch-work')
+    .upload(path, file, { upsert: true, contentType: file.type })
+  if (error) throw new Error(error.message)
+  const { data } = supabase.storage.from('fma-scratch-work').getPublicUrl(path)
+  const url = data.publicUrl
+  if (questionId) {
+    const { error: aErr } = await supabase
+      .from('fma_attempt_answers').update({ scratch_work_url: url }).eq('attempt_id', attemptId).eq('question_id', questionId)
+    if (aErr) throw new Error(aErr.message)
+  } else {
+    const { error: aErr } = await supabase
+      .from('fma_attempts').update({ scratch_work_url: url }).eq('id', attemptId)
+    if (aErr) throw new Error(aErr.message)
+  }
+  return url
+}
+
+// Grades a live/paper-first attempt against the answer key and finalizes its score.
+export async function submitFmaAttempt(attemptId) {
+  const { data: attempt, error: aErr } = await supabase.from('fma_attempts').select('*').eq('id', attemptId).single()
+  if (aErr) throw new Error(aErr.message)
+
+  if (attempt.mode !== 'score_only') {
+    const { data: answers, error: ansErr } = await supabase
+      .from('fma_attempt_answers').select('id, question_id, selected_choice').eq('attempt_id', attemptId)
+    if (ansErr) throw new Error(ansErr.message)
+    const { data: questions, error: qErr } = await supabase
+      .from('fma_questions').select('id, correct_choice').eq('exam_id', attempt.exam_id)
+    if (qErr) throw new Error(qErr.message)
+    const correctById = new Map((questions || []).map(q => [q.id, q.correct_choice]))
+
+    for (const a of answers || []) {
+      const isCorrect = a.selected_choice != null && a.selected_choice === correctById.get(a.question_id)
+      const { error } = await supabase.from('fma_attempt_answers').update({ is_correct: isCorrect }).eq('id', a.id)
+      if (error) throw new Error(error.message)
+    }
+    const score = (answers || []).filter(a => a.selected_choice === correctById.get(a.question_id)).length
+
+    const { data, error } = await supabase
+      .from('fma_attempts')
+      .update({ status: 'graded', score, submitted_at: new Date().toISOString() })
+      .eq('id', attemptId).select().single()
+    if (error) throw new Error(error.message)
+    return data
+  }
+
+  const { data, error } = await supabase
+    .from('fma_attempts')
+    .update({ status: 'graded', submitted_at: new Date().toISOString() })
+    .eq('id', attemptId).select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+// score_only mode: the student (or admin) directly records a final score.
+export async function submitFmaScoreOnly(attemptId, score) {
+  const { data, error } = await supabase
+    .from('fma_attempts')
+    .update({ status: 'graded', score, submitted_at: new Date().toISOString() })
+    .eq('id', attemptId).select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function fetchFmaAttempts(studentId) {
+  const { data, error } = await supabase
+    .from('fma_attempts').select('*, handouts:exam_id(id, name, year)').eq('student_id', studentId).order('started_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchFmaAttemptDetail(attemptId) {
+  const { data: attempt, error: aErr } = await supabase
+    .from('fma_attempts').select('*, handouts:exam_id(id, name, year)').eq('id', attemptId).single()
+  if (aErr) throw new Error(aErr.message)
+  const { data: answers, error: ansErr } = await supabase
+    .from('fma_attempt_answers').select('*').eq('attempt_id', attemptId)
+  if (ansErr) throw new Error(ansErr.message)
+  const { data: questions, error: qErr } = await supabase
+    .from('fma_questions').select('*').eq('exam_id', attempt.exam_id).order('question_num')
+  if (qErr) throw new Error(qErr.message)
+  const answerByQuestion = new Map((answers || []).map(a => [a.question_id, a]))
+  return { attempt, questions: questions || [], answerByQuestion }
 }

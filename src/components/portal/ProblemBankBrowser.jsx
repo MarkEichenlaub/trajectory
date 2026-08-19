@@ -27,7 +27,13 @@ export default function ProblemBankBrowser({ bankProblems, assignments, student,
 
   const statusMap = useMemo(() => {
     const map = {}
-    assignments.forEach(a => { map[a.problem_id] = a.status })
+    assignments.forEach(a => {
+      // A book can have several independent assignment rows (e.g. separate
+      // chapters) — show it as still-open as long as any of them are, and
+      // only "completed" once every one of them is.
+      const prev = map[a.problem_id]
+      if (!prev || prev === 'completed') map[a.problem_id] = a.status
+    })
     return map
   }, [assignments])
 

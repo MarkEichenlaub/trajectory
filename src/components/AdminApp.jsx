@@ -16,13 +16,14 @@ import HandoutsManager from './HandoutsManager'
 import StudentView from './StudentView'
 import SchedulingTab from './portal/SchedulingTab'
 import AdminProgressPlanView from './AdminProgressPlanView'
+import AdminFmaView from './AdminFmaView'
 import Toast from './Toast'
 
 // Occasionally-used admin views load on first open, not at boot.
 const Settings = lazy(() => import('./Settings'))
 const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', BILLING: 'billing', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', FMA: 'fma', BILLING: 'billing', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -196,7 +197,13 @@ export default function AdminApp({ userId }) {
     const map = {}
     assignments
       .filter(a => a.student_id === activeStudentId)
-      .forEach(a => { map[a.problem_id] = a.status })
+      .forEach(a => {
+        // A book can have several independent assignment rows (e.g. separate
+        // chapters) — show it as still-open as long as any of them are, and
+        // only "completed" once every one of them is.
+        const prev = map[a.problem_id]
+        if (!prev || prev === 'completed') map[a.problem_id] = a.status
+      })
     return map
   }, [assignments, activeStudentId])
 
@@ -719,6 +726,7 @@ export default function AdminApp({ userId }) {
           <button className={view === VIEWS.HANDOUTS ? 'active' : ''} onClick={() => setView(VIEWS.HANDOUTS)}>Handouts</button>
           <button className={view === VIEWS.TAGS ? 'active' : ''} onClick={() => setView(VIEWS.TAGS)}>Tags</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress and Plan</button>
+          <button className={view === VIEWS.FMA ? 'active' : ''} onClick={() => setView(VIEWS.FMA)}>F=ma</button>
           <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
@@ -876,6 +884,13 @@ export default function AdminApp({ userId }) {
 
         {view === VIEWS.PROGRESS_PLAN && (
           <AdminProgressPlanView
+            studentId={activeStudentId}
+            studentName={activeStudent?.name || ''}
+          />
+        )}
+
+        {view === VIEWS.FMA && (
+          <AdminFmaView
             studentId={activeStudentId}
             studentName={activeStudent?.name || ''}
           />
