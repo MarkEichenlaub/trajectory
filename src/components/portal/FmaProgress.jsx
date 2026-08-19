@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import {
   fetchFmaExams, fetchFmaQuestions, createFmaAttempt, fetchFmaAttempts, fetchFmaAttemptDetail,
+  fetchFmaAttemptAnswers, deleteFmaAttempt,
 } from '../../utils/supabase'
 import FmaTestRunner from './FmaTestRunner'
 import FmaBatchEntry from './FmaBatchEntry'
@@ -18,8 +19,12 @@ const MODES = [
   { key: 'score_only', label: 'Score only', desc: "Just record your final score — no per-question answers." },
 ]
 
+const MODE_LABEL = { live: 'live entry', paper_first: 'paper first', score_only: 'score only' }
+
 function FmaChart({ attempts, onSelect }) {
-  const scored = attempts.filter(a => a.score != null && (a.submitted_at || a.started_at))
+  const scored = attempts
+    .filter(a => a.score != null && (a.submitted_at || a.started_at))
+    .sort((a, b) => new Date(a.submitted_at || a.started_at) - new Date(b.submitted_at || b.started_at))
   const width = 640, height = 230
   const padL = 34, padR = 16, padT = 12, padB = 26
   const plotW = width - padL - padR, plotH = height - padT - padB
@@ -27,17 +32,26 @@ function FmaChart({ attempts, onSelect }) {
   const times = scored.map(a => new Date(a.submitted_at || a.started_at).getTime())
   const minT = times.length ? Math.min(...times) : 0
   const maxT = times.length ? Math.max(...times) : 0
-  const xScale = t => times.length <= 1 ? padL + plotW / 2 : padL + ((t - minT) / (maxT - minT || 1)) * plotW
-  const yScale = s => padT + (1 - s / MAX_SCORE) * plotH
+  // When every attempt shares a timestamp the time span is 0, which used to pile
+  // every point on the left edge; fall back to even spacing by index.
+  const spread = maxT - minT
+  const xAt = i => {
+    if (scored.length <= 1) return padL + plotW / 2
+    if (spread === 0) return padL + (i / (scored.length - 1)) * plotW
+    return padL + ((times[i] - minT) / spread) * plotW
+  }
+  // Clamp so a bad/forged score can't render off-canvas and blank the chart.
+  const yScale = s => padT + (1 - Math.min(Math.max(s, 0), MAX_SCORE) / MAX_SCORE) * plotH
 
   const ticks = [0, 5, 10, 15, 20, 25]
+  const fmtDate = t => new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
   if (scored.length === 0) {
     return <div className="empty-state">No graded practice tests yet — take one to start seeing your progress here.</div>
   }
 
   return (
-    <svg width={width} height={height} style={{ maxWidth: '100%' }}>
+    <svg viewBox={`0 0 ${width} ${height}`} width="100%" style={{ maxWidth: width, display: 'block' }} role="img" aria-label="F=ma scores over time">
       {ticks.map(t => (
         <g key={t}>
           <line x1={padL} x2={width - padR} y1={yScale(t)} y2={yScale(t)} stroke="var(--border)" strokeWidth={1} />
@@ -46,21 +60,29 @@ function FmaChart({ attempts, onSelect }) {
       ))}
       <rect x={padL} y={yScale(BAND_HIGH)} width={plotW} height={yScale(BAND_LOW) - yScale(BAND_HIGH)} fill="var(--accent)" opacity={0.12} />
       <text x={width - padR} y={yScale(BAND_HIGH) - 3} fontSize={9} fill="var(--accent)" textAnchor="end">~USAPhO band</text>
-      {scored.map(a => {
-        const t = new Date(a.submitted_at || a.started_at).getTime()
-        const date = new Date(a.submitted_at || a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-        return (
-          <circle
-            key={a.id}
-            cx={xScale(t)} cy={yScale(a.score)} r={6}
-            fill="var(--accent)" stroke="var(--surface)" strokeWidth={1.5}
-            style={{ cursor: 'pointer' }}
-            onClick={() => onSelect(a.id)}
-          >
-            <title>{`${a.handouts?.name || a.exam_id}: ${a.score}/${MAX_SCORE} (${date})`}</title>
-          </circle>
-        )
-      })}
+
+      {scored.length > 1 && (
+        <polyline
+          points={scored.map((a, i) => `${xAt(i)},${yScale(a.score)}`).join(' ')}
+          fill="none" stroke="var(--accent)" strokeWidth={1.5} opacity={0.45}
+        />
+      )}
+
+      {/* Dates on the axis: the tooltip alone is unreachable on a touch screen. */}
+      <text x={padL} y={height - 8} fontSize={9} fill="var(--text-dim)" textAnchor="start">{fmtDate(minT)}</text>
+      {spread > 0 && <text x={width - padR} y={height - 8} fontSize={9} fill="var(--text-dim)" textAnchor="end">{fmtDate(maxT)}</text>}
+
+      {scored.map((a, i) => (
+        <circle
+          key={a.id}
+          cx={xAt(i)} cy={yScale(a.score)} r={6}
+          fill="var(--accent)" stroke="var(--surface)" strokeWidth={1.5}
+          style={{ cursor: 'pointer' }}
+          onClick={() => onSelect(a.id)}
+        >
+          <title>{`${a.handouts?.name || a.exam_id}: ${a.score}/${MAX_SCORE} (${fmtDate(times[i])})`}</title>
+        </circle>
+      ))}
     </svg>
   )
 }
@@ -68,6 +90,7 @@ function FmaChart({ attempts, onSelect }) {
 function TagBreakdown({ attempts }) {
   const [breakdown, setBreakdown] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [err, setErr] = useState(null)
 
   const attemptIds = useMemo(
     () => attempts.filter(a => a.status === 'graded' && a.mode !== 'score_only').map(a => a.id).sort().join(','),
@@ -77,9 +100,12 @@ function TagBreakdown({ attempts }) {
   useEffect(() => {
     const ids = attemptIds ? attemptIds.split(',') : []
     if (ids.length === 0) { setBreakdown({}); setLoading(false); return }
+    let cancelled = false
     setLoading(true)
+    setErr(null)
     Promise.all(ids.map(id => fetchFmaAttemptDetail(id)))
       .then(details => {
+        if (cancelled) return
         const map = {}
         for (const { questions, answerByQuestion } of details) {
           for (const q of questions) {
@@ -94,10 +120,14 @@ function TagBreakdown({ attempts }) {
         }
         setBreakdown(map)
       })
-      .finally(() => setLoading(false))
+      // Without this a failed fetch rendered the cheerful "nothing yet" state.
+      .catch(e => { if (!cancelled) setErr(e.message) })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
   }, [attemptIds])
 
   if (loading) return <div style={{ color: 'var(--text-dim)', fontSize: 13 }}>Loading…</div>
+  if (err) return <div style={{ fontSize: 12, color: 'var(--red)' }}>Couldn't load the tag breakdown: {err}</div>
   const tags = Object.keys(breakdown || {})
   if (tags.length === 0) return <div className="empty-state">No answered questions yet to break down by tag.</div>
 
@@ -130,9 +160,11 @@ export default function FmaProgress({ studentId, isPreview }) {
   const [selectedExamId, setSelectedExamId] = useState('')
   const [selectedMode, setSelectedMode] = useState('live')
   const [starting, setStarting] = useState(false)
+  const [busyAttemptId, setBusyAttemptId] = useState(null)
 
   const [activeAttempt, setActiveAttempt] = useState(null)
   const [activeQuestions, setActiveQuestions] = useState([])
+  const [activeAnswers, setActiveAnswers] = useState({})
   const [detail, setDetail] = useState(null)
 
   useEffect(() => {
@@ -143,9 +175,19 @@ export default function FmaProgress({ studentId, isPreview }) {
   }, [studentId])
 
   const refreshAttempts = useCallback(async () => {
-    const a = await fetchFmaAttempts(studentId)
-    setAttempts(a)
+    setAttempts(await fetchFmaAttempts(studentId))
   }, [studentId])
+
+  const inProgress = attempts.filter(a => a.status === 'in_progress')
+  const finished = attempts.filter(a => a.status !== 'in_progress')
+  const examById = useMemo(() => Object.fromEntries(exams.map(e => [e.id, e])), [exams])
+
+  function enterAttempt(attempt, questions, answers) {
+    setActiveAttempt(attempt)
+    setActiveQuestions(questions)
+    setActiveAnswers(answers)
+    setView(attempt.mode === 'live' ? 'live' : attempt.mode === 'paper_first' ? 'batch' : 'score')
+  }
 
   async function handleStart() {
     if (!selectedExamId || isPreview) return
@@ -153,15 +195,8 @@ export default function FmaProgress({ studentId, isPreview }) {
     setErr(null)
     try {
       const attempt = await createFmaAttempt(studentId, selectedExamId, selectedMode)
-      if (selectedMode === 'score_only') {
-        setActiveAttempt(attempt)
-        setView('score')
-      } else {
-        const questions = await fetchFmaQuestions(selectedExamId)
-        setActiveAttempt(attempt)
-        setActiveQuestions(questions)
-        setView(selectedMode === 'live' ? 'live' : 'batch')
-      }
+      const questions = selectedMode === 'score_only' ? [] : await fetchFmaQuestions(selectedExamId)
+      enterAttempt(attempt, questions, {})
     } catch (e) {
       setErr(e.message)
     } finally {
@@ -169,42 +204,85 @@ export default function FmaProgress({ studentId, isPreview }) {
     }
   }
 
+  // Picks an unfinished attempt back up with its saved answers restored.
+  async function handleResume(attempt) {
+    setBusyAttemptId(attempt.id)
+    setErr(null)
+    try {
+      const [questions, saved] = await Promise.all([
+        attempt.mode === 'score_only' ? Promise.resolve([]) : fetchFmaQuestions(attempt.exam_id),
+        fetchFmaAttemptAnswers(attempt.id),
+      ])
+      const answers = {}
+      for (const a of saved) if (a.selected_choice) answers[a.question_id] = a.selected_choice
+      enterAttempt(attempt, questions, answers)
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setBusyAttemptId(null)
+    }
+  }
+
   async function handleFinished(attemptId) {
-    await refreshAttempts()
-    const d = await fetchFmaAttemptDetail(attemptId)
-    setDetail(d)
-    setActiveAttempt(null)
-    setActiveQuestions([])
-    setView('detail')
+    try {
+      await refreshAttempts()
+      setDetail(await fetchFmaAttemptDetail(attemptId))
+      setActiveAttempt(null)
+      setActiveQuestions([])
+      setActiveAnswers({})
+      setView('detail')
+    } catch (e) {
+      // The submit itself succeeded; don't strand the student on a dead screen.
+      setErr(`Your test was submitted, but the results view failed to load: ${e.message}`)
+      setActiveAttempt(null)
+      setView('list')
+      refreshAttempts().catch(() => {})
+    }
   }
 
   async function handleViewAttempt(attemptId) {
     try {
-      const d = await fetchFmaAttemptDetail(attemptId)
-      setDetail(d)
+      setDetail(await fetchFmaAttemptDetail(attemptId))
       setView('detail')
     } catch (e) {
       setErr(e.message)
     }
   }
 
-  function handleBack() {
+  // Leaving a test keeps everything already answered. An attempt with nothing
+  // recorded is discarded instead, so browsing the modes doesn't leave a trail
+  // of empty in_progress rows.
+  async function handleExitAttempt() {
+    const attempt = activeAttempt
     setView('list')
     setActiveAttempt(null)
     setActiveQuestions([])
+    setActiveAnswers({})
+    setDetail(null)
+    if (attempt) {
+      try {
+        const saved = await fetchFmaAttemptAnswers(attempt.id)
+        if (saved.length === 0) await deleteFmaAttempt(attempt.id)
+      } catch { /* leaving a stray row is harmless; never block the exit */ }
+      refreshAttempts().catch(() => {})
+    }
+  }
+
+  function handleBack() {
+    setView('list')
     setDetail(null)
   }
 
   if (loading) return <div style={{ color: 'var(--text-dim)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
 
   if (view === 'live') {
-    return <FmaTestRunner studentId={studentId} attempt={activeAttempt} questions={activeQuestions} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleBack} />
+    return <FmaTestRunner studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeAnswers} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'batch') {
-    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleBack} />
+    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeAnswers} examPdfUrl={examById[activeAttempt?.exam_id]?.pdf_url} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'score') {
-    return <FmaScoreOnly attempt={activeAttempt} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleBack} />
+    return <FmaScoreOnly attempt={activeAttempt} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'detail' && detail) {
     return <FmaAttemptDetail detail={detail} onBack={handleBack} />
@@ -213,6 +291,31 @@ export default function FmaProgress({ studentId, isPreview }) {
   return (
     <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
+
+      {!isPreview && inProgress.length > 0 && (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--accent)', borderRadius: 'var(--radius)', padding: 16 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 4px' }}>Unfinished test{inProgress.length === 1 ? '' : 's'}</h3>
+          <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
+            Pick up where you left off — your saved answers are still there.
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {inProgress.map(a => (
+              <div key={a.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, fontSize: 13 }}>
+                  {a.handouts?.name || a.exam_id}
+                  <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+                    {' · '}{MODE_LABEL[a.mode] || a.mode}
+                    {' · started '}{new Date(a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+                <button className="primary sm" disabled={busyAttemptId === a.id} onClick={() => handleResume(a)}>
+                  {busyAttemptId === a.id ? 'Opening…' : 'Continue'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div>
         <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>F=ma Progress</h3>
@@ -245,6 +348,11 @@ export default function FmaProgress({ studentId, isPreview }) {
                   </label>
                 ))}
               </div>
+              {selectedMode !== 'live' && examById[selectedExamId]?.pdf_url && (
+                <div style={{ fontSize: 12, marginBottom: 12 }}>
+                  <a href={examById[selectedExamId].pdf_url} target="_blank" rel="noreferrer">Open the exam PDF ↗</a>
+                </div>
+              )}
               <button className="primary" disabled={starting} onClick={handleStart}>
                 {starting ? 'Starting…' : 'Start'}
               </button>
@@ -255,20 +363,20 @@ export default function FmaProgress({ studentId, isPreview }) {
 
       <div>
         <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Past attempts</h3>
-        {attempts.length === 0 ? (
-          <div className="empty-state">No practice tests taken yet.</div>
+        {finished.length === 0 ? (
+          <div className="empty-state">No completed practice tests yet.</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {attempts.map(a => (
+            {finished.map(a => (
               <div
                 key={a.id}
                 onClick={() => handleViewAttempt(a.id)}
                 style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
               >
                 <div style={{ flex: 1, fontSize: 13 }}>{a.handouts?.name || a.exam_id}</div>
-                <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{a.mode.replace('_', ' ')}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{MODE_LABEL[a.mode] || a.mode}</div>
                 <div style={{ fontSize: 12, fontWeight: 600 }}>
-                  {a.status === 'graded' ? `${a.score}/${MAX_SCORE}` : a.status}
+                  {a.score != null ? `${a.score}/${MAX_SCORE}` : '—'}
                 </div>
               </div>
             ))}

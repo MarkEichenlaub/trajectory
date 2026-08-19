@@ -12,6 +12,11 @@ function formatSeconds(s) {
 export default function FmaAttemptDetail({ detail, onBack }) {
   const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
 
+  // An ungraded attempt must not reveal the key: correct_choice comes back null
+  // from the server until the attempt is graded, and we hide the verdict UI too.
+  const graded = attempt.status === 'graded'
+  const outOf = questions.length || 25
+
   const date = new Date(attempt.submitted_at || attempt.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   return (
@@ -19,7 +24,7 @@ export default function FmaAttemptDetail({ detail, onBack }) {
       <button className="sm" onClick={onBack} style={{ marginBottom: 16 }}>← Back</button>
 
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16 }}>
-        <div style={{ fontSize: 24, fontWeight: 700 }}>{attempt.score != null ? `${attempt.score}/25` : '—'}</div>
+        <div style={{ fontSize: 24, fontWeight: 700 }}>{attempt.score != null ? `${attempt.score}/${outOf}` : '—'}</div>
         <div>
           <div style={{ fontSize: 14, fontWeight: 500 }}>{attempt.handouts?.name || attempt.exam_id}</div>
           <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{date} · {attempt.mode.replace('_', ' ')}</div>
@@ -31,6 +36,10 @@ export default function FmaAttemptDetail({ detail, onBack }) {
 
       {attempt.mode === 'score_only' ? (
         <div className="empty-state">Score-only attempt — no per-question answers recorded.</div>
+      ) : !graded ? (
+        <div className="empty-state">
+          This attempt is still in progress — answers and the answer key stay hidden until you submit it.
+        </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {questions.map(q => {

@@ -7,8 +7,12 @@ export default function FmaScoreOnly({ attempt, onDone, onCancel }) {
   const [err, setErr] = useState(null)
 
   async function handleSubmit() {
-    const n = parseInt(score, 10)
-    if (Number.isNaN(n) || n < 0 || n > 25) { setErr('Enter a score between 0 and 25.'); return }
+    // Number() rather than parseInt(): "17.9" and "17abc" should be rejected,
+    // not silently truncated to 17.
+    const n = Number(score.trim())
+    if (score.trim() === '' || !Number.isInteger(n) || n < 0 || n > 25) {
+      setErr('Enter a whole number between 0 and 25.'); return
+    }
     setSubmitting(true)
     setErr(null)
     try {

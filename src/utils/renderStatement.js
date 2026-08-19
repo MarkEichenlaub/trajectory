@@ -1,4 +1,10 @@
 import katex from 'katex'
+// KaTeX emits a MathML copy of every expression alongside the visual HTML, and
+// relies on its own stylesheet to clip that copy out of view. Without the CSS
+// both render, so "$$m$$" shows up as "mm" and \sqrt{} falls apart. This used to
+// be imported only by ProblemPreviewModal, which is lazy-loaded — so anything
+// rendering math on another screen (the F=ma test runner) got no styles at all.
+import 'katex/dist/katex.min.css'
 
 function escapeHtml(s) {
   return s

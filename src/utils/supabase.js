@@ -639,21 +639,28 @@ export async function markMyProblemCompleted(studentId, problemId) {
 
 // ── F=ma practice tests ────────────────────────────────────────────────────
 
-// Exams that have digitized questions (pilot: fma-2024, fma-2025).
+// Every column of fma_questions EXCEPT correct_choice, which is column-revoked
+// from `authenticated` (see 20260819150000_fma_hardening.sql). Selecting '*'
+// here would 403 — the key is served only by fetchFmaAttemptDetail, and only
+// once the attempt is graded.
+const FMA_QUESTION_COLS = 'id, exam_id, question_num, statement, figure_urls, choices, topics, tags'
+
+// Exams that have digitized questions, newest first. `pdf_url` is included so
+// paper-first mode can link out to the exam the student is meant to work from.
 export async function fetchFmaExams() {
-  const { data, error } = await supabase
-    .from('fma_questions').select('exam_id, handouts:exam_id(id, name, year)')
+  const { data, error } = await supabase.from('fma_questions').select('exam_id')
   if (error) throw new Error(error.message)
-  const byId = new Map()
-  for (const row of data || []) {
-    if (!byId.has(row.exam_id)) byId.set(row.exam_id, row.handouts)
-  }
-  return [...byId.values()].sort((a, b) => (b.year || 0) - (a.year || 0))
+  const ids = [...new Set((data || []).map(r => r.exam_id))]
+  if (ids.length === 0) return []
+  const { data: exams, error: hErr } = await supabase
+    .from('handouts').select('id, name, year, pdf_url').in('id', ids)
+  if (hErr) throw new Error(hErr.message)
+  return (exams || []).sort((a, b) => (b.year || 0) - (a.year || 0))
 }
 
 export async function fetchFmaQuestions(examId) {
   const { data, error } = await supabase
-    .from('fma_questions').select('*').eq('exam_id', examId).order('question_num')
+    .from('fma_questions').select(FMA_QUESTION_COLS).eq('exam_id', examId).order('question_num')
   if (error) throw new Error(error.message)
   return data || []
 }
@@ -667,20 +674,48 @@ export async function createFmaAttempt(studentId, examId, mode) {
 
 // Upserts the student's current choice for one question (live or paper-first mode),
 // and appends a timestamped event so every click — not just the final one — is
-// logged (lets us reconstruct roughly how long was spent per question).
+// logged. The event log is analysis-only, so a failure there must not surface as
+// an error on an answer that genuinely saved.
 export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
   const { error } = await supabase
     .from('fma_attempt_answers')
     .upsert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice }, { onConflict: 'attempt_id,question_id' })
   if (error) throw new Error(error.message)
 
-  const { error: evErr } = await supabase
+  await supabase
     .from('fma_answer_events')
-    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice })
-  if (evErr) throw new Error(evErr.message)
+    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice, event_type: 'answer' })
+    .then(({ error: evErr }) => { if (evErr) console.warn('fma: answer event not logged', evErr.message) })
 }
 
-// Full click history for an attempt, in order — one row per answer change.
+// Records that a question became the one on screen. Together with 'answer'
+// events this gives an honest per-question time: a question is "active" from
+// the moment it is shown until the next event on a different question. Purely
+// analytical — never blocks or errors the student's flow.
+export async function logFmaQuestionView(attemptId, questionId) {
+  const { error } = await supabase
+    .from('fma_answer_events')
+    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: null, event_type: 'view' })
+  if (error) console.warn('fma: view event not logged', error.message)
+}
+
+// Answers already recorded for an attempt, so a resumed test can be rehydrated.
+export async function fetchFmaAttemptAnswers(attemptId) {
+  const { data, error } = await supabase
+    .from('fma_attempt_answers').select('*').eq('attempt_id', attemptId)
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+// Discards an attempt the student backed out of. Only ever called for an
+// attempt with no answers recorded, so nothing of value is lost — this keeps
+// Start→Cancel from littering "Past attempts" with empty in_progress rows.
+export async function deleteFmaAttempt(attemptId) {
+  const { error } = await supabase.from('fma_attempts').delete().eq('id', attemptId)
+  if (error) throw new Error(error.message)
+}
+
+// Full event history for an attempt, in order.
 export async function fetchFmaAnswerEvents(attemptId) {
   const { data, error } = await supabase
     .from('fma_answer_events').select('*').eq('attempt_id', attemptId).order('clicked_at')
@@ -688,76 +723,40 @@ export async function fetchFmaAnswerEvents(attemptId) {
   return data || []
 }
 
-// Scratch-work upload. questionId is set for a per-question (live-mode) upload;
-// omit it for a single whole-attempt (paper-first mode) upload.
-export async function uploadFmaScratchWork(studentId, attemptId, file, questionId) {
+// One scratch-work upload per attempt, in every mode. This used to be
+// per-question in live mode, which nobody would realistically do 25 times — and
+// it silently did nothing when the student uploaded before picking an answer,
+// because it UPDATEd an fma_attempt_answers row that did not exist yet.
+export async function uploadFmaScratchWork(studentId, attemptId, file) {
   const ext = file.name.split('.').pop() || 'bin'
-  const path = questionId
-    ? `${studentId}/${attemptId}-${questionId}.${ext}`
-    : `${studentId}/${attemptId}.${ext}`
+  const path = `${studentId}/${attemptId}.${ext}`
   const { error } = await supabase.storage
     .from('fma-scratch-work')
     .upload(path, file, { upsert: true, contentType: file.type })
   if (error) throw new Error(error.message)
   const { data } = supabase.storage.from('fma-scratch-work').getPublicUrl(path)
   const url = data.publicUrl
-  if (questionId) {
-    const { error: aErr } = await supabase
-      .from('fma_attempt_answers').update({ scratch_work_url: url }).eq('attempt_id', attemptId).eq('question_id', questionId)
-    if (aErr) throw new Error(aErr.message)
-  } else {
-    const { error: aErr } = await supabase
-      .from('fma_attempts').update({ scratch_work_url: url }).eq('id', attemptId)
-    if (aErr) throw new Error(aErr.message)
-  }
+  const { error: aErr } = await supabase
+    .from('fma_attempts').update({ scratch_work_url: url }).eq('id', attemptId)
+  if (aErr) throw new Error(aErr.message)
   return url
 }
 
-// Grades a live/paper-first attempt against the answer key and finalizes its score.
+// Grades a live/paper-first attempt. The grading itself runs in a SECURITY
+// DEFINER function: the browser never sees the answer key, can't write `score`
+// (column-revoked), and the whole thing is one atomic statement rather than 25
+// sequential UPDATEs that could half-apply.
 export async function submitFmaAttempt(attemptId) {
-  const { data: attempt, error: aErr } = await supabase.from('fma_attempts').select('*').eq('id', attemptId).single()
-  if (aErr) throw new Error(aErr.message)
-
-  if (attempt.mode !== 'score_only') {
-    const { data: answers, error: ansErr } = await supabase
-      .from('fma_attempt_answers').select('id, question_id, selected_choice').eq('attempt_id', attemptId)
-    if (ansErr) throw new Error(ansErr.message)
-    const { data: questions, error: qErr } = await supabase
-      .from('fma_questions').select('id, correct_choice').eq('exam_id', attempt.exam_id)
-    if (qErr) throw new Error(qErr.message)
-    const correctById = new Map((questions || []).map(q => [q.id, q.correct_choice]))
-
-    for (const a of answers || []) {
-      const isCorrect = a.selected_choice != null && a.selected_choice === correctById.get(a.question_id)
-      const { error } = await supabase.from('fma_attempt_answers').update({ is_correct: isCorrect }).eq('id', a.id)
-      if (error) throw new Error(error.message)
-    }
-    const score = (answers || []).filter(a => a.selected_choice === correctById.get(a.question_id)).length
-
-    const { data, error } = await supabase
-      .from('fma_attempts')
-      .update({ status: 'graded', score, submitted_at: new Date().toISOString() })
-      .eq('id', attemptId).select().single()
-    if (error) throw new Error(error.message)
-    return data
-  }
-
-  const { data, error } = await supabase
-    .from('fma_attempts')
-    .update({ status: 'graded', submitted_at: new Date().toISOString() })
-    .eq('id', attemptId).select().single()
+  const { data, error } = await supabase.rpc('submit_fma_attempt', { p_attempt_id: attemptId })
   if (error) throw new Error(error.message)
-  return data
+  return Array.isArray(data) ? data[0] : data
 }
 
-// score_only mode: the student (or admin) directly records a final score.
+// score_only mode: self-reported by design, but range-checked server-side.
 export async function submitFmaScoreOnly(attemptId, score) {
-  const { data, error } = await supabase
-    .from('fma_attempts')
-    .update({ status: 'graded', score, submitted_at: new Date().toISOString() })
-    .eq('id', attemptId).select().single()
+  const { data, error } = await supabase.rpc('submit_fma_score_only', { p_attempt_id: attemptId, p_score: score })
   if (error) throw new Error(error.message)
-  return data
+  return Array.isArray(data) ? data[0] : data
 }
 
 export async function fetchFmaAttempts(studentId) {
@@ -774,30 +773,28 @@ export async function fetchFmaAttemptDetail(attemptId) {
   const { data: answers, error: ansErr } = await supabase
     .from('fma_attempt_answers').select('*').eq('attempt_id', attemptId)
   if (ansErr) throw new Error(ansErr.message)
+  // correct_choice comes back non-null only once the attempt is graded, so an
+  // in-progress attempt can never leak the key into the review screen.
   const { data: questions, error: qErr } = await supabase
-    .from('fma_questions').select('*').eq('exam_id', attempt.exam_id).order('question_num')
+    .rpc('fma_attempt_questions', { p_attempt_id: attemptId })
   if (qErr) throw new Error(qErr.message)
   const answerByQuestion = new Map((answers || []).map(a => [a.question_id, a]))
 
-  // Approx seconds spent per question: gap from a question's first click to
-  // the next click on a DIFFERENT question, in chronological order.
-  const events = await fetchFmaAnswerEvents(attemptId)
+  // Seconds per question. Every event ('view' on navigation, 'answer' on a
+  // click) marks the question on screen from that instant, so each question is
+  // credited with the span running up to the next event elsewhere. Only live
+  // mode navigates question-by-question; paper-first enters answers in bulk, so
+  // there is no meaningful per-question time to report.
+  const events = attempt.mode === 'live' ? await fetchFmaAnswerEvents(attemptId) : []
   const secondsByQuestion = new Map()
-  let sectionStart = null, sectionQuestion = null
-  for (const ev of events) {
-    if (ev.question_id !== sectionQuestion) {
-      if (sectionQuestion != null) {
-        const prev = secondsByQuestion.get(sectionQuestion) || 0
-        secondsByQuestion.set(sectionQuestion, prev + (new Date(ev.clicked_at) - new Date(sectionStart)) / 1000)
-      }
-      sectionQuestion = ev.question_id
-      sectionStart = ev.clicked_at
-    }
-  }
-  if (sectionQuestion != null && attempt.submitted_at) {
-    const prev = secondsByQuestion.get(sectionQuestion) || 0
-    secondsByQuestion.set(sectionQuestion, prev + (new Date(attempt.submitted_at) - new Date(sectionStart)) / 1000)
-  }
+  const endedAt = attempt.submitted_at ? new Date(attempt.submitted_at) : null
+  events.forEach((ev, i) => {
+    const next = events[i + 1] ? new Date(events[i + 1].clicked_at) : endedAt
+    if (!next) return
+    const span = (next - new Date(ev.clicked_at)) / 1000
+    if (span <= 0) return
+    secondsByQuestion.set(ev.question_id, (secondsByQuestion.get(ev.question_id) || 0) + span)
+  })
 
   return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
 }

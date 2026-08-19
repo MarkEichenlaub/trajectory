@@ -52,7 +52,7 @@ export default function AdminFmaView({ studentId, studentName }) {
               <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{a.mode.replace('_', ' ')}</div>
               <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{new Date(a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
               <div style={{ fontSize: 12, fontWeight: 600 }}>
-                {a.status === 'graded' ? `${a.score}/25` : a.status}
+                {a.score != null ? `${a.score}/25` : a.status === 'in_progress' ? 'in progress' : '—'}
               </div>
             </div>
           ))}
