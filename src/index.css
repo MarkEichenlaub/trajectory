@@ -691,3 +691,8 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 }
 .fma-tag.ok  { background: var(--green); color: var(--surface); }
 .fma-tag.bad { background: var(--red); color: var(--surface); }
+
+/* Admin panes that aren't one of the table views. `.content` is overflow:hidden
+   and only supplies the flex row, so a pane that doesn't scroll itself simply
+   clips whatever falls past the fold — with no scrollbar to reveal it. */
+.admin-pane { flex: 1; overflow-y: auto; padding: 20px 28px; }

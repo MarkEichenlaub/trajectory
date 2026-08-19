@@ -32,11 +32,16 @@ export default function AdminFmaView({ studentId, studentName }) {
   if (loading) return <div style={{ color: 'var(--text-dim)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
 
   if (detail) {
-    return <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} />
+    // Needs its own scroll too: a 25-question review is the longest page here.
+    return (
+      <div className="admin-pane">
+        <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} />
+      </div>
+    )
   }
 
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div className="admin-pane" style={{ maxWidth: 720 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 12 }}>{err}</div>}
       <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>{studentName}'s F=ma practice tests</h3>
 

@@ -1174,7 +1174,7 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
   const balance = student.session_balance ?? 0
 
   return (
-    <div style={{ maxWidth: 900, width: '100%', margin: '0 auto', padding: '20px 0' }}>
+    <div className="admin-pane" style={{ maxWidth: 900, width: '100%', margin: '0 auto' }}>
       <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 20 }}>{student.name} — Billing</h2>
 
       {/* Balance / rate / invoicing controls */}

@@ -54,7 +54,7 @@ export default function AdminProgressPlanView({ studentId, studentName, onEmailR
   if (loading) return <div style={{ color: 'var(--muted)', fontSize: 13, padding: '20px 0' }}>Loading…</div>
 
   return (
-    <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div className="admin-pane" style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
 
       {/* Draft hint */}
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 18px' }}>
