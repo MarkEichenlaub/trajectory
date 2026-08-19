@@ -665,12 +665,27 @@ export async function createFmaAttempt(studentId, examId, mode) {
   return data
 }
 
-// Upserts the student's selected choice for one question (live or paper-first mode).
+// Upserts the student's current choice for one question (live or paper-first mode),
+// and appends a timestamped event so every click — not just the final one — is
+// logged (lets us reconstruct roughly how long was spent per question).
 export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
   const { error } = await supabase
     .from('fma_attempt_answers')
     .upsert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice }, { onConflict: 'attempt_id,question_id' })
   if (error) throw new Error(error.message)
+
+  const { error: evErr } = await supabase
+    .from('fma_answer_events')
+    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice })
+  if (evErr) throw new Error(evErr.message)
+}
+
+// Full click history for an attempt, in order — one row per answer change.
+export async function fetchFmaAnswerEvents(attemptId) {
+  const { data, error } = await supabase
+    .from('fma_answer_events').select('*').eq('attempt_id', attemptId).order('clicked_at')
+  if (error) throw new Error(error.message)
+  return data || []
 }
 
 // Scratch-work upload. questionId is set for a per-question (live-mode) upload;
@@ -763,5 +778,26 @@ export async function fetchFmaAttemptDetail(attemptId) {
     .from('fma_questions').select('*').eq('exam_id', attempt.exam_id).order('question_num')
   if (qErr) throw new Error(qErr.message)
   const answerByQuestion = new Map((answers || []).map(a => [a.question_id, a]))
-  return { attempt, questions: questions || [], answerByQuestion }
+
+  // Approx seconds spent per question: gap from a question's first click to
+  // the next click on a DIFFERENT question, in chronological order.
+  const events = await fetchFmaAnswerEvents(attemptId)
+  const secondsByQuestion = new Map()
+  let sectionStart = null, sectionQuestion = null
+  for (const ev of events) {
+    if (ev.question_id !== sectionQuestion) {
+      if (sectionQuestion != null) {
+        const prev = secondsByQuestion.get(sectionQuestion) || 0
+        secondsByQuestion.set(sectionQuestion, prev + (new Date(ev.clicked_at) - new Date(sectionStart)) / 1000)
+      }
+      sectionQuestion = ev.question_id
+      sectionStart = ev.clicked_at
+    }
+  }
+  if (sectionQuestion != null && attempt.submitted_at) {
+    const prev = secondsByQuestion.get(sectionQuestion) || 0
+    secondsByQuestion.set(sectionQuestion, prev + (new Date(attempt.submitted_at) - new Date(sectionStart)) / 1000)
+  }
+
+  return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
 }

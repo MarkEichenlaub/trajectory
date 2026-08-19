@@ -3,8 +3,14 @@ import { renderStatementHtml } from '../../utils/renderStatement'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 
+function formatSeconds(s) {
+  if (!s || s < 1) return null
+  const m = Math.floor(s / 60), sec = Math.round(s % 60)
+  return m > 0 ? `~${m}m ${sec}s` : `~${sec}s`
+}
+
 export default function FmaAttemptDetail({ detail, onBack }) {
-  const { attempt, questions, answerByQuestion } = detail
+  const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
 
   const date = new Date(attempt.submitted_at || attempt.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
@@ -33,7 +39,10 @@ export default function FmaAttemptDetail({ detail, onBack }) {
             return (
               <div key={q.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Question {q.question_num}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                    Question {q.question_num}
+                    {formatSeconds(secondsByQuestion?.get(q.id)) && <span style={{ marginLeft: 8 }}>· {formatSeconds(secondsByQuestion.get(q.id))} spent</span>}
+                  </div>
                   <div style={{ fontSize: 12, fontWeight: 600, color: ans?.is_correct ? 'var(--green)' : ans ? 'var(--red)' : 'var(--text-dim)' }}>
                     {ans?.selected_choice ? `Your answer: ${ans.selected_choice}` : 'Not answered'}
                     {' · Correct: '}{q.correct_choice}
