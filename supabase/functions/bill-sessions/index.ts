@@ -255,8 +255,22 @@ Deno.serve(async (req) => {
         console.error('report reminder check failed for', student.id, (e as Error).message)
       }
 
-      // Invoice when balance hits 1, invoicing is enabled, and student has a non-zero rate
-      if (newBalance === 1 && student.invoicing_enabled && student.hourly_rate > 0) {
+      // Invoice when the balance is down to its last session, invoicing is
+      // enabled, and the student has a non-zero rate.
+      //
+      // This tested `=== 1`, which silently skipped anyone already at or below
+      // zero: a student switched onto invoicing after their block had run out
+      // had no crossing left to catch, so they were never billed at all. `<= 1`
+      // catches them, and the open-invoice guard is what stops it raising a
+      // fresh invoice every session while one is still unpaid.
+      if (newBalance <= 1 && student.invoicing_enabled && student.hourly_rate > 0) {
+        const { data: openInvoices } = await supabase
+          .from('invoices').select('id')
+          .eq('student_id', student.id)
+          .in('status', ['draft', 'sent'])
+          .limit(1)
+        if (openInvoices?.length) continue
+
         const { data: contacts } = await supabase
           .from('student_contacts')
           .select('email')

@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
@@ -1120,6 +1120,19 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
     setSaving(false)
   }
 
+  async function handleCreateInvoice() {
+    if (!confirm(`Raise a Stripe invoice for ${student.name}'s next 10 sessions ($${(student.hourly_rate || 0) * 10})?
+
+This creates a real, owed invoice in Stripe. Nothing is emailed until you press Send below.`)) return
+    setSaving(true)
+    try {
+      const res = await createInvoiceNow(student.id)
+      setInvoices(await fetchInvoices(student.id))
+      showToast(`Invoice raised — $${res.amount_dollars}. Review and send it below.`)
+    } catch (e) { showToast(e.message, 'error') }
+    setSaving(false)
+  }
+
   async function handleAddTen() {
     const newBalance = (student.session_balance ?? 0) + 10
     setSaving(true)
@@ -1200,6 +1213,14 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
               {draft.invoicing_enabled ? 'auto-invoices via Stripe' : 'manual'}
             </span>
           </div>
+          {/* The automatic path only fires as a block runs out, so a student
+              already at zero needs the invoice raising deliberately. */}
+          {student.invoicing_enabled && (student.hourly_rate ?? 0) > 0 && (
+            <button className="sm" disabled={saving} onClick={handleCreateInvoice}
+              title="Raise a Stripe invoice for the next 10 sessions now">
+              ⧉ Invoice now
+            </button>
+          )}
           {isDirty && (
             <button className="sm primary" disabled={saving} onClick={saveDraft}>
               {saving ? 'Saving…' : 'Save'}

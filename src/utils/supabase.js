@@ -226,6 +226,18 @@ export async function fetchInvoices(studentId) {
 }
 
 // Send the staged billing-contact email for a drafted invoice, then mark it sent.
+// Raises a Stripe invoice for the next block of sessions on demand. The
+// automatic path in bill-sessions only fires as a block runs out, so a student
+// already at zero -- or newly switched onto invoicing -- needs this.
+export async function createInvoiceNow(studentId) {
+  const { data, error } = await supabase.functions.invoke('create-invoice', {
+    body: { student_id: studentId },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
 export async function sendStagedInvoice(invoice) {
   await sendEmail({
     to: invoice.staged_email_to,
