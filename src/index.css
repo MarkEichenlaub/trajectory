@@ -655,3 +655,39 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
   body.fma-exam-mode .student-portal { padding: 12px 14px 0; }
   .fma-choice-figure { max-height: 96px; }
 }
+
+/* ---- F=ma reviewed attempt ------------------------------------- */
+.fma-summary {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.fma-summary-score { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fma-summary-counts { display: flex; gap: 14px; margin-top: 6px; font-size: 12px; color: var(--text-dim); }
+.fma-summary-counts b { font-variant-numeric: tabular-nums; }
+.fma-summary-counts b.ok { color: var(--green); }
+.fma-summary-counts b.bad { color: var(--red); }
+
+/* Navigator on the review screen: same 25 buttons as the runner, but scored. */
+.fma-grid-btn.result-correct    { background: var(--green-bg); border-color: var(--green-line); color: var(--green); font-weight: 600; }
+.fma-grid-btn.result-incorrect,
+.fma-grid-btn.result-unanswered { background: var(--red-bg); border-color: var(--red-line); color: var(--red); font-weight: 600; }
+.fma-grid-btn.result-unanswered { border-style: dashed; }
+.fma-legend .swatch.result-correct    { background: var(--green-bg); border-color: var(--green-line); }
+.fma-legend .swatch.result-incorrect  { background: var(--red-bg); border-color: var(--red-line); }
+.fma-legend .swatch.result-unanswered { background: var(--red-bg); border-color: var(--red-line); border-style: dashed; }
+
+.fma-review-choice {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-size: 12px; padding: 5px 8px; border-radius: 4px;
+  border: 1px solid transparent;
+}
+.fma-review-choice.key { background: var(--green-bg); border-color: var(--green-line); }
+.fma-review-choice.picked-wrong { background: var(--red-bg); border-color: var(--red-line); }
+.fma-tag {
+  margin-left: auto; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 1px 6px; border-radius: 100px; white-space: nowrap;
+}
+.fma-tag.ok  { background: var(--green); color: var(--surface); }
+.fma-tag.bad { background: var(--red); color: var(--surface); }

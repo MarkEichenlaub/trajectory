@@ -110,11 +110,14 @@ export function TagBreakdown({ attempts }) {
         for (const { questions, answerByQuestion } of details) {
           for (const q of questions) {
             const ans = answerByQuestion.get(q.id)
-            if (!ans || ans.selected_choice == null) continue
+            // Every question on a submitted test counts. Skipping the unanswered
+            // ones scored a test where 4 of 25 were attempted as 4/4 -- a clean
+            // sweep on every tag -- when the other 21 were in fact all missed.
+            // There's no partial credit on the F=ma, so a blank is a miss.
             for (const tag of q.tags || []) {
               if (!map[tag]) map[tag] = { correct: 0, total: 0 }
               map[tag].total++
-              if (ans.is_correct) map[tag].correct++
+              if (ans?.selected_choice && ans.is_correct) map[tag].correct++
             }
           }
         }

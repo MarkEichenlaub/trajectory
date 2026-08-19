@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useRef } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
 import ScratchWorkLink from './ScratchWorkLink'
 
@@ -12,26 +12,74 @@ function formatSeconds(s) {
 
 export default function FmaAttemptDetail({ detail, onBack }) {
   const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
+  const questionRefs = useRef({})
 
   // An ungraded attempt must not reveal the key: correct_choice comes back null
   // from the server until the attempt is graded, and we hide the verdict UI too.
   const graded = attempt.status === 'graded'
   const outOf = questions.length || 25
 
+  // A skipped question is a question you got wrong -- there's no partial credit
+  // on the F=ma -- so it belongs in the same bucket as a wrong answer.
+  const verdicts = questions.map(q => {
+    const ans = answerByQuestion.get(q.id)
+    if (!ans?.selected_choice) return 'unanswered'
+    return ans.is_correct ? 'correct' : 'incorrect'
+  })
+  const nCorrect = verdicts.filter(v => v === 'correct').length
+  const nIncorrect = verdicts.filter(v => v === 'incorrect').length
+  const nUnanswered = verdicts.filter(v => v === 'unanswered').length
+
   const date = new Date(attempt.submitted_at || attempt.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
+  function jumpTo(qid) {
+    // Instant, not smooth: smooth scrolling is a no-op inside this scroll
+    // container (and whenever the OS asks for reduced motion), which made
+    // clicking a question number look like nothing happened.
+    questionRefs.current[qid]?.scrollIntoView({ behavior: 'auto', block: 'start' })
+  }
+
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div style={{ maxWidth: 760 }}>
       <button className="sm" onClick={onBack} style={{ marginBottom: 16 }}>← Back</button>
 
-      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16, marginBottom: 20, display: 'flex', alignItems: 'center', gap: 16 }}>
-        <div style={{ fontSize: 24, fontWeight: 700 }}>{attempt.score != null ? `${attempt.score}/${outOf}` : '—'}</div>
-        <div>
+      <div className="fma-summary">
+        <div className="fma-summary-score">{attempt.score != null ? `${attempt.score}/${outOf}` : '—'}</div>
+        <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 500 }}>{attempt.handouts?.name || attempt.exam_id}</div>
           <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{date} · {attempt.mode.replace('_', ' ')}</div>
+          {graded && attempt.mode !== 'score_only' && (
+            <div className="fma-summary-counts">
+              <span><b className="ok">{nCorrect}</b> correct</span>
+              <span><b className="bad">{nIncorrect}</b> wrong</span>
+              <span><b className="bad">{nUnanswered}</b> skipped</span>
+            </div>
+          )}
         </div>
-        <ScratchWorkLink path={attempt.scratch_work_url} style={{ marginLeft: 'auto' }} />
+        <ScratchWorkLink path={attempt.scratch_work_url} />
       </div>
+
+      {graded && attempt.mode !== 'score_only' && (
+        <div style={{ marginBottom: 20 }}>
+          <div className="fma-grid">
+            {questions.map((q, i) => (
+              <button
+                key={q.id}
+                className={`fma-grid-btn result-${verdicts[i]}`}
+                onClick={() => jumpTo(q.id)}
+                aria-label={`Question ${q.question_num}, ${verdicts[i]}`}
+              >
+                {q.question_num}
+              </button>
+            ))}
+          </div>
+          <div className="fma-legend">
+            <span><i className="swatch result-correct" /> correct</span>
+            <span><i className="swatch result-incorrect" /> wrong</span>
+            <span><i className="swatch result-unanswered" /> skipped</span>
+          </div>
+        </div>
+      )}
 
       {attempt.mode === 'score_only' ? (
         <div className="empty-state">Score-only attempt — no per-question answers recorded.</div>
@@ -41,35 +89,47 @@ export default function FmaAttemptDetail({ detail, onBack }) {
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {questions.map(q => {
+          {questions.map((q, i) => {
             const ans = answerByQuestion.get(q.id)
             const html = renderStatementHtml(q.statement)
+            const verdict = verdicts[i]
             return (
-              <div key={q.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div
+                key={q.id}
+                ref={el => { questionRefs.current[q.id] = el }}
+                style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 16, scrollMarginTop: 12 }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, gap: 10, flexWrap: 'wrap' }}>
                   <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
                     Question {q.question_num}
                     {formatSeconds(secondsByQuestion?.get(q.id)) && <span style={{ marginLeft: 8 }}>· {formatSeconds(secondsByQuestion.get(q.id))} spent</span>}
                   </div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: ans?.is_correct ? 'var(--green)' : ans ? 'var(--red)' : 'var(--text-dim)' }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: verdict === 'correct' ? 'var(--green)' : verdict === 'incorrect' ? 'var(--red)' : 'var(--yellow)' }}>
                     {ans?.selected_choice ? `Your answer: ${ans.selected_choice}` : 'Not answered'}
                     {' · Correct: '}{q.correct_choice}
                   </div>
                 </div>
                 <div dangerouslySetInnerHTML={{ __html: html }} />
                 {(q.figure_urls || []).map(url => (
-                  <img key={url} src={url} alt="" style={{ maxWidth: '100%', border: '1px solid var(--border)', borderRadius: 4, margin: '8px 0' }} />
+                  <img key={url} src={url} alt="" loading="lazy" className="fma-figure" />
                 ))}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 8 }}>
-                  {CHOICES.map(c => (
-                    <div key={c} style={{
-                      fontSize: 12, padding: '2px 8px', borderRadius: 4,
-                      background: c === q.correct_choice ? 'var(--green-bg, rgba(34,197,94,0.12))' : c === ans?.selected_choice ? 'var(--red-bg, rgba(239,68,68,0.12))' : 'transparent',
-                    }}>
-                      <strong>{c}</strong>{' '}
-                      <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
-                    </div>
-                  ))}
+                  {CHOICES.map(c => {
+                    const isKey = c === q.correct_choice
+                    const isPicked = c === ans?.selected_choice
+                    return (
+                      <div key={c} className={`fma-review-choice${isKey ? ' key' : ''}${isPicked && !isKey ? ' picked-wrong' : ''}`}>
+                        <strong>{c}</strong>{' '}
+                        {q.choice_figure_urls?.[c] ? (
+                          <img src={q.choice_figure_urls[c]} alt={`Option ${c}`} className="fma-choice-figure" loading="lazy" />
+                        ) : (
+                          <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
+                        )}
+                        {isKey && <span className="fma-tag ok">correct answer</span>}
+                        {isPicked && !isKey && <span className="fma-tag bad">your answer</span>}
+                      </div>
+                    )
+                  })}
                 </div>
                 {ans?.scratch_work_url && (
                   <ScratchWorkLink path={ans.scratch_work_url} label="Scratch work for this question ↗"
