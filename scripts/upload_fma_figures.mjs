@@ -40,10 +40,16 @@ async function run() {
   }
   const figureMap = JSON.parse(readFileSync(mapPath, 'utf8'))
 
-  for (const [examId, questions] of Object.entries(figureMap)) {
+  for (const [examId, entry] of Object.entries(figureMap)) {
+    const questions = entry.figures || {}
+    const choiceFigures = entry.choiceFigures || {}
     // Upload each distinct crop once, even when two questions share it.
+    const files = new Set([
+      ...Object.values(questions),
+      ...Object.values(choiceFigures).flatMap(m => Object.values(m)),
+    ])
     const uploaded = new Map()
-    for (const file of new Set(Object.values(questions))) {
+    for (const file of files) {
       const storagePath = `fma-figures/${examId}/${file}`
       if (!DRY) {
         const { error } = await supabase.storage.from('handout-pdfs')
@@ -54,22 +60,31 @@ async function run() {
     }
 
     const { data: rows, error: qErr } = await supabase
-      .from('fma_questions').select('id, question_num, figure_urls').eq('exam_id', examId).order('question_num')
+      .from('fma_questions').select('id, question_num, figure_urls, choice_figure_urls').eq('exam_id', examId).order('question_num')
     if (qErr) { console.error(`  ${examId}: ${qErr.message}`); continue }
 
-    let set = 0, cleared = 0
+    let set = 0, cleared = 0, perChoice = 0
     for (const row of rows) {
       const file = questions[String(row.question_num)]
       const urls = file && uploaded.has(file) ? [uploaded.get(file)] : []
-      const same = JSON.stringify(urls) === JSON.stringify(row.figure_urls || [])
+      const panels = choiceFigures[String(row.question_num)] || {}
+      const choiceUrls = {}
+      for (const [letter, f] of Object.entries(panels)) {
+        if (uploaded.has(f)) choiceUrls[letter] = uploaded.get(f)
+      }
+      const same = JSON.stringify(urls) === JSON.stringify(row.figure_urls || []) &&
+                   JSON.stringify(choiceUrls) === JSON.stringify(row.choice_figure_urls || {})
       if (same) continue
       if (!DRY) {
-        const { error } = await supabase.from('fma_questions').update({ figure_urls: urls }).eq('id', row.id)
+        const { error } = await supabase.from('fma_questions')
+          .update({ figure_urls: urls, choice_figure_urls: choiceUrls }).eq('id', row.id)
         if (error) { console.error(`  ${row.id}: ${error.message}`); continue }
       }
-      urls.length ? set++ : cleared++
+      if (Object.keys(choiceUrls).length) perChoice++
+      else if (urls.length) set++
+      else cleared++
     }
-    console.log(`${examId}: ${uploaded.size} images uploaded, ${set} questions repointed, ${cleared} cleared`)
+    console.log(`${examId}: ${uploaded.size} images, ${set} figures, ${perChoice} per-choice sets, ${cleared} cleared`)
   }
   if (DRY) console.log('\n(dry run — nothing written)')
 }

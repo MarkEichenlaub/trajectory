@@ -35,7 +35,12 @@ OUT_DIR = Path("work/fma/crops")
 DPI = 200
 
 QUESTION_RE = re.compile(r"^\s*(\d{1,2})\.\s")
-CHOICE_RE = re.compile(r"^\s*\((A|B|C|D|E)\)")
+# Case-insensitive on purpose: the AoPS practice exam labels its options (a)-(e)
+# while the real F=ma uses (A)-(E). An uppercase-only pattern silently failed to
+# recognise AoPS choices, so the choice text was never excluded and ended up
+# baked into the cropped figure -- showing "(a) (b) (c)" next to the portal's
+# own A/B/C radio buttons.
+CHOICE_RE = re.compile(r"^\s*\(([A-Ea-e])\)")
 # "The following information applies to problems 2 and 3." (2024/2025) and
 # "The following information is used for questions 2 and 3." (2008/2009).
 PREAMBLE_RE = re.compile(
@@ -111,6 +116,37 @@ def figure_rects(page):
     return out
 
 
+def _near(a, b, gap):
+    """Overlap test that works on degenerate rects.
+
+    A plain axis line or tick has zero width or height, and PyMuPDF treats such
+    a rect as empty -- Rect.intersects() is False for it no matter where it sits.
+    Clustering on intersects() therefore left every axis and tick as its own
+    group, which is why whole choice panels went missing.
+    """
+    return (a.x0 - gap <= b.x1 and b.x0 <= a.x1 + gap and
+            a.y0 - gap <= b.y1 and b.y0 <= a.y1 + gap)
+
+
+def cluster(rects, gap=14):
+    """Merge rects that touch or nearly touch into connected groups."""
+    boxes = [fitz.Rect(r) for r in rects]
+    changed = True
+    while changed:
+        changed = False
+        merged = []
+        for b in boxes:
+            for i, o in enumerate(merged):
+                if _near(b, o, gap):
+                    merged[i] = o | b
+                    changed = True
+                    break
+            else:
+                merged.append(fitz.Rect(b))
+        boxes = merged
+    return boxes
+
+
 def choice_region_top(page, top, bottom):
     """y of the first answer-choice line in this span, or None.
 
@@ -167,11 +203,112 @@ def grow_over_labels(page, box, top, bottom, keep_choice_markers):
     return box
 
 
+MARKER_WORD_RE = re.compile(r"^\(([A-Ea-e])\)$")
+
+
+def standalone_choice_markers(page, top, bottom):
+    """[(letter, Rect)] for choice markers that label a picture, not text.
+
+    Word-level rather than block-level: the AoPS exam puts all five captions in
+    one text block ("(a) (b) (c) (d) (e)") while F=ma gives each its own, and
+    only words carry per-marker positions. "Standalone" means nothing follows the
+    marker on its line -- which is what distinguishes a caption under a diagram
+    from "(A) 2πL/v", and keeps text options from being mistaken for panels.
+    """
+    words = [w for w in page.get_text("words") if top - 2 <= w[1] and w[3] <= bottom + 2]
+    out = []
+    for w in words:
+        m = MARKER_WORD_RE.match(w[4].strip())
+        if not m:
+            continue
+        followed = any(
+            o is not w
+            and abs(o[1] - w[1]) < 5              # same line
+            and 0 < o[0] - w[2] < 45              # close to its right
+            and not MARKER_WORD_RE.match(o[4].strip())
+            for o in words
+        )
+        if not followed:
+            out.append((m.group(1).upper(), fitz.Rect(w[0], w[1], w[2], w[3])))
+    # Keep one per letter, in A..E order.
+    seen = {}
+    for letter, rect in out:
+        seen.setdefault(letter, rect)
+    return [(l, seen[l]) for l in "ABCDE" if l in seen]
+
+
+def split_choice_panels(page, top, bottom):
+    """{'A': Rect, ...} for a question whose options are diagrams.
+
+    These render as five little plots each captioned "(a)".."(e)" (AoPS) or
+    "(A)".."(E)" (F=ma). Keeping them as one image forces the portal to show the
+    source's own lettering beside its A-E radio buttons, and on AoPS that
+    lettering is lowercase. Splitting one panel per choice lets each option carry
+    its own picture, so the only label anywhere is the portal's.
+    """
+    markers = standalone_choice_markers(page, top, bottom)
+    if len(markers) != 5:
+        return {}
+
+    parts = [r for r in figure_rects(page) if r.y0 >= top - 4 and r.y1 <= bottom + 4]
+    if not parts:
+        return {}
+    full = parts[0]
+    for r in parts[1:]:
+        full = full | r
+    # Include the panels' own axis labels in the overall extent.
+    for b in page.get_text("blocks"):
+        r = fitz.Rect(b[0], b[1], b[2], b[3])
+        text = b[4].strip()
+        if not text or len(text) > 12 or CHOICE_RE.match(b[4]):
+            continue
+        if r.y0 >= top and r.y1 <= bottom and _near(full, r, 12):
+            full = full | r
+
+    # These layouts are always a row or a column of equal panels, so slice the
+    # figure on the midpoints between captions. That's far steadier than trying
+    # to cluster each panel: axes and ticks are degenerate rects that cluster
+    # unpredictably, and one stray tick would silently drop a whole option.
+    xs = [(m[1].x0 + m[1].x1) / 2 for m in markers]
+    ys = [(m[1].y0 + m[1].y1) / 2 for m in markers]
+    # Only a single row of panels with the caption centred beneath each one is
+    # safe to slice this way. In a stacked layout the "(A)" sits partway down its
+    # panel, so midpoints between captions don't line up with panel edges and
+    # each slice ends up straddling two options. Those fall back to one image --
+    # harmless, because every exam except the AoPS practice test already labels
+    # its panels (A)-(E), which is exactly what the portal shows.
+    horizontal = max(ys) - min(ys) < 8
+    if not horizontal:
+        return {}
+
+    order = sorted(range(5), key=lambda i: xs[i])
+    centres = [xs[i] for i in order]
+    lo, hi = full.x0, full.x1
+    edges = [lo] + [(centres[i] + centres[i + 1]) / 2 for i in range(4)] + [hi]
+
+    out = {}
+    for slot, i in enumerate(order):
+        letter = markers[i][0]
+        box = fitz.Rect(full)
+        box.x0, box.x1 = edges[slot], edges[slot + 1]
+        box.x0 -= PAD / 2; box.y0 -= PAD / 2; box.x1 += PAD / 2; box.y1 += PAD / 2
+        # Clip the caption off AFTER padding -- padding applied afterwards just
+        # lets a sliver of the "(a)" back into frame.
+        box.y1 = min(box.y1, min(m[1].y0 for m in markers) - 2)
+        box = box & page.rect
+        if box.width < 20 or box.height < 20:
+            return {}
+        out[letter] = box
+
+    return out if len(out) == 5 else {}
+
+
 def crop_exam(exam_id):
     doc = fitz.open(PDF_DIR / f"{exam_id}.pdf")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    figures = {}   # question_num -> output path
-    shared = {}    # question_num -> question_num that owns the shared figure
+    figures = {}         # question_num -> output filename
+    choice_figures = {}  # question_num -> {'A': filename, ...} when options are diagrams
+    shared = {}          # question_num -> question_num that owns the shared figure
 
     per_page = document_anchors(doc)
     for pno in range(len(doc)):
@@ -184,6 +321,18 @@ def crop_exam(exam_id):
             bottom = marks[i + 1][0] if i + 1 < len(marks) else page.rect.height - BOTTOM_MARGIN
 
             keep_markers = kind == "question" and choices_are_figures(page, top, bottom)
+
+            # Options that are diagrams become one image per choice. Gated on
+            # split_choice_panels' own standalone-marker test rather than
+            # choices_are_figures, which counts "(D) 2" as a bare marker.
+            if kind == "question":
+                panels = split_choice_panels(page, top, bottom)
+                if panels:
+                    for letter, box in panels.items():
+                        out = OUT_DIR / f"{exam_id}-q{payload:02d}{letter}.png"
+                        page.get_pixmap(clip=box, dpi=DPI).save(out)
+                    choice_figures[payload] = {L: f"{exam_id}-q{payload:02d}{L}.png" for L in panels}
+                    continue
 
             # A question span holds at most one figure, so union every drawing in
             # it rather than clustering: the parts are often bare lines with zero
@@ -220,8 +369,10 @@ def crop_exam(exam_id):
         if owner in figures:
             mapping[q] = figures[owner].name
 
-    print(f"{exam_id}: {len(mapping)} questions with figures -> {sorted(mapping)}")
-    return mapping
+    print(f"{exam_id}: {len(mapping)} with figures -> {sorted(mapping)}")
+    if choice_figures:
+        print(f"{' ' * len(exam_id)}  {len(choice_figures)} with per-choice diagrams -> {sorted(choice_figures)}")
+    return {"figures": mapping, "choiceFigures": choice_figures}
 
 
 if __name__ == "__main__":

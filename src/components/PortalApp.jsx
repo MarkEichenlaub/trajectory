@@ -82,7 +82,7 @@ export default function PortalApp({ account, userId, onSignOut }) {
     ...handouts.map(h => ({
       id: h.id,
       contest: h.source,
-      type: h.resource_type === 'book' ? 'Book' : 'Handout',
+      type: h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout',
       source: handoutSource(h),
       name: h.name,
       desc: h.description || '',

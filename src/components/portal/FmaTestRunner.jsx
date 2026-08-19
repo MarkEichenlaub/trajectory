@@ -93,6 +93,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
   const [submitting, setSubmitting] = useState(false)
   const [reviewing, setReviewing] = useState(false)
+  const [dragging, setDragging] = useState(false)
   const [err, setErr] = useState(null)
   const fileInputRef = useRef(null)
 
@@ -104,6 +105,14 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   useEffect(() => {
     if (q && !reviewing) logFmaQuestionView(attempt.id, q.id)
   }, [attempt.id, q?.id, reviewing])
+
+  // The portal header and tab strip are dead weight mid-test -- they eat a
+  // couple of hundred pixels and the header overlaps the tabs once you scroll.
+  // A real exam platform is chrome-free, so hide it until the test is left.
+  useEffect(() => {
+    document.body.classList.add('fma-exam-mode')
+    return () => document.body.classList.remove('fma-exam-mode')
+  }, [])
 
   // Warm the neighbouring questions' figures. These are a few hundred KB each,
   // and without this every Next press waits on a cold fetch and the layout jumps
@@ -153,6 +162,16 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   async function handleFileChange(e) {
     const file = e.target.files?.[0]
     e.target.value = ''
+    await uploadFile(file)
+  }
+
+  function handleDrop(e) {
+    e.preventDefault()
+    setDragging(false)
+    uploadFile(e.dataTransfer.files?.[0])
+  }
+
+  async function uploadFile(file) {
     if (!file) return
     setUploading(true)
     setErr(null)
@@ -265,7 +284,11 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
                 <label>
                   <input type="radio" name={`q-${q.id}`} checked={picked} onChange={() => handleChoose(c)} />
                   <strong>{c}</strong>
-                  <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
+                  {q.choice_figure_urls?.[c] ? (
+                    <img src={q.choice_figure_urls[c]} alt={`Option ${c}`} className="fma-choice-figure" />
+                  ) : (
+                    <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
+                  )}
                 </label>
                 <button
                   className="fma-strike"
@@ -282,18 +305,27 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
         </div>
       </div>
 
-      <div className="fma-scratch">
+      <div
+        className={`fma-scratch${dragging ? ' dragging' : ''}`}
+        onDragOver={e => { e.preventDefault(); setDragging(true) }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+      >
         <button className="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
           {uploading ? 'Uploading…' : scratchUrl ? 'Replace scratch work' : 'Upload scratch work (whole test)'}
         </button>
         <ScratchWorkLink path={scratchUrl} label="View ↗" />
-        <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Answers save as you tap them.</span>
+        <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+          {dragging ? 'Drop to upload' : 'or drag a photo here · answers save as you tap them'}
+        </span>
       </div>
 
+      {/* Sticky: this row used to sit below the fold on a tall question, so the
+          only way to submit was invisible unless you scrolled to the very end. */}
       <div className="fma-nav">
         <button disabled={index === 0} onClick={() => setIndex(i => i - 1)}>← Previous</button>
         <button className="fma-review-btn" onClick={() => setReviewing(true)}>Review &amp; submit</button>
-        <button className="primary" disabled={index === questions.length - 1} onClick={() => setIndex(i => i + 1)}>Next →</button>
+        <button className="primary" disabled={index === questions.length - 1} onClick={() => setIndex(i => i + 1)}>Next question →</button>
       </div>
     </div>
   )

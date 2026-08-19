@@ -643,7 +643,7 @@ export async function markMyProblemCompleted(studentId, problemId) {
 // from `authenticated` (see 20260819150000_fma_hardening.sql). Selecting '*'
 // here would 403 — the key is served only by fetchFmaAttemptDetail, and only
 // once the attempt is graded.
-const FMA_QUESTION_COLS = 'id, exam_id, question_num, statement, figure_urls, choices, topics, tags'
+const FMA_QUESTION_COLS = 'id, exam_id, question_num, statement, figure_urls, choice_figure_urls, choices, topics, tags'
 
 // Exams that have digitized questions, newest first. `pdf_url` is included so
 // paper-first mode can link out to the exam the student is meant to work from.

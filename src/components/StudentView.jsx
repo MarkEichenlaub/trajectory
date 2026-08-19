@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
+  fetchFmaExams,
   fetchMyContacts, fetchMyContactsView,
   fetchStudentContacts,
   fetchInvoices, fetchMyInvoices,
@@ -52,6 +53,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [contactsLoaded, setContactsLoaded] = useState(false)
   const [invoices, setInvoices] = useState([])
   const [invoicesLoaded, setInvoicesLoaded] = useState(false)
+  const [preselectExamId, setPreselectExamId] = useState(null)
+  // Which assigned exams can actually be sat in the portal (vs. PDF only).
+  const [digitizedExamIds, setDigitizedExamIds] = useState(new Set())
   const [submittingId, setSubmittingId] = useState(null)
   const [submitError, setSubmitError] = useState(null)
   const submitInputRef = useRef(null)
@@ -74,6 +78,14 @@ export default function StudentView({ student, assignments, sessions, problems, 
     const load = isPreview ? fetchInvoices(student.id) : fetchMyInvoices()
     load.then(inv => { setInvoices(inv); setInvoicesLoaded(true) }).catch(console.error)
   }, [tab, student?.id, isPreview, canBill, invoicesLoaded])
+
+  useEffect(() => {
+    let cancelled = false
+    fetchFmaExams()
+      .then(e => { if (!cancelled) setDigitizedExamIds(new Set(e.map(x => x.id))) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
 
   function problemById(id) {
     return problems.find(p => p.id === id)
@@ -227,6 +239,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
         <FmaProgress
           studentId={student.id}
           isPreview={isPreview}
+          preselectExamId={preselectExamId}
           assignedExamIds={assignments
             .filter(a => a.student_id === student.id && a.status !== 'completed')
             .map(a => a.problem_id)}
@@ -396,7 +409,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
             const p = problemById(a.problem_id)
             if (!p) return null
             const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'
-            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : p.type === 'Exam' ? 'Exam' : 'Problem'
+            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : p.type === 'Exam' ? 'Test PDF' : 'Problem'
+            // A digitized exam is taken in the portal, so send the student
+            // straight into the runner rather than at a PDF they can't answer on.
+            const takeable = p.type === 'Exam' && digitizedExamIds.has(p.id) && a.status !== 'completed'
             const dateLabel = a.status === 'completed' && a.completed_date
               ? `Completed ${a.completed_date}`
               : `Assigned ${a.assigned_date}`
@@ -420,7 +436,13 @@ export default function StudentView({ student, assignments, sessions, problems, 
                   <span className="p-date">{dueLabel || dateLabel}</span>
                 </div>
                 <div className="assigned-row-links">
-                  {p.problemUrl && <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>}
+                  {takeable ? (
+                    <button className="sm primary" onClick={() => { setPreselectExamId(p.id); setTab('fma-progress') }}>
+                      Take Test →
+                    </button>
+                  ) : p.problemUrl && (
+                    <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>
+                  )}
                   {p.solutionUrl && a.status === 'completed' && <a href={p.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>}
                   {subs.map((s, i) => (
                     <a key={s.id} href={s.file_url} target="_blank" rel="noreferrer">

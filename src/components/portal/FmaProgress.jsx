@@ -150,7 +150,7 @@ export function TagBreakdown({ attempts }) {
   )
 }
 
-export default function FmaProgress({ studentId, isPreview, assignedExamIds = [] }) {
+export default function FmaProgress({ studentId, isPreview, assignedExamIds = [], preselectExamId = null }) {
   const [view, setView] = useState('list') // 'list' | 'live' | 'batch' | 'score' | 'detail'
   const [exams, setExams] = useState([])
   const [attempts, setAttempts] = useState([])
@@ -175,13 +175,16 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
       .then(([e, a]) => {
         setExams(e)
         setAttempts(a)
+        // "Take Test" on a specific assignment beats the generic assigned/newest
+        // fallback, so the picker opens on the exam that was clicked.
+        const wanted = e.find(x => x.id === preselectExamId)
         const assigned = e.find(x => assignedExamIds.includes(x.id))
-        const pick = assigned || e[0]
+        const pick = wanted || assigned || e[0]
         if (pick) setSelectedExamId(pick.id)
       })
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
-  }, [studentId, assignedKey])
+  }, [studentId, assignedKey, preselectExamId])
 
   const refreshAttempts = useCallback(async () => {
     setAttempts(await fetchFmaAttempts(studentId))
