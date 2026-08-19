@@ -7,3 +7,4 @@ logs
 .miro-auth.json
 .miro-blank-state.json
 miro-capture-*.jpg
+supabase/.temp/
