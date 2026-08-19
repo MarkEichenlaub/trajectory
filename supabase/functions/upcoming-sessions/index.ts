@@ -5,6 +5,7 @@ const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
 // Either a dedicated launcher token or the existing cron secret authorizes a read.
 const LAUNCHER_TOKEN = Deno.env.get('LAUNCHER_TOKEN') || ''
 const CRON_SECRET = Deno.env.get('CRON_SECRET') || ''
+const PORTAL = 'https://portal.eichenlaubphysics.com'
 
 // Deployed --no-verify-jwt: this function authenticates itself via X-Launcher-Token,
 // so the gateway must not require a JWT. See memory edge-function-verify-jwt.
@@ -22,7 +23,7 @@ Deno.serve(async (req) => {
 
   const { data, error } = await supabase
     .from('sessions')
-    .select('id, scheduled_at, students(name)')
+    .select('id, scheduled_at, miro_board_url, student_id, students(name)')
     .gt('scheduled_at', now.toISOString())
     .lte('scheduled_at', max.toISOString())
     .order('scheduled_at', { ascending: true })
@@ -46,12 +47,55 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Plain text, one session per line: <startISO>\t<studentName>\t<sessionId>\t<prob1|prob2>
-  // (plain text so the AHK client needs no JSON parser; 4th field is empty when no on-deck problems)
+  // Open assignments per student, resolved to something linkable. Only handouts,
+  // books and exams live in the database; competition problems come from a JSON
+  // catalog the browser loads, so they can't be resolved here and are named
+  // without a link rather than dropped.
+  const studentIds = [...new Set((data ?? []).map(s => s.student_id as string).filter(Boolean))]
+  const linksByStudent: Record<string, string[]> = {}
+  if (studentIds.length > 0) {
+    const { data: assignments } = await supabase
+      .from('assignments')
+      .select('student_id, problem_id, status')
+      .in('student_id', studentIds)
+      .neq('status', 'completed')
+
+    const problemIds = [...new Set((assignments ?? []).map(a => a.problem_id as string))]
+    const { data: handouts } = await supabase
+      .from('handouts').select('id, name, pdf_url').in('id', problemIds)
+    const handoutById: Record<string, { name: string; pdf_url: string | null }> = {}
+    for (const h of handouts ?? []) handoutById[h.id as string] = h as never
+
+    // A digitized exam is sat in the portal, so point there rather than at a PDF
+    // the student can't answer on.
+    const { data: fmaRows } = await supabase.from('fma_questions').select('exam_id').in('exam_id', problemIds)
+    const takeable = new Set((fmaRows ?? []).map(r => r.exam_id as string))
+
+    for (const a of assignments ?? []) {
+      const sid = a.student_id as string
+      const pid = a.problem_id as string
+      const h = handoutById[pid]
+      if (!linksByStudent[sid]) linksByStudent[sid] = []
+      if (takeable.has(pid)) {
+        linksByStudent[sid].push(`${h?.name || pid} - ${PORTAL}/fma-progress`)
+      } else if (h?.pdf_url) {
+        linksByStudent[sid].push(`${h.name} - ${h.pdf_url}`)
+      } else if (h) {
+        linksByStudent[sid].push(h.name)
+      }
+    }
+  }
+
+  // Plain text, one session per line (so the AHK client needs no JSON parser):
+  //   <startISO>\t<studentName>\t<sessionId>\t<prob1|prob2>\t<miroUrl>\t<name - url|name - url>
+  // Fields 4-6 may be empty. Fields were appended, never reordered, so an older
+  // client that only reads the first three keeps working.
   const lines = (data ?? []).map((s: Record<string, unknown>) => {
     const name = (s.students as { name?: string } | null)?.name || (s.id as string)
     const onDeck = (onDeckMap[s.id as string] || []).join('|')
-    return `${s.scheduled_at}\t${name}\t${s.id}\t${onDeck}`
+    const miro = (s.miro_board_url as string) || ''
+    const links = (linksByStudent[s.student_id as string] || []).join('|')
+    return `${s.scheduled_at}\t${name}\t${s.id}\t${onDeck}\t${miro}\t${links}`
   })
 
   return new Response(lines.join('\n'), { status: 200, headers: { 'Content-Type': 'text/plain' } })
