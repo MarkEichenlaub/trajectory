@@ -7,6 +7,7 @@ import { swr, k, cacheSet } from '../utils/cache'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
+import InvoicePreviewModal from './InvoicePreviewModal'
 import CreatePacketModal from './CreatePacketModal'
 import FilterSidebar from './FilterSidebar'
 import ProblemTable from './ProblemTable'
@@ -1062,8 +1063,8 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
   const [err, setErr] = useState(null)
   const [draft, setDraft] = useState(null)
   const [saving, setSaving] = useState(false)
-  const [sendingId, setSendingId] = useState(null)
   const [expanded, setExpanded] = useState(new Set())
+  const [previewInvoice, setPreviewInvoice] = useState(null)
 
   useEffect(() => { if (student) setDraft({ ...student }) }, [student])
 
@@ -1123,7 +1124,7 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
   async function handleCreateInvoice() {
     if (!confirm(`Raise a Stripe invoice for ${student.name}'s next 10 sessions ($${(student.hourly_rate || 0) * 10})?
 
-This creates a real, owed invoice in Stripe. Nothing is emailed until you press Send below.`)) return
+This creates the invoice in Stripe and drafts the covering email. Nobody is emailed yet — the invoice then appears in the list below with a "Review & send" button, where you can read the email before it goes.`)) return
     setSaving(true)
     try {
       const res = await createInvoiceNow(student.id)
@@ -1141,13 +1142,10 @@ This creates a real, owed invoice in Stripe. Nothing is emailed until you press 
   }
 
   async function handleSendInvoice(inv) {
-    if (!confirm(`Send the invoice email to ${inv.staged_email_to}?`)) return
-    setSendingId(inv.id)
-    try {
-      await sendStagedInvoice(inv)
-      setInvoices(prev => prev.map(i => i.id === inv.id ? { ...i, status: 'sent' } : i))
-    } catch (e) { showToast(e.message, 'error') }
-    setSendingId(null)
+    await sendStagedInvoice(inv)
+    setInvoices(prev => prev.map(i => i.id === inv.id ? { ...i, status: 'sent' } : i))
+    setPreviewInvoice(null)
+    showToast(`Invoice emailed to ${inv.staged_email_to}`)
   }
 
   function sessionDateStr(iso) {
@@ -1227,6 +1225,15 @@ This creates a real, owed invoice in Stripe. Nothing is emailed until you press 
             </button>
           )}
         </div>
+
+        {previewInvoice && (
+          <InvoicePreviewModal
+            invoice={previewInvoice}
+            studentName={student.name}
+            onSend={handleSendInvoice}
+            onClose={() => setPreviewInvoice(null)}
+          />
+        )}
       </div>
 
       {/* Current block */}
@@ -1288,8 +1295,8 @@ This creates a real, owed invoice in Stripe. Nothing is emailed until you press 
                   )}
                   {inv.status === 'draft' && inv.staged_email_body && (
                     <button className="sm primary" style={{ fontSize: 11, flexShrink: 0 }}
-                      disabled={sendingId === inv.id} onClick={() => handleSendInvoice(inv)}>
-                      {sendingId === inv.id ? 'Sending…' : 'Send'}
+                      onClick={() => setPreviewInvoice(inv)}>
+                      Review &amp; send
                     </button>
                   )}
                 </div>
