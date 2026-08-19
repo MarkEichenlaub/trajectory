@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js'
 import { readFileSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { questions2024, questions2025 } from './fma_questions_data.mjs'
+import { questions2024, questions2025, questionsPractice, questions2008, questions2009 } from './fma_questions_data.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -37,7 +37,13 @@ function toRows(examId, questions) {
 }
 
 async function run() {
-  const rows = [...toRows('fma-2024', questions2024), ...toRows('fma-2025', questions2025)]
+  const rows = [
+    ...toRows('fma-2024', questions2024),
+    ...toRows('fma-2025', questions2025),
+    ...toRows('fma-practice-aops', questionsPractice),
+    ...toRows('fma-2008', questions2008),
+    ...toRows('fma-2009', questions2009),
+  ]
   console.log(`Seeding ${rows.length} questions...`)
   const { error } = await supabase.from('fma_questions').upsert(rows, { onConflict: 'id' })
   if (error) { console.error('FAILED:', error.message); process.exit(1) }

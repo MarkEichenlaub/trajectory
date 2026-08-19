@@ -20,7 +20,7 @@ if (!SERVICE_KEY) { console.error('Could not read service key from .env'); proce
 
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } })
 
-const PAGES_DIR = 'C:\\Users\\markd\\AppData\\Local\\Temp\\fma\\pages'
+const PAGES_DIR = process.argv[2] || 'C:\\Users\\markd\\AppData\\Local\\Temp\\fma\\pages'
 const urlMap = {}
 
 async function run() {
