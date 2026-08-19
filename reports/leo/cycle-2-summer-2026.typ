@@ -62,12 +62,12 @@
     ("Apr 15, 2026", "Combinatorics — permutations versus combinations, and deriving the formula for n choose k — alongside continued work on logarithm rules.", ""),
     ("Apr 22, 2026", "Derived the interior-angle formula for regular polygons, and used a right-triangle construction to find a sine from a given tangent.", ""),
     ("Apr 29, 2026", "Complex numbers: the Argand diagram, conjugates, division, powers of i via periodicity, and the complex conjugate root theorem.", ""),
-    ("May 27, 2026", "Constant-speed motion along a curved path via velocity components, and a first look at the epsilon-delta definition of a limit.", ""),
+    ("May 27, 2026", "Constant-speed motion along a curved path via velocity components, and a first look at the epsilon-delta definition of a limit.", "Blue Morin — read Chapter 1, work problems 1-8"),
     ("Jun 4, 2026", "Derived the Taylor series for sine and cosine from first principles, then used the cosine series to show a pendulum behaves like a spring at small angles.", ""),
-    ("Jun 8, 2026", "Worked through Blue Morin, beginning Taylor series.", ""),
+    ("Jun 8, 2026", "Worked through Blue Morin, beginning Taylor series.", "Blue Morin — read Appendix B on Taylor Series; Taylor Series for the F = ma Exam"),
     ("Jun 10, 2026", "Applied Taylor series to practical estimation: first-order kinematics, the binomial approximation, and square roots without a calculator.", ""),
     ("Jul 14, 2026", "Measurement uncertainty, and how error propagates when many uncertain quantities are added together.", ""),
-    ("Aug 18, 2026", "Two Morin mechanics problems: maximum speed of a mass on a spring by energy conservation, and terminal velocity under linear drag analyzed with a Taylor expansion.", ""),
+    ("Aug 18, 2026", "Two Morin mechanics problems: maximum speed of a mass on a spring by energy conservation, and terminal velocity under linear drag analyzed with a Taylor expansion.", "Blue Morin — finish Ch. 1; AoPS Practice Exam 1 — baseline diagnostic, under test conditions from the F=ma Progress tab"),
   ),
 )
 

@@ -45,6 +45,37 @@ const OPENING_LINES = [
   (name) => `Hi ${name}, Here's your next set of problems — see you soon!`,
 ]
 
+// Covering note for a progress report. Addressed to whoever is on file for
+// reports — usually the student and both parents — so it stays in the third
+// person about the student rather than writing "you" at a mixed audience.
+export function buildReportEmail(student, report) {
+  const firstName = student.first_name || student.name.split(' ')[0]
+  const subject = `${firstName}'s progress report — ${report.title}`
+  const covered = report.sessions_covered
+    ? `It covers our last ${report.sessions_covered} sessions`
+    : 'It covers our sessions since the last report'
+  const body = [
+    `Hi all,`,
+    ``,
+    `${firstName}'s latest progress report is ready.`,
+    ``,
+    `${covered}, and includes what we've been working on, where ${firstName} is`,
+    `making progress, the plan for the coming cycle, and an appendix listing every`,
+    `session with a short summary of what we covered.`,
+    ``,
+    `Read it here:`,
+    `  ${report.pdf_url}`,
+    ``,
+    `It's also in the portal under Progress and Plan, along with every earlier report:`,
+    `  ${PORTAL_URL}/`,
+    ``,
+    `Happy to talk through any of it — just reply to this email.`,
+    ``,
+    `-Mark`,
+  ].join('\n')
+  return { subject, body }
+}
+
 // `takeableExamIds` are exams that have been digitized into the portal's F=ma
 // runner. Those get a link to the page the student actually sits the test on
 // rather than to the exam PDF, which they can't answer on.

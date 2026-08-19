@@ -69,8 +69,14 @@ function season(d) {
   if (m <= 7) return 'Summer'
   return 'Fall'
 }
+const TZ = 'America/New_York'
 function fmtDate(iso) {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: TZ })
+}
+// YYYY-MM-DD in the tutoring timezone, for comparing against assigned_date
+// (which is a bare date). A 7pm session reads as the next day in UTC.
+function isoDay(iso) {
+  return new Date(iso).toLocaleDateString('en-CA', { timeZone: TZ })
 }
 function esc(s) { return String(s ?? '').replace(/"/g, '\\"') }
 
@@ -107,6 +113,17 @@ async function main() {
   // Assignments this cycle, with problem titles resolved from the JSON catalog.
   const problems = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'problems.json'), 'utf8'))
   const byId = new Map(problems.map(p => [p.id, p]))
+  const { data: handoutRows = [] } = await db.from('handouts').select('id, name, source')
+  const handoutById = new Map((handoutRows || []).map(h => [h.id, h]))
+  // Short label for the session log's Assignment column. Handout names carry a
+  // parenthetical full title ("Blue Morin (Problems and Solutions In
+  // Introductory Mechanics)") that is too wide for the column, so drop it.
+  function titleFor(id) {
+    const h = handoutById.get(id)
+    if (h) return h.name.replace(/\s*\([^)]*\)\s*$/, '').trim() || h.name
+    const p = byId.get(id)
+    return p ? `${p.contest} ${p.year ?? ''} ${p.label ?? ''}`.replace(/\s+/g, ' ').trim() : id
+  }
   let aq = db.from('assignments')
     .select('problem_id, status, assigned_date, completed_date, notes')
     .eq('student_id', studentId).order('assigned_date', { ascending: true })
@@ -117,6 +134,22 @@ async function main() {
     const title = p ? `${p.contest} ${p.year ?? ''} ${p.label ?? ''} — ${p.name}`.replace(/\s+/g, ' ').trim() : a.problem_id
     const when = a.status === 'completed' ? `completed ${a.completed_date || '?'}` : `assigned ${a.assigned_date || '?'}`
     return `- ${title} (${when})${a.notes ? ` — note: ${a.notes}` : ''}`
+  })
+
+  // Each session's assignment: whatever was assigned from that session up to
+  // (but not including) the next one. Dates and assignments are facts, so they
+  // are computed here rather than left to the model, which was previously asked
+  // to pick "the assignment that best matches that session".
+  const sessionRows = sessions.map((sess, i) => {
+    const from = isoDay(sess.scheduled_at)
+    const next = sessions[i + 1] ? isoDay(sessions[i + 1].scheduled_at) : null
+    const mine = assignments.filter(a =>
+      a.assigned_date && a.assigned_date >= from && (!next || a.assigned_date < next))
+    const label = mine.map(a => {
+      const note = (a.notes || '').trim().replace(/\s+/g, ' ').replace(/[.;]$/, '')
+      return note ? `${titleFor(a.problem_id)} — ${note}` : titleFor(a.problem_id)
+    }).join('; ')
+    return { date: fmtDate(sess.scheduled_at), assignment: label }
   })
 
   // Cycle label.
@@ -177,6 +210,10 @@ async function main() {
     console.error('Unexpected model output (no `#let data` block). Raw output:\n' + res.stdout)
     process.exit(1)
   }
+
+  // The model writes the prose; the date and assignment columns are restored
+  // from portal data by position, so drift can't misattribute an assignment.
+  dataBlock = restoreSessionFacts(dataBlock, sessionRows)
 
   const file = path.join(outDir, `${slug}.typ`)
   const rel = path.relative(ROOT, file).replace(/\\/g, '/')
@@ -239,6 +276,39 @@ async function main() {
   console.log(`Compile:      typst compile --root ${reportsRel} ${rel} ${pdfRel}`)
 }
 
+// Rewrites each sessions tuple as (authoritative date, model's summary,
+// authoritative assignment). Parsed line-by-line and left untouched if the shape
+// or row count is unexpected, so a surprise degrades to the drafted output.
+function restoreSessionFacts(block, rows) {
+  if (!rows.length) return block
+  const lines = block.split('\n')
+  const open = lines.findIndex(l => l.includes('sessions: ('))
+  if (open < 0) return block
+  let close = -1
+  for (let i = open + 1; i < lines.length; i++) {
+    if (/^\s*\),\s*$/.test(lines[i])) { close = i; break }
+  }
+  if (close < 0) return block
+
+  // Middle field of each tuple: ("date", "summary", "assignment"),
+  // The (?:[^"\\]|\\.)* form keeps an escaped quote inside a summary from
+  // ending the match early.
+  const TUPLE = /\(\s*"(?:[^"\\]|\\.)*"\s*,\s*"((?:[^"\\]|\\.)*)"\s*,\s*"(?:[^"\\]|\\.)*"\s*\)/
+  const summaries = []
+  for (const line of lines.slice(open + 1, close)) {
+    const m = line.match(TUPLE)
+    if (m) summaries.push(m[1])
+  }
+  if (summaries.length !== rows.length) {
+    console.warn(`Note: model returned ${summaries.length} session rows, expected ${rows.length} - leaving the appendix as drafted.`)
+    return block
+  }
+
+  const rebuilt = rows.map((r, i) =>
+    `    ("${esc(r.date)}", "${summaries[i]}", "${esc(r.assignment)}"),`)
+  return [...lines.slice(0, open + 1), ...rebuilt, ...lines.slice(close)].join('\n')
+}
+
 function buildPrompt(student, cycle, sessions, context) {
   return `You are drafting a physics tutoring progress report in the voice of Mark Eichenlaub,
 the tutor. Write in the first person ("I worked with ${student.name} on…"), warm,
@@ -274,7 +344,8 @@ Rules:
 - resources: books/courses/tools to use next cycle (omit the field entirely if none apply).
 - support: 3-4 concrete, low-pressure things the parent can do at home.
 - sessions: ONE tuple per session listed below, in order, each summary ONE sentence.
-  Use the assignment that best matches that session (or "" if unknown).
+  Copy the date and assignment columns EXACTLY as given in SESSION LOG ROWS below;
+  only the middle (summary) field is yours to write.
 - Escape any double-quotes inside strings as \\". Keep "cycle" terminology.
 - Plain ASCII punctuation is fine; the layout handles styling.
 

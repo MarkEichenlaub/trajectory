@@ -5,7 +5,7 @@ import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../u
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
 import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
-import { buildEmailBody } from '../utils/gmail'
+import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import CreatePacketModal from './CreatePacketModal'
 import FilterSidebar from './FilterSidebar'
@@ -615,6 +615,24 @@ export default function AdminApp({ userId }) {
     })
   }
 
+  // Progress report -> covering email, addressed to the contacts flagged for
+  // reports. Routed through the same review modal as assignment emails, so
+  // nothing is sent without Mark reading it first.
+  async function handleEmailReport(report) {
+    if (!activeStudent) return
+    const contacts = await fetchStudentContacts(activeStudent.id).catch(() => [])
+    const recipients = contacts
+      .filter(c => c.receives_reports && c.verified && !c.bounced)
+      .map(c => c.email)
+    if (recipients.length === 0 && activeStudent.email) recipients.push(activeStudent.email)
+    if (recipients.length === 0) {
+      showToast('No contacts are set to receive reports', 'error')
+      return
+    }
+    const { subject, body } = buildReportEmail(activeStudent, report)
+    setEmailDraft({ to: recipients.join(', '), subject, body })
+  }
+
   function handleCopyUrls() {
     const text = selectedProblems.map(p =>
       `${p.name} (${p.contest} ${p.year} ${p.label})\n  Problem: ${p.problemUrl}${p.solutionUrl ? '\n  Solution: ' + p.solutionUrl : ''}`
@@ -895,6 +913,7 @@ export default function AdminApp({ userId }) {
 
         {view === VIEWS.PROGRESS_PLAN && (
           <AdminProgressPlanView
+            onEmailReport={handleEmailReport}
             studentId={activeStudentId}
             studentName={activeStudent?.name || ''}
           />

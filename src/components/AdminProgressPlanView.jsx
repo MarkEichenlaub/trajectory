@@ -3,7 +3,7 @@ import {
   fetchProgressReports, uploadProgressReport, deleteProgressReport,
 } from '../utils/supabase'
 
-export default function AdminProgressPlanView({ studentId, studentName }) {
+export default function AdminProgressPlanView({ studentId, studentName, onEmailReport }) {
   const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
@@ -108,6 +108,9 @@ export default function AdminProgressPlanView({ studentId, studentName }) {
                 </div>
                 {r.pdf_url && (
                   <a href={r.pdf_url} target="_blank" rel="noreferrer" style={{ fontSize: 12, flexShrink: 0 }}>Download ↗</a>
+                )}
+                {r.pdf_url && onEmailReport && (
+                  <button className="sm" style={{ flexShrink: 0 }} onClick={() => onEmailReport(r)}>✉ Email</button>
                 )}
                 <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px', flexShrink: 0 }} onClick={() => handleDelete(r.id)}>✕</button>
               </div>

@@ -116,22 +116,46 @@
   if "sessions" in data and data.sessions.len() > 0 {
     pagebreak()
     section("Appendix: Session Log")
-    table(
-      columns: (auto, 1fr, auto),
-      inset: (x: 8pt, y: 6pt),
-      align: (left + top, left + top, left + top),
-      stroke: 0.5pt + border,
-      fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
-      table.header(
-        text(fill: cream, weight: 600)[Date],
-        text(fill: cream, weight: 600)[Session summary],
-        text(fill: cream, weight: 600)[Assignment],
-      ),
-      ..data.sessions.map(s => (
-        text(font: mono-font, size: 9pt)[#s.at(0)],
-        [#s.at(1)],
-        text(size: 9.5pt)[#s.at(2)],
-      )).flatten(),
-    )
+
+    // Only show the Assignment column when something was actually assigned.
+    // It also has to be a fraction, not `auto`: `auto` sizes to the longest
+    // assignment, which squeezes the summary column down to one word per line.
+    let has-assignments = data.sessions.any(s => s.at(2).trim() != "")
+
+    if has-assignments {
+      table(
+        columns: (auto, 1.7fr, 1fr),
+        inset: (x: 8pt, y: 6pt),
+        align: (left + top, left + top, left + top),
+        stroke: 0.5pt + border,
+        fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
+        table.header(
+          text(fill: cream, weight: 600)[Date],
+          text(fill: cream, weight: 600)[Session summary],
+          text(fill: cream, weight: 600)[Assignment],
+        ),
+        ..data.sessions.map(s => (
+          text(font: mono-font, size: 9pt)[#s.at(0)],
+          [#s.at(1)],
+          text(size: 9pt)[#s.at(2)],
+        )).flatten(),
+      )
+    } else {
+      table(
+        columns: (auto, 1fr),
+        inset: (x: 8pt, y: 6pt),
+        align: (left + top, left + top),
+        stroke: 0.5pt + border,
+        fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
+        table.header(
+          text(fill: cream, weight: 600)[Date],
+          text(fill: cream, weight: 600)[Session summary],
+        ),
+        ..data.sessions.map(s => (
+          text(font: mono-font, size: 9pt)[#s.at(0)],
+          [#s.at(1)],
+        )).flatten(),
+      )
+    }
   }
 }
