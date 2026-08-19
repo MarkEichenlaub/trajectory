@@ -224,7 +224,13 @@ export default function StudentView({ student, assignments, sessions, problems, 
       {tab === 'progress-plan' ? (
         <ProgressAndPlanTab studentId={student.id} />
       ) : tab === 'fma-progress' ? (
-        <FmaProgress studentId={student.id} isPreview={isPreview} />
+        <FmaProgress
+          studentId={student.id}
+          isPreview={isPreview}
+          assignedExamIds={assignments
+            .filter(a => a.student_id === student.id && a.status !== 'completed')
+            .map(a => a.problem_id)}
+        />
       ) : tab === 'scheduling' ? (
         <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} />
       ) : tab === 'invoices' ? (
