@@ -8,6 +8,7 @@
   summary: (
     "Leo is preparing for the F=ma exam in February.",
     "He is nearly finished with the AoPS F=ma course, and has a very high homework score.",
+    "Four of this cycle's ten sessions went to mathematics rather than physics, preparing Leo for a placement test at school — so this cycle covers less physics than a typical one.",
     "Leo still needs a second, systematic pass through the material. We'll do this with a series of Fundamentals sessions stretching up to the exam.",
     "In parallel, Leo is ready to begin a series of Practice Test sessions.",
     "In Practice Tests, we'll track Leo's progress, record his accuracy and time taken, break questions down by topic, and link related questions to give Leo personalized, targeted practice.",
@@ -22,6 +23,7 @@
 
   progress: (
     "Leo's effort on the AoPS course has been outstanding — every single graded week came back rated \"exceeds expectations,\" and the scores back that up: near-perfect across the board. The homework isn't done under test conditions. We need to replicate Leo's accuracy on the homework in an environment with no outside resources and tight time constraints.",
+    "One scheduling note that shapes this cycle: four of our ten sessions, running through April, went to mathematics rather than physics, to prepare Leo for a placement test at school. We worked on logarithms, combinatorics, polygon geometry and trigonometry, and complex numbers — all of it useful groundwork, and Leo handled it well. It does mean the physics preparation described below rests on six sessions rather than ten, and that some of the F=ma topics I'd hoped to reach this cycle have moved into the next one.",
     "The most encouraging development this cycle is one we've been watching for since we started working together: Leo is catching and correcting his own mistakes. This past session he mixed up an \"m\" for mass with an \"m\" for meters in the middle of a derivation — an easy slip — and caught it himself within a few seconds. That kind of self-correction only happens when a student is tracking the physical meaning behind the symbols, not just pushing them around algebraically. It's one of the hardest habits to build and one of the most important, and it's now showing up reliably.",
     "Leo is also already doing one of the genuinely hard things on a test like the F=ma: reading a problem and quickly identifying what it's actually about — dimensional analysis, energy conservation, a force problem — before doing any computation. That recognition skill is usually the last thing to develop, and he's most of the way there.",
     "These improvements are in progress. For example, Leo is catching mistakes with dimensions quickly, but still developing a sense of extreme case reasoning to catch other mistakes. He recognizes the gist of a problem quickly for some topics, but we still need practice with topics like rotation and oscillations.",
