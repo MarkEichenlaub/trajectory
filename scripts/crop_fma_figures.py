@@ -237,6 +237,91 @@ def standalone_choice_markers(page, top, bottom):
     return [(l, seen[l]) for l in "ABCDE" if l in seen]
 
 
+def _gap_to(rect, other):
+    """Straight-line gap between two rects, 0 when they touch or overlap."""
+    dx = max(other.x0 - rect.x1, rect.x0 - other.x1, 0)
+    dy = max(other.y0 - rect.y1, rect.y0 - other.y1, 0)
+    return (dx * dx + dy * dy) ** 0.5
+
+
+def split_choice_panels_by_ink(page, markers, top, bottom):
+    """{'A': Rect, ...} for diagram options, recovered from the drawings.
+
+    The caption-beneath slicer can't touch these: the marker sits beside its
+    panel, sometimes level with the panel's middle, so midpoints between markers
+    land inside a panel rather than between two. Cutting on marker geometry
+    produced panels that straddled two options.
+
+    So group the actual ink instead. Every option is one connected drawing, so
+    clustering the vector objects and keeping the groups that a marker claims
+    recovers the panels whatever the layout -- and a stem figure above the
+    options simply ends up as a group no marker claims, and is dropped.
+
+    The clustering gap is swept rather than fixed: too small splits a panel at
+    the break between its axis and its curve, too large welds neighbours
+    together, and the safe value differs per exam. The first gap that yields
+    exactly one group per marker wins.
+    """
+    parts = [r for r in figure_rects(page) if r.y0 >= top - 4 and r.y1 <= bottom + 4]
+    if len(parts) < 5:
+        return {}
+
+    for gap in (6, 8, 10, 12, 14, 18, 22):
+        groups = cluster(parts, gap=gap)
+        if len(groups) < 5:
+            break  # already over-merged; larger gaps only merge further
+        claimed = {}
+        for letter, mrect in markers:
+            near = min(groups, key=lambda g: _gap_to(mrect, g))
+            if _gap_to(mrect, near) > 40:
+                break
+            claimed[letter] = near
+        if len(claimed) != 5:
+            continue
+        # Distinct groups only -- two markers landing on one group means the
+        # panels merged, and both options would show the same picture.
+        if len({tuple(r) for r in claimed.values()}) != 5:
+            continue
+        # grow_over_labels() is unaware of the other panels, so on a tight grid
+        # every box can absorb its neighbours' axis labels and the five converge
+        # on one identical rect. Take the grown boxes only if they stay disjoint,
+        # otherwise keep the raw ink groups.
+        for grow in (True, False):
+            boxes = {}
+            for letter, box in claimed.items():
+                box = fitz.Rect(box)
+                if grow:
+                    box = grow_over_labels(page, box, top, bottom, False)
+                box.x0 -= PAD / 2; box.y0 -= PAD / 2; box.x1 += PAD / 2; box.y1 += PAD / 2
+                boxes[letter] = box & page.rect
+            if _panels_disjoint(boxes):
+                break
+        else:
+            continue
+        if any(b.width < 20 or b.height < 20 for b in boxes.values()):
+            continue
+        # Options in a set are drawn to one template, so wildly uneven areas
+        # mean the grouping latched onto fragments rather than whole panels.
+        areas = sorted(b.get_area() for b in boxes.values())
+        if areas[0] * 4 < areas[-1]:
+            continue
+        return boxes
+    return {}
+
+
+def _panels_disjoint(boxes):
+    """True when no two panels overlap enough to be showing the same picture."""
+    items = list(boxes.values())
+    for i, a in enumerate(items):
+        for b in items[i + 1:]:
+            inter = a & b
+            if inter.is_empty:
+                continue
+            if inter.get_area() > 0.25 * min(a.get_area(), b.get_area()):
+                return False
+    return True
+
+
 def split_choice_panels(page, top, bottom):
     """{'A': Rect, ...} for a question whose options are diagrams.
 
@@ -249,6 +334,13 @@ def split_choice_panels(page, top, bottom):
     markers = standalone_choice_markers(page, top, bottom)
     if len(markers) != 5:
         return {}
+
+    # Grouping the ink is tried first because it keys off the panels themselves:
+    # it ignores a stem figure or a line of prose sitting among the options,
+    # both of which the geometric slice below would happily cut into fifths.
+    by_ink = split_choice_panels_by_ink(page, markers, top, bottom)
+    if by_ink:
+        return by_ink
 
     parts = [r for r in figure_rects(page) if r.y0 >= top - 4 and r.y1 <= bottom + 4]
     if not parts:
@@ -274,9 +366,8 @@ def split_choice_panels(page, top, bottom):
     # Only a single row of panels with the caption centred beneath each one is
     # safe to slice this way. In a stacked layout the "(A)" sits partway down its
     # panel, so midpoints between captions don't line up with panel edges and
-    # each slice ends up straddling two options. Those fall back to one image --
-    # harmless, because every exam except the AoPS practice test already labels
-    # its panels (A)-(E), which is exactly what the portal shows.
+    # each slice ends up straddling two options -- those are a left-labelled
+    # grid, which the grid slicer handles by cutting on the markers instead.
     horizontal = max(ys) - min(ys) < 8
     if not horizontal:
         return {}
