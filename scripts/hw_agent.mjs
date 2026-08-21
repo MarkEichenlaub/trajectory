@@ -7,6 +7,13 @@
 //       Print all rows with status requested/revise, oldest first, as JSON.
 //   node scripts/hw_agent.mjs get <id>
 //       Print one row as JSON (any status; errors if missing).
+//   node scripts/hw_agent.mjs list
+//       Print {id, status, name, request} for every packet row (any status),
+//       for callers that need to check what's already been built.
+//   node scripts/hw_agent.mjs create --student <id> --lesson "MCH04: ..."
+//       --problems <id1,id2,...> [--title "..."] [--instructions "..."]
+//       Insert a build request the way the portal's "Create assignment…" button
+//       does, and print the new row id. For batching packets without the UI.
 //   node scripts/hw_agent.mjs set <id> [--status S] [--clear-notes]
 //       [--name "..."] [--description "..."] [--notes "..."] [--request-json <file>]
 //       Update columns on a row. --request-json replaces the request payload
@@ -68,6 +75,58 @@ async function cmdGet(id) {
   console.log(JSON.stringify(row, null, 2))
 }
 
+async function cmdList() {
+  const { data, error } = await supabase
+    .from('handouts').select('id,status,name,request')
+    .order('created_at', { ascending: true })
+  if (error) throw new Error(error.message)
+  console.log(JSON.stringify((data || []).filter(r => r.request), null, 2))
+}
+
+// Mirrors AdminApp's handleCreatePacket so a CLI-made request is indistinguishable
+// from one made with the portal's "Create assignment…" button.
+async function cmdCreate() {
+  const studentId = arg('--student')
+  const lesson = arg('--lesson') || ''
+  const problems = (arg('--problems') || '').split(',').map(s => s.trim()).filter(Boolean)
+  if (!studentId || !problems.length) {
+    throw new Error('Usage: create --student <id> --lesson "MCH04: ..." --problems <id1,id2,...>')
+  }
+  const { data: student, error: sErr } = await supabase
+    .from('students').select('id,name').eq('id', studentId).maybeSingle()
+  if (sErr) throw new Error(sErr.message)
+  if (!student) throw new Error(`No student with id ${studentId}`)
+
+  const lessonCode = (lesson.match(/^([A-Za-z][A-Za-z0-9]{0,4}\d{1,3})\b/) || [])[1] || ''
+  const title = arg('--title') || null
+  const id = `hwset-${Date.now()}`
+  const { error } = await supabase.from('handouts').insert({
+    id,
+    name: title || `${lesson || 'Homework'} packet for ${student.name}`,
+    source: 'Eichenlaub Physics',
+    resource_type: 'handout',
+    description: '',
+    topics: ['Mechanics'],
+    tags: lessonCode ? [lessonCode] : [],
+    pdf_url: '',
+    solution_url: '',
+    year: 0,
+    status: 'requested',
+    review_notes: '',
+    request: {
+      student_id: student.id,
+      student_name: student.name,
+      problem_ids: problems,
+      lesson,
+      title,
+      instructions: arg('--instructions') || '',
+      requested_at: new Date().toISOString(),
+    },
+  })
+  if (error) throw new Error(error.message)
+  console.log(id)
+}
+
 async function cmdSet(id) {
   const updates = {}
   if (arg('--status')) updates.status = arg('--status')
@@ -126,6 +185,8 @@ const [, , cmd, id] = process.argv
 const commands = {
   pending: () => cmdPending(),
   get: () => cmdGet(id),
+  create: () => cmdCreate(),
+  list: () => cmdList(),
   set: () => cmdSet(id),
   upload: () => cmdUpload(id, process.argv[4]),
   wait: () => cmdWait(id),
