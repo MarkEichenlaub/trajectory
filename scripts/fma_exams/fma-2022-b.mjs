@@ -8,13 +8,13 @@
 // NOT wrapped in parentheses; all wrong choices appear as "(A)", "(B)", etc.
 // Visually confirmed on rendered PDF pages for every question.
 //
-// Answer key: D A C A E D A E C B E A D E B B B D E D B D B C D
+// Answer key: D A C A E D A E C B E A D E B B B D E D B D C C D
 //
 // Ambiguous / notes:
-//   Q23: The extracted text shows "C" unparenthesized, but that is a graph label
-//        inside the choice block, not the answer marker.  The box on the rendered
-//        PDF is clearly around choice (B) (ellipse in all four quadrants), and the
-//        solution prose says "giving choice (B)."  Correct answer is B.
+//   Q23: AAPT's printed solution signs off "giving choice (B)", but the boxed
+//        letter on the exam is (C) -- and (C) is the ellipse the solution spends
+//        its whole argument deriving, while (B) is a pair of crossed straight
+//        lines. The prose is a slip in the source; the key is C.
 //
 // Figure notes:
 //   Q13: has a stem figure; the answer choices are text (heights), not diagrams —

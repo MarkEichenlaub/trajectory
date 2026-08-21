@@ -41,13 +41,39 @@ QUESTION_RE = re.compile(r"^\s*(\d{1,2})\.\s")
 # baked into the cropped figure -- showing "(a) (b) (c)" next to the portal's
 # own A/B/C radio buttons.
 CHOICE_RE = re.compile(r"^\s*\(([A-Ea-e])\)")
-# "The following information applies to problems 2 and 3." (2024/2025) and
-# "The following information is used for questions 2 and 3." (2008/2009).
+# A shared preamble is worded a different way in almost every year, so match the
+# trigger loosely and pull the question numbers out of whatever follows:
+#   "The following information applies to problems 2 and 3."      2024/2025
+#   "The following information is used for questions 2 and 3."    2008/2009
+#   "The following figure is used for questions 15 and 16."       2010
+#   "The following graph ... is used for questions 18 through 20" 2010
+#   "The following information is relevant to problems 9 and 10." 2020
+#   "The following information applies to questions 19, 20, and 21."  2013/2017
+#   "Questions 19 and 20 refer to the following information"      2011
+#   "Questions 2 to 4 refer to the three graphs below"            2011
+# Anchoring on "following information" and exactly two numbers dropped the
+# figure for every other phrasing, and for the third question of a run of three.
+_RANGE = r"([\d]{1,2}(?:\s*(?:,|and|through|to|-|–|&)\s*[\d]{1,2})+)"
 PREAMBLE_RE = re.compile(
-    r"following information\s+(?:applies to|is used for|is for|pertains to)\s+"
-    r"(?:problems?|questions?)\s+(\d{1,2})\s*(?:and|,|-|through|&)\s*(\d{1,2})",
+    r"(?:following\b[\w\s]{0,40}?\b(?:applies to|is used for|are used for|"
+    r"is relevant to|are relevant to|is for|pertains to|refers? to)\s+"
+    r"(?:problems?|questions?)\s+" + _RANGE +
+    r"|(?:problems?|questions?)\s+" + _RANGE + r"\s+refer\s+to\b)",
     re.I | re.S,
 )
+
+
+def preamble_range(match):
+    """[lo..hi] question numbers named by a shared-preamble match, or []."""
+    span = next((g for g in match.groups() if g), "")
+    nums = [int(n) for n in re.findall(r"\d{1,2}", span)]
+    nums = [n for n in nums if 1 <= n <= 25]
+    if len(nums) < 2:
+        return []
+    lo, hi = min(nums), max(nums)
+    # A real preamble covers a short run. Anything wider is a false positive --
+    # the instructions page talks about "questions 1 through 25".
+    return list(range(lo, hi + 1)) if hi - lo <= 4 else []
 
 TOP_MARGIN = 45      # below the running header and its rule
 BOTTOM_MARGIN = 60   # above the copyright line
@@ -75,11 +101,8 @@ def document_anchors(doc):
             # as "follo wing" and the preamble regex silently never matches.
             btext = " ".join("".join(s["text"] for s in l["spans"]) for l in block["lines"])
             pm = PREAMBLE_RE.search(btext)
-            if pm:
-                lo, hi = int(pm.group(1)), int(pm.group(2))
-                per_page[pno].append(
-                    (block["bbox"][1], "preamble", list(range(min(lo, hi), max(lo, hi) + 1)))
-                )
+            if pm and preamble_range(pm):
+                per_page[pno].append((block["bbox"][1], "preamble", preamble_range(pm)))
                 continue
             for line in block["lines"]:
                 ltext = "".join(s["text"] for s in line["spans"])
@@ -104,15 +127,25 @@ def looks_like_equation(parts, box):
 
 
 def figure_rects(page):
+    """Candidate figure pieces on a page: vector drawings plus placed images.
+
+    Most of these exams are LaTeX vector output, but not all -- 2010 sets its
+    potential-energy graph and the force graphs beside it as raster images, and
+    a drawings-only scan found nothing at all on those pages, silently leaving
+    three questions with no figure.
+    """
+    rects = [d["rect"] for d in page.get_drawings()]
+    for img in page.get_images(full=True):
+        rects.extend(page.get_image_rects(img[0]))
     out = []
-    for d in page.get_drawings():
-        r = d["rect"]
+    for r in rects:
+        r = fitz.Rect(r)
         if r.y0 < TOP_MARGIN or r.y1 > page.rect.height - BOTTOM_MARGIN:
             continue
         # The full-width rule under the running header.
         if r.width > PAGE_RULE_MIN_WIDTH and r.height < 2.5:
             continue
-        out.append(fitz.Rect(r))
+        out.append(r)
     return out
 
 

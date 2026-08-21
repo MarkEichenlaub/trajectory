@@ -86,7 +86,7 @@ One of the following pairs of graphs shows the time dependence of $$v_x$$ and $$
       D: '$$F \\propto v^2$$',
       E: '$$F \\propto v^{5/2}$$',
     },
-    figures: [], topics: ['Mechanics'], tags: ['scaling', 'dimensional analysis', 'energy conservation'],
+    figures: [P26(6)], topics: ['Mechanics'], tags: ['scaling', 'dimensional analysis', 'energy conservation'],
   },
   {
     n: 7, correct: 'C',
@@ -98,7 +98,7 @@ One of the following pairs of graphs shows the time dependence of $$v_x$$ and $$
       D: 'Unstable to both radial and tangential perturbations.',
       E: 'None of the listed. L2 is not a real equilibrium point because the centrifugal force is a fictitious force.',
     },
-    figures: [], topics: ['Mechanics'], tags: ['orbital mechanics', 'non-inertial frames', 'statics/equilibrium'],
+    figures: [P26(7)], topics: ['Mechanics'], tags: ['orbital mechanics', 'non-inertial frames', 'statics/equilibrium'],
   },
   {
     n: 8, correct: 'B',
