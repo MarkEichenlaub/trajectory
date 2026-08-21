@@ -67,7 +67,7 @@ export function FmaChart({ attempts, onSelect }) {
       {/* USAPhO region */}
       <rect x={padL} y={yScale(MAX_SCORE)} width={plotW} height={yScale(BORDERLINE_HIGH) - yScale(MAX_SCORE)} fill="var(--accent)" opacity={0.22} />
       <text x={width - padR} y={yScale(MAX_SCORE) + 10} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO region</text>
-      <text x={width - padR} y={yScale(BORDERLINE_HIGH) - 3} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
+      <text x={width - padR} y={yScale(BORDERLINE_HIGH) + 10} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
 
       {scored.length > 1 && (
         <polyline
