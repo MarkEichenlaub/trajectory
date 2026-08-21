@@ -8,9 +8,11 @@ import FmaBatchEntry from './FmaBatchEntry'
 import FmaScoreOnly from './FmaScoreOnly'
 import FmaAttemptDetail from './FmaAttemptDetail'
 
-// Rough USAPhO-qualifying score band, shaded on the chart as a reference.
-const BAND_LOW = 15
-const BAND_HIGH = 18
+// Rough USAPhO-qualifying score cutoffs, shaded on the chart as three bands:
+// below BORDERLINE_LOW (unlikely to qualify), the "USAPhO Borderline" band
+// between the two, and the "USAPhO region" from BORDERLINE_HIGH up.
+const BORDERLINE_LOW = 15
+const BORDERLINE_HIGH = 18
 const MAX_SCORE = 25
 
 const MODES = [
@@ -58,8 +60,14 @@ export function FmaChart({ attempts, onSelect }) {
           <text x={padL - 8} y={yScale(t) + 4} fontSize={10} fill="var(--text-dim)" textAnchor="end">{t}</text>
         </g>
       ))}
-      <rect x={padL} y={yScale(BAND_HIGH)} width={plotW} height={yScale(BAND_LOW) - yScale(BAND_HIGH)} fill="var(--accent)" opacity={0.12} />
-      <text x={width - padR} y={yScale(BAND_HIGH) - 3} fontSize={9} fill="var(--accent)" textAnchor="end">~USAPhO band</text>
+      {/* Below borderline */}
+      <rect x={padL} y={yScale(BORDERLINE_LOW)} width={plotW} height={yScale(0) - yScale(BORDERLINE_LOW)} fill="var(--accent)" opacity={0.05} />
+      {/* USAPhO Borderline */}
+      <rect x={padL} y={yScale(BORDERLINE_HIGH)} width={plotW} height={yScale(BORDERLINE_LOW) - yScale(BORDERLINE_HIGH)} fill="var(--accent)" opacity={0.12} />
+      {/* USAPhO region */}
+      <rect x={padL} y={yScale(MAX_SCORE)} width={plotW} height={yScale(BORDERLINE_HIGH) - yScale(MAX_SCORE)} fill="var(--accent)" opacity={0.22} />
+      <text x={width - padR} y={yScale(MAX_SCORE) + 10} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO region</text>
+      <text x={width - padR} y={yScale(BORDERLINE_HIGH) - 3} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
 
       {scored.length > 1 && (
         <polyline
