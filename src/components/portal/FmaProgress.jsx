@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import {
   fetchFmaExams, fetchFmaQuestions, createFmaAttempt, fetchFmaAttempts, fetchFmaAttemptDetail,
-  fetchFmaAttemptAnswers, deleteFmaAttempt,
+  fetchFmaAttemptAnswers, deleteFmaAttempt, notifyFmaAttempt,
 } from '../../utils/supabase'
 import FmaTestRunner from './FmaTestRunner'
 import FmaBatchEntry from './FmaBatchEntry'
@@ -259,6 +259,11 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
   }
 
   async function handleFinished(attemptId) {
+    // Every mode lands here after its submit RPC, so this is the one place the
+    // completion report needs to fire. Deliberately not awaited: the email
+    // round-trip includes uploading the scratch-work attachment, and the
+    // student shouldn't stare at a spinner for it.
+    if (!isPreview) notifyFmaAttempt(attemptId).catch(() => {})
     try {
       await refreshAttempts()
       setDetail(await fetchFmaAttemptDetail(attemptId))

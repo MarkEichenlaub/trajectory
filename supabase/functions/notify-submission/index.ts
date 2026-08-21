@@ -8,6 +8,7 @@ const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 
 const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
+const MAX_ATTACHMENT_BYTES = 20 * 1024 * 1024
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -18,6 +19,22 @@ function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status, headers: { ...cors, 'Content-Type': 'application/json' },
   })
+}
+
+// Chunked so a multi-megabyte bundle doesn't blow the argument limit the way
+// String.fromCharCode(...wholeArray) would.
+function toBase64(bytes: Uint8Array): string {
+  let binary = ''
+  const chunk = 0x8000
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk))
+  }
+  return btoa(binary)
+}
+
+// Keeps the attachment name from breaking mail clients on / \ : and friends.
+function safeFilename(s: string): string {
+  return s.replace(/[\\/:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim()
 }
 
 // Read the EXIF Orientation tag from JPEG bytes.
@@ -242,10 +259,46 @@ Deno.serve(async (req) => {
 
   const fileLines = submissions.map(s => `  ${s.file_name || s.url}: ${s.url}`).join('\n')
 
+  // Attach the work itself, so the whole submission is readable from the inbox
+  // without a round trip to the portal. The bundle is already in memory; only
+  // when bundling failed do we fall back to pulling the raw files back down.
+  // Resend caps a message at 40MB and base64 inflates by a third, so an
+  // oversized bundle is dropped rather than failing the whole email — the link
+  // below still gets Mark to it.
+  const attachments: Array<{ filename: string; content: string }> = []
+  if (bundleBytes) {
+    if (bundleBytes.length > MAX_ATTACHMENT_BYTES) {
+      console.warn('bundle too large to attach:', bundleBytes.length)
+    } else {
+      attachments.push({
+        filename: safeFilename(`${student.name} - ${problemLabel}.pdf`),
+        content: toBase64(bundleBytes),
+      })
+    }
+  } else {
+    let budget = MAX_ATTACHMENT_BYTES
+    for (const [i, s] of submissions.entries()) {
+      try {
+        const res = await fetch(s.url)
+        if (!res.ok) continue
+        const bytes = new Uint8Array(await res.arrayBuffer())
+        if (bytes.length > budget) { console.warn('attachment budget exceeded, skipping:', s.url); continue }
+        budget -= bytes.length
+        attachments.push({
+          filename: safeFilename(s.file_name || `${student.name} - ${problemLabel} (${i + 1})`),
+          content: toBase64(bytes),
+        })
+      } catch (e) {
+        console.warn('attachment fetch failed:', s.url, e)
+      }
+    }
+  }
+
   const emailLines = [
     `${student.name} submitted ${submissions.length === 1 ? 'a solution' : `${submissions.length} files`} for:`,
     `  ${problemLabel}`,
     '',
+    ...(attachments.length ? ['Attached to this email.', ''] : []),
     bundleUrl
       ? `Bundle PDF (open in PDF XChange to annotate):\n  ${bundleUrl}`
       : `Files:\n${fileLines}`,
@@ -261,6 +314,7 @@ Deno.serve(async (req) => {
       to: [MARK_EMAIL],
       subject: `${student.name} submitted — ${problemLabel}`,
       text: emailLines.join('\n'),
+      ...(attachments.length ? { attachments } : {}),
     }),
   }).catch(e => console.error('email failed:', e))
 

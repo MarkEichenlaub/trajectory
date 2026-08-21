@@ -803,6 +803,18 @@ export async function submitFmaScoreOnly(attemptId, score) {
   return Array.isArray(data) ? data[0] : data
 }
 
+// Emails Mark the finished attempt — score, per-question breakdown, and the
+// scratch work as an attachment. Fire-and-forget from the caller's point of
+// view: the report is a courtesy, and a mail failure must never make a
+// successfully graded test look like it failed.
+export async function notifyFmaAttempt(attemptId) {
+  const { data, error } = await supabase.functions.invoke('notify-fma-attempt', {
+    body: { attempt_id: attemptId },
+  })
+  if (error) throw new Error(error.message || String(error))
+  return data
+}
+
 export async function fetchFmaAttempts(studentId) {
   const { data, error } = await supabase
     .from('fma_attempts').select('*, handouts:exam_id(id, name, year)').eq('student_id', studentId).order('started_at', { ascending: false })

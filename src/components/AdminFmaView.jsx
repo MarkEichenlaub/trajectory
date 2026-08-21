@@ -3,7 +3,7 @@ import { fetchFmaAttempts, fetchFmaAttemptDetail } from '../utils/supabase'
 import FmaAttemptDetail from './portal/FmaAttemptDetail'
 import { FmaChart, TagBreakdown } from './portal/FmaProgress'
 
-export default function AdminFmaView({ studentId, studentName }) {
+export default function AdminFmaView({ studentId, studentName, initialAttemptId, onAttemptOpened }) {
   const [attempts, setAttempts] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
@@ -18,6 +18,18 @@ export default function AdminFmaView({ studentId, studentName }) {
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
   }, [studentId])
+
+  // ?attempt=<id> — the link in the F=ma completion email opens that attempt's
+  // results directly rather than dropping into the list. The param is cleared
+  // once consumed so hitting Back doesn't bounce straight into it again.
+  useEffect(() => {
+    if (!initialAttemptId) return
+    let cancelled = false
+    fetchFmaAttemptDetail(initialAttemptId)
+      .then(d => { if (!cancelled) { setDetail(d); onAttemptOpened?.() } })
+      .catch(e => { if (!cancelled) setErr(e.message) })
+    return () => { cancelled = true }
+  }, [initialAttemptId])
 
   async function handleView(attemptId) {
     try {

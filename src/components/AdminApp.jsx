@@ -951,6 +951,8 @@ export default function AdminApp({ userId }) {
           <AdminFmaView
             studentId={activeStudentId}
             studentName={activeStudent?.name || ''}
+            initialAttemptId={searchParams.get('attempt')}
+            onAttemptOpened={() => setSearchParams(p => { p.delete('attempt'); return p }, { replace: true })}
           />
         )}
 
