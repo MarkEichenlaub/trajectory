@@ -109,6 +109,11 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                     {' · Correct: '}{q.correct_choice}
                   </div>
                 </div>
+                {(q.tags || []).length > 0 && (
+                  <div className="tag-list" style={{ marginBottom: 8 }}>
+                    {q.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
+                  </div>
+                )}
                 <div dangerouslySetInnerHTML={{ __html: html }} />
                 {(q.figure_urls || []).map(url => (
                   <img key={url} src={url} alt="" loading="lazy" className="fma-figure" />
