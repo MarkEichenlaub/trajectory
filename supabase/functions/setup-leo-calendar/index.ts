@@ -67,19 +67,19 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Create weekly recurring "Leo / Mark Physics" event starting today (Thu Jun 4 2026)
-  // 8:30–9:30 PM Eastern (EDT = UTC-4)
+  // Create weekly recurring "Leo / Mark Physics" event, Tuesdays and Thursdays,
+  // starting Tue Aug 25 2026, 8:30–9:30 PM Eastern (EDT = UTC-4), no end date
   const event = {
     summary: 'Leo / Mark Physics',
     start: {
-      dateTime: '2026-06-04T20:30:00-04:00',
+      dateTime: '2026-08-25T20:30:00-04:00',
       timeZone: 'America/New_York',
     },
     end: {
-      dateTime: '2026-06-04T21:30:00-04:00',
+      dateTime: '2026-08-25T21:30:00-04:00',
       timeZone: 'America/New_York',
     },
-    recurrence: ['RRULE:FREQ=WEEKLY;BYDAY=TH'],
+    recurrence: ['RRULE:FREQ=WEEKLY;BYDAY=TU,TH'],
     attendees: [{ email: 'leo.lisavarese1@gmail.com' }],
   }
 
