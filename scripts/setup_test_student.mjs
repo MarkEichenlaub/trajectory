@@ -190,6 +190,16 @@ const INVOICES = [
 
 const REPORT_CYCLE = 'Cycle 1 · Summer 2026'
 
+// A couple of self-reported past practice tests (real digitized exams, so
+// they show up with real names and clickable question detail), so the F=ma
+// Progress chart has more than a single point. Left alone: any pre-existing
+// 'live'/'paper_first' attempt on the account (e.g. from QA'ing the test
+// runner itself) — this only wipes/reseeds its own 'score_only' rows.
+const FMA_ATTEMPTS = [
+  { exam_id: 'fma-2024', score: 12, at: '2026-07-10T19:00:00Z' },
+  { exam_id: 'fma-2025', score: 16, at: '2026-08-05T19:00:00Z' },
+]
+
 async function createBoards(specs) {
   const res = await fetch(`${SUPABASE_URL}/functions/v1/create-demo-boards`, {
     method: 'POST',
@@ -249,6 +259,7 @@ async function seedDemoHistory() {
   await sb.from('sessions').delete().like('id', 'demo-session-%')
   await sb.from('invoices').delete().eq('student_id', STUDENT_ID)
   await sb.from('progress_reports').delete().eq('student_id', STUDENT_ID)
+  await sb.from('fma_attempts').delete().eq('student_id', STUDENT_ID).eq('mode', 'score_only')
 
   console.log('Switching the test account to an adult (self-pay) role so Billing/Invoices show...')
   await sb.from('profiles').update({ account_type: 'adult' }).eq('id', user.id)
@@ -327,6 +338,18 @@ async function seedDemoHistory() {
   if (iErr) throw new Error(`invoices insert: ${iErr.message}`)
   await sb.from('students').update({ session_balance: 3, hourly_rate: 300, billing_name: 'Test Student' }).eq('id', STUDENT_ID)
   console.log(`Inserted ${INVOICES.length} invoices, set session balance/rate.`)
+
+  const { error: fmaErr } = await sb.from('fma_attempts').insert(FMA_ATTEMPTS.map(f => ({
+    student_id: STUDENT_ID,
+    exam_id: f.exam_id,
+    mode: 'score_only',
+    status: 'graded',
+    started_at: f.at,
+    submitted_at: f.at,
+    score: f.score,
+  })))
+  if (fmaErr) throw new Error(`fma_attempts insert: ${fmaErr.message}`)
+  console.log(`Inserted ${FMA_ATTEMPTS.length} F=ma practice attempts.`)
 
   await draftAndUploadReport()
 
