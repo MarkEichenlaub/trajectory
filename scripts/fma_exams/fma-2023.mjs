@@ -321,7 +321,8 @@ $$N_L = \\frac{5W}{12}.$$
 The fraction of total weight on the left leg is $$N_L/W = 5/12$$. The answer is E.`,
   },
   {
-    n: 15, correct: 'B',
+    // AAPT also accepted (D): the plot's resolution makes linear and parabolic hard to tell apart.
+    n: 15, correct: 'B', alsoAccepted: ['D'],
     statement: `The following plot shows the speed $$v(r)$$ at which stars orbit about the center of a galaxy, as a function of their distance $$r$$ from the center.
 
 Assuming the galaxy has a spherically symmetric mass distribution, which plot best shows the mass of the galaxy $$M(r)$$ enclosed within radius $$r$$?`,

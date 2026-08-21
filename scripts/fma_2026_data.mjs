@@ -229,7 +229,8 @@ After the collision at the midpoint of AB, the puck collides with the rack again
     figures: [P26(16)], topics: ['Mechanics'], tags: ['collisions', 'momentum conservation', 'symmetry', 'reference frames'],
   },
   {
-    n: 17, correct: 'D',
+    // AAPT awarded full credit for (E) as well; resolving which is right needs post-detachment dynamics.
+    n: 17, correct: 'D', alsoAccepted: ['E'],
     statement: `A ladder is leaning against a vertical wall. The ladder is a uniform rod of mass $$M$$ and length $$L$$, and both the wall and the ground are frictionless. The ladder is released from rest from an almost-vertical position and begins to slide. What is the speed of the point of the ladder that is in contact with the floor when it is a horizontal distance $$\\dfrac{\\sqrt{3}\\,L}{2}$$ away from the wall?
 
 __Note: the official solutions award full credit for both D and E.__`,

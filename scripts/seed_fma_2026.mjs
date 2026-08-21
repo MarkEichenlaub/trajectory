@@ -70,6 +70,8 @@ function toRows(questions) {
     // rest get an empty object, matching the column default.
     choice_figure_urls: q.choiceFigures || {},
     correct_choice:     q.correct,
+    // Extra letters AAPT also gave credit for (Q17 is dual-credit).
+    also_accepted:      q.alsoAccepted || [],
     topics:             q.topics,
     tags:               q.tags,
   }))

@@ -374,7 +374,8 @@ $$v_x = \\omega \\cdot \\frac{\\ell}{2} = \\frac{\\pi g}{v_y}\\cdot\\frac{\\ell}
 The answer is B.`,
   },
   {
-    n: 16, correct: 'C',
+    // AAPT gave full credit for (A) too: the word "smallest" made the question ambiguous.
+    n: 16, correct: 'C', alsoAccepted: ['A'],
     statement: `The depth of a well, $$d$$, is measured by dropping a stone into it and measuring the time $$t$$ until the splash is heard at the top. What is the smallest value of $$d$$ for which ignoring the time for the sound to travel gives less than a 5% error in the depth measurement? The speed of sound in air is 330 m/s.`,
     choices: {
       A: '3.5 m',

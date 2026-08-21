@@ -356,7 +356,8 @@ $$v_0 - \\mu_k g T = -3v_0 + \\mu_k g T \\implies 4v_0 = 2\\mu_k g T \\implies T
 At time $$T$$, the velocity is $$v_c(T) = v_0 - \\mu_k g \\cdot \\frac{2v_0}{\\mu_k g} = -v_0$$. Since the acceleration was constant, and the hoop went from $$+v_0$$ to $$-v_0$$ uniformly, the displacement is zero — it has returned exactly to its starting position. The answer is B.`,
   },
   {
-    n: 17, correct: 'D',
+    // A typo in this question meant AAPT gave every student full credit.
+    n: 17, correct: 'D', alsoAccepted: ['A', 'B', 'C', 'E'],
     statement: `The following information applies to questions 16 and 17.
 
 A hoop of radius $$r$$ is launched to the right at initial speed $$v_0$$ at ground-level. As it is launched, it is also spun counterclockwise at angular velocity $$3v_0/r$$. The coefficient of kinetic friction between the ground and the hoop is $$\\mu_k$$.

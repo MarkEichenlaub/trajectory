@@ -104,6 +104,7 @@ export default function FmaAttemptDetail({ detail, onBack }) {
             const ans = answerByQuestion.get(q.id)
             const html = renderStatementHtml(q.statement)
             const verdict = verdicts[i]
+            const alsoAccepted = q.also_accepted || []
             return (
               <div
                 key={q.id}
@@ -118,6 +119,13 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                   <div style={{ fontSize: 12, fontWeight: 600, color: verdict === 'correct' ? 'var(--green)' : verdict === 'incorrect' ? 'var(--red)' : 'var(--yellow)' }}>
                     {ans?.selected_choice ? `Your answer: ${ans.selected_choice}` : 'Not answered'}
                     {' · Correct: '}{q.correct_choice}
+                    {alsoAccepted.length > 0 && (
+                      <span style={{ fontWeight: 500, color: 'var(--text-dim)' }}>
+                        {alsoAccepted.length === 4
+                          ? ' · every answer credited'
+                          : ` · ${alsoAccepted.join(', ')} also credited`}
+                      </span>
+                    )}
                   </div>
                 </div>
                 {(q.tags || []).length > 0 && (
@@ -132,9 +140,14 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 8 }}>
                   {CHOICES.map(c => {
                     const isKey = c === q.correct_choice
+                    // AAPT credited more than one option on a handful of
+                    // questions. Those earn the mark, so they must not be shown
+                    // in red just because they aren't the canonical answer.
+                    const isAlso = alsoAccepted.includes(c)
+                    const earnsCredit = isKey || isAlso
                     const isPicked = c === ans?.selected_choice
                     return (
-                      <div key={c} className={`fma-review-choice${isKey ? ' key' : ''}${isPicked && !isKey ? ' picked-wrong' : ''}`}>
+                      <div key={c} className={`fma-review-choice${earnsCredit ? ' key' : ''}${isPicked && !earnsCredit ? ' picked-wrong' : ''}`}>
                         <strong>{c}</strong>{' '}
                         {q.choice_figure_urls?.[c] ? (
                           <img src={q.choice_figure_urls[c]} alt={`Option ${c}`} className="fma-choice-figure" loading="lazy" />
@@ -142,7 +155,8 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                           <span dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.choices?.[c] || '') }} />
                         )}
                         {isKey && <span className="fma-tag ok">correct answer</span>}
-                        {isPicked && !isKey && <span className="fma-tag bad">your answer</span>}
+                        {isAlso && <span className="fma-tag ok">also accepted</span>}
+                        {isPicked && !earnsCredit && <span className="fma-tag bad">your answer</span>}
                       </div>
                     )
                   })}

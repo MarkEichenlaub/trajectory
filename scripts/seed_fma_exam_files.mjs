@@ -45,6 +45,9 @@ for (const file of files) {
     choice_figure_urls: q.choiceFigures || {},
     choices: q.choices,
     correct_choice: q.correct,
+    // Extra letters AAPT also gave credit for, where a question was ambiguous
+    // or carried a typo. Empty for almost every question.
+    also_accepted: q.alsoAccepted || [],
     topics: q.topics,
     tags: q.tags,
     solution: q.solution,

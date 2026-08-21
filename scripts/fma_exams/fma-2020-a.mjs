@@ -258,7 +258,8 @@ When the pen hits the floor, the floor exerts a normal force on the pen — whic
 The answer is C.`,
   },
   {
-    n: 14, correct: 'B',
+    // The stated mu_s < mu_k is impossible, so AAPT credited all answers.
+    n: 14, correct: 'B', alsoAccepted: ['A', 'C', 'D', 'E'],
     statement: `Two blocks of mass $$m$$ are placed on top of each other, and the bottom block is placed on the ground. The ground is frictionless. The static and kinetic coefficients of friction between the two blocks are $$\\mu_s$$ and $$\\mu_k$$, with $$\\mu_s < \\mu_k$$. The blocks are at rest initially. When a constant horizontal force $$F$$ is then applied to the bottom block, which of the following graphs could show its acceleration as a function of $$F$$?
 
 __Note: the problem as stated contains a typo ($$\\mu_s < \\mu_k$$ should be $$\\mu_k < \\mu_s$$). Full credit was awarded for all answer choices.__`,
@@ -404,7 +405,8 @@ $$\\langle P \\rangle = Av_0(u^2 + \\langle (\\delta u)^2 \\rangle) > Av_0 u^2 =
 The answer is B.`,
   },
   {
-    n: 21, correct: 'B',
+    // AAPT credited (C) too -- it is algebraically the same expression.
+    n: 21, correct: 'B', alsoAccepted: ['C'],
     statement: `A circular table has radius $$R$$ and $$N > 2$$ equally spaced legs of length $$h$$ attached to its perimeter. Suppose the table has a uniform mass density with total mass $$m$$, and neglect the mass of the legs. Assuming the table does not slip, the minimum horizontal force needed to tip over the table is
 
 __Note: both (B) and (C) were awarded full credit as they are equivalent expressions.__`,
