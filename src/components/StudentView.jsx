@@ -17,6 +17,18 @@ import SchedulingTab from './portal/SchedulingTab'
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'fma-progress', 'invoices', 'account'])
 
+// Contest problems (problems.json) carry curated topics/desc/tags; AoPS homework and
+// handout-derived entries don't (their "desc" is just the raw statement), so only
+// contest problems get the parenthetical summary in the compact assigned/completed list.
+function problemSummary(p) {
+  if (p.type !== 'Theory' && p.type !== 'Experiment') return ''
+  const bits = []
+  if (p.topics?.length) bits.push(`${p.topics.join(', ')}.`)
+  if (p.desc) bits.push(p.desc)
+  if (p.tags?.length) bits.push(p.tags.slice(0, 3).join(', '))
+  return bits.join(' ')
+}
+
 export default function StudentView({ student, assignments, sessions, problems, accessibleSources, sessionProblems, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
   // billing-capable roles. A logged-in student sees study info only. In admin
@@ -421,6 +433,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
               : null
             const subs = a.assignment_submissions || []
             const canSubmit = (a.status === 'assigned' || a.status === 'submitted') && a.requires_submission
+            const summary = problemSummary(p)
             return (
               <div key={a.id} className="assigned-row">
                 <span className={`status-badge ${a.status}`}>
@@ -431,7 +444,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
                 </span>
                 <div className="assigned-problem-info">
                   <span className="p-label">{p.contest}{!isResource ? ` ${p.year} ${p.label}` : ''}</span>
-                  <span className="p-name">{p.name}</span>
+                  <span className="p-name" title={summary ? `${p.name} — ${summary}` : undefined}>
+                    {p.name}
+                    {summary && <span className="p-meta"> ({summary})</span>}
+                  </span>
                   {a.notes && <span className="p-date" style={{ fontStyle: 'italic' }}>{a.notes}</span>}
                   <span className="p-date">{dueLabel || dateLabel}</span>
                 </div>
