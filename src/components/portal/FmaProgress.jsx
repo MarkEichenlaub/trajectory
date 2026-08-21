@@ -67,7 +67,11 @@ export function FmaChart({ attempts, onSelect }) {
       {/* USAPhO region */}
       <rect x={padL} y={yScale(MAX_SCORE)} width={plotW} height={yScale(BORDERLINE_HIGH) - yScale(MAX_SCORE)} fill="var(--accent)" opacity={0.22} />
       <text x={width - padR} y={yScale(MAX_SCORE) + 10} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO region</text>
-      <text x={width - padR} y={yScale(BORDERLINE_HIGH) + 10} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
+      {/* Vertically centered in the borderline band, not just offset from its
+          top edge — an SVG text y is the baseline, and glyphs extend upward
+          from it, so a small fixed offset from the boundary line still reads
+          as sitting on the line rather than inside the band below it. */}
+      <text x={width - padR} y={(yScale(BORDERLINE_HIGH) + yScale(BORDERLINE_LOW)) / 2 + 3} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
 
       {scored.length > 1 && (
         <polyline
