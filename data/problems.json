@@ -5310,6 +5310,111 @@
     "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2025_S6.pdf"
   },
   {
+    "id": "ipho-2026-T1",
+    "contest": "IPhO",
+    "year": 2026,
+    "country": "Colombia",
+    "type": "Theory",
+    "label": "T1",
+    "name": "Three problems",
+    "desc": "Three independent sub-problems worth 10 points total. T1-A (Hydrostatic gate): a cubic block on a pivot seals a slot between two water reservoirs; find the block size ensuring the water level difference does not exceed a given limit. T1-B (Electron-positron pair): a positron and electron with antiparallel velocities interact electrostatically; find the maximum separation in the bound case and the asymptotic velocity angle in the unbound case. T1-C (Photodissociation of ozone): a photon dissociates O3 into O2 and O; find the minimum photon frequency as a function of emission angle using momentum and energy conservation.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism",
+      "Quantum Physics"
+    ],
+    "tags": [
+      "hydrostatics",
+      "buoyancy",
+      "torque",
+      "Coulomb force",
+      "conic section",
+      "orbital mechanics",
+      "photodissociation",
+      "momentum conservation",
+      "energy conservation",
+      "ozone"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_Q1.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_S1.pdf"
+  },
+  {
+    "id": "ipho-2026-T2",
+    "contest": "IPhO",
+    "year": 2026,
+    "country": "Colombia",
+    "type": "Theory",
+    "label": "T2",
+    "name": "Cooking with sunlight?",
+    "desc": "Studies optics of a half-cylindrical mirror, focusing on caustic formation. Derives how many times a ray is reflected as a function of its incident position, then analyzes a solar cooker design in which a half-cylinder mirror concentrates sunlight onto a cylindrical container. Finds the container radius as a function of the maximum angle of incidence, the power ratio versus container radius, and the shape of the caustic curve (cusp) in the limit of small angles.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "caustic",
+      "reflection",
+      "cylindrical mirror",
+      "solar cooker",
+      "ray optics",
+      "cusp",
+      "intensity",
+      "geometric optics"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_Q2.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_S2.pdf"
+  },
+  {
+    "id": "ipho-2026-T3",
+    "contest": "IPhO",
+    "year": 2026,
+    "country": "Colombia",
+    "type": "Theory",
+    "label": "T3",
+    "name": "Chasing the absolute zero",
+    "desc": "Analyzes a paramagnetic Carnot refrigeration cycle in a toroidal paramagnetic material, the method proposed by Giauque and Debye in 1926 for reaching sub-Kelvin temperatures. Derives the work done on the paramagnet, isothermal and adiabatic processes in the H-T plane, and the Carnot coefficient of performance. Applies the cycle numerically to cool liquid helium and analyzes continuous refrigeration to an arbitrary target temperature.",
+    "topics": [
+      "Thermodynamics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "paramagnetism",
+      "Carnot cycle",
+      "magnetic refrigeration",
+      "adiabatic demagnetization",
+      "thermodynamics",
+      "coefficient of performance",
+      "toroid",
+      "low temperature"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_Q3.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_S3.pdf"
+  },
+  {
+    "id": "ipho-2026-E1",
+    "contest": "IPhO",
+    "year": 2026,
+    "country": "Colombia",
+    "type": "Experiment",
+    "label": "E1",
+    "name": "Ideal Gas, Vapor Pressure, and Heat Conduction",
+    "desc": "Three-part experimental exam using a custom apparatus of two concentric cylinders with pressure and temperature sensors. Students measure and analyze: the behavior of a confined ideal gas (P-V-T relationships), the vapor pressure of water as a function of temperature, and heat transfer by conduction along a gas column.",
+    "topics": [
+      "Thermodynamics",
+      "Experimental Methods"
+    ],
+    "tags": [
+      "ideal gas law",
+      "vapor pressure",
+      "heat conduction",
+      "Boltzmann constant",
+      "Clausius-Clapeyron",
+      "measurement uncertainty",
+      "data analysis"
+    ],
+    "problemUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_Q4.pdf",
+    "solutionUrl": "https://ipho.olimpicos.net/pdf/IPhO_2026_S4.pdf"
+  },
+  {
     "id": "balkan-2025-1",
     "contest": "Balkan",
     "year": 2025,
@@ -5940,6 +6045,164 @@
     ],
     "problemUrl": "https://balkanphysicalunion.info/wp-content/uploads/2019/07/2019-BPO-Problems-.pdf",
     "solutionUrl": "https://balkanphysicalunion.info/wp-content/uploads/2019/07/2019-BPO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-A1",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "A1",
+    "name": "404 Vision Not Found",
+    "desc": "Models the eye of a robot with an adjustable thin lens and a flat retinal sensor. Analyzes the range of focal lengths and optical powers needed to focus across a range of distances, and the effect of a corrective lens for viewing stars and close reading. Estimates the diffraction-limited print resolution and the intensity of the Airy-disk image of a star.",
+    "topics": [
+      "Optics"
+    ],
+    "tags": [
+      "thin lens",
+      "optical power",
+      "corrective lens",
+      "diffraction",
+      "Airy disk",
+      "aperture",
+      "geometric optics",
+      "intensity"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-A2",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "A2",
+    "name": "Straight on a Cone",
+    "desc": "A classical mechanics analogue of geodesic motion in general relativity. A frictionless point mass constrained to the surface of an infinite cone experiences only the normal force. Uses conservation of angular momentum and the unrolling-of-the-cone technique to find the normal force, angle of velocity, time to reach a given distance, and the total number of revolutions made as time goes to infinity.",
+    "topics": [
+      "Mechanics"
+    ],
+    "tags": [
+      "cone",
+      "normal force",
+      "angular momentum",
+      "geodesic",
+      "conservation laws",
+      "kinematics",
+      "rotation",
+      "general relativity analogy"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-A3",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "A3",
+    "name": "Storm Chaser",
+    "desc": "Two-part problem on atmospheric physics. Part A derives the adiabatic lapse rate for a rising air parcel and finds the stability condition and Brunt-Vaisala oscillation frequency for a displaced parcel. Part B models a tornado as a Rankine vortex, derives the radial pressure gradient and central pressure deficit, and determines the stability condition on circulation for a rotating fluid.",
+    "topics": [
+      "Mechanics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "atmosphere",
+      "lapse rate",
+      "adiabatic process",
+      "buoyancy",
+      "Brunt-Vaisala frequency",
+      "Rankine vortex",
+      "tornado",
+      "fluid mechanics",
+      "pressure gradient",
+      "stability"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-B1",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "B1",
+    "name": "Radiant Bubbles",
+    "desc": "Derives the Stromgren radius of the ionized hydrogen bubble around a hot star by balancing ionization and recombination rates, then tracks the expanding ionization front over time. Accounts for the large pressure ratio between hot ionized and cold neutral gas to find the final equilibrium radius. Extends to galaxy clusters, showing the gas density follows a power law in a flat rotation curve potential and analyzing X-ray cooling times as a function of radius.",
+    "topics": [
+      "Astrophysics",
+      "Quantum Physics",
+      "Thermodynamics"
+    ],
+    "tags": [
+      "Stromgren sphere",
+      "ionization",
+      "recombination",
+      "ionization front",
+      "ideal gas",
+      "galaxy cluster",
+      "power law",
+      "X-ray cooling",
+      "hydrostatic equilibrium"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-B2",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "B2",
+    "name": "Say Cheese... It's a Conic",
+    "desc": "Studies inverse-square central force trajectories (conic sections) using snapshots of a moving charged particle at equal time intervals. Part (a) determines the elliptical orbit and maximum distance of an attracting particle. Part (b) identifies the hyperbolic orbit and asymptotic velocity direction of a repelling particle. Part (c) derives the Rutherford scattering impact-parameter formula B = r0 cot(alpha/2) from the conic-section trajectory.",
+    "topics": [
+      "Mechanics",
+      "Electromagnetism"
+    ],
+    "tags": [
+      "conic sections",
+      "Coulomb force",
+      "central force",
+      "ellipse",
+      "hyperbola",
+      "orbit",
+      "Rutherford scattering",
+      "impact parameter",
+      "eccentricity"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
+  },
+  {
+    "id": "usapho-2026-B3",
+    "contest": "USAPhO",
+    "year": 2026,
+    "country": "",
+    "type": "Theory",
+    "label": "B3",
+    "name": "The Trojan Cylinder",
+    "desc": "Analyzes the quality factor Q of an inductor when a thin conducting cylindrical shell is inserted inside the solenoid. Eddy currents induced in the shell dissipate energy, creating an effective resistance that grows as omega-squared. Derives Q using the energy definition, finds the effective resistance, and shows that adding a series resistor changes the frequency dependence of Q from linearly increasing to having a maximum.",
+    "topics": [
+      "Electromagnetism"
+    ],
+    "tags": [
+      "quality factor",
+      "solenoid",
+      "eddy currents",
+      "inductance",
+      "effective resistance",
+      "frequency dependence",
+      "electromagnetic induction",
+      "conducting cylinder"
+    ],
+    "problemUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO.pdf",
+    "solutionUrl": "https://aapt.org/physicsteam/2026/upload/2026-USAPhO-Solutions.pdf"
   },
   {
     "id": "usapho-2025-A1",

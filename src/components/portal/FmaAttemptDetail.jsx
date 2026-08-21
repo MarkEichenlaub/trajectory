@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
 import ScratchWorkLink from './ScratchWorkLink'
 
@@ -13,6 +13,17 @@ function formatSeconds(s) {
 export default function FmaAttemptDetail({ detail, onBack }) {
   const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
   const questionRefs = useRef({})
+
+  // Solutions are collapsed by default and expand in place, so a student who
+  // wants to re-attempt a question they got wrong isn't shown the answer first.
+  const [openSolutions, setOpenSolutions] = useState(() => new Set())
+  function toggleSolution(qid) {
+    setOpenSolutions(prev => {
+      const next = new Set(prev)
+      next.has(qid) ? next.delete(qid) : next.add(qid)
+      return next
+    })
+  }
 
   // An ungraded attempt must not reveal the key: correct_choice comes back null
   // from the server until the attempt is graded, and we hide the verdict UI too.
@@ -139,6 +150,29 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                 {ans?.scratch_work_url && (
                   <ScratchWorkLink path={ans.scratch_work_url} label="Scratch work for this question ↗"
                     style={{ marginTop: 8, display: 'inline-block' }} />
+                )}
+                {q.solution && (
+                  <div className="fma-solution-block">
+                    <button
+                      type="button"
+                      className="fma-solution-toggle"
+                      onClick={() => toggleSolution(q.id)}
+                      aria-expanded={openSolutions.has(q.id)}
+                      aria-controls={`solution-${q.id}`}
+                    >
+                      <span className="fma-solution-caret" aria-hidden="true">
+                        {openSolutions.has(q.id) ? '▾' : '▸'}
+                      </span>
+                      {openSolutions.has(q.id) ? 'Hide Solution' : 'Show Solution'}
+                    </button>
+                    {openSolutions.has(q.id) && (
+                      <div
+                        id={`solution-${q.id}`}
+                        className="fma-solution"
+                        dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.solution) }}
+                      />
+                    )}
+                  </div>
                 )}
               </div>
             )

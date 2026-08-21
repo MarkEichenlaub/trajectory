@@ -697,6 +697,24 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fma-tag.ok  { background: var(--green); color: var(--surface); }
 .fma-tag.bad { background: var(--red); color: var(--surface); }
 
+/* Worked solution, collapsed by default. It expands in normal flow so the rest
+   of the page is pushed down rather than the solution overlaying anything. */
+.fma-solution-block { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 8px; }
+.fma-solution-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; padding: 2px 0;
+  font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer;
+}
+.fma-solution-toggle:hover { text-decoration: underline; }
+.fma-solution-caret { font-size: 10px; }
+.fma-solution {
+  margin-top: 8px; padding: 12px 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 4px; font-size: 13px; line-height: 1.55;
+}
+.fma-solution p { margin: 0 0 8px; }
+.fma-solution p:last-child { margin-bottom: 0; }
+
 /* Admin panes that aren't one of the table views. `.content` is overflow:hidden
    and only supplies the flex row, so a pane that doesn't scroll itself simply
    clips whatever falls past the fold — with no scrollbar to reveal it. */
