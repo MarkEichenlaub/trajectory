@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import { problemSummary } from '../utils/problemBank'
 
 function NoteField({ assignmentId, initialNote, onSave }) {
   const [value, setValue] = useState(initialNote || '')
@@ -229,6 +230,7 @@ export default function AssignedView({
 
             const isBeingDragged = dragId === a.id
             const isDragTarget = dragOverId === a.id
+            const summary = problemSummary(p)
 
             return (
               <div
@@ -255,7 +257,10 @@ export default function AssignedView({
                 </button>
                 <div className="assigned-problem-info">
                   <span className="p-label">{p.contest} {p.year} {p.label}</span>
-                  <span className="p-name">{p.name}</span>
+                  <span className="p-name" title={summary ? `${p.name} — ${summary}` : undefined}>
+                    {p.name}
+                    {summary && <span className="p-meta"> ({summary})</span>}
+                  </span>
                   {a.assigned_date && (
                     <span className="p-date">{a.assigned_date}</span>
                   )}

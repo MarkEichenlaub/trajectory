@@ -14,20 +14,9 @@ import ProblemBankBrowser from './portal/ProblemBankBrowser'
 import ProgressAndPlanTab from './portal/ProgressAndPlanTab'
 import FmaProgress from './portal/FmaProgress'
 import SchedulingTab from './portal/SchedulingTab'
+import { problemSummary } from '../utils/problemBank'
 
 const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'fma-progress', 'invoices', 'account'])
-
-// Contest problems (problems.json) carry curated topics/desc/tags; AoPS homework and
-// handout-derived entries don't (their "desc" is just the raw statement), so only
-// contest problems get the parenthetical summary in the compact assigned/completed list.
-function problemSummary(p) {
-  if (p.type !== 'Theory' && p.type !== 'Experiment') return ''
-  const bits = []
-  if (p.topics?.length) bits.push(`${p.topics.join(', ')}.`)
-  if (p.desc) bits.push(p.desc)
-  if (p.tags?.length) bits.push(p.tags.slice(0, 3).join(', '))
-  return bits.join(' ')
-}
 
 export default function StudentView({ student, assignments, sessions, problems, accessibleSources, sessionProblems, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to

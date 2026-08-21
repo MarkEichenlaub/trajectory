@@ -53,6 +53,18 @@ function handoutToProblem(h) {
   }
 }
 
+// Contest problems (problems.json) carry curated topics/desc/tags; AoPS homework and
+// handout-derived entries don't (their "desc" is just the raw statement), so only
+// contest problems get the parenthetical summary in the compact assigned-list rows.
+export function problemSummary(p) {
+  if (p.type !== 'Theory' && p.type !== 'Experiment') return ''
+  const bits = []
+  if (p.topics?.length) bits.push(`${p.topics.join(', ')}.`)
+  if (p.desc) bits.push(p.desc)
+  if (p.tags?.length) bits.push(p.tags.slice(0, 3).join(', '))
+  return bits.join(' ')
+}
+
 // Combine the three problem sources into the unified bank used everywhere.
 // Every record gets a normalized `source` ("homework"/"script" for AoPS rows,
 // "handout"/"summary"/"book"/"exam" for handouts-derived rows).
