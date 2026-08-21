@@ -637,7 +637,8 @@ export async function markMyProblemCompleted(studentId, problemId) {
     const { error } = await supabase
       .from('assignments').update({ status: 'completed', completed_date: date }).eq('id', pending.id)
     if (error) throw new Error(error.message)
-    return { ...pending, status: 'completed', completed_date: date }
+    // wasCreated: false lets callers know undo should revert status rather than delete the row.
+    return { ...pending, status: 'completed', completed_date: date, wasCreated: false }
   }
   if (existing && existing.length > 0) return null
   const id = `${Date.now()}-${Math.random().toString(36).slice(2)}-${problemId.slice(-8)}`
@@ -646,7 +647,7 @@ export async function markMyProblemCompleted(studentId, problemId) {
     .insert({ id, student_id: studentId, problem_id: problemId, status: 'completed', assigned_date: date, completed_date: date })
     .select().single()
   if (error) throw new Error(error.message)
-  return data
+  return { ...data, wasCreated: true }
 }
 
 // ── F=ma practice tests ────────────────────────────────────────────────────

@@ -394,6 +394,10 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 }
 .toast.success { color: #bfe6cd; }
 .toast.error { color: #f0b3b3; }
+.toast-undo {
+  background: none; border: none; color: inherit; text-decoration: underline;
+  font: inherit; font-weight: 600; cursor: pointer; padding: 0; margin-left: 10px;
+}
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ---- Misc ---------------------------------------------------- */

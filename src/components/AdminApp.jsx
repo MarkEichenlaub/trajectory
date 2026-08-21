@@ -143,9 +143,9 @@ export default function AdminApp({ userId }) {
   useEffect(() => { if (hydrated.current.sessions) cacheSet(k('sb', userId, 'sessions'), sessions) }, [sessions])
   useEffect(() => { if (hydrated.current.handouts) cacheSet(k('sb', userId, 'handouts'), handouts) }, [handouts])
 
-  const showToast = useCallback((msg, type = 'success') => {
-    setToast({ msg, type })
-    setTimeout(() => setToast(null), 3500)
+  const showToast = useCallback((msg, type = 'success', onUndo = null) => {
+    setToast({ msg, type, onUndo })
+    setTimeout(() => setToast(null), onUndo ? 6000 : 3500)
   }, [])
 
   useEffect(() => {
@@ -503,6 +503,19 @@ export default function AdminApp({ userId }) {
     try {
       await updateAssignment(existing.id, updates)
       setAssignments(prev => prev.map(a => a.id === existing.id ? { ...a, ...updates } : a))
+      if (newStatus === 'completed') {
+        const p = allProblems.find(pr => pr.id === existing.problem_id)
+        showToast(`Marked "${p?.name || existing.problem_id}" done`, 'success', () => revertToAssigned(existing.id))
+      }
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
+  async function revertToAssigned(assignmentId) {
+    try {
+      await updateAssignment(assignmentId, { status: 'assigned', completed_date: null })
+      setAssignments(prev => prev.map(a => a.id === assignmentId ? { ...a, status: 'assigned', completed_date: null } : a))
     } catch (e) {
       showToast(e.message, 'error')
     }
@@ -518,6 +531,20 @@ export default function AdminApp({ userId }) {
           const idx = prev.findIndex(a => a.id === result.id)
           if (idx >= 0) return prev.map(a => a.id === result.id ? { ...a, ...result } : a)
           return [...prev, result]
+        })
+        const p = allProblems.find(pr => pr.id === problemId)
+        const assignmentId = result.id
+        showToast(`Marked "${p?.name || problemId}" done`, 'success', async () => {
+          if (result.wasCreated) {
+            try {
+              await deleteAssignment(assignmentId)
+              setAssignments(prev => prev.filter(a => a.id !== assignmentId))
+            } catch (e) {
+              showToast(e.message, 'error')
+            }
+          } else {
+            revertToAssigned(assignmentId)
+          }
         })
       }
     } catch (e) {
@@ -957,7 +984,13 @@ export default function AdminApp({ userId }) {
         )}
       </div>
 
-      {toast && <Toast msg={toast.msg} type={toast.type} />}
+      {toast && (
+        <Toast
+          msg={toast.msg}
+          type={toast.type}
+          onUndo={toast.onUndo ? () => { toast.onUndo(); setToast(null) } : null}
+        />
+      )}
 
       {packetModalOpen && (
         <CreatePacketModal
