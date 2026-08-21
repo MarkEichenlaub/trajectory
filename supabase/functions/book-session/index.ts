@@ -118,6 +118,41 @@ async function sendIcsEmail(params: {
   }).catch(e => console.error('Email send failed:', e))
 }
 
+// Google's conferenceData.createRequest is async and occasionally comes back
+// empty on the initial create (status stays "pending"). Retry once via PATCH.
+async function ensureMeet(accessToken: string, eventId: string): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}?conferenceDataVersion=1`,
+      {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          conferenceData: {
+            createRequest: {
+              requestId: `meet-${eventId}-${Date.now()}`,
+              conferenceSolutionKey: { type: 'hangoutsMeet' },
+            },
+          },
+        }),
+      },
+    )
+    if (res.ok) {
+      const data = await res.json() as {
+        hangoutLink?: string
+        conferenceData?: { entryPoints?: { entryPointType?: string; uri?: string }[] }
+      }
+      return data.hangoutLink
+        || data.conferenceData?.entryPoints?.find(e => e.entryPointType === 'video')?.uri
+        || ''
+    }
+    console.error('Meet retry failed:', res.status, await res.text())
+  } catch (e) {
+    console.error('Meet retry error:', e)
+  }
+  return ''
+}
+
 function overlapsAny(slotStart: Date, busy: { start: string; end: string }[]): boolean {
   const s = slotStart.getTime()
   const e = s + SESSION_DURATION_MIN * 60_000
@@ -228,9 +263,10 @@ Deno.serve(async (req) => {
     conferenceData?: { entryPoints?: { entryPointType?: string; uri?: string }[] }
   }
   const gcalEventId = calEvent.id
-  const meetUrl = calEvent.hangoutLink
+  let meetUrl = calEvent.hangoutLink
     || calEvent.conferenceData?.entryPoints?.find(e => e.entryPointType === 'video')?.uri
     || ''
+  if (!meetUrl) meetUrl = await ensureMeet(accessToken, gcalEventId)
 
   // Create Miro board
   let miroBoardUrl = ''
