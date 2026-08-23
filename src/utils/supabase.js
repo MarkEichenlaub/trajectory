@@ -88,7 +88,20 @@ export async function updateSession(id, updates) {
 // session had already been billed, so a deleted session never counts against the
 // student's balance. Callers should refresh students afterward to show the new
 // balance.
+//
+// The Google Calendar event goes first, and a failure there aborts the delete.
+// The RPC cannot reach Google, so dropping the row while the event survives is
+// worse than not deleting at all: sync-recurring-sessions rebuilds session rows
+// from calendar events, so the session would simply reappear on the next run.
+// Failing this way round is self-healing — an orphaned row with no event is
+// cleaned up by that same sync.
 export async function deleteSession(id) {
+  const { data, error: fnError } = await supabase.functions.invoke('delete-session-event', {
+    body: { session_id: id },
+  })
+  if (fnError) throw new Error(`Could not remove the Google Calendar event: ${fnError.message}`)
+  if (data?.error) throw new Error(`Could not remove the Google Calendar event: ${data.error}`)
+
   const { error } = await adminClient().rpc('delete_session', { p_session_id: id })
   if (error) throw new Error(error.message)
 }

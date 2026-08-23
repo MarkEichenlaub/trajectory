@@ -75,15 +75,24 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
     // If the session was already billed, deleting it refunds the credit so the
     // student isn't charged for a session that didn't happen.
     const willRefund = s.balance_decremented === true
-    const msg = willRefund
-      ? `Delete this session? The session credit will be added back to ${student.name}'s balance.`
-      : 'Delete this session?'
+    // Future sessions also lose their Google Calendar event, and Google emails
+    // the attendees about it — worth saying out loud before the click lands.
+    const willUnschedule = !!s.gcal_event_id && new Date(s.scheduled_at) > new Date()
+    const msg = [
+      'Delete this session?',
+      willRefund && `The session credit will be added back to ${student.name}'s balance.`,
+      willUnschedule && 'The Google Calendar event will be removed and the family notified.',
+    ].filter(Boolean).join('\n\n')
     if (!confirm(msg)) return
     try {
       await deleteSession(s.id)
       await onSessionsChange()
       if (willRefund) await onStudentsChange?.()
-      showToast(willRefund ? 'Session deleted — credit restored' : 'Session deleted')
+      showToast([
+        'Session deleted',
+        willUnschedule && 'removed from Google Calendar',
+        willRefund && 'credit restored',
+      ].filter(Boolean).join(' — '))
     } catch (e) {
       showToast(e.message, 'error')
     }
