@@ -1248,13 +1248,16 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
       .finally(() => setLoading(false))
   }, [student?.id])
 
-  // All sessions for this student that have ended, oldest first.
-  const completedSessions = useMemo(() =>
-    (sessions || [])
-      .filter(s => s.end_time)
-      .sort((a, b) => a.end_time.localeCompare(b.end_time)),
-    [sessions]
-  )
+  // All sessions for this student that have actually ended, oldest first.
+  // Recurring-schedule sync sets end_time on sessions up to 90 days out at
+  // creation time, so end_time alone isn't "has happened" — it must also be
+  // in the past, or every future session on the calendar counts as billed.
+  const completedSessions = useMemo(() => {
+    const nowIso = new Date().toISOString()
+    return (sessions || [])
+      .filter(s => s.end_time && s.end_time <= nowIso)
+      .sort((a, b) => a.end_time.localeCompare(b.end_time))
+  }, [sessions])
 
   // Invoices oldest→newest for period math, then reversed for display.
   const sortedAsc = useMemo(() =>
