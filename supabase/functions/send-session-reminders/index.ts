@@ -125,6 +125,7 @@ Deno.serve(async (req) => {
       headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+        bcc: 'mark.d.eichenlaub@gmail.com',
         to: recipients,
         subject: `Physics session with Mark in ~10 minutes`,
         text: emailBody,

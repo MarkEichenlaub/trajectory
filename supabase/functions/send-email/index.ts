@@ -54,6 +54,7 @@ Deno.serve(async (req) => {
       },
       body: JSON.stringify({
         from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+        bcc: 'mark.d.eichenlaub@gmail.com',
         to: Array.isArray(to) ? to : [to],
         subject,
         ...(isHtml ? { html: body } : { text: body }),

@@ -110,6 +110,7 @@ async function sendIcsEmail(params: {
     headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+      bcc: 'mark.d.eichenlaub@gmail.com',
       to: params.to,
       subject: params.subject,
       text: params.text,
