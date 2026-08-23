@@ -100,15 +100,18 @@ export default function StudentView({ student, assignments, sessions, problems, 
     .filter(a => a.status === 'completed')
     .sort((a, b) => (b.completed_date || b.assigned_date || '').localeCompare(a.completed_date || a.assigned_date || ''))
 
-  const allItems = [...assignedItems, ...completedItems]
-  const tabItems = tab === 'assigned' ? assignedItems : tab === 'completed' ? completedItems : allItems
-
   // Problem bank: accessible sources + any assigned/completed problems
   const bankProblems = useMemo(() => {
     const accessibleSet = new Set(accessibleSources || [])
     const assignedIds = new Set(assignments.map(a => a.problem_id))
     return problems.filter(p => accessibleSet.has(p.contest) || assignedIds.has(p.id))
   }, [problems, accessibleSources, assignments])
+
+  // Same browse/tag/search UI as "All Problems", scoped to just what's been solved.
+  const completedProblems = useMemo(() => {
+    const completedIds = new Set(completedItems.map(a => a.problem_id))
+    return problems.filter(p => completedIds.has(p.id))
+  }, [problems, completedItems])
 
   const sortedSessions = [...(sessions || [])].sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
@@ -150,7 +153,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
   const tabs = [
     ['assigned', 'Assigned', assignedItems.length],
-    ['completed', 'Completed', completedItems.length],
+    ['completed', 'Completed', completedProblems.length],
     ['all', 'All Problems', bankProblems.length],
     ['sessions', 'Past Sessions', pastSessions.length],
     ['scheduling', 'Scheduling', null],
@@ -267,6 +270,15 @@ export default function StudentView({ student, assignments, sessions, problems, 
             isStudentRole={isStudentRole}
           />
         </>
+      ) : tab === 'completed' ? (
+        <ProblemBankBrowser
+          bankProblems={completedProblems}
+          assignments={assignments}
+          student={student}
+          isPreview={isPreview}
+          hideStatusControls
+          emptyMessage="No completed problems yet."
+        />
       ) : tab === 'all' ? (
         <ProblemBankBrowser
           bankProblems={bankProblems}
@@ -394,11 +406,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
         )
       ) : (
         <>
-          {tabItems.length === 0 ? (
+          {assignedItems.length === 0 ? (
             (
               <div className="empty-state">
-                {tab === 'assigned' ? 'No problems currently assigned.'
-                  : 'No completed problems yet.'}
+                No problems currently assigned.
               </div>
             )
           ) : (
@@ -406,7 +417,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
               {submitError && (
             <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 8 }}>{submitError}</div>
           )}
-          {tabItems.map(a => {
+          {assignedItems.map(a => {
             const p = problemById(a.problem_id)
             if (!p) return null
             const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'

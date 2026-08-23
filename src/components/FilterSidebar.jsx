@@ -52,7 +52,7 @@ function Section({ title, collapsed, onToggle, action, children }) {
   )
 }
 
-export default function FilterSidebar({ problems, filteredProblems, filters, setFilters, statusMap }) {
+export default function FilterSidebar({ problems, filteredProblems, filters, setFilters, statusMap, hideStatusControls }) {
   const [contestCollapsed, toggleContest] = useCollapsed('contest')
   const [courseCollapsed, toggleCourse_] = useCollapsed('course')
   const [weekCollapsed, toggleWeek] = useCollapsed('week')
@@ -207,10 +207,12 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
       </div>
 
       {/* Hide completed */}
-      <div className="sidebar-item" onClick={() => setFilters(f => ({ ...f, hideCompleted: !f.hideCompleted }))}>
-        <input type="checkbox" checked={filters.hideCompleted} readOnly />
-        <span>Hide completed</span>
-      </div>
+      {!hideStatusControls && (
+        <div className="sidebar-item" onClick={() => setFilters(f => ({ ...f, hideCompleted: !f.hideCompleted }))}>
+          <input type="checkbox" checked={filters.hideCompleted} readOnly />
+          <span>Hide completed</span>
+        </div>
+      )}
 
       <Section title="Collection" collapsed={contestCollapsed} onToggle={toggleContest}>
         {contests.map(c => (
@@ -303,15 +305,17 @@ export default function FilterSidebar({ problems, filteredProblems, filters, set
         ))}
       </Section>
 
-      <Section title="Status" collapsed={statusCollapsed} onToggle={toggleStatus}>
-        {STATUS_OPTIONS.map(({ key, label }) => (
-          <div key={key} className={`sidebar-item ${filters.statuses.has(key) ? 'active' : ''}`} onClick={() => toggleSet('statuses', key)}>
-            <input type="checkbox" checked={filters.statuses.has(key)} readOnly />
-            <span>{label}</span>
-            <span className="sidebar-count">{statusCounts[key] || 0}</span>
-          </div>
-        ))}
-      </Section>
+      {!hideStatusControls && (
+        <Section title="Status" collapsed={statusCollapsed} onToggle={toggleStatus}>
+          {STATUS_OPTIONS.map(({ key, label }) => (
+            <div key={key} className={`sidebar-item ${filters.statuses.has(key) ? 'active' : ''}`} onClick={() => toggleSet('statuses', key)}>
+              <input type="checkbox" checked={filters.statuses.has(key)} readOnly />
+              <span>{label}</span>
+              <span className="sidebar-count">{statusCounts[key] || 0}</span>
+            </div>
+          ))}
+        </Section>
+      )}
 
       <Section
         title={`Tags${filters.selectedTags.size > 0 ? ` (${filters.selectedTags.size})` : ''}`}

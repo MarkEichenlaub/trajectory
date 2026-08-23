@@ -18,7 +18,7 @@ const DEFAULT_BANK_FILTERS = {
   hideCompleted: false,
 }
 
-export default function ProblemBankBrowser({ bankProblems, assignments, student, onMarkCompleted, isPreview }) {
+export default function ProblemBankBrowser({ bankProblems, assignments, student, onMarkCompleted, isPreview, hideStatusControls, emptyMessage }) {
   const [filters, setFilters] = useState(DEFAULT_BANK_FILTERS)
   const [sortCol, setSortCol] = useState('year')
   const [sortDir, setSortDir] = useState('desc')
@@ -108,7 +108,7 @@ export default function ProblemBankBrowser({ bankProblems, assignments, student,
   if (bankProblems.length === 0) {
     return (
       <div className="empty-state">
-        No problem bank configured yet. Your tutor will add accessible sources.
+        {emptyMessage || 'No problem bank configured yet. Your tutor will add accessible sources.'}
       </div>
     )
   }
@@ -121,6 +121,7 @@ export default function ProblemBankBrowser({ bankProblems, assignments, student,
         filters={filters}
         setFilters={setFilters}
         statusMap={statusMap}
+        hideStatusControls={hideStatusControls}
       />
       <div className="problem-area" style={{ flex: 1, minWidth: 0, overflowX: 'auto' }}>
         <div className="search-bar">
