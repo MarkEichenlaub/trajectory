@@ -215,6 +215,33 @@ export async function uploadHandoutSolutionPDF(file, handoutId) {
   return data.publicUrl
 }
 
+// ── Recurring schedules (admin; students cannot set this) ────────────────────
+// One weekly pattern per student. The DB write is a plain RLS-gated upsert;
+// applyRecurringSchedule then invokes the edge function that actually creates/
+// updates the Google Calendar RRULE series (needs server-side Google secrets).
+
+export async function fetchRecurringSchedule(studentId) {
+  const { data, error } = await adminClient()
+    .from('recurring_schedules').select('*').eq('student_id', studentId).maybeSingle()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function saveRecurringSchedule(row) {
+  const { error } = await adminClient()
+    .from('recurring_schedules').upsert(row, { onConflict: 'student_id' })
+  if (error) throw new Error(error.message)
+}
+
+export async function applyRecurringSchedule(studentId) {
+  const { data, error } = await supabase.functions.invoke('setup-recurring-schedule', {
+    body: { student_id: studentId },
+  })
+  if (error) throw new Error(error.message)
+  if (data?.error) throw new Error(data.error)
+  return data
+}
+
 // ── Invoices (admin) ─────────────────────────────────────────────────────────
 
 export async function fetchInvoices(studentId) {

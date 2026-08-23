@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import InvoicePreviewModal from './InvoicePreviewModal'
@@ -915,6 +915,7 @@ export default function AdminApp({ userId }) {
           <AdminScheduleView
             key={activeStudentId}
             student={activeStudent}
+            showToast={showToast}
             sessions={sessions.filter(s => s.student_id === activeStudentId)}
             sessionProblems={sessionProblems.filter(sp => sp.student_id === activeStudentId)}
             allProblems={allProblems}
@@ -1022,7 +1023,7 @@ export default function AdminApp({ userId }) {
 
 // ── Admin scheduling tab ──────────────────────────────────────────────────────
 
-function AdminScheduleView({ student, sessions, sessionProblems, allProblems }) {
+function AdminScheduleView({ student, sessions, sessionProblems, allProblems, showToast }) {
   const [contacts, setContacts] = useState([])
   const [loadingContacts, setLoadingContacts] = useState(true)
 
@@ -1078,6 +1079,8 @@ function AdminScheduleView({ student, sessions, sessionProblems, allProblems }) 
         )}
       </div>
 
+      <RecurringScheduleEditor student={student} showToast={showToast} />
+
       <SchedulingTab
         sessions={sessions}
         formatDate={formatDate}
@@ -1086,6 +1089,139 @@ function AdminScheduleView({ student, sessions, sessionProblems, allProblems }) 
         sessionProblems={sessionProblems}
         allProblems={allProblems}
       />
+    </div>
+  )
+}
+
+const WEEKDAYS = [
+  { code: 'MO', label: 'Mon' }, { code: 'TU', label: 'Tue' }, { code: 'WE', label: 'Wed' },
+  { code: 'TH', label: 'Thu' }, { code: 'FR', label: 'Fri' }, { code: 'SA', label: 'Sat' }, { code: 'SU', label: 'Sun' },
+]
+
+// Recurring weekly schedule — admin-only (not reachable from StudentView).
+// Saving upserts the DB row (RLS-gated), then invokes setup-recurring-schedule
+// to create/update the live Google Calendar RRULE series.
+function RecurringScheduleEditor({ student, showToast }) {
+  const [draft, setDraft] = useState(null)
+  const [saved, setSaved] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    if (!student?.id) return
+    setLoading(true)
+    fetchRecurringSchedule(student.id)
+      .then(row => {
+        const initial = row || {
+          student_id: student.id,
+          days_of_week: ['MO', 'TU', 'WE', 'TH', 'FR'],
+          start_time: '10:00',
+          duration_minutes: 60,
+          timezone: student.timezone || 'America/New_York',
+          calendar_summary: `${(student.first_name || student.name || '').split(' ')[0]} / Mark Physics`,
+          start_date: new Date().toISOString().slice(0, 10),
+          end_date: null,
+          active: true,
+        }
+        setSaved(row)
+        setDraft(initial)
+      })
+      .catch(e => showToast(e.message, 'error'))
+      .finally(() => setLoading(false))
+  }, [student?.id])
+
+  if (loading || !draft) return null
+
+  const isDirty = JSON.stringify(draft) !== JSON.stringify(saved || {})
+
+  function toggleDay(code) {
+    setDraft(d => ({
+      ...d,
+      days_of_week: d.days_of_week.includes(code)
+        ? d.days_of_week.filter(c => c !== code)
+        : [...d.days_of_week, code],
+    }))
+  }
+
+  async function handleSave() {
+    setSaving(true)
+    try {
+      await saveRecurringSchedule(draft)
+      const result = await applyRecurringSchedule(student.id)
+      setSaved(draft)
+      showToast(draft.active
+        ? `Recurring schedule live on Google Calendar (${draft.days_of_week.join(', ')} at ${draft.start_time})`
+        : 'Recurring schedule removed from Google Calendar')
+      void result
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 20 }}>
+      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        Recurring schedule
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginBottom: 10 }}>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {WEEKDAYS.map(w => (
+            <button key={w.code} className="sm"
+              style={{
+                color: draft.days_of_week.includes(w.code) ? 'var(--green)' : 'var(--text-dim)',
+                fontWeight: draft.days_of_week.includes(w.code) ? 600 : 400,
+              }}
+              onClick={() => toggleDay(w.code)}>
+              {w.label}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Time</label>
+          <input type="time" value={draft.start_time?.slice(0, 5) || ''}
+            onChange={e => setDraft(d => ({ ...d, start_time: e.target.value }))} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Duration</label>
+          <input type="number" min="15" step="15" style={{ width: 64 }}
+            value={draft.duration_minutes}
+            onChange={e => setDraft(d => ({ ...d, duration_minutes: parseInt(e.target.value, 10) || 60 }))} />
+          <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>min</span>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginBottom: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Starting</label>
+          <input type="date" value={draft.start_date}
+            onChange={e => setDraft(d => ({ ...d, start_date: e.target.value }))} />
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Until</label>
+          <input type="date" value={draft.end_date || ''}
+            onChange={e => setDraft(d => ({ ...d, end_date: e.target.value || null }))} />
+          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>(blank = open-ended)</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button className="sm"
+            style={{ color: draft.active ? 'var(--green)' : 'var(--text-dim)' }}
+            title={draft.active ? 'Live — click to turn off' : 'Off — click to enable'}
+            onClick={() => setDraft(d => ({ ...d, active: !d.active }))}>
+            {draft.active ? '● on' : '○ off'}
+          </button>
+        </div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {isDirty && (
+          <button className="sm primary" disabled={saving} onClick={handleSave}>
+            {saving ? 'Saving…' : 'Save'}
+          </button>
+        )}
+        {saved?.gcal_event_id && (
+          <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>Live on Google Calendar as "{saved.calendar_summary}"</span>
+        )}
+      </div>
     </div>
   )
 }
