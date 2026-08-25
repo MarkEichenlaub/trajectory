@@ -1,0 +1,20 @@
+import { readFileSync } from 'fs'
+const show = (file, pat, n = 200) => {
+  const t = readFileSync('work/crypt/fixed/' + file, 'utf8')
+  const i = t.indexOf(pat)
+  console.log(`=== ${file} [${pat.slice(0, 45)}] ${i < 0 ? '** NOT FOUND **' : ''}`)
+  if (i >= 0) console.log(t.slice(Math.max(0, i - n), i + n).replace(/\n/g, ' | '))
+  console.log()
+}
+show('175-9207.tex', 'of the same size underneath')
+show('175-9208.tex', 'R \\cos(45^\\circ)')
+show('175-9208.tex', '\\cos(45^\\circ)')
+show('190-10427.tex', '\\dfrac43 \\pi r^3')
+show('190-10427.tex', "m'")
+show('190-10427.tex', 'V = s^2')
+show('190-10427.tex', '0.1')
+show('191-11108.tex', 'mass of the disk')
+show('191-11108.tex', '\\rho g h')
+show('191-11254.tex', 'the decreases')
+show('191-11254.tex', 'units if')
+show('191-11254.tex', '250 \\mathrm{kg}')

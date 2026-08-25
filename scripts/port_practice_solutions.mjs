@@ -61,14 +61,15 @@ async function run() {
       statement: ellPass(row.statement),
       choices: Object.fromEntries(Object.entries(row.choices || {}).map(([k, v]) => [k, ellPass(v)])),
     }
+    // Idempotent: a hand-fix already present in the DB (from a prior run) is
+    // fine; only fail if NEITHER the old nor the fixed text is there.
     for (const fix of HAND_FIXES.filter(f => f.q === n)) {
-      if (fix.field === 'choices') {
-        if (!next.choices[fix.key]?.includes(fix.from)) throw new Error(`hand-fix q${n} ${fix.key}: '${fix.from}' not found`)
-        next.choices[fix.key] = next.choices[fix.key].replace(fix.from, fix.to)
-      } else {
-        if (!next[fix.field]?.includes(fix.from)) throw new Error(`hand-fix q${n} ${fix.field}: '${fix.from}' not found`)
-        next[fix.field] = next[fix.field].replace(fix.from, fix.to)
-      }
+      const get = () => fix.field === 'choices' ? next.choices[fix.key] : next[fix.field]
+      const set = v => { if (fix.field === 'choices') next.choices[fix.key] = v; else next[fix.field] = v }
+      const cur = get()
+      if (cur?.includes(fix.to)) continue
+      if (!cur?.includes(fix.from)) throw new Error(`hand-fix q${n}: neither '${fix.from}' nor '${fix.to}' present`)
+      set(cur.replace(fix.from, fix.to))
     }
 
     // verify everything we are about to write

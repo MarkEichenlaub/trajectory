@@ -51,7 +51,7 @@ export const questions = [
 
 Each area on this graph is an acceleration multiplied by a time, so each contributes a velocity.
 
-The first part of the integral is a rectangle of width $$1 \\;\\mathrm{s}$$ and height $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$1 \\;\\mathrm{m/s}$$. The next part is a right triangle with legs $$1 \\;\\mathrm{s}$$ and $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$\\dfrac12 \\;\\mathrm{m/s}$$. The next part is a right triangle of the same size underneath the $$t$$-axis, so it contributes $$-1 \\;\\mathrm{m/s}$$. Finally, the last area is a semicircle spanning $$1 \\;\\mathrm{s}$$ in the $$t$$ direction and reaching $$1 \\;\\mathrm{m/s^2}$$ in the $$a$$ direction, so it contributes $$\\dfrac{\\pi}{2} \\;\\mathrm{m/s}$$. In total, the final speed of the object is
+The first part of the integral is a rectangle of width $$1 \\;\\mathrm{s}$$ and height $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$1 \\;\\mathrm{m/s}$$. The next part is a right triangle with legs $$1 \\;\\mathrm{s}$$ and $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$\\dfrac12 \\;\\mathrm{m/s}$$. The next part is a right triangle with legs $$1 \\;\\mathrm{s}$$ and $$2 \\;\\mathrm{m/s^2}$$ underneath the $$t$$-axis, so it contributes $$-1 \\;\\mathrm{m/s}$$. Finally, the last area is a semicircle spanning $$1 \\;\\mathrm{s}$$ in the $$t$$ direction and reaching $$1 \\;\\mathrm{m/s^2}$$ in the $$a$$ direction, so it contributes $$\\dfrac{\\pi}{2} \\;\\mathrm{m/s}$$. In total, the final speed of the object is
 
 $$\\begin{aligned}
 v & = \\left(1 + \\dfrac12 - 1 + \\dfrac{\\pi}{2}\\right) \\;\\mathrm{m/s} \\\\[8pt]

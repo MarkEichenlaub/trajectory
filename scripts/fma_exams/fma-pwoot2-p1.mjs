@@ -815,7 +815,7 @@ First, let's find the moment of inertia of the semi-circular disk. The moment of
 
 $$I_{c} = \\dfrac12 Mr^2,$$
 
-where $$m$$ is the mass of the disk. The moment of the semi-circular disk is half this much, or
+where $$M$$ is the mass of the disk. The moment of the semi-circular disk is half this much, or
 
 $$I_{sc} = \\dfrac12 \\cdot \\dfrac12 M r^2.$$
 
@@ -977,7 +977,7 @@ where $$P_2$$ is the pressure from the water at the bottom disk.
 
 Pressure increases with depth, giving
 
-$$P_2 = P_1 + \\rho g h.$$
+$$P_2 = P_1 + \\rho g \\ell.$$
 
 We can solve these three equations. First, we substitute the third equation into the second to eliminate $$P_2.$$ Then we solve the first equation for $$P_1$$ and plug it into the second equation to eliminate $$P_1.$$ Finally, we solve for the tension in the string. The result is
 

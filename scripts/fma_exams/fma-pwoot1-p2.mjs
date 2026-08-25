@@ -126,7 +126,7 @@ This should be the maximum value of the $$x$$ component of the force, as depicte
     topics: ['Mechanics'], tags: ['circular motion', 'rotational motion'],
     solution: `$$\\boxed{\\mathrm{(b)} \\quad \\dfrac{\\sqrt{2}}{2} a}$$
 
-Any point on the planet surface undergoes uniform circular motion. All points have the same angular velocity $$\\omega,$$ and the acceleration of an object in uniform circular motion is $$a = \\omega^2 r.$$ The acceleration is therefore proportional to $$r$$, the distance from the axis of the planet's rotation (not the distance from the center of the planet). At $$45^\\circ$$, this distance is $$R \\cos(45^\\circ) = \\dfrac{\\sqrt{2}}{2},$$ so the acceleration of the point at $$45^\\circ$$ latitude is smaller than that of the point on the equator by a factor $$\\dfrac{\\sqrt{2}}{2},$$ so the answer is (b).`,
+Any point on the planet surface undergoes uniform circular motion. All points have the same angular velocity $$\\omega,$$ and the acceleration of an object in uniform circular motion is $$a = \\omega^2 r.$$ The acceleration is therefore proportional to $$r$$, the distance from the axis of the planet's rotation (not the distance from the center of the planet). At $$45^\\circ$$, this distance is $$R \\cos(45^\\circ) = \\dfrac{\\sqrt{2}}{2}R,$$ so the acceleration of the point at $$45^\\circ$$ latitude is smaller than that of the point on the equator by a factor $$\\dfrac{\\sqrt{2}}{2},$$ so the answer is (b).`,
   },
   {
     n: 7, correct: 'B',

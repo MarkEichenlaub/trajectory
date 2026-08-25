@@ -511,7 +511,7 @@ We can simply choose $$M = 1,$$ $$m = 1,$$ and $$L = 1$$ and see which answer ch
 
 The last rocket, which accelerates the $$10 \\, \\mathrm{kg}$$ satellite from $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$11000 \\, \\mathrm{m}/\\mathrm{s}$$, has a total mass of only $$50 \\, \\mathrm{kg}.$$ So how bad can it be?
 
-The key observation is that each rocket accelerates its payload to $$1000 \\, \\mathrm{m}/\\mathrm{s}$$ in the reference frame where it is initially at rest. Therefore the entire $$50 \\, \\mathrm{kg}$$ rocket has to be moving at $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ in order to accomplish its mission; the WOOTLand rocket that accelerates it from $$9000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ has a total mass of $$250 \\mathrm{kg}.$$ The previous stage (from $$8000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$9000 \\, \\mathrm{m}/\\mathrm{s}$$) has a total mass of $$1250 \\mathrm{kg}$$, and so on. We see that the total mass required for $$N$$ stages is
+The key observation is that each rocket accelerates its payload to $$1000 \\, \\mathrm{m}/\\mathrm{s}$$ in the reference frame where it is initially at rest. Therefore the entire $$50 \\, \\mathrm{kg}$$ rocket has to be moving at $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ in order to accomplish its mission; the WOOTLand rocket that accelerates it from $$9000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ has a total mass of $$250 \\;\\mathrm{kg}.$$ The previous stage (from $$8000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$9000 \\, \\mathrm{m}/\\mathrm{s}$$) has a total mass of $$1250 \\;\\mathrm{kg}$$, and so on. We see that the total mass required for $$N$$ stages is
 
 $$10 \\, \\mathrm{kg} \\cdot 5^N.$$
 
@@ -667,7 +667,7 @@ $$\\begin{aligned}
 [\\rho_\\mathrm{sphere}] & = ML^{-3}.
 \\end{aligned}$$
 
-To cancel out the mass units if $$\\mu,$$ we construct
+To cancel out the mass units in $$\\mu,$$ we construct
 
 $$\\left[\\dfrac{\\rho}{\\mu}\\right] = L^{-2}T,$$
 
