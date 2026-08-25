@@ -31,7 +31,9 @@ export const questions = [
       E: '$$2$$',
     },
     topics: ['Mechanics'], tags: ['1d kinematics', 'equations of motion'],
-    solution: `Let the length of the race be $$d$$. Then the time Dick took to complete the race obeys $$\\dfrac12 a t_D^2 = d.$$ Jane completed the first half the race in a time $$\\dfrac{t_J}{2}$$ because both halves of the race took the same time for Jane. So $$\\dfrac12 a \\left(\\dfrac{t_J}{2}\\right)^2 = \\dfrac{d}{2}.$$ From this we have $$\\dfrac12 a \\left(\\dfrac{t_J}{2}\\right)^2 = \\dfrac14 a t_D^2.$$ Solving for $$\\dfrac{t_J}{t_D}$$ gives $$\\dfrac{t_J}{t_D} = \\sqrt{2}.$$`,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\sqrt{2}}$$
+
+Let the length of the race be $$d$$. Then the time Dick took to complete the race obeys $$\\dfrac12 a t_D^2 = d.$$ Jane completed the first half the race in a time $$\\dfrac{t_J}{2}$$ because both halves of the race took the same time for Jane. So $$\\dfrac12 a \\left(\\dfrac{t_J}{2}\\right)^2 = \\dfrac{d}{2}.$$ From this we have $$\\dfrac12 a \\left(\\dfrac{t_J}{2}\\right)^2 = \\dfrac14 a t_D^2.$$ Solving for $$\\dfrac{t_J}{t_D}$$ gives $$\\dfrac{t_J}{t_D} = \\sqrt{2}.$$`,
   },
   {
     n: 2, correct: 'D',
@@ -44,7 +46,9 @@ export const questions = [
       E: 'the distance between the balls increases as they fall and they hit the ground more than 0.1 seconds apart.',
     },
     topics: ['Mechanics'], tags: ['1d kinematics', 'free fall'],
-    solution: `The balls have the same acceleration, so the time from release to impact with the ground is the same for them, and they hit the ground 0.1 seconds apart. The balls are going faster when they are near the ground, so in 0.1 seconds they travel further, so the distance between them must be larger since they remain separated by the same amount of time. This is answer (d).`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\text{distance increases; land } 0.1\\;\\mathrm{s} \\text{ apart}}$$
+
+The balls have the same acceleration, so the time from release to impact with the ground is the same for them, and they hit the ground 0.1 seconds apart. The balls are going faster when they are near the ground, so in 0.1 seconds they travel further, so the distance between them must be larger since they remain separated by the same amount of time. This is answer (d).`,
   },
   {
     n: 3, correct: 'C',
@@ -58,11 +62,13 @@ export const questions = [
     },
     solutionFigures: [FIG('q03-s1')],
     topics: ['Mechanics'], tags: ['relative motion', 'waves/sound', 'geometry'],
-    solution: `The discrepancy between where you see the airplane and where you hear it is, of course, caused by the difference between the speed of light and the speed of sound. The former is essentially infinite, so you see the airplane at its true position, but you only hear the airplane some time after it emits the sound.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 0.70}$$
+
+The discrepancy between where you see the airplane and where you hear it is, of course, caused by the difference between the speed of light and the speed of sound. The former is essentially infinite, so you see the airplane at its true position, but you only hear the airplane some time after it emits the sound.
 
 At the moment the airplane is directly overhead, it emits engine noise, which travels downward to you at the speed of sound $$v_s$$ in some time $$t$$. Meanwhile the airplane continues to fly horizontally at the Mach number $$M$$ times the speed of sound. Drawing a diagram:
 
-Thus we simply have $$M = \\tan \\theta$$, which in this case is $$0.70$$.`,
+Thus we simply have $$M = \\tan \\theta$$, which in this case is $$0.70.$$`,
   },
   {
     n: 4, correct: 'C', // why: boxed holds the phrase "angular velocity", not a letter; choice (c) (time to move through an additional degree) is exactly an angular velocity, and the solution explicitly rules out (a) and (b).
@@ -75,7 +81,9 @@ Thus we simply have $$M = \\tan \\theta$$, which in this case is $$0.70$$.`,
       E: 'No additional information is required; it is already possible to determine the altitude of the airplane.',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'relative motion', 'estimation'],
-    solution: `Dimensional analysis shows that the given information is not sufficient to find the altitude of the airplane; we cannot find a length from only a speed and dimensionless quantities. The same argument rules out using the angular wingspan or sound intensity alone; we could use these quantities only if we had other measurements of the airplane such as the wingspan in meters or the total sound power emitted by the engines. However, an angular velocity can be combined with a speed to obtain a length, and it's easy to work out how to do so in this specific case.`,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{time to move through another degree}}$$
+
+Dimensional analysis shows that the given information is not sufficient to find the altitude of the airplane; we cannot find a length from only a speed and dimensionless quantities. The same argument rules out using the angular wingspan or sound intensity alone; we could use these quantities only if we had other measurements of the airplane such as the wingspan in meters or the total sound power emitted by the engines. However, an angular velocity can be combined with a speed to obtain a length, and it's easy to work out how to do so in this specific case.`,
   },
   {
     n: 5, correct: 'A', // why: no boxed in the solution; it computes a maximum of 0.49 N and concludes "as depicted in the first choice", i.e. graph a).
@@ -91,11 +99,17 @@ Which of the following graphs could correctly show the force on the bead in the 
     },
     figures: [FIG('q05-q1'), FIG_JPG('q05-c1')],
     topics: ['Mechanics'], tags: ['circular motion', 'graph interpretation', 'free-body diagrams'],
-    solution: `The force on the bead is certainly zero while it is on the straight segment of track. On the semicircular segment, the magnitude of the force is constant, but its direction rotates from $$-y$$ to $$+y$$ at a constant rate; thus its $$x$$-component should vary sinusoidally from zero to a maximum back to zero. This is depicted in the first two choices.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\text{the first graph}}$$
+
+The force on the bead is certainly zero while it is on the straight segment of track. On the semicircular segment, the magnitude of the force is constant, but its direction rotates from $$-y$$ to $$+y$$ at a constant rate; thus its $$x$$-component should vary sinusoidally from zero to a maximum back to zero. This is depicted in the first two choices.
 
 All choices show the bead moving along the semicircular segment in $$1 \\; \\mathrm{s}$$, so its angular velocity is $$\\omega = \\frac{\\pi}{1 \\; \\mathrm{s}}$$ and the centripetal force has magnitude
 
-$$F = m \\omega^2 r = (0.25 \\; \\mathrm{kg}) \\left(\\frac{\\pi}{1 \\; \\mathrm{s}}\\right)^2 (0.2 \\; \\mathrm{m}) = 0.49 \\; \\mathrm{N}$$
+$$\\begin{aligned}
+F & = m \\omega^2 r \\\\[8pt]
+{} & = (0.25 \\; \\mathrm{kg}) \\left(\\frac{\\pi}{1 \\; \\mathrm{s}}\\right)^2 (0.2 \\; \\mathrm{m}) \\\\
+{} & = 0.49 \\; \\mathrm{N}.
+\\end{aligned}$$
 
 This should be the maximum value of the $$x$$ component of the force, as depicted in the first choice.`,
   },
@@ -110,7 +124,9 @@ This should be the maximum value of the $$x$$ component of the force, as depicte
       E: '$$2a$$',
     },
     topics: ['Mechanics'], tags: ['circular motion', 'rotational motion'],
-    solution: `Any point on the planet surface undergoes uniform circular motion. All points have the same angular velocity $$\\omega,$$ and the acceleration of an object in uniform circular motion is $$a = \\omega^2 r.$$ The acceleration is therefore proportional to $$r$$, the distance from the axis of the planet's rotation (not the distance from the center of the planet). At $$45^\\circ$$, this distance is $$R \\cos(45^\\circ) = \\dfrac{\\sqrt{2}}{2},$$ so the acceleration of the point at $$45^\\circ$$ latitude is smaller than that of the point on the equator by a factor $$\\dfrac{\\sqrt{2}}{2},$$ so the answer is (b).`,
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\dfrac{\\sqrt{2}}{2} a}$$
+
+Any point on the planet surface undergoes uniform circular motion. All points have the same angular velocity $$\\omega,$$ and the acceleration of an object in uniform circular motion is $$a = \\omega^2 r.$$ The acceleration is therefore proportional to $$r$$, the distance from the axis of the planet's rotation (not the distance from the center of the planet). At $$45^\\circ$$, this distance is $$R \\cos(45^\\circ) = \\dfrac{\\sqrt{2}}{2},$$ so the acceleration of the point at $$45^\\circ$$ latitude is smaller than that of the point on the equator by a factor $$\\dfrac{\\sqrt{2}}{2},$$ so the answer is (b).`,
   },
   {
     n: 7, correct: 'B',
@@ -126,7 +142,9 @@ Then the center of mass of the see-saw / balloon system:`,
     },
     figures: [FIG('q07-q1')],
     topics: ['Mechanics'], tags: ['buoyancy', 'statics/equilibrium', 'center of mass', 'torque'],
-    solution: `The balloon has mass and that mass is left of the fulcrum, so the center of mass is moved to the left of the fulcrum. There is a buoyant force on the balloon, so the balloon pulls upward on the left side of the see-saw. So the left side goes up and the right side goes down. This is (b). The normal rule that a see-saw tips down on whichever side its center of mass is on does not apply here because that rule doesn't account for the buoyant force.`,
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\text{left of fulcrum; right side tips down}}$$
+
+The balloon has mass and that mass is left of the fulcrum, so the center of mass is moved to the left of the fulcrum. There is a buoyant force on the balloon, so the balloon pulls upward on the left side of the see-saw. So the left side goes up and the right side goes down. This is (b). The normal rule that a see-saw tips down on whichever side its center of mass is on does not apply here because that rule doesn't account for the buoyant force.`,
   },
   {
     n: 8, correct: 'D',
@@ -139,35 +157,46 @@ Then the center of mass of the see-saw / balloon system:`,
       E: '$$\\dfrac{T}{\\cos^2\\theta}$$',
     },
     topics: ['Mechanics'], tags: ['energy conservation', 'vectors', 'projectile motion'],
-    solution: `If the speed of the ball is $$v,$$ the its component of velocity in the vertical direction is $$v_y = v\\sin\\theta.$$ This is what Jane measures. So she calculated $$T = \\dfrac12 mv_y^2.$$ The real kinetic energy is $$\\dfrac12 m v^2 = \\dfrac12 m \\left(\\dfrac{v_y}{\\sin\\theta}\\right)^2 = \\dfrac{T}{\\sin^2\\theta}.$$`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\dfrac{T}{\\sin^2\\theta}}$$
+
+If the speed of the ball is $$v,$$ then its component of velocity in the vertical direction is $$v_y = v\\sin\\theta.$$ This is what Jane measures. So she calculated $$T = \\dfrac12 mv_y^2.$$ The real kinetic energy is
+
+$$\\begin{aligned}
+\\dfrac12 m v^2 & = \\dfrac12 m \\left(\\dfrac{v_y}{\\sin\\theta}\\right)^2 \\\\[8pt]
+{} & = \\dfrac{T}{\\sin^2\\theta}.
+\\end{aligned}$$`,
   },
   {
     n: 9, correct: 'D',
-    statement: `A rod of length $$l$$ is attached to the ground at one end via a frictionless pivot. The rod is held at an angle $$\\theta$$ from the vertical and released. It crashes into the ground after a time $$\\tau$$. If the experiment is repeated with a rod of the same mass per unit length and length $$L,$$ the time for it to crash into the ground will be`,
+    statement: `A rod of length $$\\ell$$ is attached to the ground at one end via a frictionless pivot. The rod is held at an angle $$\\theta$$ from the vertical and released. It crashes into the ground after a time $$\\tau$$. If the experiment is repeated with a rod of the same mass per unit length and length $$L,$$ the time for it to crash into the ground will be`,
     choices: {
       A: '$$\\tau$$',
-      B: '$$\\tau \\dfrac{l}{L}$$',
-      C: '$$\\tau \\dfrac{L}{l}$$',
-      D: '$$\\tau \\sqrt{\\dfrac{L}{l}}$$',
-      E: '$$\\tau \\left( \\dfrac{L}{l} \\right)^2$$',
+      B: '$$\\tau \\dfrac{\\ell}{L}$$',
+      C: '$$\\tau \\dfrac{L}{\\ell}$$',
+      D: '$$\\tau \\sqrt{\\dfrac{L}{\\ell}}$$',
+      E: '$$\\tau \\left( \\dfrac{L}{\\ell} \\right)^2$$',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'scaling', 'rotational dynamics'],
-    solution: `For a pure dimensional analysis solution, the combination of $$g$$ and $$l$$ that has dimensions of time is $$\\sqrt{\\dfrac{l}{g}}.$$ Because $$g$$ is the same for each rod, the time is $$\\tau \\sqrt{\\dfrac{L}{l}}.$$
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\tau \\sqrt{\\dfrac{L}{\\ell}}}$$
 
-For a solution in mechanics, the torque on a rod of length $$l$$ is $$mg \\dfrac{l}{2}\\sin\\theta.$$ Its moment of inertia is $$\\dfrac13 ml^2,$$ so its equation of motion is $$\\ddot{\\theta} = \\dfrac{3g\\sin\\theta}{2l}$$. If we replace $$l$$ with $$L$$, then to recover the same equation of motion we would need to scale time longer by a factor of $$\\sqrt{\\dfrac{L}{l}},$$ so that in taking two time derivatives on the left hand side we again divide by a factor $$\\dfrac{L}{l}.$$ This gives us the same answer as the dimensional analysis solution.`,
+For a pure dimensional analysis solution, the combination of $$g$$ and $$\\ell$$ that has dimensions of time is $$\\sqrt{\\dfrac{\\ell}{g}}.$$ Because $$g$$ is the same for each rod, the time is $$\\tau \\sqrt{\\dfrac{L}{\\ell}}.$$
+
+For a solution in mechanics, the torque on a rod of length $$\\ell$$ is $$mg \\dfrac{\\ell}{2}\\sin\\theta.$$ Its moment of inertia is $$\\dfrac13 ml^2,$$ so its equation of motion is $$\\ddot{\\theta} = \\dfrac{3g\\sin\\theta}{2\\ell}$$. If we replace $$\\ell$$ with $$L$$, then to recover the same equation of motion we would need to scale time longer by a factor of $$\\sqrt{\\dfrac{L}{\\ell}},$$ so that in taking two time derivatives on the left hand side we again divide by a factor $$\\dfrac{L}{\\ell}.$$ This gives us the same answer as the dimensional analysis solution.`,
   },
   {
     n: 10, correct: 'C',
-    statement: `In the previous problem, suppose the maximum force exerted by the pivot on the rod of length $$l$$ was $$F$$. Then the maximum force exerted by the pivot on the rod of length $$L$$ is`,
+    statement: `In the previous problem, suppose the maximum force exerted by the pivot on the rod of length $$\\ell$$ was $$F$$. Then the maximum force exerted by the pivot on the rod of length $$L$$ is`,
     choices: {
       A: '$$F$$',
-      B: '$$F \\dfrac{l}{L}$$',
-      C: '$$F \\dfrac{L}{l}$$',
-      D: '$$F \\sqrt{\\dfrac{L}{l}}$$',
+      B: '$$F \\dfrac{\\ell}{L}$$',
+      C: '$$F \\dfrac{L}{\\ell}$$',
+      D: '$$F \\sqrt{\\dfrac{L}{\\ell}}$$',
       E: 'the pivot does not exert force on the rod in these scenarios',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'scaling', 'rotational dynamics'],
-    solution: `The only way to make a force from the variables $$m, g,$$ and $$l$$ is $$mg.$$ So the force is proportional to mass, which is proportional to length, so $$F\\propto l$$ and the answer is $$F \\dfrac{L}{l}.$$`,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad F \\dfrac{L}{\\ell}}$$
+
+The only way to make a force from the variables $$m, g,$$ and $$\\ell$$ is $$mg.$$ So the force is proportional to mass, which is proportional to length, so $$F\\propto \\ell$$ and the answer is $$F \\dfrac{L}{\\ell}.$$`,
   },
   {
     n: 11, correct: 'C',
@@ -183,7 +212,9 @@ Then the dividers are then allowed to slide left or right slowly. The dividers s
     },
     figures: [FIG('q11-q1')],
     topics: ['Mechanics'], tags: ['fluid statics', 'pressure', 'statics/equilibrium'],
-    solution: `Before the dividers are released, the pressure is the same in the oil and water at the bottom divider. Because the water is more dense than oil, there is a greater pressure change in the water from the bottom divider to the top divider. This means the pressure is lower in the water at the top divider. When the dividers are released, the higher pressure in the oil pushes the divider to the left.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{top divider left, bottom divider right}}$$
+
+Before the dividers are released, the pressure is the same in the oil and water at the bottom divider. Because the water is more dense than oil, there is a greater pressure change in the water from the bottom divider to the top divider. This means the pressure is lower in the water at the top divider. When the dividers are released, the higher pressure in the oil pushes the divider to the left.
 
 This raises the water level on the left, which increases the pressure at the bottom of the tube in the water. This means the bottom divider gets pushed right by the higher pressure in the water. The answer is (c).`,
   },
@@ -198,11 +229,13 @@ This raises the water level on the left, which increases the pressure at the bot
       E: '$$\\dfrac16 S$$',
     },
     topics: ['Mechanics'], tags: ['momentum conservation', 'energy conservation', 'springs'],
-    solution: `By momentum conservation, the masses have equal magnitude of momentum. We can use the formula $$KE = \\dfrac{p^2}{2m}$$ to see that the energy of each block is inversely proportional to its mass. So if the block of mass $$m$$ has one unit of energy, the block of mass $$5m$$ has $$\\dfrac15$$ a unit of energy. Or, if the block of mass $$m$$ has 5 units of energy, the block of mass $$5m$$ has 1 unit of energy. Then the block of mass $$m$$ has 5 of the 6 units of energy, so its energy is $$\\dfrac56 S.$$`,
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\dfrac56 S}$$
+
+By momentum conservation, the masses have equal magnitude of momentum. We can use the formula $$KE = \\dfrac{p^2}{2m}$$ to see that the energy of each block is inversely proportional to its mass. So if the block of mass $$m$$ has one unit of energy, the block of mass $$5m$$ has $$\\dfrac15$$ a unit of energy. Or, if the block of mass $$m$$ has 5 units of energy, the block of mass $$5m$$ has 1 unit of energy. Then the block of mass $$m$$ has 5 of the 6 units of energy, so its energy is $$\\dfrac56 S.$$`,
   },
   {
     n: 13, correct: 'E',
-    statement: `A rod with uniform density, total mass $$m$$, and length $$l$$ is pivoted about its center. The rod is horizontal and sits of a frictionless table. A spring of spring constant $$k$$ is attached to the left side of the rod, and a second spring with the same spring constant is attached to the right side of the rod. What is the angular frequency of small-amplitude oscillations of the rod?`,
+    statement: `A rod with uniform density, total mass $$m$$, and length $$\\ell$$ is pivoted about its center. The rod is horizontal and sits of a frictionless table. A spring of spring constant $$k$$ is attached to the left side of the rod, and a second spring with the same spring constant is attached to the right side of the rod. What is the angular frequency of small-amplitude oscillations of the rod?`,
     choices: {
       A: '$$\\sqrt{\\dfrac{k}{m}}$$',
       B: '$$\\sqrt{\\dfrac{3k}{2m}}$$',
@@ -212,7 +245,14 @@ This raises the water level on the left, which increases the pressure at the bot
     },
     figures: [FIG('q13-q1')],
     topics: ['Mechanics'], tags: ['oscillations/SHM', 'springs', 'moment of inertia', 'torque'],
-    solution: `Suppose the rod is rotated an angle $$\\theta$$ from its equilibrium. Then the springs have some small horizontal component, but this is not first-order in $$\\theta$$ and can be ignored. The torque from each spring has magnitude $$k \\dfrac{l}{2} \\theta \\cdot \\dfrac{l}{2},$$ so the total torque has magnitude $$\\dfrac{k l^2 \\theta}{2}$$. The moment of inertia is $$\\dfrac{1}{12} ml^2,$$ so angular frequency is $$\\omega = \\sqrt{\\dfrac{kl^2/2}{(1/12) ml^2}} = \\sqrt{\\dfrac{6k}{m}}.$$`,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\sqrt{\\dfrac{6k}{m}}}$$
+
+Suppose the rod is rotated an angle $$\\theta$$ from its equilibrium. Then the springs have some small horizontal component, but this is not first-order in $$\\theta$$ and can be ignored. The torque from each spring has magnitude $$k \\dfrac{\\ell}{2} \\theta \\cdot \\dfrac{\\ell}{2},$$ so the total torque has magnitude $$\\dfrac{k \\ell^2 \\theta}{2}$$. The moment of inertia is $$\\dfrac{1}{12} ml^2,$$ so angular frequency is
+
+$$\\begin{aligned}
+\\omega & = \\sqrt{\\dfrac{kl^2/2}{(1/12) ml^2}} \\\\[8pt]
+{} & = \\sqrt{\\dfrac{6k}{m}}.
+\\end{aligned}$$`,
   },
   {
     n: 14, correct: 'C',
@@ -225,25 +265,29 @@ This raises the water level on the left, which increases the pressure at the bot
       E: '$$2000g$$',
     },
     topics: ['Mechanics'], tags: ['gravitation', 'scaling'],
-    solution: `Using the shell theorem, Newton's second law, and Newton's gravitational law, the acceleration on the surface of a spherically-symmetric mass distribution of radius $$r$$ is $$\\dfrac{GM}{r^2}.$$ In this problem $$M$$ decreases by a factor of 2, decreasing the acceleration by the same factor. $$r$$ decreases by a factor of 10, increasing the acceleration by a factor of $$10^2 = 100.$$ Over all, the acceleration increases by a factor of $$\\dfrac12 \\cdot 100 = 50.$$`,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 50g}$$
+
+Using the shell theorem, Newton's second law, and Newton's gravitational law, the acceleration on the surface of a spherically-symmetric mass distribution of radius $$r$$ is $$\\dfrac{GM}{r^2}.$$ In this problem $$M$$ decreases by a factor of 2, decreasing the acceleration by the same factor. $$r$$ decreases by a factor of 10, increasing the acceleration by a factor of $$10^2 = 100.$$ Over all, the acceleration increases by a factor of $$\\dfrac12 \\cdot 100 = 50.$$`,
   },
   {
     n: 15, correct: 'E',
-    statement: `A rod of mass $$m$$ and length $$l$$ is hung on one end to a linear railing where it is free to slide without friction and to rotate about its point of contact with the railing.
+    statement: `A rod of mass $$m$$ and length $$\\ell$$ is hung on one end to a linear railing where it is free to slide without friction and to rotate about its point of contact with the railing.
 
 The rod is held at a small angle from the vertical and is in the plane of the railing and gravity. The rod is then released. What is the angular frequency of oscillations of the rod?`,
     choices: {
-      A: '$$\\sqrt{\\dfrac{g}{l}}$$',
-      B: '$$\\sqrt{\\dfrac{3g}{2l}}$$',
-      C: '$$\\sqrt{\\dfrac{2g}{l}}$$',
-      D: '$$\\sqrt{\\dfrac{3g}{l}}$$',
-      E: '$$\\sqrt{\\dfrac{6g}{l}}$$',
+      A: '$$\\sqrt{\\dfrac{g}{\\ell}}$$',
+      B: '$$\\sqrt{\\dfrac{3g}{2\\ell}}$$',
+      C: '$$\\sqrt{\\dfrac{2g}{\\ell}}$$',
+      D: '$$\\sqrt{\\dfrac{3g}{\\ell}}$$',
+      E: '$$\\sqrt{\\dfrac{6g}{\\ell}}$$',
     },
     figures: [FIG('q15-q1')],
     topics: ['Mechanics'], tags: ['oscillations/SHM', 'center of mass', 'moment of inertia', 'energy conservation'],
-    solution: `There are no forces in the horizontal direction, so the rod's center of mass in that direction doesn't move. When the rod is at an angle $$\\theta,$$ the height of its center of mass is $$-\\dfrac{l}{2} \\cos\\theta$$ above the railing. For small $$\\theta,$$ this makes the potential energy $$\\dfrac{lmg}{4}\\theta^2$$.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\sqrt{\\dfrac{6g}{\\ell}}}$$
 
-Next we need to find the kinetic energy of the rod. For small displacements, we can ignore the kinetic energy related to vertical motion because there is no first-order vertical velocity in the vertical direction. The moment of inertia of the rod about its center is $$\\dfrac{1}{12} ml^2,$$ so the kinetic energy is $$\\dfrac{1}{24} m l^2 \\dot{\\theta}^2.$$ The angular frequency is then $$\\sqrt{\\dfrac{lmg/4}{ml^2/24}} = \\sqrt{\\dfrac{6g}{l}}.$$`,
+There are no forces in the horizontal direction, so the rod's center of mass in that direction doesn't move. When the rod is at an angle $$\\theta,$$ the height of its center of mass is $$-\\dfrac{\\ell}{2} \\cos\\theta$$ above the railing. For small $$\\theta,$$ this makes the potential energy $$\\dfrac{lmg}{4}\\theta^2$$.
+
+Next we need to find the kinetic energy of the rod. For small displacements, we can ignore the kinetic energy related to vertical motion because there is no first-order vertical velocity in the vertical direction. The moment of inertia of the rod about its center is $$\\dfrac{1}{12} ml^2,$$ so the kinetic energy is $$\\dfrac{1}{24} m \\ell^2 \\dot{\\theta}^2.$$ The angular frequency is then $$\\sqrt{\\dfrac{lmg/4}{ml^2/24}} = \\sqrt{\\dfrac{6g}{\\ell}}.$$`,
   },
   {
     n: 16, correct: 'A',
@@ -259,7 +303,9 @@ Where can a force be applied so that the square is in equilibrium, regardless of
     },
     figures: [FIG('q16-q1')],
     topics: ['Mechanics'], tags: ['statics/equilibrium', 'torque', 'vectors'],
-    solution: `Neither of the two described forces exert a torque about the top right corner of the square. So we can apply a force to the top right corner that is equal to the negative of the sum of the other two forces. Then the sum of the forces will be zero and the torque about the top right corner will be zero, so the square will be in equilibrium.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\text{At the top right corner of the square}}$$
+
+Neither of the two described forces exert a torque about the top right corner of the square. So we can apply a force to the top right corner that is equal to the negative of the sum of the other two forces. Then the sum of the forces will be zero and the torque about the top right corner will be zero, so the square will be in equilibrium.
 
 If we apply a force at any other corner, that force must point directly towards the top right corner for its torque about that corner to be zero. If the force is applied to the top left or bottom right, we cannot cancel any net horizontal force from the first two forces. If the force is applied to the bottom left, we cannot cancel torque from the force on the top left about the bottom left. So at no other corner is it always possible to exert a force such that the square is in equilibrium. The answer is (a).`,
   },
@@ -269,7 +315,9 @@ If we apply a force at any other corner, that force must point directly towards 
     choices: { A: '(a)', B: '(b)', C: '(c)', D: '(d)', E: '(e)' },
     figures: [FIG('q17-q1')],
     topics: ['Mechanics'], tags: ['circular motion', 'tension', 'graph interpretation', 'center of mass'],
-    solution: `Because the rope is massive, each piece of the rope experiences a net force. This means the tension changes along the rope. The rope rotates around its center of mass. The further from the center of mass, the greater the acceleration, and so the greater the net force on a piece of rope of a given size. So the rate of change of the net force is not constant along the rope. So the options with straight lines are not possible. At the center of mass there is no acceleration and therefore no change in tension, so the correct plot must be (a) because that plot is flat somewhere between $$A$$ and $$B$$.`,
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\text{the plot with an interior maximum}}$$
+
+Because the rope is massive, each piece of the rope experiences a net force. This means the tension changes along the rope. The rope rotates around its center of mass. The further from the center of mass, the greater the acceleration, and so the greater the net force on a piece of rope of a given size. So the rate of change of the net force is not constant along the rope. So the options with straight lines are not possible. At the center of mass there is no acceleration and therefore no change in tension, so the correct plot must be (a) because that plot is flat somewhere between $$A$$ and $$B$$.`,
   },
   {
     n: 18, correct: 'E',
@@ -282,7 +330,9 @@ If we apply a force at any other corner, that force must point directly towards 
       E: 'There is not enough information to determine $$\\Delta E.$$',
     },
     topics: ['Mechanics'], tags: ['oscillations/SHM', 'springs', 'energy conservation'],
-    solution: `The spring is all the way stretched at the moment the spring constant changes, the spring's potential energy changes. If the spring is at its equilibrium length at the moment the spring constant changes, there is no change in energy. So there is not enough information to answer the question.`,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{not enough information to determine } \\Delta E}$$
+
+If the spring is all the way stretched at the moment the spring constant changes, the spring's potential energy changes. If the spring is at its equilibrium length at the moment the spring constant changes, there is no change in energy. So there is not enough information to answer the question.`,
   },
   {
     n: 19, correct: 'D',
@@ -295,11 +345,13 @@ If we apply a force at any other corner, that force must point directly towards 
       E: '$$g \\dfrac{h}{w}$$',
     },
     topics: ['Mechanics'], tags: ['non-inertial frames', 'statics/equilibrium', 'torque', 'center of mass'],
-    solution: `In a frame accelerating to the right at $$a$$, the domino feels an effective gravitational acceleration $$a$$ to the left. The domino will topple if the line through the center of the domino and parallel to gravitational acceleration points outside the base of the domino. This occurs when $$\\dfrac{a}{g} > \\dfrac{w}{h}$$. The minimum $$a$$ is $$\\dfrac{gw}{h}.$$`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad g \\dfrac{w}{h}}$$
+
+In a frame accelerating to the right at $$a$$, the domino feels an effective gravitational acceleration $$a$$ to the left. The domino will topple if the line through the center of the domino and parallel to gravitational acceleration points outside the base of the domino. This occurs when $$\\dfrac{a}{g} > \\dfrac{w}{h}$$. The minimum $$a$$ is $$\\dfrac{gw}{h}.$$`,
   },
   {
     n: 20, correct: 'C',
-    statement: `Toy top $$A$$ has an axis of length $$l$$ is spun with angular velocity $$\\omega_s$$. The top is tilted at an angle $$\\theta$$ from the vertical. You may assume $$\\theta$$ is small. The top's axis precesses so that the top of its handle moves in a circle with angular velocity $$\\omega_p$$. Top $$B$$ is a scaled-up version of top $$A$$ with the same proportions, but axis length $$2l$$. If it is spun with the same angular velocity $$\\omega_s,$$ what is its precession rate? You may assume the precession is slow compared to the spin angular velocity.`,
+    statement: `Toy top $$A$$ has an axis of length $$\\ell$$ is spun with angular velocity $$\\omega_s$$. The top is tilted at an angle $$\\theta$$ from the vertical. You may assume $$\\theta$$ is small. The top's axis precesses so that the top of its handle moves in a circle with angular velocity $$\\omega_p$$. Top $$B$$ is a scaled-up version of top $$A$$ with the same proportions, but axis length $$2\\ell$$. If it is spun with the same angular velocity $$\\omega_s,$$ what is its precession rate? You may assume the precession is slow compared to the spin angular velocity.`,
     choices: {
       A: '$$\\dfrac18 \\omega_p$$',
       B: '$$\\dfrac14 \\omega_p$$',
@@ -308,9 +360,11 @@ If we apply a force at any other corner, that force must point directly towards 
       E: '$$\\omega_p$$',
     },
     topics: ['Mechanics'], tags: ['angular momentum', 'rotational dynamics', 'scaling', 'torque'],
-    solution: `The angular momentum vector of the top points along its axis. (This is not perfectly true because the top is precessing, but because the precession is slow, it is nearly true.) The horizontal component of the angular momentum is $$\\sin\\theta \\omega_s L \\approx \\theta \\omega_s I,$$ with $$I$$ the moment of inertia of the top about its axis. This horizontal component goes in a circle with angular frequency $$\\omega_p,$$ so the rate of change of the momentum is $$\\omega_p \\theta \\omega_s I.$$ This is equal to the torque $$c \\theta m g l$$ on the top, where $$c$$ is a number from 0 to 1 indicating how far along the axis the top's center of mass is and $$m$$ is the mass. The precession rate is therefore $$\\omega_p = \\dfrac{c m g l}{\\omega_s I}.$$
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\dfrac12 \\omega_p}$$
 
-When we scale the top up by a factor of 2, we multiply $$l$$ by 2. We multiply $$\\dfrac{m}{I}$$ by 4 because its dimensions are $$L^2,$$ so over all we multiply $$\\omega_p$$ by $$\\dfrac12$$, so the new precession rate is $$\\dfrac12 \\omega_p.$$`,
+The angular momentum vector of the top points along its axis. (This is not perfectly true because the top is precessing, but because the precession is slow, it is nearly true.) The horizontal component of the angular momentum is $$\\sin\\theta \\omega_s I \\approx \\theta \\omega_s I,$$ with $$I$$ the moment of inertia of the top about its axis. This horizontal component goes in a circle with angular frequency $$\\omega_p,$$ so the rate of change of the momentum is $$\\omega_p \\theta \\omega_s I.$$ This is equal to the torque $$c \\theta m g \\ell$$ on the top, where $$c$$ is a number from 0 to 1 indicating how far along the axis the top's center of mass is and $$m$$ is the mass. The precession rate is therefore $$\\omega_p = \\dfrac{c m g \\ell}{\\omega_s I}.$$
+
+When we scale the top up by a factor of 2, we multiply $$\\ell$$ by 2. We multiply $$\\dfrac{m}{I}$$ by $$\\dfrac{1}{4}$$ because its dimensions are $$L^{-2},$$ so over all we multiply $$\\omega_p$$ by $$\\dfrac12$$, so the new precession rate is $$\\dfrac12 \\omega_p.$$`,
   },
   {
     n: 21, correct: 'C',
@@ -324,22 +378,33 @@ When we scale the top up by a factor of 2, we multiply $$l$$ by 2. We multiply $
     },
     solutionFigures: [FIG('q21-s1')],
     topics: ['Mechanics'], tags: ['power', 'equations of motion', 'graph interpretation'],
-    solution: `The power delivered is $$P = Fv = mav.$$ The velocity of the particle is $$ct - \\dfrac12 bt^2,$$ so the power per unit mass is $$(c-bt)(ct - \\dfrac12 bt^2).$$ We can factor this into a cubic in $$t$$ with roots $$\\dfrac{c}{b}, 0,$$ and $$\\dfrac{2c}{b}$$. There power is positive between times 0 and $$\\dfrac{c}{b},$$ and reaches a peak somewhere between those two times. Taking the derivative of the power and setting it to zero shows this time is $$\\dfrac{c(1 - \\sqrt{3}/3)}{b} \\approx 0.422 \\dfrac{c}{b},$$ but for our purposes, a rough sketch of the cubic should convince us the peak is fairly close to $$\\dfrac{c}{2b}.$$
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad t = 0.422 \\dfrac{c}{b}}$$
+
+The power delivered is $$P = Fv.$$ Since $$F = ma,$$ this is $$P = mav.$$ The velocity of the particle is $$ct - \\dfrac12 bt^2,$$ so the power per unit mass is $$(c-bt)(ct - \\dfrac12 bt^2).$$ We can factor this into a cubic in $$t$$ with roots $$\\dfrac{c}{b}, 0,$$ and $$\\dfrac{2c}{b}$$. The power is positive between times 0 and $$\\dfrac{c}{b},$$ reaching a peak somewhere between those two times. Taking the derivative of the power and setting it to zero shows this time is $$\\dfrac{c(1 - \\sqrt{3}/3)}{b} \\approx 0.422 \\dfrac{c}{b},$$ but for our purposes, a rough sketch of the cubic should convince us the peak is fairly close to $$\\dfrac{c}{2b}.$$
 
 The best answer is $$0.422 \\dfrac{c}{b}.$$`,
   },
   {
     n: 22, correct: 'D',
-    statement: `You measure the length of a simple pendulum of length $$l$$ to within $$\\delta l$$ and the amplitude (greatest angular displacement) $$\\theta$$ to within $$\\delta \\theta$$. The mass and gravitational acceleration are known exactly. Assuming $$\\theta \\ll 1,$$ what is your uncertainty $$\\delta E$$ in $$E,$$ the energy of the pendulum? The pendulum's energy at equilibrium is zero.`,
+    statement: `You measure the length of a simple pendulum of length $$\\ell$$ to within $$\\delta \\ell$$ and the amplitude (greatest angular displacement) $$\\theta$$ to within $$\\delta \\theta$$. The mass and gravitational acceleration are known exactly. Assuming $$\\theta \\ll 1,$$ what is your uncertainty $$\\delta E$$ in $$E,$$ the energy of the pendulum? The pendulum's energy at equilibrium is zero.`,
     choices: {
-      A: '$$\\sqrt{(\\delta l)^2 + (\\delta \\theta)^2}$$',
-      B: '$$mg\\left(\\delta l \\dfrac{\\theta^2}{2} + l \\theta \\;\\delta \\theta\\right)$$',
-      C: '$$E \\sqrt{\\left(\\dfrac{\\delta l}{l}\\right)^2 + \\left(\\dfrac{\\delta \\theta}{\\theta}\\right)^2}$$',
-      D: '$$mg \\sqrt{\\left(\\dfrac{\\theta^2 \\delta l}{2}\\right)^2 + \\left(l \\theta\\; \\delta \\theta\\right)^2 }$$',
-      E: '$$\\delta l + l \\;\\delta \\theta$$',
+      A: '$$\\sqrt{(\\delta \\ell)^2 + (\\delta \\theta)^2}$$',
+      B: '$$mg\\left(\\delta \\ell \\dfrac{\\theta^2}{2} + \\ell \\theta \\;\\delta \\theta\\right)$$',
+      C: '$$E \\sqrt{\\left(\\dfrac{\\delta \\ell}{\\ell}\\right)^2 + \\left(\\dfrac{\\delta \\theta}{\\theta}\\right)^2}$$',
+      D: '$$mg \\sqrt{\\left(\\dfrac{\\theta^2 \\delta \\ell}{2}\\right)^2 + \\left(\\ell \\theta\\; \\delta \\theta\\right)^2 }$$',
+      E: '$$\\delta \\ell + \\ell \\;\\delta \\theta$$',
     },
     topics: ['Mechanics'], tags: ['uncertainty propagation', 'error analysis', 'pendulum', 'energy conservation'],
-    solution: `The pendulum's energy is $$E = mg\\dfrac{l\\theta^2}{2}.$$ The uncertainty due to uncertainty in $$l$$ is $$\\delta E_l = \\delta_l \\dfrac{\\mathrm{d}E}{\\mathrm{d}l} = mg\\dfrac{\\theta^2}{2}\\delta l.$$ The uncertainty due to uncertainty in $$\\theta$$ is $$\\delta E_{\\theta} = mgl\\theta\\delta \\theta.$$ The total uncertainty in $$E$$ is $$\\delta E = \\sqrt{(\\delta E_l)^2 + (\\delta E_\\theta)^2}.$$ This gives us choice (d).`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad mg \\sqrt{\\left(\\dfrac{\\theta^2 \\delta \\ell}{2}\\right)^2 + \\left(\\ell \\theta\\; \\delta \\theta\\right)^2 }}$$
+
+The pendulum's energy is $$E = mg\\dfrac{\\ell\\theta^2}{2}.$$ The uncertainty due to uncertainty in $$\\ell$$ is
+
+$$\\begin{aligned}
+\\delta E_\\ell & = \\delta \\ell \\; \\dfrac{\\mathrm{d}E}{\\mathrm{d}\\ell} \\\\[8pt]
+{} & = mg\\dfrac{\\theta^2}{2}\\delta \\ell.
+\\end{aligned}$$
+
+The uncertainty due to uncertainty in $$\\theta$$ is $$\\delta E_{\\theta} = mgl\\theta\\delta \\theta.$$ The total uncertainty in $$E$$ is $$\\delta E = \\sqrt{(\\delta E_\\ell)^2 + (\\delta E_\\theta)^2}.$$ This gives us choice (d).`,
   },
   {
     n: 23, correct: 'E',
@@ -352,21 +417,25 @@ The best answer is $$0.422 \\dfrac{c}{b}.$$`,
       E: 'The relationship between $$T$$ and $$r$$ would not be a power law.',
     },
     topics: ['Mechanics'], tags: ['gravitation', 'orbital mechanics', 'scaling'],
-    solution: `Without the inverse-square law, the shell theorem does not hold, and the gravitational force from the planet is not the same as if all the mass were located at the center. If the orbiting body were far away from the planet, we could treat the planet as nearly a point mass and the scaling law $$T\\propto r$$ would hold, but this law breaks in near-Earth orbit, so the answer is (e).`,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{not a power law}}$$
+
+Without the inverse-square law, the shell theorem does not hold, and the gravitational force from the planet is not the same as if all the mass were located at the center. If the orbiting body were far away from the planet, we could treat the planet as nearly a point mass and the scaling law $$T\\propto r$$ would hold, but this law breaks in near-Earth orbit, so the answer is (e).`,
   },
   {
     n: 24, correct: 'C',
-    statement: `A see-saw is a beam balanced on a fulcrum at the center of its bottom. A thin see-saw is balanced at any angle of inclination from the horizontal. A see-saw of finite thickness $$t$$ and length $$l$$:`,
+    statement: `A see-saw is a beam balanced on a fulcrum at the center of its bottom. A thin see-saw is balanced at any angle of inclination from the horizontal. A see-saw of finite thickness $$t$$ and length $$\\ell$$:`,
     choices: {
       A: 'Is balanced at any $$\\theta$$',
       B: 'Is balanced only at $$\\theta = 0,$$ and this is a stable equilibrium',
       C: 'Is balanced only at $$\\theta = 0,$$ and this is an unstable equilibrium',
-      D: 'Is balanced for all $$\\theta < \\arctan\\left(\\dfrac{t}{l}\\right)$$',
-      E: 'Is balanced for $$\\theta = 0$$ and for $$\\theta > \\arctan\\left(\\dfrac{t}{l}\\right)$$',
+      D: 'Is balanced for all $$\\theta < \\arctan\\left(\\dfrac{t}{\\ell}\\right)$$',
+      E: 'Is balanced for $$\\theta = 0$$ and for $$\\theta > \\arctan\\left(\\dfrac{t}{\\ell}\\right)$$',
     },
     figures: [FIG('q24-q1')],
     topics: ['Mechanics'], tags: ['statics/equilibrium', 'center of mass', 'stability'],
-    solution: `The see-saw is balanced with its center of mass is over the fulcrum. This occurs only for $$\\theta = 0$$. The equilibrium at $$\\theta = 0$$ is unstable because any rotation of the see-saw lowers the center of mass, so the answer is (c).`,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{balanced only at } \\theta = 0 \\text{; unstable}}$$
+
+The see-saw is balanced when its center of mass is over the fulcrum. This occurs only for $$\\theta = 0$$. The equilibrium at $$\\theta = 0$$ is unstable because any rotation of the see-saw lowers the center of mass, so the answer is (c).`,
   },
   {
     n: 25, correct: 'D',
@@ -379,6 +448,8 @@ The best answer is $$0.422 \\dfrac{c}{b}.$$`,
       E: '$$F \\propto n^3$$',
     },
     topics: ['Mechanics'], tags: ['friction', 'scaling', 'statics/equilibrium'],
-    solution: `The normal force on the middle disk, which is about the average normal force, scales with $$n$$ because there are about $$n/2$$ disks above it, and the normal force is equal to their weight. So the friction force on a given disk scales with $$n,$$ but the number of disks also scales with $$n,$$ so the total force scales as $$F \\propto n^2.$$`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad F \\propto n^2}$$
+
+The normal force on the middle disk, which is about the average normal force, scales with $$n$$ because there are about $$n/2$$ disks above it, and the normal force is equal to their weight. So the friction force on a given disk scales with $$n,$$ but the number of disks also scales with $$n,$$ so the total force scales as $$F \\propto n^2.$$`,
   },
 ]

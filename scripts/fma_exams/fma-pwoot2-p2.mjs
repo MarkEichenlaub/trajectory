@@ -34,9 +34,9 @@ How does the period of the pendulum's motion depend on $$v?$$ Give an answer usi
       E: 'The period increases with $$v$$ to infinity, then decreases asymptotically to zero.',
     },
     topics: ['Mechanics'], tags: ['oscillations', 'pendulum', 'energy'],
-    solution: `For small $$v,$$ the pendulum oscillates back and forth, so its period increases. (The often-quoted result that the period of a pendulum is independent of its amplitude is only an approximation; in fact the period increases with amplitude for small amplitudes. Indeed, the increase in period is first-order in $$v.$$) In this regime, the pendulum reaches some maximum angle $$\\theta(v).$$ When $$\\theta(v) = \\pi,$$ the period increases to infinity because the pendulum can balance vertically at this angle. As $$v$$ continues to increase, rather than oscillate back and forth, the pendulum rotates in circles. The higher $$v,$$ the faster the circles, with a lower bound only of zero as the pendulum speed increases.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{increases to infinity, then to zero}}$$
 
-So the period increases with $$v$$ to infinity, then decreases asymptotically to zero.`,
+For small $$v,$$ the pendulum oscillates back and forth, so its period increases. (The often-quoted result that the period of a pendulum is independent of its amplitude is only an approximation; in fact the period increases with amplitude for small amplitudes. Indeed, the increase in period is first-order in $$v.$$) In this regime, the pendulum reaches some maximum angle $$\\theta(v).$$ When $$\\theta(v) = \\pi,$$ the period increases to infinity because the pendulum can balance vertically at this angle. As $$v$$ continues to increase, rather than oscillate back and forth, the pendulum rotates in circles. The higher $$v,$$ the faster the circles, with a lower bound only of zero as the pendulum speed increases. So the period increases with $$v$$ to infinity, then decreases asymptotically to zero.`,
   },
   {
     n: 2, correct: 'D', // why: no boxed; solution ends "F \approx 53 N", matching choice D
@@ -50,7 +50,9 @@ So the period increases with $$v$$ to infinity, then decreases asymptotically to
     },
     figures: [FIG('q02-q1')],
     topics: ['Mechanics'], tags: ['statics', 'torque', 'rigid bodies'],
-    solution: `Calculated about the prop, there are three torques on the lever. There is a torque from the mass hanging off the left, there's a torque from gravity, and there's a torque from the force on the right. These torques must sum to zero for the lever to be in equilibrium.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 53 \\;\\mathrm{N}}$$
+
+Calculated about the prop, there are three torques on the lever. There is a torque from the mass hanging off the left, there's a torque from gravity, and there's a torque from the force on the right. These torques must sum to zero for the lever to be in equilibrium.
 
 Gravity can be thought of as a force of $$100 \\;\\mathrm{N}$$ acting $$25 \\;\\mathrm{cm}$$ to the right of the prop. The mass is a force of $$20 \\;\\mathrm{N}$$ acting $$25 \\;\\mathrm{cm}$$ to the left of the prop. The net is $$80 \\;\\mathrm{N}$$ acting downward to the right of the prop at a distance of $$25 \\;\\mathrm{cm}.$$
 
@@ -74,7 +76,9 @@ $$F \\approx 53 \\;\\mathrm{N}.$$`,
     },
     figures: [FIG('q03-q1')],
     topics: ['Mechanics'], tags: ['friction', 'pulleys/tension', 'dimensional analysis'],
-    solution: `We begin by analyzing the situation where the force is minimal to hold the mass up.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 90 \\;\\mathrm{N}}$$
+
+We begin by analyzing the situation where the force is minimal to hold the mass up.
 
 The mass has a weight of $$60 \\;\\mathrm{N},$$ so the tension in the rope above the mass is $$60 \\;\\mathrm{N}$$ when the mass is not accelerating.
 
@@ -86,7 +90,7 @@ Next, we imagine increasing the force on the rope until the mass is about to sli
 
 One might initially guess that friction on the rope from the pulley is unchanged in magnitude, but this is not correct. The tension in the rope is greater in this scenario, meaning that the pulley exerts a greater normal force on the rope, and tension can be greater.
 
-The magnitude of the friction force is not the same. What is the same is the fraction by which the force on one side of the pulley can be greater than the other without inducing slipping. This fraction, as previously noted, is $$1.5,$$ so that the maximum tension in the right hand side is $$60 \\;\\mathrm{N}\\cdot 1.5 = 90 \\;\\mathrm{N}.$$
+The magnitude of the friction force is not the same. What is the same is the fraction by which the force on one side of the pulley can be greater than the other without inducing slipping. This fraction, as previously noted is $$1.5,$$ so that the maximum tension in the right hand side is $$60 \\;\\mathrm{N}\\cdot 1.5 = 90 \\;\\mathrm{N}.$$
 
 One way to justify that it is the ratio of force between left and right that determines when there will be slipping, not the absolute difference between the forces, is dimensional analysis. Given just the rope and beam and gravitational acceleration, there are no dimensions of mass, and therefore no force (which has mass dimensions) can be a property of the rope-pulley system. It must be a ratio of forces that characterizes slipping.
 
@@ -103,7 +107,9 @@ To double-check this answer, in the first scenario, the average tension in the r
       E: '$$28 \\;\\mathrm{km}$$',
     },
     topics: ['Mechanics'], tags: ['gravitation', 'orbits', 'uncertainty'],
-    solution: `The period of the satellite obeys Kepler's third law,
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 106 \\;\\mathrm{m}}$$
+
+The period of the satellite obeys Kepler's third law,
 
 $$\\tau \\propto r^{3/2}.$$
 
@@ -119,11 +125,17 @@ $$\\delta r \\approx \\dfrac23 r \\dfrac{\\delta \\tau}{\\tau}.$$
 
 This is per orbit. If there are $$N$$ orbits per day, then $$\\delta \\tau = 2.0 \\;\\mathrm{s}/N$$ and $$\\tau = 1 \\;\\mathrm{day}/N.$$ This means
 
-$$\\dfrac{\\delta \\tau}{\\tau} = \\dfrac{2.0 \\;\\mathrm{s}/N}{\\mathrm{day}/N} = \\dfrac{2.0}{8.64 \\times 10^4}.$$
+$$\\begin{aligned}
+\\dfrac{\\delta \\tau}{\\tau} & = \\dfrac{2.0 \\;\\mathrm{s}/N}{\\mathrm{day}/N} \\\\[8pt]
+{} & = \\dfrac{2.0}{8.64 \\times 10^4}.
+\\end{aligned}$$
 
 We have
 
-$$\\delta r \\approx \\dfrac23 \\cdot 6.87 \\times 10^6 \\;\\mathrm{m} \\cdot \\dfrac{2.0}{8.64 \\times 10^4} = 106 \\;\\mathrm{m}.$$`,
+$$\\begin{aligned}
+\\delta r & \\approx \\dfrac23 \\cdot 6.87 \\times 10^6 \\;\\mathrm{m} \\cdot \\dfrac{2.0}{8.64 \\times 10^4} \\\\
+{} & = 106 \\;\\mathrm{m}.
+\\end{aligned}$$`,
   },
   {
     n: 5, correct: 'B', // why: boxed value 2m/M matches choice B
@@ -136,9 +148,9 @@ $$\\delta r \\approx \\dfrac23 \\cdot 6.87 \\times 10^6 \\;\\mathrm{m} \\cdot \\
       E: 'none of these',
     },
     topics: ['Mechanics'], tags: ['collisions', 'momentum', 'reference frames'],
-    solution: `In the frame of the large mass, the small mass approaches with speed $$v$$ and bounces off, changing its momentum by $$2mv.$$ So in the original frame, the large mass decreases its momentum from $$Mv$$ to $$Mv - 2mv.$$ Dividing by the mass, the large mass slows from $$v$$ to $$v - 2\\dfrac{m}{M}v.$$
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\dfrac{2m}{M}}$$
 
-So the mass slows by a fraction $$\\dfrac{2m}{M}.$$`,
+In the frame of the large mass, the small mass approaches with speed $$v$$ and bounces off, changing its momentum by $$2mv.$$ So in the original frame, the large mass decreases its momentum from $$Mv$$ to $$Mv - 2mv.$$ Dividing by the mass, the large mass slows from $$v$$ to $$v - 2\\dfrac{m}{M}v.$$ So the mass slows by a fraction $$\\dfrac{2m}{M}.$$`,
   },
   {
     n: 6, correct: 'B', // why: boxed value 45 W matches choice B
@@ -152,21 +164,36 @@ So the mass slows by a fraction $$\\dfrac{2m}{M}.$$`,
     },
     solutionFigures: [FIG('q06-s1')],
     topics: ['Mechanics'], tags: ['drag', 'work-energy theorem', 'vectors'],
-    solution: `In the first situation, the force on the cyclist is
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 45 \\;\\mathrm{W}}$$
 
-$$F_1 = c v^2 = c (25 \\;\\mathrm{m^2/s^2}).$$
+In the first situation, the force on the cyclist is
+
+$$\\begin{aligned}
+F_1 & = c v^2 \\\\
+{} & = c (25 \\;\\mathrm{m^2/s^2}).
+\\end{aligned}$$
 
 In the second situation, the cyclist experiences a wind with velocity
 
-$$\\begin{aligned} v {} & = \\sqrt{5^2 + 10^2}\\;\\mathrm{m/s} \\\\ {} & = 5\\sqrt{5} \\;\\mathrm{m/s}. \\end{aligned}$$
+$$\\begin{aligned}
+v & = \\sqrt{5^2 + 10^2}\\;\\mathrm{m/s} \\\\
+{} & = 5\\sqrt{5} \\;\\mathrm{m/s}.
+\\end{aligned}$$
 
 The force experienced by the cyclist is
 
-$$F_2 = cv^2 = c(125 \\;\\mathrm{m^2/s^2}) = 5F_1.$$
+$$\\begin{aligned}
+F_2 & = cv^2 \\\\
+{} & = c(125 \\;\\mathrm{m^2/s^2}) \\\\
+{} & = 5F_1.
+\\end{aligned}$$
 
 The component of force in the cyclist's direction of motion is
 
-$$F_{\\mathrm{motion}} = F_2 \\dfrac{5}{\\sqrt{125}} = \\sqrt{5}F_1.$$
+$$\\begin{aligned}
+F_{\\mathrm{motion}} & = F_2 \\dfrac{5 \\;\\mathrm{m/s}}{\\sqrt{125} \\;\\mathrm{m/s}} \\\\
+{} & = \\sqrt{5}F_1.
+\\end{aligned}$$
 
 Because the force in the direction of motion is $$\\sqrt{5}$$ times as great, the cyclist must exert this many times the power, or about $$45 \\;\\mathrm{W}.$$`,
   },
@@ -178,11 +205,13 @@ Which of the following shows the velocity of the particle as a function of time?
     choices: { A: '(a)', B: '(b)', C: '(c)', D: '(d)', E: '(e)' },
     figures: [FIG('q07-q1'), FIG('q07-q2'), FIG('q07-q3'), FIG('q07-q4'), FIG('q07-q5'), FIG('q07-q6')],
     topics: ['Mechanics'], tags: ['graph interpretation', 'kinematics-1d', 'energy'],
-    solution: `We can rule out (E) immediately; the velocity should be negative until just before $$3 \\, \\mathrm{s}$$. ((E) actually shows the acceleration of the particle.)
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{graph C}}$$
 
-Next, let's look at the overall scale of the velocity. The particle travels about $$-9 \\, \\mathrm{m}$$ in the first $$3 \\, \\mathrm{s}$$, so its average velocity during this time should be about $$-3 \\, \\mathrm{m/s}$$. This rules out (B) and (D). (These choices are identical to (A) and (C) but with an incorrect axis scale.)
+We can rule out (E) immediately; the velocity should be negative until just before $$3 \\, \\mathrm{s}.$$ ((E) actually shows the acceleration of the particle.)
 
-Distinguishing between (A) and (C) requires a closer inspection of the graph; $$x$$ is a somewhat steeper function of $$t$$ near $$3 \\, \\mathrm{s}$$ than near $$5 \\, \\mathrm{s}$$, so the velocity should be greater near $$3 \\, \\mathrm{s}$$. This corresponds to choice (C).`,
+Next, let's look at the overall scale of the velocity. The particle travels about $$-9 \\, \\mathrm{m}$$ in the first $$3 \\, \\mathrm{s}$$, so its average velocity during this time should be about $$-3 \\, \\mathrm{m/s}.$$ This rules out (B) and (D). (These choices are identical to (A) and (C) but with an incorrect axis scale.)
+
+Distinguishing between (A) and (C) requires a closer inspection of the graph; $$x$$ is a somewhat steeper function of $$t$$ near $$3 \\, \\mathrm{s}$$ than near $$5 \\, \\mathrm{s}$$, so the velocity should be greater near $$3 \\, \\mathrm{s}.$$ This corresponds to choice (C).`,
   },
   {
     n: 8, correct: 'E', // why: no boxed; solution concludes "This corresponds to choice (E)."
@@ -190,9 +219,11 @@ Distinguishing between (A) and (C) requires a closer inspection of the graph; $$
     choices: { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E' },
     figures: [FIG('q08-q1'), FIG('q08-q2'), FIG('q08-q3'), FIG('q08-q4'), FIG('q08-q5')],
     topics: ['Mechanics'], tags: ['graph interpretation', 'potential energy', 'energy'],
-    solution: `We can rule out (A-C) immediately; the particle experiences a bound motion and the potential energy should therefore be large on both sides. ((A-C) actually show variations on the force on the particle.)
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{graph E}}$$
 
-To distinguish between (D) and (E), observe that the particle moves faster near $$x = 2 \\, \\mathrm{m}$$ than near $$x = 8 \\, \\mathrm{m}$$. This means its kinetic energy is larger there, so its potential energy should be smaller. This corresponds to choice (E).`,
+We can rule out (A-C) immediately; the particle experiences a bound motion and the potential energy should therefore be large on both sides. ((A-C) actually show variations on the force on the particle.)
+
+To distinguish between (D) and (E), observe that the particle moves faster near $$x = 2 \\, \\mathrm{m}$$ than near $$x = 8 \\, \\mathrm{m}.$$ This means its kinetic energy is larger there, so its potential energy should be smaller. This corresponds to choice (E).`,
   },
   {
     n: 9, correct: 'B', // why: no boxed; solution's final line is "m = 0.5 kg", matching choice B
@@ -205,13 +236,19 @@ To distinguish between (D) and (E), observe that the particle moves faster near 
       E: '$$4 \\;\\mathrm{kg}$$',
     },
     topics: ['Mechanics'], tags: ['energy', 'graph interpretation', 'potential energy'],
-    solution: `There are various approaches here, all requiring us to read the graphs quantitatively. Probably the most straightforward one is to compare the potential energy of the particle at two points. For example, at $$x = 2 \\, \\mathrm{m}$$ the potential energy is $$U = 0 \\, \\mathrm{J}$$ and the particle's speed is $$v = 6 \\, \\mathrm{m/s}$$; at $$x = 8 \\, \\mathrm{m}$$ the potential energy is $$U = 5 \\, \\mathrm{J}$$ and the particle's speed is $$4 \\, \\mathrm{m/s}$$. So from conservation of energy
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 0.5 \\;\\mathrm{kg}}$$
+
+There are various approaches here, all requiring us to read the graphs quantitatively. Probably the most straightforward one is to compare the potential energy of the particle at two points. For example, at $$x = 2 \\, \\mathrm{m}$$ the potential energy is $$U = 0 \\, \\mathrm{J}$$ and the particle's speed is $$v = 6 \\, \\mathrm{m/s}$$; at $$x = 8 \\, \\mathrm{m}$$ the potential energy is $$U = 5 \\, \\mathrm{J}$$ and the particle's speed is $$4 \\, \\mathrm{m/s}.$$ So from conservation of energy,
 
 $$U + \\frac{1}{2} m v^2 = \\mathrm{const.}$$
 
-$$0 \\, \\mathrm{J} + \\frac{1}{2} m (6 \\, \\mathrm{m/s})^2 = 5 \\, \\mathrm{J} + \\frac{1}{2} m (4 \\, \\mathrm{m/s})^2$$
+Comparing the two points,
 
-$$m = 0.5 \\, \\mathrm{kg}$$
+$$0 \\, \\mathrm{J} + \\frac{1}{2} m (6 \\, \\mathrm{m/s})^2 = 5 \\, \\mathrm{J} + \\frac{1}{2} m (4 \\, \\mathrm{m/s})^2,$$
+
+which gives
+
+$$m = 0.5 \\, \\mathrm{kg}.$$
 
 (Reading the potential energy graph at the plateaus is probably more accurate than reading it at other points, but the answer choices are selected to be forgiving of moderate reading errors, anyway.)`,
   },
@@ -233,19 +270,26 @@ Which of the following gives the best value for $$T$$? (Hint: $$24 \\, \\mathrm{
     },
     solutionFigures: [FIG('q10-s1'), FIG('q10-s2')],
     topics: ['Mechanics'], tags: ['reference frames', 'circular motion', 'astronomy'],
-    solution: `Perhaps surprisingly, there are no tricky dynamics here; we do simply want the period of the Earth's rotation. But that period is not exactly 24 hours!
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad T = 86164.1 \\, \\mathrm{s}}$$
 
-To see this, suppose that the Earth were not rotating at all, and consider its orbital motion around the Sun (first figure below).
+Perhaps surprisingly, there are no tricky dynamics here; we do simply want the period of the Earth's rotation. But that period is not exactly 24 hours!
+
+To see this, suppose that the Earth were not rotating at all, and consider its orbital motion around the Sun:
 
 From the point of view of an observer on Earth, the orbital motion causes exactly one sunrise and sunset per year. More generally, over the course of a year, the number of rotations of the Earth (in an inertial reference frame) differs from the number of sunrises and sunsets (solar days) by exactly one.
 
-To find the sign of the difference, we need to use the fact that the orbital and spin motions of the Earth have the same handedness. The second figure below shows one full (inertial) rotation of the Earth, with the orbital motion exaggerated.
+To find the sign of the difference, we need to use the fact that the orbital and spin motions of the Earth have the same handedness. Here's one full (inertial) rotation of the Earth, with the orbital motion exaggerated:
 
 In the left picture, it is noon for the observer indicated by the black dot. By the right picture, when the Earth has made a full rotation, it is not quite noon yet. Therefore, there are fewer solar days in a year than rotations of the Earth; there are 365.24 solar days and 366.24 rotations. The wall-clock day of $$86400 \\, \\mathrm{s}$$ relates to the apparent motion of the Sun and is therefore a solar day. Thus,
 
-$$1 \\, \\mathrm{year} = 365.24 \\cdot 86400 \\, \\mathrm{s} = 366.24 \\cdot T$$
+$$\\begin{aligned}
+1 \\, \\mathrm{year} & = 365.24 \\cdot 86400 \\, \\mathrm{s} \\\\
+{} & = 366.24 \\cdot T,
+\\end{aligned}$$
 
-$$T = 86164.1 \\, \\mathrm{s}$$
+so
+
+$$T = 86164.1 \\, \\mathrm{s}.$$
 
 This time is called a sidereal day.`,
   },
@@ -261,11 +305,13 @@ This time is called a sidereal day.`,
     },
     figures: [FIG('q11-q1')],
     topics: ['Mechanics'], tags: ['statics', 'pulleys/tension', 'free-body diagrams'],
-    solution: `First we examine an individual ring. There are two forces from tension on it. These two forces have the same magnitude, so they must be at equal angles from the line from the ring to the center of the hoop. This means the mass $$m$$ hangs down $$30^\\circ$$ below the horizontal.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad M}$$
+
+First we examine an individual ring. There are two forces from tension on it. These two forces have the same magnitude, so they must be at equal angles from the line from the ring to the center of the hoop. This means the mass $$m$$ hangs down $$30^\\circ$$ below the horizontal.
 
 Balancing vertical forces on the mass $$m,$$
 
-$$2T\\sin\\theta = mg$$
+$$2T\\sin\\theta = mg,$$
 
 where $$\\theta = 30^\\circ$$ and $$T = Mg.$$
 
@@ -284,35 +330,37 @@ $$m = M.$$`,
       E: '$$10^8 \\, \\mathrm{km}$$',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'estimation', 'gravitation'],
-    solution: `A full analysis of the stresses in the moon is, of course, beyond the scope of the problem; we hope to get within a factor of $$100$$ simply by dimensional analysis. The maximum stress in the moon should depend on its diameter $$d$$, its density $$\\rho$$, and the universal gravitational constant $$G$$:
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 100 \\, \\mathrm{km}}$$
 
-$$\\sigma \\sim d^\\alpha \\rho^\\beta G^\\gamma$$
+A full analysis of the stresses in the moon is, of course, beyond the scope of the problem; we hope to get within a factor of $$100$$ simply by dimensional analysis. The maximum stress in the moon should depend on its diameter $$d$$, its density $$\\rho$$, and the universal gravitational constant $$G$$:
+
+$$\\sigma \\sim d^\\alpha \\rho^\\beta G^\\gamma.$$
 
 The only dimensionally correct solution is
 
-$$\\sigma \\sim G \\rho^2 d^2$$
+$$\\sigma \\sim G \\rho^2 d^2.$$
 
 Note that this formula passes simple reasonableness checks: we expect the stress to increase as the moon gets denser and as it gets larger.
 
-We can also arrive at this formula using a conceptual model: suppose that two masses of density $$\\rho$$ and volume $$d^3$$ are separated by a distance $$d$$ by a structural element of area $$d^2$$. Then the force between the masses due to gravity is
+We can also arrive at this formula using a conceptual model: suppose that two masses of density $$\\rho$$ and volume $$d^3$$ are separated by a distance $$d$$ by a structural element of area $$d^2.$$ Then the force between the masses due to gravity is
 
-$$F \\sim \\frac{G (\\rho d^3)^2}{d^2}$$
+$$F \\sim \\frac{G (\\rho d^3)^2}{d^2},$$
 
 and the compressive force in the structural element is
 
-$$F \\sim \\sigma d^2$$
+$$F \\sim \\sigma d^2.$$
 
 Equating these,
 
-$$\\sigma d^2 \\sim \\frac{G (\\rho d^3)^2}{d^2}$$
+$$\\sigma d^2 \\sim \\frac{G (\\rho d^3)^2}{d^2},$$
 
 which yields the same result.
 
 In any event, given a maximum stress $$\\sigma$$ the maximum diameter is
 
-$$d \\sim \\frac{\\sqrt{\\sigma}}{\\rho \\sqrt{G}}$$
+$$d \\sim \\frac{\\sqrt{\\sigma}}{\\rho \\sqrt{G}}.$$
 
-Using the given values, the right side equals $$129 \\, \\mathrm{km}$$, so the best estimate among the choices is $$100 \\, \\mathrm{km}$$.`,
+Using the given values, the right side equals $$129 \\, \\mathrm{km}.$$`,
   },
   {
     n: 13, correct: 'D', // why: boxed value "A_2/A_1 = 2" matches choice D
@@ -326,11 +374,13 @@ Using the given values, the right side equals $$129 \\, \\mathrm{km}$$, so the b
     },
     figures: [FIG('q13-q1')],
     topics: ['Mechanics'], tags: ['oscillations', 'springs', 'inclined planes'],
-    solution: `The carts will oscillate around their equilibrium point, so the amplitude of the oscillation is the distance from the equilibrium point when there are three carts to the equilibrium point when there are two or one carts, depending on which string is cut.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 2}$$
+
+The carts will oscillate around their equilibrium point, so the amplitude of the oscillation is the distance from the equilibrium point when there are three carts to the equilibrium point when there are two or one carts, depending in which string is cut.
 
 The equilibrium occurs when
 
-$$nmg\\sin\\theta = kx$$
+$$nmg\\sin\\theta = kx,$$
 
 with $$n$$ the number of carts, $$k$$ the spring constant, and $$x$$ the extension of the spring.
 
@@ -340,23 +390,23 @@ Cutting one cart off the system moves the equilibrium by $$\\dfrac{mg\\sin\\thet
     n: 14, correct: 'E', // why: no boxed; solution says Alpher plots T vs sqrt(l) (option c), Bethe's manipulation gives l vs T^2 (option b), Gamow plots log T vs log l (option a) => "Alpher - c; Bethe - b; Gamow - a"
     statement: `Alpher, Bethe, and Gamow perform an experiment on the simple pendulum, whose period of small oscillations is of course
 
-$$T = 2 \\pi \\sqrt{\\frac{l}{g}}$$
+$$T = 2 \\pi \\sqrt{\\frac{\\ell}{g}}$$
 
-The experimenters vary $$l$$ and measure $$T$$. It's 1948 and they have to analyze their data by hand, so they want to plot it in such a way that the result is a straight line. Each experimenter has doubts about a different aspect of their experiment:
+The experimenters vary $$\\ell$$ and measure $$T$$. It's 1948 and they have to analyze their data by hand, so they want to plot it in such a way that the result is a straight line. Each experimenter has doubts about a different aspect of their experiment:
 
 - Alpher is worried about reaction time when stopping the timer.
 
 - Bethe is worried about the meter stick, which is worn at one end.
 
-- Gamow can't remember if $$T$$ is proportional to $$1 / \\sqrt{l}$$, $$l$$, or perhaps $$l^2$$, instead of $$\\sqrt{l}$$.
+- Gamow can't remember if $$T$$ is proportional to $$1 / \\sqrt{\\ell}$$, $$\\ell$$, or perhaps $$\\ell^2$$, instead of $$\\sqrt{\\ell}$$.
 
 Here are some options for plotting the data. (All three produce a straight line if the theoretical relationship holds perfectly.)
 
-a. Plot $$\\log T$$ versus $$\\log l$$.
+a. Plot $$\\log T$$ versus $$\\log \\ell$$.
 
-b. Plot $$l$$ versus $$T^2$$.
+b. Plot $$\\ell$$ versus $$T^2$$.
 
-c. Plot $$T$$ versus $$\\sqrt{l}$$.
+c. Plot $$T$$ versus $$\\sqrt{\\ell}$$.
 
 Which option should each experimenter choose?`,
     choices: {
@@ -367,27 +417,35 @@ Which option should each experimenter choose?`,
       E: 'Alpher - c; Bethe - b; Gamow - a',
     },
     topics: ['Mechanics'], tags: ['uncertainty', 'graph interpretation', 'oscillations'],
-    solution: `Each experimenter's concern can be expressed as a modification to the theoretical expression, which we can then manipulate to obtain a linear form $$y = a x + b$$. Alpher's concern corresponds to an offset $$\\Delta T$$ in the measured period:
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{Alpher - c; Bethe - b; Gamow - a}}$$
 
-$$T + \\Delta T = 2 \\pi \\sqrt{\\frac{l}{g}}$$
+Each experimenter's concern can be expressed as a modification to the theoretical expression, which we can then manipulate to obtain a linear form $$y = a x + b.$$ Alpher's concern corresponds to an offset $$\\Delta T$$ in the measured period:
 
-$$T = \\frac{2 \\pi}{\\sqrt{g}} \\sqrt{l} - \\Delta T$$
+$$T + \\Delta T = 2 \\pi \\sqrt{\\frac{\\ell}{g}},$$
 
-Bethe's concern corresponds to an offset $$\\Delta l$$ in the measured length:
+or
 
-$$T = 2 \\pi \\sqrt{\\frac{l + \\Delta l}{g}}$$
+$$T = \\frac{2 \\pi}{\\sqrt{g}} \\sqrt{\\ell} - \\Delta T.$$
 
-$$l = \\frac{g}{(2 \\pi)^2} T^2 - \\Delta l$$
+Bethe's concern corresponds to an offset $$\\Delta \\ell$$ in the measured length:
 
-This implies Alpher should choose to plot $$T$$ versus $$\\sqrt{l},$$ and Bethe should plot $$l$$ versus $$T^2.$$
+$$T = 2 \\pi \\sqrt{\\frac{\\ell + \\Delta \\ell}{g}},$$
 
-Gamow's concern corresponds to an unknown exponent $$n$$ on $$l$$ (and presumably some constants other than $$g$$ that keep the equation dimensionally correct):
+or
 
-$$T = k l^n$$
+$$\\ell = \\frac{g}{(2 \\pi)^2} T^2 - \\Delta \\ell.$$
 
-$$\\log T = n \\log l + \\log k$$
+This implies Alpher should choose to plot $$T$$ versus $$\\sqrt{\\ell}.$$
 
-Gamow should plot $$\\log T$$ versus $$\\log l.$$
+Gamow's concern corresponds to an unknown exponent $$n$$ on $$\\ell$$ (and presumably some constants other than $$g$$ that keep the equation dimensionally correct):
+
+$$T = k \\ell^n,$$
+
+so
+
+$$\\log T = n \\log \\ell + \\log k.$$
+
+Gamow should plot $$\\log T$$ versus $$\\log \\ell.$$
 
 (Note that the problem is intentionally vague about whether the log in question is natural or common; it doesn't matter!)`,
   },
@@ -402,7 +460,9 @@ Gamow should plot $$\\log T$$ versus $$\\log l.$$
       E: '$$\\sqrt{\\dfrac{k}{2m}}$$',
     },
     topics: ['Mechanics'], tags: ['oscillations', 'springs', 'symmetry'],
-    solution: `The tension in each spring is $$k\\Delta x.$$ Examining an individual mass, there are two forces on it - each tension from a spring. The forces each make an angle of $$30^\\circ$$ with the direction of acceleration of the mass, so their components in the direction of acceleration are each $$\\dfrac{\\sqrt{3}}{2}k\\Delta x.$$ Because there are two springs, the net force on the mass is $$\\sqrt{3}k\\Delta x.$$
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\sqrt{\\dfrac{3k}{m}}}$$
+
+The tension in each spring is $$k\\Delta x.$$ Examining an individual mass, there are two forces on it - each tension from a spring. The forces each make an angle of $$30^\\circ$$ with the direction of acceleration of the mass, so their components in the direction of acceleration are each $$\\dfrac{\\sqrt{3}}{2}k\\Delta x.$$ Because there are two springs, the net force on the mass is $$\\sqrt{3}k\\Delta x.$$
 
 The distance moved by the mass is $$\\dfrac{\\Delta x}{\\sqrt{3}},$$ so the effective spring constant on the mass is $$3k.$$ That makes the angular frequency
 
@@ -420,7 +480,9 @@ $$\\omega = \\sqrt{\\dfrac{3k}{m}}.$$`,
     },
     figures: [FIG('q16-q1')],
     topics: ['Mechanics'], tags: ['oscillations', 'rotational inertia', 'optimization'],
-    solution: `The moment of inertia of the rod about its pivot is
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad L \\sqrt{\\dfrac{M}{12m}}}$$
+
+The moment of inertia of the rod about its pivot is
 
 $$I = \\dfrac{1}{12} ML^2 + mx^2.$$
 
@@ -432,7 +494,7 @@ The angular frequency will be highest when we maximize $$\\dfrac{\\tau}{I},$$ or
 
 $$\\dfrac{mx}{\\dfrac{1}{12}ML^2 + mx^2}.$$
 
-We can simply choose $$M = m = L = 1$$ and see which answer choice yields the highest ratio; the answer is $$x = L\\sqrt{\\dfrac{M}{12 m}}.$$`,
+We can simply choose $$M = 1,$$ $$m = 1,$$ and $$L = 1$$ and see which answer choices yields the highest ratio; the answer is $$x = L\\sqrt{\\dfrac{M}{12 m}}.$$`,
   },
   {
     n: 17, correct: 'E', // why: boxed value 500,000,000 kg matches choice E
@@ -445,21 +507,26 @@ We can simply choose $$M = m = L = 1$$ and see which answer choice yields the hi
       E: '$$500\\,000\\,000 \\;\\mathrm{kg}$$',
     },
     topics: ['Mechanics'], tags: ['rocket equation', 'momentum', 'reference frames'],
-    solution: `The last rocket, which accelerates the $$10 \\, \\mathrm{kg}$$ satellite from $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$11000 \\, \\mathrm{m}/\\mathrm{s}$$, has a total mass of only $$50 \\, \\mathrm{kg}$$. So how bad can it be?
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad 500\\,000\\,000 \\;\\mathrm{kg}}$$
 
-The key observation is that each rocket accelerates its payload to $$1000 \\, \\mathrm{m}/\\mathrm{s}$$ in the reference frame where it is initially at rest. Therefore the entire $$50 \\, \\mathrm{kg}$$ rocket has to be moving at $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ in order to accomplish its mission; the WOOTLand rocket that accelerates it from $$9000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ has a total mass of $$250 \\;\\mathrm{kg}$$. The previous stage (from $$8000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$9000 \\, \\mathrm{m}/\\mathrm{s}$$) has a total mass of $$1250 \\;\\mathrm{kg}$$, and so on. We see that the total mass required for $$N$$ stages is
+The last rocket, which accelerates the $$10 \\, \\mathrm{kg}$$ satellite from $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$11000 \\, \\mathrm{m}/\\mathrm{s}$$, has a total mass of only $$50 \\, \\mathrm{kg}.$$ So how bad can it be?
 
-$$10 \\, \\mathrm{kg} \\cdot 5^N$$
+The key observation is that each rocket accelerates its payload to $$1000 \\, \\mathrm{m}/\\mathrm{s}$$ in the reference frame where it is initially at rest. Therefore the entire $$50 \\, \\mathrm{kg}$$ rocket has to be moving at $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ in order to accomplish its mission; the WOOTLand rocket that accelerates it from $$9000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$10000 \\, \\mathrm{m}/\\mathrm{s}$$ has a total mass of $$250 \\mathrm{kg}.$$ The previous stage (from $$8000 \\, \\mathrm{m}/\\mathrm{s}$$ to $$9000 \\, \\mathrm{m}/\\mathrm{s}$$) has a total mass of $$1250 \\mathrm{kg}$$, and so on. We see that the total mass required for $$N$$ stages is
+
+$$10 \\, \\mathrm{kg} \\cdot 5^N.$$
 
 We need
 
-$$N = \\frac{11000 \\, \\mathrm{m}/\\mathrm{s}}{1000 \\, \\mathrm{m}/\\mathrm{s}} = 11$$
+$$\\begin{aligned}
+N & = \\frac{11000 \\, \\mathrm{m}/\\mathrm{s}}{1000 \\, \\mathrm{m}/\\mathrm{s}} \\\\
+{} & = 11
+\\end{aligned}$$
 
-stages, so the total mass is $$10 \\, \\mathrm{kg} \\cdot 5^{11} = 4.88 \\times 10^8 \\, \\mathrm{kg} \\approx 500\\,000\\,000 \\;\\mathrm{kg}$$. WOOTLand needs better rockets!
+stages, so the total mass is $$10 \\, \\mathrm{kg} \\cdot 5^{11} = 4.88 \\times 10^8 \\, \\mathrm{kg} \\approx 500\\,000\\,000 \\;\\mathrm{kg}.$$ WOOTLand needs better rockets!
 
 This is one intuitive way of understanding the Tsiolkovsky rocket equation, which you have seen:
 
-$$M = m_p \\exp \\left(\\frac{\\Delta v}{v_e}\\right)$$
+$$M = m_p \\exp \\left(\\frac{\\Delta v}{v_e}\\right),$$
 
 where $$m_p$$ is the mass of the payload, $$\\Delta v$$ is the required change in velocity, $$v_e$$ is the speed of the exhaust, and $$M$$ is the total rocket mass. For $$\\Delta v$$ even moderately larger than $$v_e$$ an exponentially increasing amount of fuel is required. (An example you may be familiar with is the truly immense size of the Saturn V rocket compared to its Apollo spacecraft payload -- much of whose mass was also made up of rocket fuel.)`,
   },
@@ -475,7 +542,9 @@ where $$m_p$$ is the mass of the payload, $$\\Delta v$$ is the required change i
     },
     figures: [FIG('q18-q1')],
     topics: ['Mechanics'], tags: ['rotational inertia', 'torque', 'rigid bodies'],
-    solution: `First we'll analyze the spool using the contact point with the wall as a pivot. This makes the torque from the thread zero.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\dfrac{mgk^2}{k^2 + r^2}}$$
+
+First we'll analyze the spool using the contact point with the wall as a pivot. This makes the torque from the thread zero.
 
 About this pivot, the torque due to gravity is
 
@@ -487,13 +556,17 @@ $$I_w = mk^2 + mr^2.$$
 
 The angular acceleration is
 
-$$\\alpha = \\dfrac{\\tau_g}{I_w} = \\dfrac{gr}{k^2 + r^2}.$$
+$$\\begin{aligned}
+\\alpha & = \\dfrac{\\tau_g}{I_w} \\\\[8pt]
+{} & = \\dfrac{gr}{k^2 + r^2}.
+\\end{aligned}$$
 
 Now we analyze the situation using the center of the spool as a pivot. Then the torque from gravity is zero, and there is torque from the thread.
 
-$$\\tau_t = Tr$$
+$$\\tau_t = Tr,$$
 
-where $$T$$ is the tension. The angular acceleration is
+where $$T$$ is the tension.
+The angular acceleration is
 
 $$\\alpha = \\dfrac{Tr}{mk^2}.$$
 
@@ -522,9 +595,12 @@ Under the usual definitions, $$c \\approx 3\\times 10^8 \\;\\mathrm{m/s}$$ and $
       E: '$$1.3 \\times 10^{27} \\;\\mathrm{m}$$',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'units', 'gravitation'],
-    solution: `Setting $$G = c = 1$$ converts a kilogram into a length via $$G/c^2$$:
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad 7.4 \\times 10^{-28} \\;\\mathrm{m}}$$
 
-$$\\;\\mathrm{kg}= 6.67 \\times 10^{-11} \\;\\mathrm{m^3 s^{-2}} \\cdot \\left(3 \\times 10^8 \\;\\mathrm{m/s}\\right)^{-2} = 7.4 \\times 10^{-28} \\;\\mathrm{m}.$$`,
+$$\\begin{aligned}
+\\mathrm{kg} & = 6.67 \\times 10^{-11} \\;\\mathrm{m^3 s^{-2}} \\cdot \\left(3 \\times 10^8 \\;\\mathrm{m/s}\\right)^{-2} \\\\
+{} & = 7.4 \\times 10^{-28} \\;\\mathrm{m}.
+\\end{aligned}$$`,
   },
   {
     n: 20, correct: 'C', // why: no boxed; solution's final line gives M_p/M_s = 1/10, matching choice C (0.1)
@@ -540,27 +616,32 @@ You may neglect the mass of the moon; you may assume the star is fixed in place,
     },
     figures: [FIG('q20-q1')],
     topics: ['Mechanics'], tags: ['orbits', 'gravitation', 'reference frames'],
-    solution: `Let the speed of the planet relative to the star be $$v_p$$; let the speed of the moon relative to the planet be $$v_m$$. The velocity of the moon relative to the distant stars is a vector sum which can only point backwards if $$v_m > v_p$$. So the transition occurs when
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 0.1}$$
 
-$$v_m = v_p$$
+Let the speed of the planet relative to the star be $$v_p$$; let the speed of the moon relative to the planet be $$v_m.$$ The velocity of the moon relative to the distant stars is a vector sum which can only point backwards if $$v_m > v_p.$$ So the transition occurs when
+
+$$v_m = v_p.$$
 
 Meanwhile, the periods $$T_p$$ and $$T_m$$ of the orbits satisfy
 
-$$T_p = 10 T_m$$
+$$T_p = 10 T_m.$$
 
 The ratio is $$10$$, not $$9$$, for the reason explained in the solution to problem 10. (But we have arranged the answer selections far enough apart that you can still find the correct answer if you miss this point.)
 
 From Kepler's laws we know that the radius $$r$$ of each orbit satisfies
 
-$$T^2 = 4 \\pi^2 \\frac{r^3}{GM}$$
+$$T^2 = 4 \\pi^2 \\frac{r^3}{GM},$$
 
 or, since $$2 \\pi r = v T$$,
 
-$$2 \\pi GM = v^3 T$$
+$$2 \\pi GM = v^3 T.$$
 
 Therefore
 
-$$\\frac{M_p}{M_s} = \\frac{v_m^3 T_m}{v_p^3 T_p} = \\frac{1}{10}$$`,
+$$\\begin{aligned}
+\\frac{M_p}{M_s} & = \\frac{v_m^3 T_m}{v_p^3 T_p} \\\\[8pt]
+{} & = \\frac{1}{10}.
+\\end{aligned}$$`,
   },
   {
     n: 21, correct: 'C', // why: boxed value 4v matches choice C
@@ -573,13 +654,22 @@ $$\\frac{M_p}{M_s} = \\frac{v_m^3 T_m}{v_p^3 T_p} = \\frac{1}{10}$$`,
       E: '$$2\\sqrt{2}v$$',
     },
     topics: ['Mechanics'], tags: ['dimensional analysis', 'drag', 'fluids'],
-    solution: `The relevant quantities have dimensions
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 4v}$$
 
-$$\\begin{aligned} [v] &= LT^{-1} \\\\ [g] &= LT^{-2} \\\\ [r] & = L \\\\ [\\mu] &= ML^{-1}T^{-1}\\\\ [\\rho_\\mathrm{fluid}] & = ML^{-3}\\\\ [\\rho_\\mathrm{sphere}] & = ML^{-3} \\end{aligned}$$
+The relevant quantities have dimensions
 
-To cancel out the mass units of $$\\mu,$$ we construct
+$$\\begin{aligned}
+{}[v] & = LT^{-1} \\\\
+[g] & = LT^{-2} \\\\
+[r] & = L \\\\
+[\\mu] & = ML^{-1}T^{-1}\\\\
+[\\rho_\\mathrm{fluid}] & = ML^{-3}\\\\
+[\\rho_\\mathrm{sphere}] & = ML^{-3}.
+\\end{aligned}$$
 
-$$\\left[\\dfrac{\\rho}{\\mu}\\right] = L^{-2}T$$
+To cancel out the mass units if $$\\mu,$$ we construct
+
+$$\\left[\\dfrac{\\rho}{\\mu}\\right] = L^{-2}T,$$
 
 where $$\\rho$$ can be the density of either the fluid or the sphere. The velocity must be directly proportional to this quantity.
 
@@ -601,7 +691,9 @@ This implies the larger sphere falls at $$4v.$$`,
     },
     solutionFigures: [FIG('q22-s1')],
     topics: ['Mechanics'], tags: ['buoyancy', 'statics', 'torque'],
-    solution: `If floating at some angle under the water, the rod experiences three forces: a gravitational force on the point mass (located at the end of the rod), a gravitational force on the rest of the rod (located at the center of the rod), and a buoyant force (located half way along the submerged portion of the rod).
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\dfrac13}$$
+
+If floating at some angle under the water, the rod experiences three forces: a gravitational force on the point mass (located at the end of the rod), a gravitational force on the rest of the rod (located at the center of the rod), and a buoyant force (located half way along the submerged portion of the rod).
 
 A fraction $$\\alpha$$ of the rod is submerged, so the distance from the buoyant force to the point mass must be $$\\dfrac{\\alpha}{2}L,$$ with $$L$$ the length of the rod. In order for there to be no torque about the point where the buoyant force is applied, the distance to the center of the rod from that point must be twice that to the point mass (because the force is half as much), or $$\\alpha L.$$
 
@@ -630,33 +722,50 @@ This is the value of $$\\alpha$$ for which the rod is at equilibrium at any angl
       FIG('q23-s6'), FIG('q23-s7'), FIG('q23-s8'), FIG('q23-s9'), FIG('q23-s10'),
     ],
     topics: ['Mechanics'], tags: ['relative motion', 'optimization', 'geometry'],
-    solution: `The small boat leaves the port traveling at some angle $$\\theta$$ to the horizontal.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 1.25 \\text{ nautical miles}}$$
 
-The boat leaves at the last moment to still intercept the liner. A plot of when the boat needs to leave in order to intercept the liner, as a function of $$\\theta,$$ is some unknown function like the one shown.
+The small boat leaves the port traveling at some angle $$\\theta$$ to the horizontal.
+
+The boat leaves at the last moment to still intercept the liner. A plot of when the boat needs to leave in order to intercept the liner, as a function of $$\\theta,$$ is some unknown function like this:
 
 The salient point is that if $$\\theta$$ is chosen so that the time of departure is as late as possible, then choosing a nearby $$\\theta$$ doesn't affect the time of departure because the slope of the time of departure vs $$\\theta$$ graph is flat at the point of the latest time of departure.
 
-We imagine increasing $$\\theta$$ by some small amount. Then the small boat and the liner should still intercept, only this time they will intercept at the red dot shown in the figures.
+We imagine increasing $$\\theta$$ by some small amount. Then the small boat and the liner should still intercept, only this time they will intercept at the red dot shown below.
 
-There is a small triangle similar to the larger triangle, filled in in red. If we blow this triangle up, the vertical side of the triangle is the extra distance the liner travels to get to the new intercept point. The highest side of the triangle is the extra distance the small boat travels. These two should take the same amount of time, so
+There is a small triangle similar to the larger triangle, filled in with red below.
 
-$$\\sin\\theta = \\dfrac{v_{sb}}{v_{l}}.$$
+If we blow this triangle up, it looks like this:
+
+The vertical side of the triangle is the extra distance the liner travels to get to the new intercept point. The highest side of the triangle is the extra distance the small boat travels. These two should take the same amount of time, so
+
+$$\\sin\\theta = \\dfrac{v_{sb}}{v_{l}},$$
 
 where $$v_{sb}$$ is the speed of the small boat and $$v_l$$ is the speed of the liner.
 
-This implies $$\\sin\\theta = \\dfrac{12}{20} = \\dfrac35.$$ Then $$\\cos\\theta = \\dfrac45.$$ The distance traveled by the boat is
+This implies $$\\sin\\theta = \\dfrac{12}{20},$$ so $$\\sin\\theta = \\dfrac35$$ and $$\\cos\\theta = \\dfrac45.$$ The distance traveled by the boat is
 
-$$d = \\dfrac{1 \\text{ nautical mile}}{\\cos\\theta} = 1.25 \\text{ nautical miles}.$$
+$$\\begin{aligned}
+d & = \\dfrac{1 \\text{ nautical mile}}{\\cos\\theta} \\\\
+{} & = 1.25 \\text{ nautical miles}.
+\\end{aligned}$$
 
 An alternative solution, avoiding the use of infinitesimal angles, is below:
 
-Let $$v_s = 12 \\, \\mathrm{kt}$$, $$v_l = 20 \\, \\mathrm{kt}$$, and $$L = 1 \\, \\mathrm{nmi}$$. Let's work in the liner's frame of reference, in which the port is moving past the liner at a constant speed $$v_l$$. What is the range of positions the small boat can pass through after leaving port?
+Let $$v_s = 12 \\, \\mathrm{kt}$$, $$v_l = 20 \\, \\mathrm{kt}$$, and $$L = 1 \\, \\mathrm{nmi}.$$ Let's work in the liner's frame of reference, in which the port is moving past the liner at a constant speed $$v_l.$$ What is the range of positions the small boat can pass through after leaving port?
 
-At the moment it leaves, of course, the boat is in port. After some time $$t$$, the port has moved $$v_l t$$ from its starting point, and the boat could be as far as $$v_s t$$ from the port. Since all of the distances are proportional, the overall range of the small boat in the liner frame is triangular in shape.
+At the moment it leaves, of course, the boat is in port.
 
-If the boat leaves at the last possible minute, the angle marked in the diagram must be a right angle because the line marking the limit of the boat's range is tangent to the circle. From here it's just a geometry problem to solve for the desired distance $$d$$,
+After some time $$t$$, the port has moved $$v_l t$$ from its starting point, and the boat could be as far as $$v_s t$$ from the port:
 
-$$d = \\frac{L}{\\sqrt{1 - (v_s / v_l)^2}}$$`,
+After some more time:
+
+Since all of the distances are proportional, the overall range of the small boat in the liner frame is triangular in shape:
+
+The boat shown above left with plenty of time to spare. If it leaves at the last possible minute:
+
+The angle marked in the diagram must be a right angle because the line marking the limit of the boat's range is tangent to the circle. From here it's just a geometry problem to solve for the desired distance $$d$$,
+
+$$d = \\frac{L}{\\sqrt{1 - (v_s / v_l)^2}}.$$`,
   },
   {
     n: 24, correct: 'C', // why: boxed value x = (2/3)b matches choice C
@@ -669,7 +778,9 @@ $$d = \\frac{L}{\\sqrt{1 - (v_s / v_l)^2}}$$`,
       E: '$$b$$',
     },
     topics: ['Mechanics'], tags: ['angular momentum', 'impulse', 'rigid bodies'],
-    solution: `The moment of inertia of the door about the axis is $$\\dfrac13 mb^2.$$ This means the door's angular momentum is
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\dfrac23 b}$$
+
+The moment of inertia of the door about the axis is $$\\dfrac13 mb^2.$$ This means the door's angular momentum is
 
 $$L = \\dfrac13 m b^2 \\omega.$$
 
@@ -677,7 +788,7 @@ The door's momentum is its mass times the velocity of its center of mass,
 
 $$p = \\dfrac12 m b \\omega.$$
 
-If there is no reaction at the hinges, then the impulse from the doorstop must both bring the door to a stop and prevent the door from rotating. This means the impulse must be of magnitude $$p$$ and exert an angular impulse $$L.$$ We also have that the angular impulse is $$px,$$ with $$x$$ the distance of the doorstop from the axis.
+If there is no reaction at the door, then the impulse from the doorstop must both bring the door to a stop and prevent the door from rotating. This means the impulse must be of magnitude $$p$$ and exert an angular impulse $$L.$$ We also have that the angular impulse is $$px,$$ with $$x$$ the distance of the doorstop from the axis.
 
 Equating the two expressions for the angular impulse,
 
@@ -706,7 +817,9 @@ You may assume $$F \\ll T.$$ Under what condition will method (2) result in a la
       E: 'Method (2) never results in a greater increase in force.',
     },
     topics: ['Mechanics'], tags: ['springs', 'statics', 'approximations'],
-    solution: `First we analyze method (1). Imagine a small mass at the center of the spring. When we apply a force to the right on it, the left half of the spring stretches and the right half of the spring compresses. This continues until the left half of the spring exerts a force $$F/2$$ to the left greater than it previously did and the right half of the spring exerts a force $$F/2$$ smaller than its previous force. So we increase the force on the left post by $$F/2.$$
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad N > \\dfrac{4T}{F}}$$
+
+First we analyze method (1). Imagine a small mass at the center of the spring. When we apply a force to the right on it, the left half of the spring stretches and the right half of the spring compresses. This continues until the left half of the spring exerts a force $$F/2$$ to the left greater than it previously did and the right half of the spring exerts a force $$F/2$$ smaller than its previous force. So we increase the force on the left post by $$F/2.$$
 
 Next we analyze method (2).
 
@@ -716,7 +829,10 @@ $$T'\\theta \\approx \\dfrac{F}{2}.$$
 
 Additionally, from the definition of the spring constant,
 
-$$T' = T + k\\Delta L = T + TN \\dfrac{\\Delta L}{L}.$$
+$$\\begin{aligned}
+T' & = T + k\\Delta L \\\\[8pt]
+{} & = T + TN \\dfrac{\\Delta L}{L}.
+\\end{aligned}$$
 
 So method (2) allows us to exert a greater force when
 
@@ -726,19 +842,19 @@ We wish to eliminate $$\\Delta L$$ and $$L.$$
 
 To do this, we note
 
-$$\\cos\\theta = \\dfrac{L+\\Delta L}{L}.$$
+$$\\dfrac{1}{\\cos\\theta} = \\dfrac{L+\\Delta L}{L}.$$
 
-Using $$\\cos\\theta \\approx 1 - \\theta^2/2,$$ we have
+Using $$\\dfrac{1}{\\cos\\theta} \\approx 1 + \\theta^2/2,$$ we have
 
 $$\\dfrac{\\Delta L}{L} \\approx \\dfrac{\\theta^2}{2}.$$
 
 Then eliminating $$\\theta,$$
 
-$$\\dfrac{\\Delta L}{L} \\approx \\dfrac{F^2}{4T'^2}.$$
+$$\\dfrac{\\Delta L}{L} \\approx \\dfrac{F^2}{8T'^2}.$$
 
 Using this in the inequality, the condition for method (2) to exert a greater force is
 
-$$\\dfrac{NTF^2}{4T'^2} > F .$$
+$$\\dfrac{NTF^2}{8T'^2} > \\dfrac{F}{2}.$$
 
 Because $$F \\ll T,$$ we can let $$T' \\approx T,$$ and solving for $$N,$$ we get
 

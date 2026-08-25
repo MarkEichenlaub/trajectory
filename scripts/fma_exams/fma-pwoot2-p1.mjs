@@ -47,7 +47,9 @@ export const questions = [
     figures: [FIG('q01-q1')],
     topics: ['Mechanics'],
     tags: ['graph interpretation', '1d kinematics', 'calculus'],
-    solution: `Choices (a) and (c) show straight lines with non-zero slope. If the position vs time graph is a straight line, the velocity graph will be a flat line, so the velocity graph will not have the same shape as the position graph.
+    solution: `$$\\boxed{\\mathrm{(b)}}$$
+
+Choices (a) and (c) show straight lines with non-zero slope. If the position vs time graph is a straight line, the velocity graph will be a flat line, so the velocity graph will not have the same shape as the position graph.
 
 Choice (e) shows a particle whose position is increasing with time, but because the slope is getting smaller, the velocity is decreasing in time, so for this plot position and velocity do not have the same shape.
 
@@ -80,13 +82,15 @@ When the leftmost ball is pulled up to the left and released, it falls down and 
     figures: [FIG_JPG('q02-q1')],
     topics: ['Mechanics'],
     tags: ['collisions', 'momentum conservation', 'energy conservation', 'angular momentum conservation'],
-    solution: `None of the first four solutions are correct. Any number of balls could bounce off the right hand side of Newton's cradle while conserving momentum and kinetic energy. For example, one possible solution is for two balls to pop out the right hand side of the cradle and for the leftmost ball to bounce back in the direction it came. This provides two degrees of freedom (the speed of the rightmost balls and the speed of the leftmost ball), allowing us to adjust the degrees of freedom to conserve both momentum and kinetic energy.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{None of the above}}$$
+
+None of the first four solutions are correct. Any number of balls could bounce off the right hand side of Newton's cradle while conserving momentum and kinetic energy. For example, one possible solution is for two balls to pop out the right hand side of the cradle and for the leftmost ball to bounce back in the direction it came. This provides two degrees of freedom (the speed of the rightmost balls and the speed of the leftmost ball), allowing us to adjust the degrees of freedom to conserve both momentum and kinetic energy.
 
 The collisions themselves can be considered to occur in a straight line, so that any motion which conserves momentum conserves angular momentum as well. The subsequent motion of the balls swinging does not conserve angular momentum because gravity provides a torque, so conservation of angular momentum is not relevant to the dynamics of the cradle.
 
 For a nuanced perspective on why Newton's cradle does behave as observed, see:
 
-Hutzler, Stefan, et al. "Rocking Newton's cradle." American Journal of Physics 72.12 (2004): 1508-1516.`,
+Hutzler, Stefan, et al. "Rocking Newton’s cradle." American Journal of Physics 72.12 (2004): 1508-1516.`,
   },
   {
     n: 3, correct: 'D', // why: no boxed; solution's final line gives r ~ 2.2e2 m, matching choice (d).
@@ -100,7 +104,9 @@ Hutzler, Stefan, et al. "Rocking Newton's cradle." American Journal of Physics 7
     },
     topics: ['Mechanics'],
     tags: ['circular motion', 'free-body diagrams', 'newton\'s laws'],
-    solution: `The pilot's acceleration is
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 2.2 \\times 10^2 \\;\\mathrm{m}}$$
+
+The pilot's acceleration is
 
 $$a = \\dfrac{v^2}{r}$$
 
@@ -148,7 +154,9 @@ $$r \\approx 2.2 \\times 10^2 \\;\\mathrm{m}.$$`,
     },
     topics: ['Mechanics'],
     tags: ['scaling', 'dimensional analysis', 'oscillations/SHM', 'springs'],
-    solution: `The angular frequency of an oscillator with mass $$m$$ and spring constant $$k$$ is
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\dfrac{\\omega}{\\lambda}}$$
+
+The angular frequency of an oscillator with mass $$m$$ and spring constant $$k$$ is
 
 $$\\omega = \\sqrt{\\dfrac{k}{m}}.$$
 
@@ -158,7 +166,10 @@ In the scale model, all spring lengths are shorter by a factor $$\\lambda.$$ Thi
 
 The mass of the oscillator in the contraption has been reduced by a factor $$\\lambda^3.$$ So the angular frequency of the contraption is
 
-$$\\omega' = \\omega \\sqrt{\\dfrac{\\lambda}{\\lambda^3}} = \\dfrac{\\omega}{\\lambda}.$$
+$$\\begin{aligned}
+\\omega' & = \\omega \\sqrt{\\dfrac{\\lambda}{\\lambda^3}} \\\\[8pt]
+{} & = \\dfrac{\\omega}{\\lambda}.
+\\end{aligned}$$
 
 Alternatively, we may note that the angular frequency is some function of the densities, $$\\rho,$$ the Young's moduli, $$Y,$$ and the lengths, $$L.$$ Dimensional analysis then yields
 
@@ -183,10 +194,12 @@ When does this point have the greatest instantaneous speed relative to the bicyc
     figures: [FIG_JPG('q05-q1')],
     topics: ['Mechanics'],
     tags: ['rotational motion', 'relative motion', 'kinematics-2d'],
-    solution: `The center of the pedal rotates at a constant speed. It has some angular velocity $$\\omega.$$ The pedal itself counter-rotates with angular velocity $$-\\omega$$ to remain flat. This means the red dot's displacement from the center of the pedal is a constant vector. The time derivative of this constant vector is zero, so the red dot has the same velocity as the center of the pedal. This means the speed of the red dot is constant.`,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{The point has constant speed}}$$
+
+The center of the pedal rotates at a constant speed. It has some angular velocity $$\\omega.$$ The pedal itself counter-rotates with angular velocity $$-\\omega$$ to remain flat. This means the red dot's displacement from the center of the pedal is a constant vector. The time derivative of this constant vector is zero, so the red dot has the same velocity as the center of the pedal. This means the speed of the red dot is constant.`,
   },
   {
-    n: 6, correct: 'C', // why: no boxed; solution concludes P_2 = P_3 and P_1 < P_2, and explicitly writes "P_1 = P_3 < P_2" -- but see report, the prose calls that option "tempting" while proving it. Choice (c) is P_1 = P_3 < P_2.
+    n: 6, correct: 'A', // why: crypt key verified 2026-08: the boxed answer is (a); the earlier 'C' reading of the solution prose was a mis-key.
     statement: `Consider an escalator whose steps move upwards at a constant rate. (An escalator is a set of steps on an inclined plane, with a motor that moves the steps up or down the plane.) During period 1, the escalator is empty. Then a person stands on one of the steps of the escalator; call this period 2. Finally, the person begins climbing down the steps in order to remain at the same height relative to the ground; call this period 3. Consider the power $$P$$ that must be supplied to the escalator's motor during each period, ignoring friction and short-term fluctuations due to the climbing motion. Which statement is true?`,
     choices: {
       A: '$$P_1 < P_2 = P_3.$$',
@@ -197,7 +210,9 @@ When does this point have the greatest instantaneous speed relative to the bicyc
     },
     topics: ['Mechanics'],
     tags: ['power', 'work-energy theorem', 'energy conservation'],
-    solution: `This problem is simpler than it may look. Since the steps move at the same rate at all three times, all that matters is the force $$F$$ applied to the steps by the person. This is obviously zero during period 1. During periods 2 and 3, the person moves at constant velocity, so the net force on them is zero; hence in both cases $$F$$ is exactly their weight, and $$P_2 = P_3$$. The force acts downwards on the upwards-moving steps, so it does negative work on the steps; to counteract this, additional power must be supplied to the motor, so $$P_1 < P_2$$.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad P_1 < P_2 = P_3}$$
+
+This problem is simpler than it may look. Since the steps move at the same rate at all three times, all that matters is the force $$F$$ applied to the steps by the person. This is obviously zero during period 1. During periods 2 and 3, the person moves at constant velocity, so the net force on them is zero; hence in both cases $$F$$ is exactly their weight, and $$P_2 = P_3.$$ The force acts downwards on the upwards-moving steps, so it does negative work on the steps; to counteract this, additional power must be supplied to the motor, so $$P_1 < P_2.$$
 
 The main trap in the problem is that the person's potential energy increases only during period 2, making $$P_1 = P_3 < P_2$$ a tempting option. However, the escalator delivers power to the person during both periods $$2$$ and $$3$$ -- during period $$3$$ that power is dissipated by the person as they climb down. (If this seems unintuitive, consider what happens when you climb down a set of stationary stairs -- you release your stored potential energy, but none of this energy goes into the stairs as work, since of course they aren't moving. Instead it is dissipated in your legs and by the inelastic collisions between your feet and the steps.)`,
   },
@@ -213,7 +228,9 @@ The main trap in the problem is that the person's potential energy increases onl
     },
     topics: ['Mechanics'],
     tags: ['uncertainty propagation', 'error analysis', 'energy conservation'],
-    solution: `By conservation of energy,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\delta g^2 = \\left(\\dfrac{v}{h}\\delta v\\right)^2 + \\left(\\dfrac{v^2}{2h^2}\\delta h\\right)^2}$$
+
+By conservation of energy,
 
 $$\\dfrac12 mv^2 = mgh.$$
 
@@ -245,7 +262,9 @@ $$\\delta g^2 = \\left(\\dfrac{v}{h}\\delta v\\right)^2 + \\left(\\dfrac{v^2}{2h
     },
     topics: ['Mechanics'],
     tags: ['circular motion', 'rolling without slipping', 'newton\'s laws', 'limiting cases'],
-    solution: `Because the mass $$m$$ is so small, we can treat the wheel as rolling with constant angular velocity $$\\omega.$$
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad v\\approx \\sqrt{\\dfrac{gMr}{m}}}$$
+
+Because the mass $$m$$ is so small, we can treat the wheel as rolling with constant angular velocity $$\\omega.$$
 
 Then the acceleration of the mass is $$\\omega^2r$$ where $$r$$ is the radius of the wheel. The net force on the mass is $$m \\omega^2 r.$$
 
@@ -284,25 +303,29 @@ Find the period of small oscillations of the disk.`,
     figures: [FIG('q09-q1')],
     topics: ['Mechanics'],
     tags: ['oscillations/SHM', 'moment of inertia', 'rotational dynamics', 'torque'],
-    solution: `The period of a physical pendulum is
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad T = 2\\pi \\sqrt{\\dfrac{R^2 + 2a^2}{2ga}}}$$
+
+The period of a physical pendulum is
 
 $$T = 2\\pi \\sqrt{\\dfrac{I}{k}},$$
 
 where the torque on the pendulum is
 
-$$\\tau = -k\\theta$$
+$$\\tau = -k\\theta,$$
 
 and $$\\theta$$ is the pendulum's angular displacement from equilibrium.
 
 By the parallel axis theorem, the moment of inertia of the disk is
 
-$$I = \\dfrac12 MR^2 + Ma^2$$
+$$I = \\dfrac12 MR^2 + Ma^2,$$
 
 where we have used the moment of inertia about the center of mass, $$I_{cm} = \\dfrac12 MR^2,$$ for the first term.
 
 When the disk is displaced by an angle $$\\theta,$$ the torque on it is
 
-$$\\tau = -Mga\\sin\\theta \\approx -Mga\\theta.$$
+$$\\begin{aligned}
+\\tau & = -Mga\\sin\\theta \\\\
+{} & \\approx -Mga\\theta.\\end{aligned}$$
 
 This gives
 
@@ -328,7 +351,9 @@ $$T = 2\\pi \\sqrt{\\dfrac{R^2 + 2a^2}{2ga}}.$$`,
     },
     topics: ['Mechanics'],
     tags: ['1d kinematics', 'speed vs velocity', 'graph interpretation'],
-    solution: `Consider a motion in which the particle begins at $$0 \\;\\mathrm{m/s},$$ accelerates with constant acceleration to $$2 \\;\\mathrm{m/s}$$ in the first second, then instantly drops back to $$0 \\;\\mathrm{m/s}$$ and accelerates to $$2 \\;\\mathrm{m/s}$$ again over the second second, etc. Then in any given second, the particle would travel a total distance of $$1 \\;\\mathrm{m},$$ but the speed and velocity of the particle are not constant. We could modify this scenario so the particle's velocity begins at $$-1 \\;\\mathrm{m/s}$$ and ends at $$3 \\;\\mathrm{m/s},$$ in which case the particle changes directions as well. So none of (a), (b), or (c) are correct.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{None of the above}}$$
+
+Consider a motion in which the particle begins at $$0 \\;\\mathrm{m/s},$$ accelerates with constant acceleration to $$2 \\;\\mathrm{m/s}$$ in the first second, then instantly drops back to $$0 \\;\\mathrm{m/s}$$ and accelerates to $$2 \\;\\mathrm{m/s}$$ again over the second second, etc. Then in any given second, the particle would travel a total distance of $$1 \\;\\mathrm{m},$$ but the speed and velocity of the particle are not constant. We could modify this scenario so the particle's velocity begins at $$-1 \\;\\mathrm{m/s}$$ and ends at $$3 \\;\\mathrm{m/s},$$ in which case the particle changes directions as well. So none of (a), (b), or (c) are correct.
 
 The motion must be any periodic motion with a period of one second and an average velocity of zero, plus a constant velocity of $$1 \\;\\mathrm{m/s}$$ superimposed on that. For example, the motion could be $$v = 1 \\;\\mathrm{m/s} + v_0\\sin(2\\pi t/(1 \\;\\mathrm{s})).$$ There is enough freedom in this choice so that none of the options must be true.`,
   },
@@ -344,8 +369,9 @@ The motion must be any periodic motion with a period of one second and an averag
     },
     topics: ['Mechanics'],
     tags: ['gravitation', 'scaling', 'angular momentum conservation', 'circular motion'],
-    solution: `The satellite orbits with angular velocity $$\\omega,$$ which is also the angular velocity of rotation of the planet. We will use the angular momentum of the planet to find one equation for $$\\omega$$ in terms of $$R$$ and orbital dynamics to find another equation for $$\\omega$$ in terms of $$r.$$
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad r\\propto R^{7/3}}$$
 
+The satellite orbits with angular velocity $$\\omega,$$ which is also the angular velocity of rotation of the planet. We will use the angular momentum of the planet to find one equation for $$\\omega$$ in terms of $$R$$ and orbital dynamics to find another equation for $$\\omega$$ in terms of $$r.$$
 The angular momentum of the planet is
 
 $$L = I\\omega \\propto M R^2 \\omega.$$
@@ -364,10 +390,9 @@ $$\\omega \\propto \\dfrac{\\ell}{R^2}.$$
 
 Next we consider the orbital dynamics. The satellite has acceleration
 
-$$a = \\omega^2 r \\propto \\dfrac{M}{r^2}.$$
+$$a = \\omega^2 r \\propto \\dfrac{M}{r^2},$$
 
 where the right hand side is from Newton's gravitational law.
-
 From this we conclude
 
 $$\\omega \\propto \\sqrt{\\dfrac{\\rho R^3}{r^3}}.$$
@@ -378,7 +403,7 @@ $$\\dfrac{\\ell}{R^2} \\propto \\sqrt{\\dfrac{\\rho R^3}{r^3}}.$$
 
 We can ignore $$\\ell$$ and $$\\rho$$ because they are constants, so
 
-$$R^{-2} \\propto R^{3/2} r^{-3/2}$$
+$$R^{-2} \\propto R^{3/2} r^{-3/2},$$
 
 or
 
@@ -398,24 +423,33 @@ $$r \\propto R^{7/3}.$$`,
     solutionFigures: [FIG('q12-s1')],
     topics: ['Mechanics'],
     tags: ['non-inertial frames', 'circular motion', 'free-body diagrams', 'statics/equilibrium'],
-    solution: `In the frame rotating with the sphere, the person feels three forces: a gravitational force $$mg$$ downwards, a centrifugal force $$F_c$$ horizontally, and a normal force $$N$$ from the floor.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad mg \\sec\\theta}$$
+
+In the frame rotating with the sphere, the person feels three forces: a gravitational force $$mg$$ downwards, a centrifugal force $$F_c$$ horizontally, and a normal force $$N$$ from the floor.
 
 Because the person perceives themself upright, they do not feel a friction force from the floor. The forces must sum to zero. The normal force points towards the center of the sphere, so the sum of the gravitational forces and centrifugal forces must point directly away from the center of the sphere. This implies
 
-$$\\tan \\theta = \\frac{F_c}{mg}$$
+$$\\tan \\theta = \\frac{F_c}{mg},$$
 
-or
+ or
 
 $$F_c = mg\\tan\\theta.$$
 
-The magnitude of the normal force is the person's perceived weight. We can find the magnitude by finding the magnitude of the sum of the weight and centrifugal forces. They are at right angles, so the Pythagorean theorem implies
+ The magnitude of the normal force is the person's perceived weight. We can find the magnitude by finding the magnitude of the sum of the weight and centrifugal forces. They are at right angles, so the Pythagorean theorem implies
 
-$$|N| = \\sqrt{(mg)^2 + F_c^2} = mg\\sqrt{1 + \\tan^2\\theta} = \\frac{mg}{\\cos\\theta}.$$
+$$\\begin{aligned}
+|N| & = \\sqrt{(mg)^2 + F_c^2} \\\\
+{} & = mg\\sqrt{1 + \\tan^2\\theta} \\\\[8pt]
+{} & = \\frac{mg}{\\cos\\theta}.
+\\end{aligned}$$
 
-So the person's perceived weight is $$\\dfrac{mg}{\\cos\\theta} = mg\\sec\\theta.$$ The sphere radius $$R$$ is immaterial.
+So the person's perceived weight is
+
+$$\\dfrac{mg}{\\cos\\theta} = mg\\sec\\theta.$$
+
+ The sphere radius $$R$$ is immaterial.
 
 As an alternative approach:
-
 Since there is no friction, the only forces with a component in the vertical direction are the normal force $$N$$ and the weight $$mg.$$ The vertical component of the normal force is $$N\\cos\\theta,$$ so
 
 $$N\\cos\\theta = mg.$$
@@ -440,33 +474,35 @@ This confirms our first solution method. The approach is somewhat simpler than t
     },
     topics: ['Mechanics'],
     tags: ['gravitation', 'dimensional analysis', 'calculus'],
-    solution: `The correct choice is (d).
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\rho = kr^{-1}}$$
 
 __Direct approach__: Let $$M(r)$$ be the mass contained inside a sphere of radius $$r$$. Then the gravitational field strength is given by
 
-$$g = \\frac{G}{r^2} M(r)$$
+$$g = \\frac{G}{r^2} M(r).$$
 
 If $$g$$ is constant, we thus have
 
-$$M(r) = \\frac{g r^2}{G}$$
+$$M(r) = \\frac{g r^2}{G}.$$
 
 A spherical shell of thickness $$dr$$ thus has mass
 
-$$dM = \\frac{2 g r}{G} dr$$
+$$dM = \\frac{2 g r}{G} dr.$$
 
 But such a shell also has mass $$4 \\pi r^2 \\rho(r) \\, dr$$, so
 
-$$4 \\pi r^2 \\rho(r) \\, dr = \\frac{2 g r}{G} dr$$
+$$4 \\pi r^2 \\rho(r) \\, dr = \\frac{2 g r}{G} dr,$$
 
-$$\\rho(r) = \\frac{g}{2 \\pi r G}$$
+which gives
+
+$$\\rho(r) = \\frac{g}{2 \\pi r G}.$$
 
 __Dimensional analysis approach__: The proportionality constant is a combination of the gravitational field strength $$g$$ and the universal gravitational constant $$G$$:
 
-$$\\rho = a G^\\alpha g^\\beta r^\\gamma$$
+$$\\rho = a G^\\alpha g^\\beta r^\\gamma,$$
 
-$$M L^{-3} = (M^{-1} L^3 T^{-2})^\\alpha (L T^{-2})^\\beta L^\\gamma$$
+$$M L^{-3} = (M^{-1} L^3 T^{-2})^\\alpha (L T^{-2})^\\beta L^\\gamma.$$
 
-We conclude that $$\\alpha = -1$$, $$\\beta = 1$$, and $$\\gamma = -1$$.`,
+We conclude that $$\\alpha = -1$$, $$\\beta = 1$$, and $$\\gamma = -1.$$`,
   },
   {
     n: 14, correct: 'D', // why: no boxed; both derivations end at F_pivot = F L/(L-x), which is choice (d).
@@ -480,9 +516,11 @@ We conclude that $$\\alpha = -1$$, $$\\beta = 1$$, and $$\\gamma = -1$$.`,
     },
     topics: ['Mechanics'],
     tags: ['torque', 'statics/equilibrium', 'free-body diagrams'],
-    solution: `The force $$F$$ exerts a torque $$Fx$$ about the pivot. The second force $$F_2$$ must exert an equal torque, so
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad F\\left(\\dfrac{L}{L-x}\\right)}$$
 
-$$Fx = F_2 (L-x)$$
+The force $$F$$ exerts a torque $$Fx$$ about the pivot. The second force $$F_2$$ must exert an equal torque, so
+
+$$Fx = F_2 (L-x).$$
 
 The entire rod doesn't move, so there is no net force on it. This means the force from the pivot cancels the other two applied forces, or
 
@@ -515,16 +553,18 @@ In order for this to happen, the ground must also exert a frictional force $$f$$
     figures: [FIG('q15-q1')],
     topics: ['Mechanics'],
     tags: ['rolling without slipping', 'friction', 'rotational dynamics', 'moment of inertia'],
-    solution: `There are two forces on the cylinder, the force $$F$$ to the right and the friction force $$f$$ to the right. By Newton's second law,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\dfrac{1-\\beta}{1+\\beta}}$$
+
+There are two forces on the cylinder, the force $$F$$ to the right and the friction force $$f$$ to the right. By Newton's second law,
 
 $$a = \\dfrac{F+f}{m}.$$
 
 Both $$F$$ and $$f$$ exert a torque about the center of mass of the cylinder. They exert torques in opposite directions, so by the rotational analog of Newton's second law
 
 $$\\begin{aligned}
-\\alpha & = \\dfrac{\\tau}{I} \\\\
-{} & = \\dfrac{Fr-fr}{\\beta m r^2}\\\\
-{}& = \\dfrac{F-f}{\\beta m r}.
+\\alpha & = \\dfrac{\\tau}{I} \\\\[8pt]
+{} & = \\dfrac{Fr-fr}{\\beta m r^2} \\\\[8pt]
+{} & = \\dfrac{F-f}{\\beta m r}.
 \\end{aligned}$$
 
 Because the cylinder rolls without slipping, the acceleration is
@@ -552,29 +592,36 @@ $$f = F\\left(\\dfrac{1-\\beta}{1+\\beta}\\right).$$`,
     figures: [FIG('q16-q1')],
     topics: ['Mechanics'],
     tags: ['momentum conservation', 'variable mass', 'energy conservation', 'collisions'],
-    solution: `The parts of the cable hanging from either side of the pulley and above the table are balanced, so the part of the cable of length $$h$$ hanging at the bottom on the right is unbalanced. If the cable has mass per unit length $$\\lambda,$$ this part of the cable has mass $$\\lambda h.$$ The cable is not accelerating, so tension in the cable at the height of the table must be $$T = g\\lambda h.$$
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad v = \\sqrt{gh}}$$
 
+The parts of the cable hanging from either side of the pulley and above the table are balanced, so the part of the cable of length $$h$$ hanging at the bottom on the right is unbalanced. If the cable has mass per unit length $$\\lambda,$$ this part of the cable has mass $$\\lambda h.$$ The cable is not accelerating, so tension in the cable at the height of the table must be $$T = g\\lambda h.$$
 This tension force pulls up on the cable pile on the left, adding momentum $$g \\lambda h$$ per unit time to that pile of cable. The momentum added per unit time is also equal to the mass per unit time drawn up (which is $$\\lambda v$$) times the momentum per unit mass (which is $$v$$). That gives us
 
 $$T = \\lambda v \\cdot v.$$
 
 Using our earlier equation for $$T,$$ we have
 
-$$g\\lambda h = \\lambda v^2.$$
+$$g\\lambda h =\\lambda v^2,$$
 
-and solving for $$v$$ we get
+and solving for $$v,$$ we get
 
 $$v = \\sqrt{gh}.$$
 
-Note that an energy-based approach is somewhat subtle. Suppose the cable runs at speed $$v.$$ The the cable striking the floor dissipates a power
+Note that an energy-based approach is somewhat subtle. Suppose the cable runs at speed $$v.$$ The cable striking the floor dissipates a power
 
-$$P_{\\mathrm{floor}} = \\dfrac12 \\dot{m}v^2 = \\dfrac12 \\lambda v^3.$$
+$$\\begin{aligned}
+P_{\\mathrm{floor}} & = \\dfrac12 \\dot{m}v^2 \\\\[8pt]
+{} & = \\dfrac12 \\lambda v^3.
+\\end{aligned}$$
 
 The power released by gravitational potential energy is
 
-$$P_{\\mathrm{grav}} = \\dot{m}gh = \\lambda v g h.$$
+$$\\begin{aligned}
+P_{\\mathrm{grav}} & = \\dot{m}gh \\\\
+{} & = \\lambda v g h.
+\\end{aligned}$$
 
-Finally, we look for the power dissipated in the left hand pile. The power delivered by the rope is $$Fv = \\dot{m}v^2 = \\lambda v^3.$$ But the rate of change of kinetic energy of the rope is $$\\dot{T} = \\dfrac12 \\dot{m}v^2 = \\dfrac12 \\lambda v^3.$$ So the power dissipated in the left hand pile is
+Finally, we look for the power dissipated in the left hand pile. The power delivered by the rope is $$Fv = \\dot{m}v^2,$$ which is $$\\lambda v^3.$$ But the rate of change of kinetic energy of the rope is $$\\dot{T} = \\dfrac12 \\dot{m}v^2,$$ which is $$\\dfrac12 \\lambda v^3.$$ So the power dissipated in the left hand pile is
 
 $$P_{\\mathrm{left}} = \\dfrac12 \\lambda v^3.$$
 
@@ -601,12 +648,13 @@ Another way of thinking of this is that the rope could be thought as a chain of 
     solutionFigures: [FIG('q17-s1'), FIG('q17-s2')],
     topics: ['Mechanics'],
     tags: ['relative motion', 'kinematics-2d', 'vectors'],
-    solution: `The airplanes are both originally approaching each other. Once an airplane has passed the dot on the image below, it is retreating from the other airplane.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad 4 \\;\\mathrm{km}}$$
+
+The airplanes are both originally approaching each other. Once an airplane has passed the dot on the image below, it is retreating from the other airplane.
 
 We have introduced the variables $$v_f = 800 \\;\\mathrm{km/h}$$ for the speed of the fast airplane and $$v_s = 600 \\;\\mathrm{km/h}$$ for the speed of the slower airplane.
 
 The faster-moving plane will begin retreating before the slower-moving plane. The distance between the planes will shrink until one airplane (the fast plane) is retreating and the other (the slow plane) is approaching at the same rate that the fast plane is retreating.
-
 The rate at which an airplane is retreating / approaching is its velocity projected onto the line between the planes. Thus, the distance is minimal in a situation as shown below, with the lengths of the solid red line segments equal.
 
 The projection of the plane's velocity onto the hypotenuse of the triangle is proportional to the side length of the triangle parallel to the plane's velocity. Then we have
@@ -615,12 +663,11 @@ $$v_f \\cdot x = v_s \\cdot y.$$
 
 We can set up another equation relating the sides of the triangle simply by calculating how far from the dot the planes are. If the fast plane reaches the dot at time $$t = 0,$$ then
 
-$$x = v_f \\cdot t$$
+$$x = v_f \\cdot t,$$
 
-$$y = d - \\left(\\dfrac{d}{v_f} + t\\right)v_s$$
+$$y = d - \\left(\\dfrac{d}{v_f} + t\\right)v_s,$$
 
-Where $$d$$ is the original distance of the planes from the dot. The second equation is derived by the consideration that that slow plane begins a distance $$d$$ from the dot. It takes the fast plane a time $$\\dfrac{d}{v_f}$$ to reach the dot, so the slow plane travels for a time $$\\dfrac{d}{v_f} + t$$. Multiplying that time by $$v_s$$ gives the distance the slow plane travels. Subtracting that distance from $$d$$ gives the distance the slow plane has yet to travel to arrive at the dot.
-
+where $$d$$ is the original distance of the planes from the dot. The second equation is derived by the consideration that the slow plane begins a distance $$d$$ from the dot. It takes the fast plane a time $$\\dfrac{d}{v_f}$$ to reach the dot, so the slow plane travels for a time $$\\dfrac{d}{v_f} + t$$. Multiplying that time by $$v_s$$ gives the distance the slow plane travels. Subtracting that distance from $$d$$ gives the distance the slow plane has yet to travel to arrive at the dot.
 We can now solve the equations for $$\\sqrt{x^2 + y^2},$$ finding
 
 $$\\sqrt{x^2 + y^2} = \\dfrac{d(v_f - v_s)}{\\sqrt{v_s^2 + v_f^2}}.$$
@@ -631,43 +678,46 @@ $$\\sqrt{x^2 + y^2} = 4 \\;\\mathrm{km}.$$
 
 As an alternative solution, let $$\\hat i$$ be east and $$\\hat j$$ be north. Then the separation between the two planes is
 
-$$\\vec d = (20 \\, \\mathrm{km} - (800 \\, \\mathrm{km}/\\mathrm{h}) t) \\, \\hat i + (-20 \\, \\mathrm{km} + (600 \\, \\mathrm{km}/\\mathrm{h}) t) \\, \\hat j$$
+$$\\vec d = (20 \\, \\mathrm{km} - (800 \\, \\mathrm{km}/\\mathrm{h}) t) \\, \\hat i + (-20 \\, \\mathrm{km} + (600 \\, \\mathrm{km}/\\mathrm{h}) t) \\, \\hat j.$$
 
 For convenience, write $$s = (1000 \\, \\mathrm{km}/\\mathrm{h}) t$$; then
 
-$$\\vec d = \\vec a + \\vec b \\, s$$
+$$\\vec d = \\vec a + \\vec b \\, s,$$
 
 where
 
-$$\\vec a = (20 \\, \\mathrm{km}) \\, \\hat i + (-20 \\, \\mathrm{km}) \\, \\hat j$$
+$$\\vec a = (20 \\, \\mathrm{km}) \\, \\hat i + (-20 \\, \\mathrm{km}) \\, \\hat j,$$
 
-$$\\vec b = -0.8 \\, \\hat i + 0.6 \\, \\hat j$$
+$$\\vec b = -0.8 \\, \\hat i + 0.6 \\, \\hat j.$$
 
 From here the intuition is that we're looking for the component of $$\\vec a$$ perpendicular to $$\\vec b$$, since that's the component that can never be reduced during the motion. One way to find that is to use the cross product. Remember that
 
-$$|\\vec d \\times \\vec b| = |\\vec d||\\vec b| |\\sin \\theta|$$
+$$|\\vec d \\times \\vec b| = |\\vec d||\\vec b| |\\sin \\theta|,$$
 
 where $$\\theta$$ is the angle between the vectors. Since $$|\\sin \\theta| \\le 1$$, at all times
 
-$$|\\vec d \\times \\vec b| \\le |\\vec d||\\vec b|$$
+$$|\\vec d \\times \\vec b| \\le |\\vec d||\\vec b|,$$
 
 and since we have chosen $$\\vec b$$ so that $$|\\vec b| = 1$$,
 
-$$|\\vec d| \\ge |\\vec d \\times \\vec b|$$
+$$|\\vec d| \\ge |\\vec d \\times \\vec b|.$$
 
 (Technically we now have to check that we actually attain the minimum; however, this is clear physically, since the planes begin by getting closer together.)
 
 Now, by the definition of $$\\vec d$$ we have
 
-$$\\vec d \\times \\vec b = \\vec a \\times \\vec b + s \\vec b \\times \\vec b$$
+$$\\vec d \\times \\vec b = \\vec a \\times \\vec b + s \\vec b \\times \\vec b,$$
 
 and since the cross product of any vector with itself is zero,
 
-$$\\vec d \\times \\vec b = \\vec a \\times \\vec b$$
+$$\\vec d \\times \\vec b = \\vec a \\times \\vec b.$$
 
 Even though $$\\vec d$$ is changing, the cross product is a constant! And it's one we can easily evaluate:
 
-$$|\\vec a \\times \\vec b| = |(20 \\, \\mathrm{km}) \\cdot 0.6 - (-20 \\, \\mathrm{km}) \\cdot -0.8| = 4 \\, \\mathrm{km}$$
+$$\\begin{aligned}
+|\\vec a \\times \\vec b| & = |(20 \\, \\mathrm{km}) \\cdot 0.6 - (-20 \\, \\mathrm{km}) \\cdot -0.8| \\\\
+{} & = 4 \\, \\mathrm{km}.
+\\end{aligned}$$
 
 Note: you might look for another solution by adopting a frame of reference in which one of the planes is stationary.`,
   },
@@ -684,14 +734,14 @@ Note: you might look for another solution by adopting a frame of reference in wh
     figures: [FIG('q18-q1')],
     topics: ['Mechanics'],
     tags: ['momentum conservation', 'energy conservation', 'collisions', 'reference frames'],
-    solution: `As the mass $$m$$ falls, it releases gravitational potential energy $$mgh.$$ This energy is shared between the small mass and the larger wedge, which is pushed backward.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad h \\left(\\dfrac{M}{M+m}\\right)^2}$$
 
+As the mass $$m$$ falls, it releases gravitational potential energy $$mgh.$$ This energy is shared between the small mass and the larger wedge, which is pushed backward.
 The two conserve momentum, so
 
 $$mv + MV = 0,$$
 
 where $$v$$ is the speed of the block and $$V$$ the speed of the wedge.
-
 By conservation of energy,
 
 $$\\dfrac12(mv^2 + MV^2) = mgh.$$
@@ -701,19 +751,17 @@ Combining these equations, we find
 $$\\dfrac12 mv^2 = \\dfrac{mMgh}{m+M}.$$
 
 Next, the mass climbs the second wedge. The system of the mass and the second wedge conserves momentum and energy during this process.
-
 This gives us two equations
 
 $$\\begin{aligned}
-mv & = (m+M) V' \\\\
-\\dfrac12 mv^2 & = mgH + \\dfrac12(m+M) V'^2
+mv & = (m+M) V' \\\\[8pt]
+\\dfrac12 mv^2 & = mgH + \\dfrac12(m+M) V'^2,
 \\end{aligned}$$
 
 where $$H$$ is the height to which the block rises on the wedge and $$V'$$ is the speed of the block and wedge when the block rises to its greatest height.
-
 Solving for $$H,$$ we get
 
-$$H = \\dfrac{v^2}{2g} \\dfrac{M}{M+m}$$
+$$H = \\dfrac{v^2}{2g} \\dfrac{M}{M+m},$$
 
 and using our earlier result for $$v^2,$$
 
@@ -736,17 +784,16 @@ In this problem, ignore any changes in atmospheric pressure with altitude.`,
     figures: [FIG('q19-q1')],
     topics: ['Mechanics'],
     tags: ['fluid statics', 'pressure', 'thermal expansion'],
-    solution: `Water will flow from wherever there is higher pressure to wherever there is lower pressure, so to answer the question, we need to know whether heating (and therefore expanding) the water will change the pressure at the bottom of the beaker.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{Water flows to the right regardless of which vessel is heated}}$$
 
+Water will flow from wherever there is higher pressure to wherever there is lower pressure, so to answer the question, we need to know whether heating (and therefore expanding) the water will change the pressure at the bottom of the beaker.
 The pressure at the bottom of a beaker is $$\\rho g h,$$ where $$\\rho$$ is the density of the water.
-
 Suppose we heat the water in a beaker with straight vertical sides. Then if we heat the water and increase its volume by $$1\\%,$$ $$\\rho$$ decreases by $$1\\%.$$ Also, $$h$$ increases by $$1\\%.$$ The result is no change to the pressure at the bottom of the beaker.
 
-However, suppose we heat the water in the left beaker so that the volume increases by $$1\\%.$$ Then again $$\\rho$$ decreases by $$1\\%.$$ However, the extra volume is of water is concentrated in a narrow space at the top of the beaker. Because the cross-sectional area available to this extra volume is smaller than average for the beaker, the water height rises more than it would in a beaker with straight sides. $$h$$ increases by more than $$1 \\%$$. Thus, when we heat the water on the left, the pressure at the bottom of the left beaker increases and water runs to the right.
+However, suppose we heat the water in the left beaker so that the volume increases by $$1\\%.$$ Then again $$\\rho$$ decreases by $$1\\%.$$ However, the extra volume of water is concentrated in a narrow space at the top of the beaker. Because the cross-sectional area available to this extra volume is smaller than average for the beaker, the water height rises more than it would in a beaker with straight sides. $$h$$ increases by more than $$1 \\%$$. Thus, when we heat the water on the left, the pressure at the bottom of the left beaker increases and water runs to the right.
 
 Next suppose we heat the water on the right. Then by the same reasoning in reverse, the pressure at the bottom of the right beaker decreases. This means the pressure at the bottom of the left beaker is greater than that at the bottom of the right beaker, and water again runs to the right.
-
-So regardless of which beaker is heater, water runs to the right.`,
+So regardless of which beaker is heated, water runs to the right.`,
   },
   {
     n: 20, correct: 'B', // why: boxed value T = 2\pi\sqrt{3\pi r/(8g)} matches choice (b).
@@ -762,25 +809,26 @@ note for a triangle with one side along the $$x$$ axis and a height $$h,$$ the c
     },
     topics: ['Mechanics'],
     tags: ['oscillations/SHM', 'moment of inertia', 'center of mass', 'energy conservation'],
-    solution: `First, let's find the moment of inertia of the semi-circular disk. The moment of inertia of a solid circular disk is
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 2\\pi \\sqrt{\\dfrac{3\\pi r}{8g}}}$$
+
+First, let's find the moment of inertia of the semi-circular disk. The moment of inertia of a solid circular disk is
 
 $$I_{c} = \\dfrac12 Mr^2,$$
 
 where $$m$$ is the mass of the disk. The moment of the semi-circular disk is half this much, or
 
-$$I_{sc} = \\dfrac12 \\cdot \\dfrac12 M r^2$$
+$$I_{sc} = \\dfrac12 \\cdot \\dfrac12 M r^2.$$
 
 However, the mass of the semicircle is $$m = \\dfrac12 M,$$ so the moment of inertia is
 
 $$I_{sc} = \\dfrac12 mr^2.$$
 
 Next, we need to find the relation between small oscillations of the semi-circle and the restoring torque. This is done most easily by considering energy. Suppose the semi-circle is rotated through some small angle $$\\mathrm{d}\\theta$$. This is equivalent to cutting off a small triangle of material from the left and pasting it into the right. The small triangle has angle $$\\mathrm{d}\\theta$$.
-
-The center of mass of a triangle is $$\\dfrac23$$ the from the tip to the base, so the center of mass of the triangle rises $$\\dfrac23r \\mathrm{d}\\theta.$$ (Note that the center of mass is in the middle of the triangle vertically, so it rises $$\\dfrac12 \\cdot \\dfrac23r \\cdot 2\\mathrm{d}\\theta.$$)
+The center of mass of a triangle is $$\\dfrac23$$ of the way from the tip to the base, so the center of mass of the triangle rises $$\\dfrac23r \\mathrm{d}\\theta.$$ (Note that the center of mass is in the middle of the triangle vertically, so it rises $$\\dfrac12 \\cdot \\dfrac23r \\cdot 2\\mathrm{d}\\theta.$$)
 
 The mass of the triangle is $$\\dfrac{\\mathrm{d}\\theta}{\\pi} m,$$ so the energy increase in moving the triangle is
 
-$$\\mathrm{d}U = \\dfrac{2 gm r (\\mathrm{d}\\theta)^2}{3\\pi}$$
+$$\\mathrm{d}U = \\dfrac{2 gm r (\\mathrm{d}\\theta)^2}{3\\pi}.$$
 
 This can also be written
 
@@ -792,59 +840,66 @@ $$\\kappa = \\dfrac{4mgr}{3\\pi}.$$
 
 The angular frequency is
 
-$$\\omega = \\sqrt{\\dfrac{\\kappa}{I}} = \\sqrt{\\dfrac{8g}{3\\pi r}}$$
+$$\\begin{aligned}
+\\omega & = \\sqrt{\\dfrac{\\kappa}{I}} \\\\[8pt]
+{} & = \\sqrt{\\dfrac{8g}{3\\pi r}}.
+\\end{aligned}$$
 
 The period is
 
-$$T = \\dfrac{2\\pi}{\\omega} = 2\\pi \\sqrt{\\dfrac{3\\pi r}{8g}}.$$`,
+$$\\begin{aligned}
+T & = \\dfrac{2\\pi}{\\omega} \\\\[8pt]
+{} & = 2\\pi \\sqrt{\\dfrac{3\\pi r}{8g}}.
+\\end{aligned}$$`,
   },
   {
     n: 21, correct: 'B', // why: boxed value l < v^2/(2g) matches choice (b).
-    statement: `A dumbbell consisting of a massless bar with identical small balls at both ends stands vertically on a smooth level table. A horizontal velocity $$v$$ is imparted to the upper ball by hitting it. What is a necessary condition on the bar length $$l$$ such that the lower ball of the dumbbell loses contact with the table immediately after the upper ball is struck?`,
+    statement: `A dumbbell consisting of a massless bar with identical small balls at both ends stands vertically on a smooth level table. A horizontal velocity $$v$$ is imparted to the upper ball by hitting it. What is a necessary condition on the bar length $$\\ell$$ such that the lower ball of the dumbbell loses contact with the table immediately after the upper ball is struck?`,
     choices: {
-      A: '$$l > \\dfrac{v^2}{2g}.$$',
-      B: '$$l < \\dfrac{v^2}{2g}.$$',
-      C: '$$l > \\dfrac{2v^2}{g}.$$',
-      D: '$$l < \\dfrac{2v^2}{g}.$$',
-      E: '$$l = \\dfrac{v^2}{g}.$$',
+      A: '$$\\ell > \\dfrac{v^2}{2g}.$$',
+      B: '$$\\ell < \\dfrac{v^2}{2g}.$$',
+      C: '$$\\ell > \\dfrac{2v^2}{g}.$$',
+      D: '$$\\ell < \\dfrac{2v^2}{g}.$$',
+      E: '$$\\ell = \\dfrac{v^2}{g}.$$',
     },
     topics: ['Mechanics'],
     tags: ['rotational dynamics', 'center of mass', 'newton\'s laws', 'circular motion'],
-    solution: `Immediately after the ball is struck, the top ball moves to the right at speed $$v$$ while the bottom ball is stationary. The center of mass of the dumbbell moves to the right at speed $$v/2.$$
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\ell < \\dfrac{v^2}{2g}}$$
 
+Immediately after the ball is struck, the top ball moves to the right at speed $$v$$ while the bottom ball is stationary. The center of mass of the dumbbell moves to the right at speed $$v/2.$$
 This means the angular velocity of the system is such that $$\\omega r = v/2$$ so that the bottom dumbbell's velocity, which is the velocity of the center of mass plus its velocity due to the system's rotation, is zero. That gives us
 
-$$\\omega \\dfrac{l}{2} = \\dfrac{v}{2}$$
+$$\\omega \\dfrac{\\ell}{2} = \\dfrac{v}{2},$$
 
 or
 
-$$\\omega = \\dfrac{v}{l}$$
+$$\\omega = \\dfrac{v}{\\ell}.$$
 
 If the dumbbell is just at the point of lifting off the table, there is no normal force from the table on the lower ball, so the center of mass accelerates downward at $$g.$$ The acceleration is $$\\omega^2 r,$$ so we have
 
-$$\\omega^2 \\dfrac{l}{2} = g$$
+$$\\omega^2 \\dfrac{\\ell}{2} = g,$$
 
-or, using our equation for $$\\omega$$ and solving for $$l,$$
+or, using our equation for $$\\omega$$ and solving for $$\\ell,$$
 
-$$l_{\\mathrm{critical}} = \\dfrac{v^2}{2g}.$$
+$$\\ell_{\\mathrm{critical}}= \\dfrac{v^2}{2g}.$$
 
 If $$v$$ were increased, this would also lift the dumbbell off the table, so the condition is
 
-$$l < \\dfrac{v^2}{2g}.$$`,
+$$\\ell < \\dfrac{v^2}{2g}.$$`,
   },
   {
     n: 22, correct: 'C', // why: no boxed; the solution shows the true area is 612 cm^2 (a 2% error, i.e. 600 +/- 12) and that r's uncertainty cannot be determined without more information -- choice (c).
     statement: `A student receives the information that the length and width of a rectangular piece of paper are:
 
-$$l = 30.0 \\pm 0.3 \\, \\mathrm{cm}$$
+$$\\ell = 30.0 \\pm 0.3 \\, \\mathrm{cm}$$
 
 $$w = 20.0 \\pm 0.2 \\, \\mathrm{cm}$$
 
 The student uses the sum-of-squares uncertainty rule to report the area of the paper and the ratio of its length to its width:
 
-$$A = lw = 600 \\pm 8 \\, \\mathrm{cm}^2$$
+$$A = \\ell w = 600 \\pm 8 \\, \\mathrm{cm}^2$$
 
-$$r = \\frac{l}{w} = 1.50 \\pm 0.02$$
+$$r = \\frac{\\ell}{w} = 1.50 \\pm 0.02$$
 
 Next, the student learns that the uncertainty was not due to random measurement error, but due to calibration error. The ruler used to make the measurements can be used to make consistent measurements with only a small random error, but those measurements are incorrect by some fixed percentage which is not known, but estimated to be on the order of $$1\\%.$$ (Perhaps the ruler expands or contracts depending on temperature, and the temperature at the time of the measurements is unknown, but both measurements were made at the same temperature.) Should the student change their reported result, and if so, how?`,
     choices: {
@@ -852,23 +907,25 @@ Next, the student learns that the uncertainty was not due to random measurement 
       B: 'Yes; $$A = 600 \\pm 12 \\, \\mathrm{cm}^2$$ and $$r = 1.50 \\pm 0.03$$.',
       C: 'Yes; $$A = 600 \\pm 12 \\, \\mathrm{cm}^2$$, but the student needs more information to determine the uncertainty in $$r$$.',
       D: 'No; uncertainty analysis formulas apply regardless of the source of uncertainty.',
-      E: 'No; each formula uses $$l$$ and $$w$$ only once, so it is appropriate to apply the sum-of-squares rule.',
+      E: 'No; each formula uses $$\\ell$$ and $$w$$ only once, so it is appropriate to apply the sum-of-squares rule.',
     },
     topics: ['Mechanics'],
     tags: ['uncertainty propagation', 'error analysis', 'systematic error'],
-    solution: `First, as a reminder, the student's original calculation uses the sum-of-squares formula for products,
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{Yes; } A = 600 \\pm 12 \\, \\mathrm{cm}^2 \\text{; more information needed for } r}$$
 
-$$\\frac{\\Delta A}{A} = \\sqrt{\\left(\\frac{\\Delta l}{l}\\right)^2 + \\left(\\frac{\\Delta w}{w}\\right)^2}$$
+First, as a reminder, the student's original calculation uses the sum-of-squares formula for products,
+
+$$\\frac{\\Delta A}{A} = \\sqrt{\\left(\\frac{\\Delta \\ell}{\\ell}\\right)^2 + \\left(\\frac{\\Delta w}{w}\\right)^2},$$
 
 and the similar formula for ratios. Such sum-of-squares formulas depend on the assumption that the errors in the various inputs are independent -- that is, knowing that one measurement is off in one direction does not make it more or less likely that other measurements are off in that direction. The news about the ruler means this assumption does not hold, so the student has to reconsider.
 
-The general study of non-independent uncertainties is complex, but in this case we can reason by example. Suppose the measurement of $$l$$ was $$0.3 \\, \\mathrm{cm}$$ too small, so that the true length of the paper was $$30.3 \\, \\mathrm{cm}$$. This would imply that the ruler was stretched by $$1\\%$$, so the measurement of $$w$$ should also be $$1\\%$$ too small, and the true width of the paper is $$20.2 \\, \\mathrm{cm}$$. The true area of the paper would be
+The general study of non-independent uncertainties is complex, but in this case we can reason by example. Suppose the measurement of $$\\ell$$ was $$0.3 \\, \\mathrm{cm}$$ too small, so that the true length of the paper was $$30.3 \\, \\mathrm{cm}$$. This would imply that the ruler was stretched by $$1\\%$$, so the measurement of $$w$$ should also be $$1\\%$$ too small, and the true width of the paper is $$20.2 \\, \\mathrm{cm}$$. The true area of the paper would be
 
-$$A = 612 \\, \\mathrm{cm}^2$$
+$$A = 612 \\, \\mathrm{cm}^2.$$
 
 The two $$1\\%$$ errors compound into a $$2\\%$$ error when calculating $$A$$, because scaling an object by a factor $$f$$ scales its area by a factor $$f^2$$. Meanwhile, the true aspect ratio of the paper would be
 
-$$r = 1.50$$
+$$r = 1.50.$$
 
 The two $$1\\%$$ errors cancel! This does not mean that the measurement is exact. While the stretching of the ruler does not cause uncertainty in $$r$$, the measurements were subject to other sources of uncertainty, and the student needs to know their magnitude (and whether they are independent!) to report the uncertainty in $$r$$.`,
   },
@@ -885,22 +942,26 @@ The two $$1\\%$$ errors cancel! This does not mean that the measurement is exact
     figures: [FIG('q23-q1')],
     topics: ['Mechanics'],
     tags: ['torque', 'statics/equilibrium', 'pulleys/tension'],
-    solution: `We will find the torque of each force about the pivot point. The moment arm for the torque from the force of tension in the horizontal segment of the string is $$R/2.$$ The moment arm for the force from tension on the vertical part of the string is $$R.$$ The torque from these forces should be equal, so the tension in the horizontal part of the string must be twice as great as in the vertical part of the string, so $$T = 2mg.$$`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 2mg}$$
+
+We will find the torque of each force about the pivot point. The moment arm for the torque from the force of tension in the horizontal segment of the string is $$R/2.$$ The moment arm for the force from tension on the vertical part of the string is $$R.$$ The torque from these forces should be equal, so the tension in the horizontal part of the string must be twice as great as in the vertical part of the string, so $$T = 2mg.$$`,
   },
   {
     n: 24, correct: 'A', // why: boxed value T = S_1 S_2/(S_1 - S_2) * (rho g l) matches choice (a).
-    statement: `Two weightless disks of areas $$S_1$$ and $$S_2$$ are connected by a thin weightless string of length $$l.$$ The disks are positioned in cylinders with cross-sectional areas $$S_1$$ and $$S_2$$ as shown in the figure. The space between the disks is filled with water of density $$\\rho.$$ The cylinders are oriented vertically and gravitational acceleration is $$g.$$ Both cylinders are open to the atmosphere at pressure $$P_0.$$ Find the tension in the string.`,
+    statement: `Two weightless disks of areas $$S_1$$ and $$S_2$$ are connected by a thin weightless string of length $$\\ell.$$ The disks are positioned in cylinders with cross-sectional areas $$S_1$$ and $$S_2$$ as shown in the figure. The space between the disks is filled with water of density $$\\rho.$$ The cylinders are oriented vertically and gravitational acceleration is $$g.$$ Both cylinders are open to the atmosphere at pressure $$P_0.$$ Find the tension in the string.`,
     choices: {
-      A: '$$T = \\dfrac{S_1S_2}{S_1 - S_2}(\\rho g l).$$',
-      B: '$$T = \\rho g l S_2.$$',
+      A: '$$T = \\dfrac{S_1S_2}{S_1 - S_2}(\\rho g \\ell).$$',
+      B: '$$T = \\rho g \\ell S_2.$$',
       C: '$$T = P_0 S_2.$$',
-      D: '$$T = \\dfrac{S_1^2}{S_2}(P_0 - \\rho g l).$$',
-      E: '$$T = \\dfrac{S_2^2}{S_1}(\\rho g l).$$',
+      D: '$$T = \\dfrac{S_1^2}{S_2}(P_0 - \\rho g \\ell).$$',
+      E: '$$T = \\dfrac{S_2^2}{S_1}(\\rho g \\ell).$$',
     },
     figures: [FIG('q24-q1')],
     topics: ['Mechanics'],
     tags: ['fluid statics', 'pressure', 'statics/equilibrium', 'virtual work'],
-    solution: `Each disk has three forces on it: pressure from the atmosphere, pressure from the water, and tension from the string. These forces must sum to zero on each disk.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad T = \\dfrac{S_1S_2}{S_1 - S_2}(\\rho g \\ell)}$$
+
+Each disk has three forces on it: pressure from the atmosphere, pressure from the water, and tension from the string. These forces must sum to zero on each disk.
 
 For the top disk, tension and pressure from the atmosphere push downward, while pressure from the water pushes upward. Therefore,
 
@@ -920,76 +981,90 @@ $$P_2 = P_1 + \\rho g h.$$
 
 We can solve these three equations. First, we substitute the third equation into the second to eliminate $$P_2.$$ Then we solve the first equation for $$P_1$$ and plug it into the second equation to eliminate $$P_1.$$ Finally, we solve for the tension in the string. The result is
 
-$$T = \\dfrac{S_1S_2}{S_1 - S_2} \\left(\\rho g l\\right).$$
+$$T = \\dfrac{S_1S_2}{S_1 - S_2} \\left(\\rho g \\ell\\right).$$
 
-Alternatively, we can solve the problem using the principal of virtual work:
+Alternatively, we can solve the problem using the principle of virtual work:
 
-Suppose that a small volume $$V$$ of water moves from the top of the apparatus to the bottom. The water moves a distance $$l$$, so gravity does work
+Suppose that a small volume $$V$$ of water moves from the top of the apparatus to the bottom. The water moves a distance $$\\ell$$, so gravity does work
 
-$$\\rho V g l$$
+$$\\rho V g \\ell.$$
 
 The string shortens at the top by a distance $$\\frac{V}{S_1}$$, so at the top the string does work
 
-$$\\frac{V}{S_1} T$$
+$$\\frac{V}{S_1} T,$$
 
 and likewise at the bottom it does work
 
-$$-\\frac{V}{S_2} T$$
+$$-\\frac{V}{S_2} T.$$
 
 The volume of the atmosphere stays constant, so atmospheric pressure does no work. In equilibrium the total work done in the motion is zero:
 
-$$\\rho V g l + \\frac{V}{S_1} T - \\frac{V}{S_2} T = 0$$
+$$\\rho V g \\ell + \\frac{V}{S_1} T - \\frac{V}{S_2} T = 0,$$
 
-$$T = \\left(\\frac{1}{S_2} - \\frac{1}{S_1}\\right)^{-1} \\rho g l$$`,
+so
+
+$$T = \\left(\\frac{1}{S_2} - \\frac{1}{S_1}\\right)^{-1} \\rho g \\ell.$$`,
   },
   {
     n: 25, correct: 'A', // why: boxed value x_1 = l(1/2 - sqrt(3)/4) ~ 0.0670 l matches choice (a).
-    statement: `A massless string of length $$l$$ is fixed at either end and under tension $$T.$$
+    statement: `A massless string of length $$\\ell$$ is fixed at either end and under tension $$T.$$
 
 A mass $$m$$ is attached to the string a distance $$x$$ from the left end. The mass is displaced slightly in the direction perpendicular to the string.
 
 At what value of $$x$$ is the oscillation frequency double the minimum oscillation frequency?`,
     choices: {
-      A: '$$0.0670l$$',
-      B: '$$0.125l$$',
-      C: '$$0.146l$$',
-      D: '$$0.25l$$',
-      E: '$$0.354l$$',
+      A: '$$0.0670\\ell$$',
+      B: '$$0.125\\ell$$',
+      C: '$$0.146\\ell$$',
+      D: '$$0.25\\ell$$',
+      E: '$$0.354\\ell$$',
     },
     topics: ['Mechanics'],
     tags: ['oscillations/SHM', 'springs', 'statics/equilibrium'],
-    solution: `There are two restoring forces on the mass - one from the left and one from the right. Their horizontal components are both approximately $$T$$ and cancel. Their vertical components are in the same direction.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad 0.0670\\ell}$$
 
+There are two restoring forces on the mass - one from the left and one from the right. Their horizontal components are both approximately $$T$$ and cancel. Their vertical components are in the same direction.
 For small displacements, the vertical component of the force from the string is $$T\\theta,$$ where $$\\theta$$ is the angle above the horizontal that the string makes. This gives us
 
-$$F_{\\mathrm{restore}} = T \\dfrac{y}{x} + T \\dfrac{y}{l-x}$$
+$$F_{\\mathrm{restore}} = T \\dfrac{y}{x} + T \\dfrac{y}{\\ell-x},$$
 
 where $$y$$ is the displacement of the ball from equilibrium. This gives an effective spring constant
 
-$$k_{\\mathrm{eff}} = \\dfrac{F_{\\mathrm{restore}}}{y} = T\\dfrac{l}{x(l-x)}.$$
+$$\\begin{aligned}
+k_{\\mathrm{eff}} & = \\dfrac{F_{\\mathrm{restore}}}{y} \\\\[8pt]
+{} & = T\\dfrac{\\ell}{x(\\ell-x)}.
+\\end{aligned}$$
 
 The angular frequency is
 
-$$\\omega = \\sqrt{\\dfrac{k}{m}} = \\sqrt{\\dfrac{Tl}{mx(l-x)}}.$$
+$$\\begin{aligned}
+\\omega & = \\sqrt{\\dfrac{k}{m}} \\\\[8pt]
+{} & = \\sqrt{\\dfrac{T\\ell}{mx(\\ell-x)}}.
+\\end{aligned}$$
 
-The minimum $$\\omega$$ occurs when $$x(l-x)$$ takes on its maximum value. This is a quadratic whose maximum occurs at $$x = \\dfrac{l}{2},$$ so the minimum frequency is when the mass is in the center of the string.
-
+The minimum $$\\omega$$ occurs when $$x(\\ell-x)$$ takes on its maximum value. This is a quadratic whose maximum occurs at $$x = \\dfrac{\\ell}{2},$$ so the minimum frequency is when the mass is in the center of the string.
 The ratio of two oscillation frequencies is
 
-$$\\dfrac{\\omega_1}{\\omega_2} = \\sqrt{\\dfrac{x_2(l-x_2)}{x_1(l-x_1)}}$$
+$$\\dfrac{\\omega_1}{\\omega_2} = \\sqrt{\\dfrac{x_2(\\ell-x_2)}{x_1(\\ell-x_1)}}.$$
 
-In this case, we have $$\\dfrac{\\omega_1}{\\omega_2} = 2$$ and $$x_2 = \\dfrac{l}{2}.$$
+In this case, we have
+
+$$\\dfrac{\\omega_1}{\\omega_2} = 2$$
+
+ and
+
+$$x_2 = \\dfrac{\\ell}{2}.$$
 
 Substituting these values in, we have
 
-$$2 = \\sqrt{\\dfrac{(l/2)(l/2)}{x_1(l-x_1)}}$$
+$$2 = \\sqrt{\\dfrac{(\\ell/2)(\\ell/2)}{x_1(\\ell-x_1)}}.$$
 
 This is a quadratic equation in $$x_1$$ with the solutions
 
-$$x_1 = l \\left(\\dfrac12 - \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.0670 l.$$
+$$x_1 = \\ell \\left(\\dfrac12 - \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.0670\\,\\ell,$$
 
-$$x_1 \\approx 0.9330 l$$
+$$x_1 = \\ell \\left(\\dfrac12 + \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.9330\\,\\ell.$$
 
-There are two solutions simply because the mass can be displaced $$0.0670 l$$ either from the left or from the right and have the same frequency.`,
+There are two solutions simply because the mass can be displaced $$0.0670 \\ell$$ either from the left or from the right and have the same frequency.`,
   },
 ]

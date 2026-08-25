@@ -47,9 +47,16 @@ export const questions = [
     figures: [FIG('q01-q1')],
     topics: ['Mechanics'],
     tags: ['kinematics-1d', 'graph interpretation', 'integration'],
-    solution: `If we have the graph of the acceleration of an object, we can find its change in velocity by taking the integral of the function shown. We can do this by adding the area under the line (or subtracting if the area is below the $$t$$-axis).
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 2.07\\; \\mathrm{m/s}}$$
 
-The first part of the integral is a 1$$\\times$$1 square, so it has an area of 1. The next part is a right triangle with both legs equal to 1, so its area is $$\\frac 12$$. The next part is a right triangle underneath the $$t$$-axis, so it contributes $$-1$$ to the total. Finally, the last area is a semicircle with radius 1, contributing $$\\frac{\\pi}{2}$$ to the area. In total, we have $$\\frac {1+\\pi}{2} = 2.07$$, so the final speed of the object is $$2.07\\; \\mathrm{m/s}$$.`,
+Each area on this graph is an acceleration multiplied by a time, so each contributes a velocity.
+
+The first part of the integral is a rectangle of width $$1 \\;\\mathrm{s}$$ and height $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$1 \\;\\mathrm{m/s}$$. The next part is a right triangle with legs $$1 \\;\\mathrm{s}$$ and $$1 \\;\\mathrm{m/s^2}$$, so it contributes $$\\dfrac12 \\;\\mathrm{m/s}$$. The next part is a right triangle of the same size underneath the $$t$$-axis, so it contributes $$-1 \\;\\mathrm{m/s}$$. Finally, the last area is a semicircle spanning $$1 \\;\\mathrm{s}$$ in the $$t$$ direction and reaching $$1 \\;\\mathrm{m/s^2}$$ in the $$a$$ direction, so it contributes $$\\dfrac{\\pi}{2} \\;\\mathrm{m/s}$$. In total, the final speed of the object is
+
+$$\\begin{aligned}
+v & = \\left(1 + \\dfrac12 - 1 + \\dfrac{\\pi}{2}\\right) \\;\\mathrm{m/s} \\\\[8pt]
+{} & = \\dfrac{1+\\pi}{2} \\;\\mathrm{m/s} \\approx 2.07\\; \\mathrm{m/s}.
+\\end{aligned}$$`,
   },
   {
     n: 2, correct: 'D',
@@ -64,9 +71,9 @@ The first part of the integral is a 1$$\\times$$1 square, so it has an area of 1
     figures: [FIG('q02-q1')],
     topics: ['Mechanics'],
     tags: ['oscillations', 'springs', 'scaling'],
-    solution: `Suppose you stretch a spring some distance. Then each half of the spring stretches half the distance. But the full tension is felt by each half spring. Each half spring stretches half as much as the entire spring for a given tension. This means the spring constant of a half-spring is double the spring constant of the full spring.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad 2\\omega}$$
 
-There are two half-springs connected to the box in the second scenario, so the effective spring constant is four times as high as in the first scenario. From $$\\omega = \\sqrt{\\dfrac{k}{m}}$$ we see that this leads to doubling omega, so the answer is $$2\\omega$$.`,
+Suppose you stretch a spring some distance. Then each half of the spring stretches half the distance. But the full tension is felt by each half spring. Each half spring stretches half as much as the entire spring for a given tension. This means the spring constant of a half-spring is double the spring constant of the full spring. There are two half-spring connected to the box in the second scenario, so the effective spring constant is four times as high as in the first scenario. From $$\\omega = \\sqrt{\\dfrac{k}{m}}$$ we see that this leads to doubling $$\\omega$$, so the answer is $$2\\omega.$$`,
   },
   {
     n: 3, correct: 'C',
@@ -80,17 +87,24 @@ There are two half-springs connected to the box in the second scenario, so the e
     },
     topics: ['Mechanics'],
     tags: ['kinematics-1d', "newton's laws", 'estimation'],
-    solution: `We know the plane's final velocity, and the distance it has to travel to reach that velocity, so we can use kinematics to find the acceleration.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 199.9 \\;\\mathrm{kN}}$$
 
-$$v_f^2= 2a\\Delta x$$
+Imagine an external thrust force $$F$$ acting horizontally on the plane as the plane travels a horizontal distance $$d.$$ Then the plane would gain kinetic energy $$Fd,$$ telling us
 
-We have $$v_f = 88.3$$ and $$\\Delta x = 1365$$, which gives us
+$$Fd = \\dfrac{1}{2} m v_f^2,$$
 
-$$7796.89 = 2730a$$
+where $$v_f$$ is the speed of the plane at takeoff and $$m$$ its mass.
+Solving for $$F,$$
 
-Solving for $$a$$, we find that the acceleration that the plane undergoes while taking off is 2.856 m/s$$^2$$.
+$$F = \\dfrac{m v_f^2}{2d}.$$
 
-Finally, we multiply by the mass of the plane to get the force exerted by its engines. We have $$F = ma = 70{,}000 \\cdot 2.856 = 199920 = 199.9 \\; \\mathrm{kN}$$.`,
+Plugging in the given values, we find
+
+$$F \\approx 199{,}920 \\;\\mathrm{N},$$
+
+which we convert and round to
+
+$$F \\approx 199.9 \\;\\mathrm{kN}.$$`,
   },
   {
     n: 4, correct: 'C',
@@ -104,11 +118,9 @@ Finally, we multiply by the mass of the plane to get the force exerted by its en
     },
     topics: ['Mechanics'],
     tags: ['gravitation', 'orbits', 'energy', 'angular momentum'],
-    solution: `Kepler's third law tells us $$\\omega \\propto r^{-3/2}$$. That means the velocity is $$\\omega r \\propto r^{-1/2}$$, so the planet further out moves slower. That means it has less kinetic energy.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\text{less KE, more total energy, more angular momentum}}$$
 
-In class, we discussed the virial theorem that the total energy is $$-1$$ times the kinetic energy, so the planet further out has more total energy.
-
-Finally, angular momentum is proportional to the velocity and the distance from the sun, so $$\\omega r^2 \\propto r^{1/2}$$ and the further-out planet has more angular momentum.`,
+Kepler's third law tells us $$\\omega \\propto r^{-3/2}$$. That means the velocity is $$\\omega r \\propto r^{-1/2}$$, so the planet further out moves slower. That means it has less kinetic energy. In class, we discussed the virial theorem that the total energy is $$-1$$ times the kinetic energy, so the planet further out has more total energy. Finally, angular momentum is proportional to the velocity and the distance from the sun, so $$\\omega r^2 \\propto r^{1/2}$$ and the further-out planet has more angular momentum.`,
   },
   {
     n: 5, correct: 'B',
@@ -123,11 +135,16 @@ Finally, angular momentum is proportional to the velocity and the distance from 
     figures: [FIG('q05-q1')],
     topics: ['Mechanics'],
     tags: ['angular momentum', 'collisions', 'rotational dynamics'],
-    solution: `The angular momentum of the arrow about the pivot of the door is $$0.02 \\;\\mathrm{kg} \\cdot 50\\;\\mathrm{m/s}\\cdot 0.8 \\cos(30^\\circ) \\;\\mathrm{m} = 0.693 \\;\\mathrm{kg\\, m^2 s^{-1}}$$.
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad 4.0 \\;\\mathrm{s}}$$
 
-The moment of inertia of the door is $$\\dfrac{1}{3} 5\\;\\mathrm{kg} \\cdot (0.8 \\;\\mathrm{m})^2 = 1.067 \\; \\mathrm{kg\\, m^2}$$. The mass of the arrow is $$\\frac{1}{250}$$ the mass of the door, so we will ignore it.
+The angular momentum of the arrow about the pivot of the door is $$0.02 \\;\\mathrm{kg} \\cdot 50\\;\\mathrm{m/s}\\cdot 0.8 \\cos(30^\\circ) \\;\\mathrm{m} = 0.693 \\;\\mathrm{kg\\,m^2\\,s^{-1}}$$. The moment of inertia of the door is $$\\dfrac{1}{3} 5\\;\\mathrm{kg} \\cdot (0.8 \\;\\mathrm{m})^2 = 1.067 \\; \\mathrm{kg\\,m^2}$$. The mass of the arrow is $$\\frac{1}{250}$$ the mass of the door, so we will ignore it. The angular velocity of the door is
 
-The angular velocity of the door is $$\\omega = \\dfrac{L}{I} = 0.65 \\;\\mathrm{s^{-1}}$$. The time for the door to open is $$\\dfrac{5\\pi}{6\\omega} = 4.0 \\;\\mathrm{s}$$.`,
+$$\\begin{aligned}
+\\omega & = \\dfrac{L}{I} \\\\[8pt]
+{} & = 0.65 \\;\\mathrm{s^{-1}}.
+\\end{aligned}$$
+
+The time for the door to open is $$\\dfrac{5\\pi}{6\\omega} = 4.0 \\;\\mathrm{s}.$$`,
   },
   {
     n: 6, correct: 'A',
@@ -141,13 +158,9 @@ The angular velocity of the door is $$\\omega = \\dfrac{L}{I} = 0.65 \\;\\mathrm
     },
     topics: ['Mechanics'],
     tags: ['rolling without slipping', 'friction', 'moment of inertia'],
-    solution: `When rolling at speed $$v$$, the energy associated with motion of the center of mass is $$\\dfrac12 mv^2$$ and the energy associated with rotation is $$\\dfrac12 cmv^2$$. At a given position on the incline, the energy associated with the motion of the center of mass of the rolling ball is therefore $$\\dfrac{1}{1+c}$$ what it would be on a frictionless plane, due to energy conservation.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\tan\\theta \\left(\\dfrac{c}{c+1}\\right)}$$
 
-The sphere can be thought of as experiencing a force $$mg\\sin\\theta$$ down the plane and a friction force $$f$$ up the plane. Then $$mg\\sin\\theta - f$$ must be a fraction $$\\dfrac{1}{1+c}$$ of $$mg\\sin\\theta$$ so that the motion of the center of mass of the sphere only picks up that same fraction of the energy it would in the frictionless case. This implies $$f = \\dfrac{c}{1+c}mg\\sin\\theta$$.
-
-If the sphere is right on the verge of slipping, then $$f = \\mu N = \\mu mg\\cos\\theta$$. Equating these gives
-
-$$\\mu = \\tan\\theta\\left(\\dfrac{c}{c+1}\\right)$$`,
+When rolling at speed $$v$$, the energy associated with motion of the center of mass is $$\\dfrac12 mv^2$$ and the energy associated with rotation is $$\\dfrac12 cmv^2$$. At a given position on the incline, the energy associated with the motion of the center of mass of the rolling ball is therefore $$\\dfrac{1}{1+c}$$ what it would be on a frictionless plane, due to energy conservation. The sphere can be thought of as experiencing a force $$mg\\sin\\theta$$ down the plane and a friction force $$f$$ up the plane. Then $$mg\\sin\\theta - f$$ must be a fraction $$\\dfrac{1}{1+c}$$ of $$mg\\sin\\theta$$ so that the motion of the center of mass of the sphere only picks up that same fraction of the energy it would in the frictionless case. This implies $$f = \\dfrac{c}{1+c}mg\\sin\\theta.$$ If the sphere is right on the verge of slipping, then $$f = \\mu N$$. Since $$N = mg\\cos\\theta,$$ this means $$f = \\mu mg\\cos\\theta.$$ Equating these gives $$\\mu = \\tan\\theta\\left(\\dfrac{c}{c+1}\\right).$$`,
   },
   {
     n: 7, correct: 'B', // why: no \boxed in the solution; concluding prose says the near-atmospheric-pressure case is realistic, i.e. buoyancy nearly (but not exactly) cancels the added air, so the reading is just above 4.00 g
@@ -163,13 +176,15 @@ Atmospheric pressure is approximately $$100 \\; \\mathrm{kPa}$$, and a typical p
     },
     topics: ['Mechanics'],
     tags: ['buoyancy', 'fluids', 'pressure'],
-    solution: `This problem is mostly about the buoyancy of the inflated balloon, but one must remember that due to the elasticity of the balloon the air inside is at a higher pressure than the atmosphere.
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\text{Slightly more than } 4.00 \\; \\mathrm{g}}$$
+
+This problem is mostly about the buoyancy of the inflated balloon, but one must remember that due to the elasticity of the balloon the air inside is at a higher pressure than the atmosphere.
 
 On one extreme, if air in the balloon is at a very high pressure, its volume and hence the buoyant force is small. In this case the reading on the scale is near the total mass of the inflated balloon, $$12.00 \\; \\mathrm{g}$$.
 
 On the other extreme, if the air in the balloon is close to atmospheric pressure, its density is close to that of the atmosphere. In this case the balloon displaces a weight of atmosphere close to the weight of the contained air, and the buoyant force nearly cancels the weight of the added air. The reading on the scale is near the original reading, $$4.00 \\; \\mathrm{g}$$.
 
-The pressure in the balloon is at most the pressure used to inflate it, which we are told is small (but not negligible) compared to atmospheric pressure. Therefore the second case is the realistic one: the scale reads slightly more than $$4.00 \\; \\mathrm{g}$$.`,
+The pressure in the balloon is at most the pressure used to inflate it, which we are told is small (but not negligible) compared to atmospheric pressure. Therefore the second case is the realistic one.`,
   },
   {
     n: 8, correct: 'D',
@@ -184,7 +199,9 @@ The pressure in the balloon is at most the pressure used to inflate it, which we
     figures: [FIG('q08-q1')],
     topics: ['Mechanics'],
     tags: ['oscillations', 'reduced mass', 'springs'],
-    solution: `We can apply the formula $$\\omega = \\sqrt{\\dfrac{k}{m_{\\text{reduced}}}}$$ using the reduced mass $$\\dfrac{m_1m_2}{m_1+m_2} = \\dfrac12 m$$. So the oscillations are the same frequency as for the wall, except the mass is cut in half. The new frequency is therefore $$f\\sqrt{2}$$.`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\sqrt{2} f}$$
+
+We can apply the formula $$\\omega = \\sqrt{\\dfrac{k}{m_{\\text{reduced}}}}$$ using the reduced mass $$\\dfrac{m_1m_2}{m_1+m_2} = \\dfrac12 m$$. So the oscillations are the same frequency as for the wall, except the mass is cut in half. The new frequency is therefore $$f\\sqrt{2}.$$`,
   },
   {
     n: 9, correct: 'A',
@@ -198,11 +215,9 @@ The pressure in the balloon is at most the pressure used to inflate it, which we
     },
     topics: ['Mechanics'],
     tags: ['oscillations', 'energy', 'center of mass'],
-    solution: `The center of mass frame has the balls initially approach at the same speed, so that speed is half the speed when approaching the stationary wall. With half the speed, any individual ball has $$\\dfrac14$$ the energy.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\dfrac{A}{2\\sqrt{2}}}$$
 
-Additionally, the ball can be thought of as connected to a half-spring that is stationary, so the spring constant is twice as great as in the wall scenario.
-
-The energy of an oscillator is $$\\dfrac12 kA^2$$. Since in this scenario the energy is $$\\dfrac14$$ as much but $$k$$ is twice as much, we must have $$\\dfrac{A}{2\\sqrt{2}}$$ for the amplitude.`,
+The center of mass frame has the balls initially approach at the same speed, so that speed is half the speed when approaching the stationary wall. With half the speed, any individual ball has $$\\dfrac14$$ the energy. Additionally, the ball can be thought of as connected to a half-spring that is stationary, so the spring constant is twice as great as in the wall scenario. The energy of an oscillator is $$\\dfrac12 kA^2$$. Since in this scenario the energy is $$\\dfrac14$$ as much but $$k$$ is twice as much, we must have $$\\dfrac{A}{2\\sqrt{2}}$$ for the amplitude.`,
   },
   {
     n: 10, correct: 'C',
@@ -216,9 +231,9 @@ The energy of an oscillator is $$\\dfrac12 kA^2$$. Since in this scenario the en
     },
     topics: ['Mechanics'],
     tags: ['moment of inertia', 'rolling without slipping', 'inclined planes'],
-    solution: `The solid disk and the wheel must have the same coefficient in front of their moment of inertia. For the disk, $$I = \\dfrac12 mr^2$$.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad 1}$$
 
-For the wheel, the central hub mass doesn't contribute to the moment of inertia, while the moment of inertia of a hoop is $$mr^2$$. The hub and rim must have equal mass so the moment of inertia is $$\\dfrac12 mr^2$$ overall. The ratio is $$1$$.`,
+The solid disk and the wheel must have the same coefficient in front of their moment of inertia. For the wheel, $$I = \\dfrac12 mr^2.$$ For the hub, the central mass doesn't contribute to the moment of inertia, while the moment of inertia of a hoop is $$mr^2$$. The hub and rim must have equal mass so the moment of inertia is $$\\dfrac12 mr^2$$ over all. The ratio is $$1.$$`,
   },
   {
     n: 11, correct: 'D',
@@ -233,49 +248,62 @@ For the wheel, the central hub mass doesn't contribute to the moment of inertia,
     figures: [FIG('q11-q1')],
     topics: ['Mechanics'],
     tags: ['graph interpretation', 'kinematics-1d', "newton's laws"],
-    solution: `Point $$B$$ is where the slope of the line is steepest. However, this is a $$v$$ vs $$x$$ plot. $$B$$ is the point where the particle picks up the most speed per centimeter. But we want the particle to pick up the most speed per second.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\text{between points } B \\text{ and } C}$$
 
-The faster the particle moves, the faster it gets to locations with higher velocities. So if we go a little bit beyond $$B$$, the particle will be moving faster, resulting in greater acceleration. The change in speed per unit distance does go down slightly, but not to first order because $$B$$ is a maximum of this value.
-
-To be more explicit, the acceleration is $$a = v \\dfrac{\\mathrm{d}v}{\\mathrm{d}x}$$. The maximum occurs when $$\\dfrac{\\mathrm{d}a}{\\mathrm{d}x} = 0$$. This means $$0 = \\left(\\dfrac{\\mathrm{d}v}{\\mathrm{d}x}\\right)^2 + v \\dfrac{\\mathrm{d}^2v}{\\mathrm{d}x^2}$$.
-
-The first term is always positive, so the second term must be negative. $$v$$ is never negative, so the graph must be curving down at the point where the acceleration is maximum. This occurs between $$B$$ and $$C$$.`,
+Point $$B$$ is where the slope of the line is steepest. However, this is a $$v$$ vs $$x$$ plot. $$B$$ is the point where the particle picks up the most speed per centimeter. But we want the particle to pick up the most speed per second. The faster the particle moves, the faster it gets to locations with higher velocities. So if we go a little bit beyond $$B$$, the particle will be moving faster, resulting in greater acceleration. The change in speed per unit distance does go down slightly, but not to first order because $$B$$ is a maximum of this value. To be more explicit, the acceleration is $$a = v \\dfrac{\\mathrm{d}v}{\\mathrm{d}x}$$. The maximum occurs when $$\\dfrac{\\mathrm{d}a}{\\mathrm{d}x} = 0.$$ This means $$0 = \\left(\\dfrac{\\mathrm{d}v}{\\mathrm{d}x}\\right)^2 + v \\dfrac{\\mathrm{d}^2v}{\\mathrm{d}x^2}$$. The first term is always positive, so the second term must be negative. $$v$$ is never negative, so the graph must be curving down at the point where the acceleration is maximum. This occurs between $$B$$ and $$C$$.`,
   },
   {
     n: 12, correct: 'D',
-    statement: `Two balls, each of mass $$m$$, move in opposite directions at speed $$v$$. They simultaneously strike either end of a uniform stick of mass $$M$$ and length $$l$$. The balls stick to the stick. What is the angular frequency of the rotation of the stick after the collision?`,
+    statement: `Two balls, each of mass $$m$$, move in opposite directions at speed $$v$$. They simultaneously strike either end of a uniform stick of mass $$M$$ and length $$\\ell$$. The balls stick to the stick. What is the angular frequency of the rotation of the stick after the collision?`,
     choices: {
       A: '$$0$$',
-      B: '$$\\dfrac{mv}{l}$$',
-      C: '$$\\dfrac{2mv}{l}$$',
-      D: '$$\\dfrac{mv}{l} \\dfrac{12}{M + 6m}$$',
-      E: '$$\\dfrac{mv}{l} \\dfrac{24}{M + 12m}$$',
+      B: '$$\\dfrac{mv}{\\ell}$$',
+      C: '$$\\dfrac{2mv}{\\ell}$$',
+      D: '$$\\dfrac{mv}{\\ell} \\dfrac{12}{M + 6m}$$',
+      E: '$$\\dfrac{mv}{\\ell} \\dfrac{24}{M + 12m}$$',
     },
     figures: [FIG('q12-q1')],
     topics: ['Mechanics'],
     tags: ['angular momentum', 'collisions', 'moment of inertia'],
-    solution: `The angular momentum of the balls about the center of the stick is $$2 mv \\dfrac{l}{2} = mvl$$.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\dfrac{mv}{\\ell} \\dfrac{12}{M + 6m}}$$
 
-The moment of inertia of the balls plus stick, again about the center of the stick, is $$\\dfrac{1}{12} M l^2 + 2m \\left(\\dfrac{l}{2}\\right)^2 = l^2\\left(\\dfrac{1}{12} M + \\dfrac12 m\\right)$$.
+The angular momentum of the balls about the center of the stick is
+
+$$\\begin{aligned}
+L & = 2 mv \\dfrac{\\ell}{2} \\\\[8pt]
+{} & = mv\\ell.
+\\end{aligned}$$
+
+The moment of inertia of the balls plus stick, again about the center of the stick, is
+
+$$\\begin{aligned}
+I & = \\dfrac{1}{12} M \\ell^2 + 2m \\left(\\dfrac{\\ell}{2}\\right)^2 \\\\[8pt]
+{} & = \\ell^2\\left(\\dfrac{1}{12} M + \\dfrac12 m\\right).
+\\end{aligned}$$
 
 The angular frequency is
 
-$$\\omega = \\dfrac{L}{I} = \\dfrac{mv}{l} \\dfrac{12}{M + 6m}$$`,
+$$\\begin{aligned}
+\\omega & = \\dfrac{L}{I} \\\\[8pt]
+{} & = \\dfrac{mv}{\\ell} \\dfrac{12}{M + 6m}.
+\\end{aligned}$$`,
   },
   {
     n: 13, correct: 'A',
-    statement: `A rod of length $$l$$ sits above a frictionless horizontal surface, angled at $$\\theta$$ with one side touching the surface. The rod is released. How far does the center of mass of the rod move in the horizontal direction before the rod impacts the surface?`,
+    statement: `A rod of length $$\\ell$$ sits above a frictionless horizontal surface, angled at $$\\theta$$ with one side touching the surface. The rod is released. How far does the center of mass of the rod move in the horizontal direction before the rod impacts the surface?`,
     choices: {
       A: '$$0$$',
-      B: '$$\\dfrac12 \\cos\\theta \\, l$$',
-      C: '$$\\dfrac12 (1 - \\cos\\theta)l$$',
-      D: '$$\\dfrac12 l$$',
-      E: '$$\\dfrac12 (1 - \\sin\\theta) l$$',
+      B: '$$\\dfrac12 \\cos\\theta \\, \\ell$$',
+      C: '$$\\dfrac12 (1 - \\cos\\theta)\\ell$$',
+      D: '$$\\dfrac12 \\ell$$',
+      E: '$$\\dfrac12 (1 - \\sin\\theta) \\ell$$',
     },
     figures: [FIG('q13-q1')],
     topics: ['Mechanics'],
     tags: ['center of mass', 'rigid body dynamics', 'conservation laws'],
-    solution: `The surface is frictionless, so there are no forces in the horizontal direction, so the center of mass can't move in the horizontal direction. The answer is $$0$$.`,
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad 0}$$
+
+The surface is frictionless, so there are no forces in the horizontal direction, so the center of mass can't move in the horizontal direction. The answer is $$0.$$`,
   },
   {
     n: 14, correct: 'B',
@@ -293,15 +321,20 @@ The ceiling has a height of $$250 \\; \\mathrm{cm}$$, and rods of length $$255 \
     solutionFigures: [FIG('q14-s1'), FIG('q14-s2')],
     topics: ['Mechanics'],
     tags: ['statics', 'torque', 'free-body diagrams'],
-    solution: `As shown in the free body diagram, four forces act on the rod: the horizontal force due to the worker, the desired vertical force due to the ceiling, a horizontal force due to the wall, and a vertical force due to the floor.
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\text{The } 255 \\; \\mathrm{cm} \\text{ rod; } 4.02 \\; \\mathrm{kN}}$$
+
+As shown in the free body diagram, four forces act on the rod: the horizontal force due to the worker, the desired vertical force due to the ceiling, a horizontal force due to the wall, and a vertical force due to the floor.
 
 We can assume the worker pushes slowly enough that any acceleration of the rod is small. Therefore the net force on the rod is zero, so the desired vertical force on the ceiling equals the vertical force due to the floor. The net torque on the rod is also zero about any point; using the point of contact with the ceiling, we see that the two forces acting at the floor must sum along the line of the rod.
 
-The ratio of the horizontal force $$F_h$$ to the vertical force $$F_v$$ is thus minimized when the length of the rod is close to the height of the ceiling. Quantitatively, if the height of the ceiling is $$h$$ and the length of the rod is $$l$$, we have from similar triangles
+The ratio of the horizontal force $$F_h$$ to the vertical force $$F_v$$ is thus minimized when the length of the rod is close to the height of the ceiling. Quantitatively, if the height of the ceiling is $$h$$ and the length of the rod is $$\\ell$$, we have from similar triangles
 
-$$\\frac{F_h}{F_v} = \\frac{\\sqrt{l^2 - h^2}}{h} = \\sqrt{\\left(\\frac{l}{h}\\right)^2 - 1}.$$
+$$\\begin{aligned}
+\\frac{F_h}{F_v} & = \\frac{\\sqrt{\\ell^2 - h^2}}{h} \\\\[8pt]
+{} & = \\sqrt{\\left(\\frac{\\ell}{h}\\right)^2 - 1}.
+\\end{aligned}$$
 
-Plugging in $$l = 255 \\;\\mathrm{cm}$$, $$h = 250 \\;\\mathrm{cm}$$, and $$F_v = 20.0 \\;\\mathrm{kN}$$, we find $$F_h = 4.02 \\;\\mathrm{kN}$$.`,
+Plugging in $$\\ell = 255 \\;\\mathrm{cm}, h = 250 \\;\\mathrm{cm},$$ and $$F_v = 20.0 \\;\\mathrm{kN},$$ we find $$F_h = 4.02 \\;\\mathrm{kN}.$$`,
   },
   {
     n: 15, correct: 'D',
@@ -315,9 +348,9 @@ Plugging in $$l = 255 \\;\\mathrm{cm}$$, $$h = 250 \\;\\mathrm{cm}$$, and $$F_v 
     },
     topics: ['Mechanics'],
     tags: ['buoyancy', 'fluids', 'oscillations'],
-    solution: `When we push the cylinder down by a distance $$x$$, the water rises a distance $$\\dfrac{x}{3}$$. This is because the water conserves volume, and the factor of 3 is the ratio of the surface area of the water to the surface area of the cylinder.
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\dfrac43 \\pi r^2 x \\rho g}$$
 
-The total distance the cylinder is below the surface of the water is $$\\dfrac43 x$$, so the answer is $$\\dfrac43 \\pi r^2 x \\rho g$$.`,
+When we push the cylinder down by a distance $$x$$, the water rises a distance $$\\dfrac{x}{3}$$. This is because the water conserves volume, and the factor of 3 is the ratio of the surface area of the water to the surface area of the cylinder. The total distance the cylinder is below the surface of the water is $$\\dfrac43 x$$, so the answer is $$\\dfrac43 \\pi r^2 x \\rho g.$$`,
   },
   {
     n: 16, correct: 'C',
@@ -332,11 +365,9 @@ The total distance the cylinder is below the surface of the water is $$\\dfrac43
     figures: [FIG('q16-q1')],
     topics: ['Mechanics'],
     tags: ['fluids', 'rotating frames', 'circular motion'],
-    solution: `We saw in lesson 3 that spinning a free surface of water results in a curve $$y = \\dfrac{\\omega^2 x^2}{2g}$$.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad \\Delta y = \\dfrac12 \\dfrac{\\omega^2}{g} x^2}$$
 
-That water was in equilibrium, so inserting some pipes around pieces of it wouldn't affect anything, and once the pipes are in place, we can get rid of the surrounding water without affecting the water in the pipes, so the equation we found in class works just as well here. The answer is
-
-$$\\Delta y = \\dfrac12 \\dfrac{\\omega^2}{g} x^2$$`,
+We saw in lesson 3 that spinning a free surface of water results in a curve $$y = \\dfrac{\\omega^2 x^2}{2g}.$$ That water was in equilibrium, so inserting some pipes around pieces of it wouldn't affect anything, and once the pipes are in place, we can get rid of the surrounding water without affecting the water in the pipes, so the equation we found in class works just as well here. The answer is $$\\Delta y = \\dfrac12 \\dfrac{\\omega^2}{g} x^2.$$`,
   },
   {
     n: 17, correct: 'E',
@@ -351,11 +382,9 @@ $$\\Delta y = \\dfrac12 \\dfrac{\\omega^2}{g} x^2$$`,
     figures: [FIG('q17-q1')],
     topics: ['Mechanics'],
     tags: ['rolling without slipping', 'energy', 'circular motion'],
-    solution: `The center of mass of the disk moves on a circle of radius $$R+r$$, so its speed is $$(R+r)\\dfrac{2\\pi}{T}$$.
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\dfrac34 m \\left(\\dfrac{2\\pi(R+r)}{T}\\right)^2}$$
 
-The moment of inertia of the disk is $$\\dfrac12 m r^2$$, so the kinetic energy associated with rotation is half that associated with translation. The total kinetic energy is therefore
-
-$$\\dfrac34 m \\left(\\dfrac{2\\pi(R+r)}{T}\\right)^2$$`,
+The center of mass of the disk moves on a circle of radius $$R+r$$, so its speed is $$(R+r)\\dfrac{2\\pi}{T}.$$ The moment of inertia of the disk is $$\\dfrac12 m r^2,$$ so the kinetic energy associated with rotation is half that associated with translation. The total kinetic energy is therefore $$\\dfrac34 m \\left(\\dfrac{2\\pi(R+r)}{T}\\right)^2.$$`,
   },
   {
     n: 18, correct: 'C',
@@ -369,9 +398,9 @@ $$\\dfrac34 m \\left(\\dfrac{2\\pi(R+r)}{T}\\right)^2$$`,
     },
     topics: ['Mechanics'],
     tags: ['rolling without slipping', 'friction', 'angular momentum'],
-    solution: `Because the hoop is spinning, it experiences a constant friction force, and its velocity increases linearly with time. It also experiences a constant torque, so its angular velocity decreases linearly with time. This goes on until $$\\omega r = v$$, at which point the hoop transitions to rolling without slipping.
+    solution: `$$\\boxed{\\mathrm{(c)} \\quad v}$$
 
-If the coefficient of friction were cut in half, the acceleration would be cut in half, so it would take twice as long for the hoop to get up to the same speed. It would likewise take twice as long for $$\\omega r$$ to come down to the same speed. They would still meet at the same speed, though. So the answer is $$v$$.`,
+Because the hoop is spinning, it experiences a constant friction force, and its velocity increases linearly with time. It also experiences a constant torque, so its angular velocity decreases linearly with time. This goes on until $$\\omega r = v,$$ at which point the hoop transitions to rolling without slipping. If the coefficient of friction were cut in half, the acceleration would be cut in half, so it would take twice as long for the hoop to get up to the same speed. It would likewise take twice as long for $$\\omega r$$ to come down to the same speed. They would still meet at the same speed, though. So the answer is $$v.$$`,
   },
   {
     n: 19, correct: 'E', // why: no \boxed in the solution; the concluding prose says the particle is "repelled from the center of the sphere", and the symmetry argument earlier establishes the force must go to zero at (i.e. decrease towards) the center
@@ -388,11 +417,11 @@ If the gravitational force still obeyed the law of superposition but instead obe
     solutionFigures: [FIG('q19-s1')],
     topics: ['Mechanics'],
     tags: ['gravitation', 'shell theorem', 'symmetry'],
-    solution: `It's straightforward to argue that the given answer is the most plausible one, although a rigorous proof would need to address some technical details. (Behind the scenes the author actually finds the numerical verification most straightforward.)
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{repelled, force decreasing towards the center}}$$
 
-First, from symmetry we expect the force at the center of the shell to remain zero, so if there is a force at all it should decrease towards the center.
+From symmetry we expect the force at the center of the shell to remain zero, so if there is a force at all it should decrease towards the center.
 
-Now, suppose the sphere is centered at the origin and the test particle is somewhere on the positive $$x$$-axis. Divide the sphere into the larger portion to the left of the particle and the smaller portion to the right:
+Suppose the sphere is centered at the origin and the test particle is somewhere on the positive $$x$$-axis. Divide the sphere into the larger portion to the left of the particle and the smaller portion to the right:
 
 Under the inverse square law, we know that the net force on the particle is zero, which means the force due to the left portion must balance the force due to the right portion. This is possible because the left portion has greater mass but is also farther away from the particle on average.
 
@@ -410,11 +439,9 @@ Under the inverse cube law, the force decays more quickly with distance than bef
     },
     topics: ['Mechanics'],
     tags: ['rotating frames', 'coriolis force', 'projectile motion'],
-    solution: `When the ball is dropped, its velocity vs time plot begins at zero and increases linearly. This is also the shape of the acceleration versus time plot in the horizontal direction. The velocity versus time plot in the horizontal direction is therefore a quadratic beginning at zero and sloping upwards. If the final velocity reached is $$v_h$$ in time $$t$$, the distance displaced is $$\\dfrac13 v_h t$$.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad 4x \\text{ West}}$$
 
-When the ball is thrown up, the direction of travel is reversed, so the Coriolis force pushes in the opposite direction (West). The velocity versus time plot in the vertical direction begins high and comes down to zero in a straight line, so this is what the acceleration versus time plot does in the horizontal direction. The velocity versus time plot in the horizontal direction is again a quadratic, but one that curves down rather than curving up. The displacement is $$\\dfrac23 v_h t$$.
-
-However, on the way back down, the projectile is displaced by the same amount again, making its total displacement $$\\dfrac43 v_h t$$, so the answer is $$4x$$ West.`,
+When the ball is dropped, its velocity vs time plot begins at zero and increases linearly. This is also the shape of the acceleration versus time plot in the horizontal direction. The velocity versus time plot in the horizontal direction is therefore a quadratic beginning at zero and sloping upwards. If the final velocity reached is $$v_h$$ in time $$t$$, the distance displaced is $$\\dfrac13 v_h t$$. When the ball is thrown up, the direction of travel is reversed, so the Coriolis force pushes in the opposite direction (West). The velocity versus time plot in the vertical direction begins high and comes down to zero in a straight line, so this is what the acceleration versus time plot does in the horizontal direction. The velocity versus time plot in the horizontal direction is again a quadratic, but one that curves down rather than curving up. The displacement is $$\\dfrac23 v_h t.$$ However, on the way back down, the projectile is displaced by the same amount again, making its total displacement $$\\dfrac43 v_h t$$, so the answer is $$4x$$ West.`,
   },
   {
     n: 21, correct: 'E',
@@ -428,7 +455,9 @@ However, on the way back down, the projectile is displaced by the same amount ag
     },
     topics: ['Mechanics'],
     tags: ['orbits', 'gravitation', 'rotating frames'],
-    solution: `The wrench can be considered to be in orbit around the planet. Its new orbit is slightly elliptical, but follows almost the same path as the space station's orbit. The ellipse will intersect the space station's circular orbit on the other side of the orbit, so it returns in a time $$T/2$$, and the answer is E.`,
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{curving path, returns in time } \\dfrac{T}{2}}$$
+
+The wrench can be considered to be in orbit around the planet. Its new orbit is slightly elliptical, but follows almost the same path as the space station's orbit. The ellipse will intersect the space station's circular orbit on the other side of the orbit, so it returns in a time $$T/2.$$`,
   },
   {
     n: 22, correct: 'A',
@@ -443,15 +472,9 @@ However, on the way back down, the projectile is displaced by the same amount ag
     figures: [FIG('q22-q1')],
     topics: ['Mechanics'],
     tags: ['torque', 'equilibrium', 'oscillations', 'rolling without slipping'],
-    solution: `If there is a stable equilibrium, the hoop can oscillate about that equilibrium point.
+    solution: `$$\\boxed{\\mathrm{(a)} \\quad \\dfrac{M\\sin\\theta}{1-\\sin\\theta}}$$
 
-The most torque the mass can produce (in the direction that rolls the hoop up the plane) is when the mass is at the far left hand side of the hoop. It then produces a torque of $$mgr(1-\\sin\\theta)$$ about the point of contact with the incline, with $$r$$ the radius of the hoop. The gravitational force on the hoop produces a torque of magnitude $$Mgr\\sin\\theta$$.
-
-Setting these equal, the hoop will be in equilibrium in this position if
-
-$$m = \\dfrac{M\\sin\\theta}{1-\\sin\\theta}$$
-
-If the mass is any heavier than that, there's an equilibrium where the mass is a bit lower, and the hoop can potentially oscillate around that equilibrium (depending on how it's initially set up).`,
+If there is a stable equilibrium, the hoop can oscillate about that equilibrium point. The most torque the mass can produce (in the direction that rolls the hoop up the plane) is when the mass is at the far left hand side of the hoop. It then produces a torque of $$mgr(1-\\sin\\theta)$$ about the point of contact with the incline, with $$r$$ the radius of the hoop. The gravitational force on the hoop produces a torque of magnitude $$Mgr\\sin\\theta.$$ Setting these equal, the hoop will be in equilibrium in this position if $$m = \\dfrac{M\\sin\\theta}{1-\\sin\\theta}.$$ If the mass is any heavier than that, there's an equilibrium where the mass is a bit lower, and the hoop can potentially oscillate around that equilibrium (depending on how it's initially set up).`,
   },
   {
     n: 23, correct: 'D',
@@ -466,7 +489,9 @@ If the mass is any heavier than that, there's an equilibrium where the mass is a
     figures: [FIG('q23-q1')],
     topics: ['Mechanics'],
     tags: ['waves', 'pulleys/tension', "newton's laws"],
-    solution: `The speed of a wave is $$v = \\sqrt{\\dfrac{T}{\\rho}}$$. The density doesn't change, but when the half-Atwood machine is released, the tension in the rope gets cut in half, meaning the new wave speed is $$\\dfrac{v}{\\sqrt{2}}$$.`,
+    solution: `$$\\boxed{\\mathrm{(d)} \\quad \\dfrac{v}{\\sqrt{2}}}$$
+
+The speed of a wave is $$v = \\sqrt{\\dfrac{T}{\\rho}}.$$ The density doesn't change, but when the half-Atwood machine is released, the tension in the rope gets cut in half, meaning the new wave speed is $$\\dfrac{v}{\\sqrt{2}}.$$`,
   },
   {
     n: 24, correct: 'B',
@@ -480,7 +505,9 @@ If the mass is any heavier than that, there's an equilibrium where the mass is a
     },
     topics: ['Mechanics'],
     tags: ['uncertainty', 'error propagation', 'dimensional analysis'],
-    solution: `The mass of the wire is $$\\rho l \\pi r^2$$. If the radius is off by 2%, the mass is off by $$1.02^2 \\approx 1.04$$, so the answer is about 4%.`,
+    solution: `$$\\boxed{\\mathrm{(b)} \\quad \\text{about } 4\\%}$$
+
+The mass of the wire is $$\\rho \\ell \\pi r^2$$. If the radius is off by 2\\%, the mass is off by $$1.02^2 \\approx 1.04$$, so the answer is about $$4\\%.$$`,
   },
   {
     n: 25, correct: 'E', // why: no \boxed in the solution; the prose describes the failing set as the one defining h, mu_0 and e alongside c (the fine-structure-constant obstruction). Only choice E contains all four of e, mu_0, h, c, and a dimension-matrix check confirms E is the unique linearly dependent set of the five.
@@ -508,17 +535,22 @@ Which of the following combinations could __not__ be used to define the SI? (Amo
     },
     topics: ['Mechanics'],
     tags: ['dimensional analysis', 'units', 'fundamental constants'],
-    solution: `It must be possible to construct each of the four base units from the chosen defined quantities. Also, the chosen defined quantities must not lead to multiple definitions of any unit. (As it happens, these properties correspond to the linear algebra concepts of span and linear independence; we know that there must be four defined quantities, and if so we always have either both properties or neither. But you don't need to know this to solve the problem.)
+    solution: `$$\\boxed{\\mathrm{(e)} \\quad \\text{the combination } e,\\ \\mu_0,\\ h,\\ c}$$
+
+It must be possible to construct each of the four base units from the chosen defined quantities. Also, the chosen defined quantities must not lead to multiple definitions of any unit. (As it happens, these properties correspond to the linear algebra concepts of span and linear independence; we know that there must be four defined quantities, and if so we always have either both properties or neither. But you don't need to know this to solve the problem.)
 
 In the correct choice, defining $$h$$, $$\\mu_0$$, and $$e$$ leads to a defined speed
 
-$$\\frac{\\mu_0 e^2}{h} \\approx 2.05 \\times 10^{10} \\; \\mathrm{m}\\,\\mathrm{s}^{-1} \\approx 137 \\cdot \\frac{1}{2} c$$
+$$\\begin{aligned}
+\\frac{\\mu_0 e^2}{h} & \\approx 2.05 \\times 10^{10} \\; \\mathrm{m}\\,\\mathrm{s}^{-1} \\\\[8pt]
+{} & \\approx 137 \\cdot \\frac{1}{2} c.
+\\end{aligned}$$
 
 Therefore this set doubly defines the unit of speed (among other things), failing to produce a consistent system of units. You could also show that the meter (e.g.) cannot be defined in terms of the specified values.
 
 The fact that $$h$$, $$\\mu_0$$, $$e$$, and $$c$$ cannot be simultaneously specified when defining a unit system is related to the existence of the fine structure constant
 
-$$\\alpha = \\frac{\\mu_0 e^2 c}{2 h} \\approx \\frac{1}{137}$$
+$$\\alpha = \\frac{\\mu_0 e^2 c}{2 h} \\approx \\frac{1}{137}.$$
 
 As $$\\alpha$$ is dimensionless, its numerical value is the same regardless of the unit system in use. Conversely, we do not know of a theoretical expression for $$\\alpha$$; its value in our universe must be determined empirically.`,
   },
