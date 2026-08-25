@@ -41,6 +41,30 @@ const EXAMS = [
       { q: 21, why: 'doubled "and"',
         old: 'slow down and and come to rest', new: 'slow down and come to rest' },
     ],
+    // Editorial rewrites, not typo fixes: solutions that do arithmetic on naked
+    // numbers. Modelled on this exam's Q5, which carries units through every
+    // substitution. Applied AFTER the fixes above, so `old` matches fixed text.
+    rewrites: [
+      { q: 3, why: 'arithmetic on unit-less numbers; "199920 = 199.9 kN" is a false equality; units set as text "m/s$^2$"',
+        old: `We have $v_f = 88.3$, and $\\Delta x = 1365$, which gives us
+$$7796.89 = 2730a$$
+Solving for $a$, we find that the acceleration that the plane undergoes while taking off is 2.856 m/s$^2$.
+Finally, we multiply by the mass of the plane to get the force exerted by its engines. We have $\\boxed{F = ma = 70,000 \\cdot 2.856 = 199920 = 199.9 \\; \\mathrm{kN}}$.`,
+        new: `We have $v_f = 88.3 \\;\\mathrm{m/s}$ and $\\Delta x = 1365 \\;\\mathrm{m}$, which gives us
+$$\\left(88.3 \\;\\mathrm{m/s}\\right)^2 = 2a \\left(1365 \\;\\mathrm{m}\\right).$$
+Solving for $a$, the acceleration the plane undergoes while taking off is
+$$a = \\dfrac{7796.89 \\;\\mathrm{m^2/s^2}}{2730 \\;\\mathrm{m}} = 2.856 \\;\\mathrm{m/s^2}.$$
+Finally, we multiply by the mass of the plane to get the force exerted by its engines.
+$$F = ma = 70\\,000 \\;\\mathrm{kg} \\cdot 2.856 \\;\\mathrm{m/s^2} = 199\\,920 \\;\\mathrm{N} = \\boxed{199.9 \\;\\mathrm{kN}}.$$` },
+      { q: 1, why: 'graph areas computed as pure numbers; each area is an acceleration times a time and so carries units of velocity',
+        old: `The first part of the integral is a 1$\\times$1 square, so it has an area of 1. The next part is a right triangle with both legs equal to 1, so its area is $\\frac 12$. The next part is a right triangle underneath the $t$-axis, so it contributes $-1$ to the total. Finally, the last area is a semicircle with radius 1, contributing $\\frac{\\pi}{2}$ to the area. In total, we have $\\frac {1+\\pi}{2} = 2.07$, so the final speed of the object is $\\boxed{2.07\\; \\mathrm{m/s}}$.`,
+        new: `Each area on this graph is an acceleration multiplied by a time, so each contributes a velocity.
+
+The first part of the integral is a rectangle of width $1 \\;\\mathrm{s}$ and height $1 \\;\\mathrm{m/s^2}$, so it contributes $1 \\;\\mathrm{m/s}$. The next part is a right triangle with legs $1 \\;\\mathrm{s}$ and $1 \\;\\mathrm{m/s^2}$, so it contributes $\\dfrac12 \\;\\mathrm{m/s}$. The next part is a right triangle of the same size underneath the $t$-axis, so it contributes $-1 \\;\\mathrm{m/s}$. Finally, the last area is a semicircle spanning $1 \\;\\mathrm{s}$ in the $t$ direction and reaching $1 \\;\\mathrm{m/s^2}$ in the $a$ direction, so it contributes $\\dfrac{\\pi}{2} \\;\\mathrm{m/s}$.
+
+In total, the final speed of the object is
+$$v = \\left(1 + \\dfrac12 - 1 + \\dfrac{\\pi}{2}\\right) \\;\\mathrm{m/s} = \\dfrac{1+\\pi}{2} \\;\\mathrm{m/s} = \\boxed{2.07\\; \\mathrm{m/s}}.$$` },
+    ],
   },
   {
     file: 'raw-175-9208.tex', doc: '175-9208',
@@ -88,6 +112,13 @@ const EXAMS = [
         old: '\\[T = \\left(\\frac{1}{S_2} - \\frac{1}{S_1}\\right) \\rho g l\\]',
         new: '\\[T = \\left(\\frac{1}{S_2} - \\frac{1}{S_1}\\right)^{-1} \\rho g l\\]' },
     ],
+    rewrites: [
+      { q: 25, why: 'the length $l$ is dropped in the numeric step, so the boxed answer reads as a bare number; the choices are all multiples of $l$. Second root also given only numerically',
+        old: `$$\\boxed{x_1 = l \\left(\\dfrac12 - \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.0670}.$$
+$$x_1 \\approx 0.9330$$`,
+        new: `$$\\boxed{x_1 = l \\left(\\dfrac12 - \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.0670\\,l}.$$
+$$x_1 = l \\left(\\dfrac12 + \\dfrac{\\sqrt{3}}{4}\\right) \\approx 0.9330\\,l$$` },
+    ],
   },
   {
     file: 'raw-191-11254.tex', doc: '191-11254',
@@ -123,7 +154,10 @@ for (const ex of EXAMS) {
   const original = readFileSync(join(ROOT, 'work/crypt', ex.file), 'utf8')
   let text = original
 
-  for (const f of ex.fixes) {
+  // Typo fixes first, then editorial rewrites -- a rewrite's `old` is written
+  // against already-fixed text.
+  const rewrites = ex.rewrites || []
+  for (const f of [...ex.fixes, ...rewrites]) {
     const count = text.split(f.old).length - 1
     if (count !== 1) {
       throw new Error(`${ex.doc} q${f.q}: expected exactly 1 occurrence of ${JSON.stringify(f.old.slice(0, 60))}, found ${count}`)
@@ -139,25 +173,33 @@ for (const ex of EXAMS) {
   // Patch file: just the problems that changed, in order, each with its number.
   const before = locate(original)
   const after = locate(text)
-  const changed = [...new Set(ex.fixes.map(f => f.q))].sort((a, b) => a - b)
-  const chunks = [
-    `% ${ex.title}`,
-    `% ${ex.url}`,
-    `% Corrected problems only -- paste each block over the matching \\FMAproblem in the crypt.`,
-    `% Problems changed: ${changed.join(', ')}`,
-    '',
-  ]
-  for (const n of changed) {
-    const why = ex.fixes.filter(f => f.q === n).map(f => `%   - ${f.why}`).join('\n')
-    chunks.push(`%%%%%%%%%% Problem ${n} %%%%%%%%%%`, why, '', text.slice(after[n - 1].macroStart, after[n - 1].end), '')
-    if (before[n - 1].end - before[n - 1].macroStart === after[n - 1].end - after[n - 1].macroStart &&
-        original.slice(before[n - 1].macroStart, before[n - 1].end) === text.slice(after[n - 1].macroStart, after[n - 1].end)) {
-      throw new Error(`${ex.doc} problem ${n}: patch identical to original`)
-    }
-  }
-  writeFileSync(join(OUT, `${ex.doc}-PATCHES.tex`), chunks.join('\n'), 'utf8')
 
-  report.push({ exam: ex.doc, fixes: ex.fixes.length, problems: changed.length, bytes: text.length })
+  // Two patch files: mechanical typo fixes and editorial solution rewrites are
+  // different kinds of edit, and may well be reviewed and pasted separately.
+  function emit(name, items, header) {
+    if (!items.length) return
+    const changed = [...new Set(items.map(f => f.q))].sort((a, b) => a - b)
+    const chunks = [`% ${ex.title}`, `% ${ex.url}`, `% ${header}`, `% Problems changed: ${changed.join(', ')}`, '']
+    for (const n of changed) {
+      const why = items.filter(f => f.q === n).map(f => `%   - ${f.why}`).join('\n')
+      const patched = text.slice(after[n - 1].macroStart, after[n - 1].end)
+      if (patched === original.slice(before[n - 1].macroStart, before[n - 1].end)) {
+        throw new Error(`${ex.doc} problem ${n}: patch identical to original`)
+      }
+      chunks.push(`%%%%%%%%%% Problem ${n} %%%%%%%%%%`, why, '', patched, '')
+    }
+    writeFileSync(join(OUT, name), chunks.join('\n'), 'utf8')
+  }
+
+  emit(`${ex.doc}-PATCHES.tex`, ex.fixes,
+    'Typo/error corrections. Paste each block over the matching \\FMAproblem in the crypt.')
+  emit(`${ex.doc}-SOLUTION-REWRITES.tex`, rewrites,
+    'Solution rewrites for units in calculations. These blocks ALSO include the typo fixes.')
+
+  report.push({
+    exam: ex.doc, typoFixes: ex.fixes.length, rewrites: rewrites.length,
+    problems: new Set([...ex.fixes, ...rewrites].map(f => f.q)).size, bytes: text.length,
+  })
 }
 
 console.table(report)
