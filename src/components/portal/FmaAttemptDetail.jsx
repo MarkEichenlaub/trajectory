@@ -180,11 +180,12 @@ export default function FmaAttemptDetail({ detail, onBack }) {
                       {openSolutions.has(q.id) ? 'Hide Solution' : 'Show Solution'}
                     </button>
                     {openSolutions.has(q.id) && (
-                      <div
-                        id={`solution-${q.id}`}
-                        className="fma-solution"
-                        dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.solution) }}
-                      />
+                      <div id={`solution-${q.id}`} className="fma-solution">
+                        <div dangerouslySetInnerHTML={{ __html: renderStatementHtml(q.solution) }} />
+                        {(q.solution_figure_urls || []).map(url => (
+                          <img key={url} src={url} alt="" loading="lazy" className="fma-figure" />
+                        ))}
+                      </div>
                     )}
                   </div>
                 )}
