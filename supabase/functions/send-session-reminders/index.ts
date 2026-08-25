@@ -4,6 +4,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
 const CRON_SECRET = Deno.env.get('CRON_SECRET')!
+const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok')
@@ -113,6 +114,8 @@ Deno.serve(async (req) => {
       lines.push(`Your current assignment: ${problemLabel}`)
     }
 
+    lines.push('')
+    lines.push(`Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`)
     lines.push('')
     lines.push('— Mark')
 

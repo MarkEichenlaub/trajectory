@@ -87,6 +87,7 @@ Deno.serve(async (req) => {
           <a href="${PORTAL_URL}" style="background:#2a4a6d;color:#fff;padding:11px 20px;border-radius:6px;text-decoration:none;font-weight:600">Open the portal</a>
         </p>
         <p style="font-size:13px;color:#666">You'll get a one-time sign-in link by email. Once you're in, access is set up automatically. This invitation expires in 14 days.</p>
+        <p style="font-size:13px;color:#666">Once you're signed in, you can schedule sessions, view assignments, and check session summaries anytime in the portal.</p>
         <p style="font-size:13px;color:#666">— Mark Eichenlaub</p>
       </div>`
 

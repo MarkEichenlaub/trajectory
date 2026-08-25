@@ -68,7 +68,7 @@ function buildInvoiceEmail(studentName: string, amountDollars: number, hostedUrl
     <div style="height:1px;background:#e2d8c4;margin:24px 0 16px;"></div>
     <p style="font-size:13px;line-height:1.6;color:#6b7280;margin:0;">
       Thank you,<br>Mark Eichenlaub<br>
-      <a href="https://eichenlaubphysics.com" style="color:#2a4a6d;">eichenlaubphysics.com</a>
+      Sign in to the <a href="https://portal.eichenlaubphysics.com/" style="color:#2a4a6d;">portal</a> to schedule sessions, view assignments, and check session summaries.
     </p>
   </div>
 </body></html>`

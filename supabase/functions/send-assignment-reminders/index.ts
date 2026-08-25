@@ -87,6 +87,8 @@ Deno.serve(async (req) => {
       '',
       "If you've already submitted, ignore this!",
       '',
+      'Scheduling, assignments, and session summaries are always available in the portal.',
+      '',
       '— Mark',
     ].join('\n')
 

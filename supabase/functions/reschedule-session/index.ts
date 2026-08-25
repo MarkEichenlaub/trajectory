@@ -280,7 +280,7 @@ Deno.serve(async (req) => {
     `Previously: ${oldWhen}`,
     `Now: ${newWhen}`,
     '',
-    `See all your sessions at: ${PORTAL_URL}`,
+    `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
   ].join('\n')
 
   if (studentEmails.length) {

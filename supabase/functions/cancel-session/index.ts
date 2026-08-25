@@ -264,7 +264,7 @@ Deno.serve(async (req) => {
     `Your physics session for ${when} has been cancelled.`,
     ...(message ? ['', `Message: ${message}`] : []),
     '',
-    `To book a new time, visit: ${PORTAL_URL}`,
+    `To book a new time, or to view assignments and session summaries, visit: ${PORTAL_URL}`,
   ].join('\n')
 
   if (studentEmails.length) {

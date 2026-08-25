@@ -52,6 +52,7 @@ Deno.serve(async (req) => {
           <a href="${verifyUrl}" style="background:#2a4a6d;color:#fff;padding:11px 20px;border-radius:6px;text-decoration:none;font-weight:600">Confirm this email</a>
         </p>
         <p style="font-size:13px;color:#666">If you weren't expecting this, you can ignore it — no messages will be sent until the address is confirmed.</p>
+        <p style="font-size:13px;color:#666">Scheduling, assignments, and session summaries are always available in the portal: <a href="https://portal.eichenlaubphysics.com/" style="color:#2a4a6d;">portal.eichenlaubphysics.com</a></p>
         <p style="font-size:13px;color:#666">— Mark Eichenlaub</p>
       </div>`
 

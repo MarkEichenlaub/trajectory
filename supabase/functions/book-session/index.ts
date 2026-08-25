@@ -374,7 +374,7 @@ Deno.serve(async (req) => {
     '',
     ...(meetUrl ? [`Join by video (Google Meet): ${meetUrl}`, ''] : []),
     ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`, ''] : []),
-    `See all your sessions at: ${PORTAL_URL}`,
+    `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
     '',
     'See you then!',
     'Mark',
