@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createSessionBoard, ensureBoardSharing, ensureMiroInDescription } from '../_shared/miro.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
@@ -130,7 +131,16 @@ Deno.serve(async (req) => {
     return (s.includes('leo') && s.includes('mark physics'))
   })
 
-  const results: Array<{ eventId: string; date: string; status: string; error?: string }> = []
+  const results: Array<{
+    eventId: string
+    date: string
+    status: string
+    error?: string
+    /** Miro sharing level after the self-heal pass; '' if the PATCH failed. */
+    access?: string
+    /** True if this pass added the board link to the calendar invite. */
+    descriptionPatched?: boolean
+  }> = []
   // IDs of sessions whose scheduled_at was updated in place (event moved to a new time).
   // These retain their old time-based IDs, so we must protect them from reconciliation deletion.
   const movedSessionIds = new Set<string>()
@@ -148,6 +158,7 @@ Deno.serve(async (req) => {
       month: 'short', day: 'numeric', year: 'numeric',
     })
 
+    let moved = false
     // Look up existing session by this canonical ID first; fall back to gcal_event_id
     // so that a moved event updates the existing row instead of creating a duplicate.
     let { data: existing } = await supabase
@@ -164,21 +175,21 @@ Deno.serve(async (req) => {
         .maybeSingle()
       if (byEventId) {
         // Event moved — update scheduled_at in place and clear the reminder flag.
-        const meetUrl = await ensureMeet(accessToken, event)
-        const movedPatch: Record<string, unknown> = {
-          scheduled_at: startDate.toISOString(),
-          end_time: endDate ? endDate.toISOString() : null,
-          session_reminder_sent_at: null,
-        }
-        if (meetUrl && byEventId.meet_url !== meetUrl) movedPatch.meet_url = meetUrl
         const { error: moveErr } = await supabase
-          .from('sessions').update(movedPatch).eq('id', byEventId.id)
+          .from('sessions').update({
+            scheduled_at: startDate.toISOString(),
+            end_time: endDate ? endDate.toISOString() : null,
+            session_reminder_sent_at: null,
+          }).eq('id', byEventId.id)
         if (moveErr) console.error('Session move update error:', moveErr)
         else console.log(`Session ${byEventId.id}: moved ${byEventId.scheduled_at} → ${startDate.toISOString()}`)
         // Protect old ID from reconciliation — it still belongs to this event
         movedSessionIds.add(byEventId.id)
-        results.push({ eventId, date: dateStr, status: 'moved' })
-        continue
+        moved = true
+        // Fall through rather than `continue`: a moved session still needs its
+        // Meet link refreshed, and needs a board (plus sharing + calendar link)
+        // if it never got one.
+        existing = byEventId
       }
     }
 
@@ -194,39 +205,37 @@ Deno.serve(async (req) => {
         const { error } = await supabase.from('sessions').update(patch).eq('id', existing.id)
         if (error) console.error('Session backfill error:', error)
       }
-      results.push({ eventId, date: dateStr, status: patch.meet_url ? 'meet_backfilled' : 'already_done' })
+      // Self-heal the two things that used to be done only on the pass that
+      // created the board: the board was left `private` (student locked out)
+      // and the invite never got the link. Both are idempotent.
+      const access = await ensureBoardSharing(MIRO_ACCESS_TOKEN, existing.miro_board_id)
+      const boardUrl = existing.miro_board_url ||
+        `https://miro.com/app/board/${existing.miro_board_id}/`
+      const linked = await ensureMiroInDescription(
+        accessToken, eventId, event.description ?? '', boardUrl,
+      )
+      results.push({
+        eventId,
+        date: dateStr,
+        status: moved ? 'moved' : patch.meet_url ? 'meet_backfilled' : 'already_done',
+        access,
+        descriptionPatched: linked,
+      })
       continue
     }
 
-    // Create Miro board
+    // Create Miro board (shared helper sets link-can-edit so Leo can open it)
     let miroBoardUrl = ''
     let miroBoardId = ''
     try {
-      const miroRes = await fetch('https://api.miro.com/v2/boards', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${MIRO_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: `${STUDENT_NAME} – ${dateStr}`,
-          teamId: MIRO_TEAM_ID,
-        }),
-      })
-      if (miroRes.ok) {
-        const miroData = await miroRes.json() as Record<string, unknown>
-        miroBoardId = miroData.id as string
-        miroBoardUrl = (miroData.viewLink as string) ?? `https://miro.com/app/board/${miroBoardId}/`
-      } else {
-        const errText = await miroRes.text()
-        console.error('Miro API error:', miroRes.status, errText)
-        results.push({ eventId, date: dateStr, status: 'miro_failed', error: errText })
-        continue
-      }
+      const board = await createSessionBoard(
+        MIRO_ACCESS_TOKEN, MIRO_TEAM_ID, `${STUDENT_NAME} – ${dateStr}`,
+      )
+      miroBoardId = board.id
+      miroBoardUrl = board.url
     } catch (e) {
-      console.error('Miro fetch error:', e)
-      results.push({ eventId, date: dateStr, status: 'miro_error', error: String(e) })
+      console.error('Miro create error:', e)
+      results.push({ eventId, date: dateStr, status: 'miro_failed', error: String(e) })
       continue
     }
 
@@ -256,23 +265,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Patch the calendar event with the Miro link
-    try {
-      const existingDesc = event.description ?? ''
-      if (!existingDesc.includes('Miro whiteboard:')) {
-        const base = existingDesc ? existingDesc.trimEnd() + '\n\n' : ''
-        await fetch(
-          `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
-          {
-            method: 'PATCH',
-            headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description: `${base}Miro whiteboard: ${miroBoardUrl}` }),
-          },
-        )
-      }
-    } catch (e) {
-      console.error('Calendar patch error:', e)
-    }
+    // Put the board link in the invite so Leo gets it with the event
+    await ensureMiroInDescription(accessToken, eventId, event.description ?? '', miroBoardUrl)
 
     results.push({ eventId, date: dateStr, status: existing ? 'miro_added' : 'created' })
   }

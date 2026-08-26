@@ -894,6 +894,44 @@ export async function fetchFmaAttempts(studentId) {
   return data || []
 }
 
+// Seconds spent on each question. Every event ('view' on navigation, 'answer'
+// on a click) marks that question as the one on screen from that instant, so a
+// question is credited with the span running up to the next event elsewhere.
+//
+// The spans are measured along the EXAM CLOCK, not the calendar: each event
+// carries the clock's reading when it fired, and that clock stops whenever the
+// test isn't on screen. A save-and-exit, a switch to another tab or a closed
+// laptop therefore costs nothing, instead of being billed to whichever question
+// happened to be open at the time. When these were wall-clock spans, a sitting
+// whose honest working time was 2 minutes reported 10m 23s on question 1 and
+// ~16 minutes across the test — on the same screen that said "2 min working
+// time" just above.
+//
+// Attempts recorded before the stamp existed have none, so they fall back to
+// wall clock rather than losing their timings altogether. Kept pure and
+// exported so the arithmetic can be tested without a database; the copy in
+// supabase/functions/notify-fma-attempt must stay in step with it.
+export function fmaSecondsByQuestion(events, attempt) {
+  const byQuestion = new Map()
+  const stamped = events.some(ev => ev.active_seconds != null)
+  const endedAt = attempt.submitted_at ? new Date(attempt.submitted_at).getTime() / 1000 : null
+  const posOf = ev => (stamped ? ev.active_seconds : new Date(ev.clicked_at).getTime() / 1000)
+  const finalPos = stamped ? attempt.active_seconds : endedAt
+
+  events.forEach((ev, i) => {
+    const from = posOf(ev)
+    const to = events[i + 1] ? posOf(events[i + 1]) : finalPos
+    // A mixed attempt (stamped events plus a few unstamped ones from a tab left
+    // open across the upgrade) drops the unmeasurable spans rather than
+    // subtracting one scale from the other.
+    if (from == null || to == null) return
+    const span = to - from
+    if (span <= 0) return
+    byQuestion.set(ev.question_id, (byQuestion.get(ev.question_id) || 0) + span)
+  })
+  return byQuestion
+}
+
 export async function fetchFmaAttemptDetail(attemptId) {
   const { data: attempt, error: aErr } = await supabase
     .from('fma_attempts').select('*, handouts:exam_id(id, name, year)').eq('id', attemptId).single()
@@ -908,38 +946,10 @@ export async function fetchFmaAttemptDetail(attemptId) {
   if (qErr) throw new Error(qErr.message)
   const answerByQuestion = new Map((answers || []).map(a => [a.question_id, a]))
 
-  // Seconds per question. Every event ('view' on navigation, 'answer' on a
-  // click) marks the question on screen from that instant, so each question is
-  // credited with the span running up to the next event elsewhere. Only live
-  // mode navigates question-by-question; paper-first enters answers in bulk, so
-  // there is no meaningful per-question time to report.
+  // Only live mode navigates question-by-question; paper-first enters answers in
+  // bulk, so there is no meaningful per-question time to report.
   const events = attempt.mode === 'live' ? await fetchFmaAnswerEvents(attemptId) : []
-  const secondsByQuestion = new Map()
-
-  // Measure along the exam clock, not the calendar. Events carry the clock
-  // reading at the instant they fired, and the clock stops whenever the test
-  // isn't on screen — so a save-and-exit, a switch to another tab or a closed
-  // laptop no longer lands on whichever question happened to be open. Before
-  // that stamp existed these spans were wall-clock, and a two-minute sitting
-  // could report 10 minutes on question 1 while the header said "2 min".
-  //
-  // Old attempts have no stamps, so they keep the wall-clock arithmetic rather
-  // than losing their timings entirely.
-  const stamped = events.some(ev => ev.active_seconds != null)
-  const endedAt = attempt.submitted_at ? new Date(attempt.submitted_at) : null
-  const posOf = ev => (stamped ? ev.active_seconds : new Date(ev.clicked_at).getTime() / 1000)
-  const finalPos = stamped ? attempt.active_seconds : endedAt && endedAt.getTime() / 1000
-
-  events.forEach((ev, i) => {
-    const from = posOf(ev)
-    const to = events[i + 1] ? posOf(events[i + 1]) : finalPos
-    // A mixed attempt (stamped events plus a few unstamped ones from an older
-    // tab) drops the unmeasurable spans instead of mixing the two scales.
-    if (from == null || to == null) return
-    const span = to - from
-    if (span <= 0) return
-    secondsByQuestion.set(ev.question_id, (secondsByQuestion.get(ev.question_id) || 0) + span)
-  })
+  const secondsByQuestion = fmaSecondsByQuestion(events, attempt)
 
   return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
 }

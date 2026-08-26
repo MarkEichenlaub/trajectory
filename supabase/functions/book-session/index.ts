@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createSessionBoard } from '../_shared/miro.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_ANON_KEY = Deno.env.get('SB_PUBLISHABLE_KEY')!
@@ -244,38 +245,18 @@ Deno.serve(async (req) => {
     || ''
   if (!meetUrl) meetUrl = await ensureMeet(accessToken, gcalEventId)
 
-  // Create Miro board
+  // Create Miro board. A failure here is not fatal — the session is still
+  // booked, and the next sync pass backfills the board.
   let miroBoardUrl = ''
   let miroBoardId = ''
   try {
-    const miroRes = await fetch('https://api.miro.com/v2/boards', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${MIRO_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({ name: `${student.name} – ${dateStr}`, teamId: MIRO_TEAM_ID, sharingPolicy: { access: 'edit' } }),
-    })
-    if (miroRes.ok) {
-      const d = await miroRes.json() as Record<string, unknown>
-      miroBoardId = d.id as string
-      miroBoardUrl = (d.viewLink as string) ?? `https://miro.com/app/board/${miroBoardId}/`
-      // Belt-and-suspenders: explicitly set "Anyone with the link can edit"
-      await fetch(`https://api.miro.com/v2/boards/${miroBoardId}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${MIRO_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({ sharingPolicy: { access: 'edit' } }),
-      }).catch(e => console.error('Miro PATCH sharing error:', e))
-    } else {
-      console.error('Miro API error:', miroRes.status, await miroRes.text())
-    }
+    const board = await createSessionBoard(
+      MIRO_ACCESS_TOKEN, MIRO_TEAM_ID, `${student.name} – ${dateStr}`,
+    )
+    miroBoardId = board.id
+    miroBoardUrl = board.url
   } catch (e) {
-    console.error('Miro fetch error:', e)
+    console.error('Miro create error:', e)
   }
 
   // Attach the guests and the final description in one PATCH, with sendUpdates=all

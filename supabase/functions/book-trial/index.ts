@@ -3,6 +3,8 @@
 // Creates a GCal event + Miro board, sends an ICS invite to the prospect,
 // and emails Mark with all contact details.
 
+import { createSessionBoard } from '../_shared/miro.ts'
+
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID')!
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET')!
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN')!
@@ -266,28 +268,17 @@ Deno.serve(async (req) => {
     || ''
   if (!meetUrl) meetUrl = await ensureMeet(accessToken, gcalEventId)
 
-  // Create Miro board
+  // Create Miro board. Not fatal if it fails — the trial is still booked.
   let miroBoardUrl = ''
   let miroBoardId = ''
   try {
-    const miroRes = await fetch('https://api.miro.com/v2/boards', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${MIRO_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({ name: `Trial – ${trimmedName} – ${dateStr}`, teamId: MIRO_TEAM_ID, sharingPolicy: { access: 'edit' } }),
-    })
-    if (miroRes.ok) {
-      const d = await miroRes.json() as Record<string, unknown>
-      miroBoardId = d.id as string
-      miroBoardUrl = (d.viewLink as string) ?? `https://miro.com/app/board/${miroBoardId}/`
-    } else {
-      console.error('Miro API error:', miroRes.status, await miroRes.text())
-    }
+    const board = await createSessionBoard(
+      MIRO_ACCESS_TOKEN, MIRO_TEAM_ID, `Trial – ${trimmedName} – ${dateStr}`,
+    )
+    miroBoardId = board.id
+    miroBoardUrl = board.url
   } catch (e) {
-    console.error('Miro fetch error:', e)
+    console.error('Miro create error:', e)
   }
 
   // Patch GCal event description with Miro URL

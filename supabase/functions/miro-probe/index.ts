@@ -14,6 +14,39 @@ Deno.serve(async (req) => {
   }
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+
+  // Optional: trigger the (now self-healing) sync functions before the census,
+  // using this function's own CRON_SECRET.
+  const triggers: Record<string, unknown> = {}
+  if (new URL(req.url).searchParams.get('run') === '1') {
+    for (const fn of ['sync-leo-sessions', 'sync-borna-sessions', 'sync-recurring-sessions']) {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/${fn}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Cron-Secret': Deno.env.get('CRON_SECRET') || '',
+        },
+        body: '{}',
+      })
+      const body = await res.json().catch(() => null) as Record<string, unknown> | null
+      triggers[fn] = {
+        status: res.status,
+        created: body?.created,
+        already_done: body?.already_done,
+        errors: body?.errors,
+        descriptionsPatched: Array.isArray(body?.results)
+          ? (body!.results as Array<Record<string, unknown>>).filter(r => r.descriptionPatched).length
+          : undefined,
+        accessCounts: Array.isArray(body?.results)
+          ? (body!.results as Array<Record<string, unknown>>).reduce((acc: Record<string, number>, r) => {
+              if (r.access !== undefined) acc[String(r.access)] = (acc[String(r.access)] ?? 0) + 1
+              return acc
+            }, {})
+          : undefined,
+        error: body?.error,
+      }
+    }
+  }
   const { data: sessions } = await admin
     .from('sessions')
     .select('id, student_id, scheduled_at, miro_board_id')
@@ -38,7 +71,7 @@ Deno.serve(async (req) => {
   }
 
   return new Response(
-    JSON.stringify({ total: sessions?.length ?? 0, census, locked_out: notEdit.length, notEdit }, null, 2),
+    JSON.stringify({ triggers, total: sessions?.length ?? 0, census, locked_out: notEdit.length, notEdit }, null, 2),
     { headers: { 'Content-Type': 'application/json' } },
   )
 })
