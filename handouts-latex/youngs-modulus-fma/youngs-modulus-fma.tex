@@ -33,7 +33,6 @@ after={\par\medskip}}}
 \definecolor{advblue}{rgb}{0.1,0.1,0.7}
 \newcommand{\advanced}{\!\textbf{\color{advblue}[A]\color{black}}\ }
 
-\newtheorem*{solution}{Solution}
 \newtheorem*{answer}{Answer}
 
 \makeatletter
@@ -86,10 +85,33 @@ after={\par\medskip}}}
 \ifdefined\HIDESOLUTIONS \showsolfalse \fi
 
 \usepackage{environ}
-\ifshowsol\else
+
+% Solutions are collected as they are met and printed together at the end,
+% rather than sitting under their problem: reading a problem should not put its
+% answer in your eyeline. Each entry is tagged with the number of the problem it
+% belongs to, captured from the pproblem counter at the moment the solution
+% appears, so inserting or reordering problems needs no manual renumbering.
+\newtoks\soltoks
+\soltoks{}
+\newcommand{\solentry}[2]{\par\medskip\noindent\textbf{Problem #1.}\quad #2\par}
+
+\ifshowsol
+  % The token-register assignment must be global, or the environment's own
+  % group discards each entry as soon as the solution ends.
+  \NewEnviron{solution}{%
+    \begingroup
+    \edef\x{\endgroup
+      \noexpand\global\noexpand\soltoks{\the\soltoks
+        \noexpand\solentry{\thepproblem}{\unexpanded\expandafter{\BODY}}}}%
+    \x
+  }
+  % On a fresh page, so the problem pages are identical in both builds and a
+  % student can print only the part they are meant to work from.
+  \newcommand{\printsolutions}{\clearpage\section*{Solutions}\the\soltoks}
+\else
+  \NewEnviron{solution}{}
+  \newcommand{\printsolutions}{}
   \NewEnviron{killsol}{}
-  \let\solution\killsol
-  \let\endsolution\endkillsol
   \let\answer\killsol
   \let\endanswer\endkillsol
 \fi
@@ -515,5 +537,7 @@ Note that $Y$ never changes --- it is the same steel throughout. Only the geomet
 contributes $Y$, the object contributes $A$ and $\ell$, and everything else is the spring
 physics you already know.}
 \end{center}
+
+\printsolutions
 
 \end{document}

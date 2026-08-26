@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.27)  25 AUG 2026 22:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.27)  25 AUG 2026 22:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1129,27 +1129,29 @@ Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
 \f@nch@widthC=\skip79
 \f@nch@widthR=\skip80
 \@temptokenb=\toks59
-) (youngs-modulus-fma-solutions.aux)
+)
+\soltoks=\toks60
+ (youngs-modulus-fma-solutions.aux)
 \openout1 = `youngs-modulus-fma-solutions.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 97.
-LaTeX Font Info:    ... okay on input line 97.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1194,12 +1196,12 @@ upp-pdf.mkii
 \scratchbox=\box85
 \nofMPsegments=\count370
 \nofMParguments=\count371
-\everyMPshowfont=\toks60
+\everyMPshowfont=\toks61
 \MPscratchCnt=\count372
 \MPscratchDim=\dimen310
 \MPnumerator=\count373
 \makeMPintoPDFobject=\count374
-\everyMPtoPDFconversion=\toks61
+\everyMPtoPDFconversion=\toks62
 )
 (C:\Users\Mark Eichenlaub\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\
 epstopdf-base.sty
@@ -1211,13 +1213,13 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 opdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-LaTeX Info: Redefining \microtypecontext on input line 97.
-Package microtype Info: Applying patch `item' on input line 97.
-Package microtype Info: Applying patch `toc' on input line 97.
-Package microtype Info: Applying patch `eqnum' on input line 97.
-Package microtype Info: Applying patch `footnote' on input line 97.
-Package microtype Info: Applying patch `verbatim' on input line 97.
-LaTeX Info: Redefining \microtypesetup on input line 97.
+LaTeX Info: Redefining \microtypecontext on input line 119.
+Package microtype Info: Applying patch `item' on input line 119.
+Package microtype Info: Applying patch `toc' on input line 119.
+Package microtype Info: Applying patch `eqnum' on input line 119.
+Package microtype Info: Applying patch `footnote' on input line 119.
+Package microtype Info: Applying patch `verbatim' on input line 119.
+LaTeX Info: Redefining \microtypesetup on input line 119.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2),
 (microtype)             factor: 1100.
@@ -1238,7 +1240,7 @@ cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-Package hyperref Info: Link coloring ON on input line 97.
+Package hyperref Info: Link coloring ON on input line 119.
  (youngs-modulus-fma-solutions.out) (youngs-modulus-fma-solutions.out)
 \@outlinefile=\write4
 \openout4 = `youngs-modulus-fma-solutions.out'.
@@ -1247,8 +1249,8 @@ Package hyperref Info: Link coloring ON on input line 97.
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 99.
-
+LaTeX Font Info:    Trying to load font information for U+msa on input line 121
+.
 
 (C:\Users\Mark Eichenlaub\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa
 .fd
@@ -1258,8 +1260,8 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 99.
-
+LaTeX Font Info:    Trying to load font information for U+msb on input line 121
+.
 
 (C:\Users\Mark Eichenlaub\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb
 .fd
@@ -1284,41 +1286,25 @@ Package microtype Info: Loading generic protrusion settings for font family
 [3]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 348.
+(hyperref)                removing `math shift' on input line 370.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 348.
+(hyperref)                removing `math shift' on input line 370.
 
 
 
 [4]
-Overfull \hbox (32.19867pt too wide) in paragraph at lines 382--389
-[]\OT1/cmr/bx/n/10.95 (-10) Solution. []$\OML/cmm/m/it/10.95 YA$ \OT1/cmr/m/n/1
-0.95 (-10) has di-men-sions $(\OML/cmm/m/it/10.95 ML[]T[]\OT1/cmr/m/n/10.95 (-1
-0) )(\OML/cmm/m/it/10.95 L[]\OT1/cmr/m/n/10.95 (-10) ) = \OML/cmm/m/it/10.95 ML
-T[]$\OT1/cmr/m/n/10.95 (-10) , a force. Di-vid-ing by $\OML/cmm/m/it/10.95 `m$ 
-\OT1/cmr/m/n/10.95 (-10) gives $\OML/cmm/m/it/10.95 MLT[]=\OT1/cmr/m/n/10.95 (-
-10) (\OML/cmm/m/it/10.95 LM\OT1/cmr/m/n/10.95 (-10) ) =
- []
-
-
 
 [5]
-Overfull \hbox (53.01068pt too wide) in paragraph at lines 479--484
-\OT1/cmr/m/n/10.95 (-10) and $[\OML/cmm/m/it/10.95 ^^Z\OT1/cmr/m/n/10.95 (-10) 
-] = \OML/cmm/m/it/10.95 ML[]$\OT1/cmr/m/n/10.95 (-10) , the ra-tio $\OML/cmm/m/
-it/10.95 Y=^^Z$ \OT1/cmr/m/n/10.95 (-10) has di-men-sions $\OML/cmm/m/it/10.95 
-L[]T[]$\OT1/cmr/m/n/10.95 (-10) , so $\OML/cmm/m/it/10.95 v \OT1/cmr/m/n/10.95 
-(-10) = []$. Nu-mer-i-cally $\OML/cmm/m/it/10.95 v \OT1/cmr/m/n/10.95 (-10) = [
-] =
- []
-
-
 
 [6]
 
-[7] (youngs-modulus-fma-solutions.aux)
+[7
+
+]
+
+[8] (youngs-modulus-fma-solutions.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-04-29>
@@ -1328,13 +1314,13 @@ anged.
 (rerunfilecheck)             Checksum: 552DFD4BF282F2BCA581A971858CC634;1403.
  ) 
 Here is how much of TeX's memory you used:
- 40547 strings out of 469923
- 950410 string characters out of 5464294
- 1491839 words of memory out of 5000000
- 66560 multiletter control sequences out of 15000+600000
- 651159 words of font info for 176 fonts, out of 8000000 for 9000
+ 40555 strings out of 469923
+ 950530 string characters out of 5464294
+ 1489954 words of memory out of 5000000
+ 66568 multiletter control sequences out of 15000+600000
+ 651108 words of font info for 175 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 99i,11n,101p,1017b,1116s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,11n,101p,1017b,1140s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Mark Eichenlaub/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmbsy10.pfb><C:/Users/Mark Eichenlaub/AppData/Local/Programs/MiKTeX/f
 onts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Mark Eichenlaub/AppData/Loca
@@ -1354,9 +1340,9 @@ s/Mark Eichenlaub/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmsy8.pfb><C:/Users/Mark Eichenlaub/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmti10.pfb><C:/Users/Mark Eichenlaub/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on youngs-modulus-fma-solutions.pdf (7 pages, 232397 bytes).
+Output written on youngs-modulus-fma-solutions.pdf (8 pages, 233311 bytes).
 PDF statistics:
- 200 PDF objects out of 1000 (max. 8388607)
- 59 named destinations out of 1000 (max. 500000)
+ 206 PDF objects out of 1000 (max. 8388607)
+ 61 named destinations out of 1000 (max. 500000)
  41029 words of extra memory for PDF output out of 42996 (max. 10000000)
 
