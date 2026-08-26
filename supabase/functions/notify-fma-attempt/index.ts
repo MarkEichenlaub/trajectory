@@ -149,9 +149,12 @@ Deno.serve(async (req) => {
   const score = attempt.score
   const resultsUrl = `${PORTAL_URL}?view=fma&student=${encodeURIComponent(student.id)}&attempt=${encodeURIComponent(attempt_id)}`
 
-  const totalSecs = attempt.submitted_at && attempt.started_at
-    ? (new Date(attempt.submitted_at).getTime() - new Date(attempt.started_at).getTime()) / 1000
-    : null
+  // Time actually spent working, banked by the runner while the test was open.
+  // This used to be submitted_at - started_at, which also counted every hour the
+  // attempt sat saved-and-exited: a test picked up again the next morning
+  // reported as a 20-hour sitting.
+  const totalSecs = attempt.active_seconds || null
+  const overBy = totalSecs && totalSecs > 75 * 60 ? totalSecs - 75 * 60 : null
 
   // ── Scratch work attachment ────────────────────────────────────────────────
   // scratch_work_url holds an object path in the private fma-scratch-work
@@ -215,9 +218,10 @@ Deno.serve(async (req) => {
       <p style="font-size:15px;margin:0 0 4px"><strong>${esc(student.name)}</strong> finished <strong>${esc(examName)}</strong>.</p>
       <p style="font-size:22px;font-weight:700;margin:12px 0 4px">${score != null ? `${esc(score)} / ${outOf}` : '—'}</p>
       <p style="font-size:13px;color:#666;margin:0 0 16px">
-        ${esc(modeLabel)}${totalSecs != null ? ` · ${esc(fmtSeconds(totalSecs))} total` : ''}
+        ${esc(modeLabel)}${totalSecs != null ? ` · ${esc(fmtSeconds(totalSecs))} working time` : ''}
         ${attachments.length ? ' · scratch work attached' : ''}${scratchTooLarge ? ' · scratch work too large to attach — see the portal' : ''}
       </p>
+      ${overBy ? `<p style="font-size:13px;color:#9a6700;margin:0 0 16px">Ran ${esc(fmtSeconds(overBy))} past the 75-minute limit.</p>` : ''}
       <p style="margin:0 0 4px"><a href="${esc(resultsUrl)}" style="font-size:14px">Open ${esc(student.name)}'s results in the portal →</a></p>
       ${!isScoreOnly && !showTime ? '<p style="font-size:12px;color:#888;margin:12px 0 0">Per-question times aren\'t recorded for paper-first attempts.</p>' : ''}
       ${tableHtml}

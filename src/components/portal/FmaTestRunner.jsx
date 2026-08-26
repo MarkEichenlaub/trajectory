@@ -1,13 +1,18 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
 import ScratchWorkLink from './ScratchWorkLink'
 import {
   saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt, logFmaQuestionView,
-  setFmaFlag, setFmaEliminated,
+  setFmaFlag, setFmaEliminated, bumpFmaActiveSeconds,
 } from '../../utils/supabase'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 const LIMIT_SEC = 75 * 60
+const FLUSH_MS = 15000
+// A jump larger than this between one-second ticks means the page wasn't
+// running -- laptop asleep, tab frozen by the browser -- not that the student
+// sat there for that long.
+const STALL_MS = 60000
 
 function fmt(sec) {
   const s = Math.abs(Math.round(sec))
@@ -16,24 +21,88 @@ function fmt(sec) {
   return `${mm}:${ss}`
 }
 
-// The real exam is 75 minutes. This counts down like a live sitting and warns as
-// the time goes, but never submits for you -- on a practice test, losing work to
-// the clock teaches nothing.
-function Countdown({ startedAt }) {
-  const [now, setNow] = useState(Date.now())
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(id)
+// The exam clock, measuring time actually spent on the test.
+//
+// It used to be wall-clock from attempt.started_at, so it kept draining while
+// the student was away: hit "Save & exit", get called away for two hours, come
+// back to a test with no time left. Now the runner banks its own total, pausing
+// whenever the test isn't on screen, and flushes it to the server every 15s so
+// a resume picks the clock up where it stopped rather than where the calendar
+// got to. `seconds` is also the honest total time to report after submission.
+function useExamClock(attemptId, baseSeconds) {
+  const banked = useRef(baseSeconds || 0)
+  const runningSince = useRef(null)
+  const [seconds, setSeconds] = useState(baseSeconds || 0)
+
+  const total = useCallback(
+    () => banked.current + (runningSince.current ? (Date.now() - runningSince.current) / 1000 : 0),
+    []
+  )
+
+  const pause = useCallback(() => {
+    if (runningSince.current === null) return
+    banked.current += (Date.now() - runningSince.current) / 1000
+    runningSince.current = null
   }, [])
-  const elapsed = Math.max(0, (now - new Date(startedAt).getTime()) / 1000)
-  const left = LIMIT_SEC - elapsed
+
+  const resume = useCallback(() => {
+    if (runningSince.current === null) runningSince.current = Date.now()
+  }, [])
+
+  const flush = useCallback(() => bumpFmaActiveSeconds(attemptId, total()), [attemptId, total])
+
+  useEffect(() => {
+    if (document.visibilityState === 'visible') resume()
+    let lastTick = Date.now()
+    let sinceFlush = 0
+
+    const tick = setInterval(() => {
+      const now = Date.now()
+      const gap = now - lastTick
+      // Bank only up to the last tick we actually saw and restart the span, so
+      // a sleeping machine doesn't bill the student for hours it was closed.
+      if (gap > STALL_MS && runningSince.current !== null) {
+        banked.current += Math.max(0, (lastTick - runningSince.current) / 1000)
+        runningSince.current = now
+      }
+      lastTick = now
+      setSeconds(total())
+
+      sinceFlush += gap
+      if (sinceFlush >= FLUSH_MS) { sinceFlush = 0; flush() }
+    }, 1000)
+
+    // Switching tabs or apps isn't taking the test either.
+    const onVisibility = () => {
+      if (document.visibilityState === 'hidden') { pause(); flush() } else { lastTick = Date.now(); resume() }
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+    // Closing the tab outright: last chance to save the clock.
+    window.addEventListener('pagehide', flush)
+
+    return () => {
+      clearInterval(tick)
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', flush)
+      pause()
+      flush()
+    }
+  }, [total, pause, resume, flush])
+
+  return { seconds, flush, pause }
+}
+
+// Counts down like a live sitting and warns as the time goes, but never submits
+// for you -- on a practice test, losing work to the clock teaches nothing. Going
+// over is allowed; the total time taken is recorded either way.
+function Countdown({ seconds }) {
+  const left = LIMIT_SEC - seconds
   const over = left < 0
   const warn = !over && left <= 10 * 60
 
   let label, note
   if (over) {
-    // Resuming a day later shouldn't render a nonsense figure.
-    label = elapsed > 6 * 3600 ? 'over time' : `+${fmt(-left)}`
+    label = `+${fmt(-left)}`
     note = 'past 75:00'
   } else {
     label = fmt(left)
@@ -95,7 +164,11 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const [reviewing, setReviewing] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [err, setErr] = useState(null)
+  const [overAcked, setOverAcked] = useState(false)
   const fileInputRef = useRef(null)
+
+  const { seconds, flush } = useExamClock(attempt.id, attempt.active_seconds)
+  const overTime = seconds > LIMIT_SEC
 
   const q = questions[index]
   const answeredCount = Object.keys(answers).length
@@ -188,6 +261,10 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     setSubmitting(true)
     setErr(null)
     try {
+      // The clock freezes at submit, so bank the final total first -- otherwise
+      // the last stretch of work (up to 15s, or the whole review screen) is lost
+      // and the recorded time comes in short.
+      await flush()
       await submitFmaAttempt(attempt.id)
       onDone()
     } catch (e) {
@@ -202,7 +279,22 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const header = (
     <div className="fma-bar">
       <button className="sm" onClick={onCancel}>← Save &amp; exit</button>
-      <Countdown startedAt={attempt.started_at} />
+      <Countdown seconds={seconds} />
+    </div>
+  )
+
+  // Going past 75 minutes is allowed -- finishing the questions is worth more
+  // than the deadline on a practice test -- but it shouldn't slip by unnoticed,
+  // so say it once, plainly, and let it be dismissed.
+  const overNotice = overTime && !overAcked && (
+    <div className="fma-card" style={{ borderColor: 'var(--yellow)', marginBottom: 12 }}>
+      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>You're past the 75-minute limit</div>
+      <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 10 }}>
+        Keep going and finish the test — nothing is cut off. Your total working time is being
+        recorded ({fmt(seconds)} so far), so you and Mark can see how far over the real limit
+        this sitting ran.
+      </div>
+      <button className="sm" onClick={() => setOverAcked(true)}>Got it</button>
     </div>
   )
 
@@ -210,6 +302,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     return (
       <div className="fma-runner">
         {header}
+        {overNotice}
         <h3 style={{ fontSize: 16, fontWeight: 600, margin: '8px 0 4px' }}>Review your test</h3>
         <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
           Tap any question to go back to it.
@@ -236,6 +329,12 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
               Flagged for review: {flagged.map(x => x.question_num).join(', ')}
             </div>
           )}
+          <div style={{ fontSize: 13, marginBottom: 10 }}>
+            Working time: <strong>{fmt(seconds)}</strong>
+            <span style={{ color: 'var(--text-dim)' }}>
+              {overTime ? ` — ${fmt(seconds - LIMIT_SEC)} over the 75:00 limit` : ' of 75:00'}
+            </span>
+          </div>
           <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 14 }}>
             Once submitted the test is graded and can't be changed.
           </div>
@@ -256,6 +355,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     <div className="fma-runner">
       <input ref={fileInputRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleFileChange} />
       {header}
+      {overNotice}
 
       <Navigator questions={questions} answers={answers} flags={flags} index={index} onJump={setIndex} />
 

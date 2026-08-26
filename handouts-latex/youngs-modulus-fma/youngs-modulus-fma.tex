@@ -1,0 +1,519 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{custom}
+
+% plotting
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% color boxes
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{theorems}
+\newtcbtheorem{psexample}{Example}{colback=green!10,colframe=green!40!black,fonttitle=\bfseries,breakable,enhanced}{ex}
+\newtcbtheorem{psidea}{Idea}{colback=blue!10,colframe=blue!40!black,fonttitle=\bfseries,breakable,enhanced}{id}
+\newtcbtheorem{psremark}{Remark}{colback=purple!10,colframe=purple!40!black,fonttitle=\bfseries,breakable,enhanced}{rm}
+\newtcbtheorem{pssolution}{Solution}{colback=orange!10,colframe=orange!40!black,fonttitle=\bfseries,breakable,enhanced}{sn}
+\tcbset{noparskip/.style={before={\par\pagebreak[0]\medskip\parindent=0pt},
+after={\par\medskip}}}
+
+% code for totaling up points
+\usepackage{totcount}
+\newtotcounter{tpts}
+\newtotcounter{cpts}
+\newtotcounter{endpts}
+\newcommand{\clearpts}{\addtocounter{tpts}{\value{cpts}} \setcounter{cpts}{0}}
+\newcommand{\pts}[1]{\clearpts \setcounter{cpts}{#1}}
+\newcommand{\totpts}{\setcounter{endpts}{\totvalue{tpts} + \totvalue{cpts}}\arabic{endpts}}
+
+% formatting for problems and solutions
+\definecolor{ptred}{rgb}{0.7,0.1,0.1}
+\newcommand{\ptfmt}[1]{\textbf{\color{ptred}#1\color{black}}}
+\definecolor{advblue}{rgb}{0.1,0.1,0.7}
+\newcommand{\advanced}{\!\textbf{\color{advblue}[A]\color{black}}\ }
+
+\newtheorem*{solution}{Solution}
+\newtheorem*{answer}{Answer}
+
+\makeatletter
+\newtheoremstyle{mystyle}
+{\topsep}               % space above
+{\topsep}               % space below
+{}                      % bodyfont
+{}                      % indent
+{\bfseries}             % headfont
+{}                      % punctuation
+{0.6em}                 % space after head
+{\llap{[\ptfmt{\arabic{cpts}}]\hspace{.6em}}\thmname{#1}\thmnumber{ #2}\thmnote{\normalfont{ (#3)}}{\bfseries .}}  %theoremheadspec
+\theoremstyle{mystyle}
+\newtheorem{pproblem}{Problem}
+\makeatother
+
+% multiple-choice lists for the F = ma style questions at the end
+\newlist{mcchoices}{enumerate}{1}
+\setlist[mcchoices,1]{label=(\Alph*), itemsep=1pt, topsep=3pt, parsep=0pt}
+
+% headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Young's Modulus}
+\chead{}
+\rhead{F = ma Toolkit}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\newcommand{\psettitle}[1]{
+    \begin{center}
+    \huge \textbf{#1}
+    \end{center}
+}
+
+\linespread{1.03} % give a little extra room
+\setlength{\parindent}{0.2in} % reduce paragraph indent a bit
+
+% ============================================================
+% SOLUTIONS TOGGLE
+% Set \showsoltrue to PRINT solutions, \showsolfalse to HIDE them.
+% (When building from the command line you can instead pass
+%  \def\HIDESOLUTIONS{} to force the student/no-solutions version.)
+% ============================================================
+\newif\ifshowsol
+\showsoltrue                       % <-- flip to \showsolfalse for the student copy
+\ifdefined\HIDESOLUTIONS \showsolfalse \fi
+
+\usepackage{environ}
+\ifshowsol\else
+  \NewEnviron{killsol}{}
+  \let\solution\killsol
+  \let\endsolution\endkillsol
+  \let\answer\killsol
+  \let\endanswer\endkillsol
+\fi
+
+\begin{document}
+
+\psettitle{Young's Modulus}
+\begin{center}
+\large How stiff is the \emph{stuff}, as opposed to how stiff is the \emph{thing}
+\end{center}
+
+\noindent
+Hang a mass from a steel cable and the cable stretches --- a little. Let go and it springs
+back. So a cable is a spring, and it must have a spring constant $k$. But $k$ depends on
+how long the cable is and how thick it is, which are facts about \emph{that particular
+cable}, not about steel. Young's modulus is the number that describes the steel itself.
+Everything in this handout follows from separating those two ideas. There is a total of
+\ptfmt{\totpts} points; problems marked \advanced are a little harder.
+
+\section{Stress, Strain, and the Definition}
+
+\begin{psidea}{Two ratios, and the number connecting them}{}
+Take a rod or wire of length $\ell$ and cross-sectional area $A$, and pull on it with
+force $F$ along its length. Define
+\[
+\text{\textbf{stress}} \quad \sigma = \frac{F}{A},
+\qquad\qquad
+\text{\textbf{strain}} \quad \varepsilon = \frac{\Delta \ell}{\ell}.
+\]
+Stress is ``force spread over the area that carries it.'' Strain is ``fractional
+stretch'' --- how much longer, as a fraction of what you started with. For small
+stretches the two are proportional, and the constant of proportionality is
+\textbf{Young's modulus} $Y$:
+\[
+\boxed{\;\sigma = Y \varepsilon \;}
+\qquad\text{that is,}\qquad
+\boxed{\;\frac{F}{A} = Y\,\frac{\Delta \ell}{\ell}\;}
+\]
+This is Hooke's law, rewritten so that only the \emph{material} appears. $Y$ is a property
+of steel, or copper, or bone --- not of the particular piece you happen to be holding.
+\end{psidea}
+
+\begin{psremark*}{}{}
+Why divide by $A$? Because a rope twice as thick shares the load between twice as much
+material, so each part of the material is pulled half as hard. Why divide by $\ell$?
+Because a rope twice as long has twice as much material to stretch, so the same
+\emph{fractional} stretch produces twice the absolute stretch. Stress and strain are
+built precisely to cancel out the size of the object.
+\end{psremark*}
+
+\pts{3}
+\begin{pproblem}
+A wire of cross-sectional area $A = 2.0\;\mathrm{mm}^2$ carries a tension of
+$F = 400\;\mathrm{N}$.
+\begin{subpart}
+\item What is the stress, in pascals?
+\item If the wire is $1.5\;\mathrm{m}$ long and stretches by $0.60\;\mathrm{mm}$, what is
+the strain?
+\end{subpart}
+\end{pproblem}
+\begin{solution}
+(a) $A = 2.0\;\mathrm{mm}^2 = 2.0\times10^{-6}\;\mathrm{m}^2$, so
+$\sigma = F/A = 400 / (2.0\times 10^{-6}) = 2.0\times 10^{8}\;\mathrm{Pa}
+= 200\;\mathrm{MPa}$.
+
+(b) $\varepsilon = \Delta \ell/\ell = (0.60\times10^{-3})/1.5 = 4.0\times 10^{-4}$. Note
+this is a pure number --- no units.
+\end{solution}
+
+\section{Units, and Why They Are the Units of Pressure}
+
+\begin{psidea}{$Y$ is measured in pascals}{}
+Strain is a length divided by a length, so it is \textbf{dimensionless}. That means
+$Y = \sigma/\varepsilon$ has exactly the same units as stress:
+\[
+[Y] = \frac{[F]}{[A]} = \frac{\mathrm{N}}{\mathrm{m}^2} = \mathrm{Pa},
+\qquad\text{and in base units}\qquad
+[Y] = \frac{MLT^{-2}}{L^2} = M L^{-1} T^{-2}.
+\]
+Those are the dimensions of pressure, and of energy per unit volume --- all three are the
+same thing dimensionally. Real values are large, so $Y$ is usually quoted in gigapascals
+($1\;\mathrm{GPa} = 10^9\;\mathrm{Pa}$):
+\begin{center}
+\begin{tabular}{lr@{\qquad}lr}
+rubber & $0.01$--$0.1$ GPa & aluminum & $70$ GPa\\
+nylon & $3$ GPa & steel & $200$ GPa\\
+wood (along the grain) & $10$ GPa & tungsten & $400$ GPa\\
+bone & $15$ GPa & diamond & $1000$ GPa\\
+\end{tabular}
+\end{center}
+\end{psidea}
+
+\pts{2}
+\begin{pproblem}
+Show, using base dimensions $M$, $L$, $T$, that Young's modulus has the same dimensions as
+energy per unit volume. (This is not a coincidence: stretching a wire stores elastic
+energy, and $Y$ sets how much.)
+\end{pproblem}
+\begin{solution}
+Energy has dimensions $ML^2T^{-2}$ and volume has dimensions $L^3$, so energy per volume
+is $ML^2T^{-2}/L^3 = ML^{-1}T^{-2}$. That is exactly the result computed above for $Y$.
+\end{solution}
+
+\begin{psidea}{An intuition for why the number is so big}{}
+Put $\varepsilon = 1$ into $\sigma = Y\varepsilon$. You get $\sigma = Y$. So
+\emph{Young's modulus is the stress you would need to double the length of the object} ---
+if the material kept behaving linearly all the way there, which of course it never does.
+Steel snaps at a stress of roughly $0.4\;\mathrm{GPa}$, some $500$ times smaller than its
+$Y = 200\;\mathrm{GPa}$. Turned around, that says steel breaks at a strain of about
+$1/500 = 0.2\%$. \textbf{Real strains in stiff materials are tiny}, which is why the
+modulus is huge.
+\end{psidea}
+
+\pts{3}
+\begin{pproblem}
+Nylon has $Y \approx 3\;\mathrm{GPa}$ and breaks at a stress of about
+$75\;\mathrm{MPa}$. At what strain does it break, and how does that compare with steel's
+$0.2\%$? Does the more easily broken material stretch more or less before failing?
+\end{pproblem}
+\begin{solution}
+$\varepsilon = \sigma/Y = (75\times10^6)/(3\times10^9) = 0.025$, i.e.\ $2.5\%$ --- about
+twelve times the strain steel tolerates. Nylon fails at a much \emph{lower stress} but a
+much \emph{higher strain}. ``Strong'' (large breaking stress) and ``stiff'' (large $Y$)
+are different properties, and nylon is neither as strong nor as stiff as steel, yet it
+stretches far more before it goes.
+\end{solution}
+
+\section{From Young's Modulus to a Spring Constant}
+
+\begin{psidea}{$k = YA/\ell$ --- the most useful line in this handout}{}
+Rearrange $F/A = Y \Delta\ell/\ell$ to put it in the form $F = k\,\Delta\ell$:
+\[
+F = \frac{YA}{\ell}\,\Delta \ell
+\qquad\Longrightarrow\qquad
+\boxed{\;k = \frac{YA}{\ell}\;}
+\]
+Read this carefully, because it is the whole point:
+\begin{itemize}
+\item[$\bullet$] $Y$ belongs to the \textbf{material}. Cut a steel cable in half and both
+halves still have $Y = 200\;\mathrm{GPa}$.
+\item[$\bullet$] $k$ belongs to the \textbf{object}. Cut the cable in half and each half
+has \emph{twice} the spring constant of the original.
+\item[$\bullet$] \textbf{Longer $\Rightarrow$ floppier.} $k \propto 1/\ell$.
+\item[$\bullet$] \textbf{Thicker $\Rightarrow$ stiffer.} $k \propto A$, so $k \propto r^2$
+for a circular wire of radius $r$.
+\end{itemize}
+\end{psidea}
+
+\begin{psremark*}{}{}
+You can get both dependences without any algebra, just from how springs combine. A wire
+of length $2\ell$ is two wires of length $\ell$ joined end to end --- springs in
+\textbf{series}, and $1/k_{\text{tot}} = 1/k + 1/k$ gives $k_{\text{tot}} = k/2$. A wire
+of area $2A$ is two wires of area $A$ lying side by side sharing the load --- springs in
+\textbf{parallel}, and $k_{\text{tot}} = k + k = 2k$. Both match $k = YA/\ell$ exactly.
+\end{psremark*}
+
+\pts{4}
+\begin{pproblem}
+A steel wire ($Y = 200\;\mathrm{GPa}$) has length $\ell = 2.0\;\mathrm{m}$ and
+cross-sectional area $A = 1.0\;\mathrm{mm}^2$. A $20\;\mathrm{kg}$ mass hangs from it.
+Take $g = 10\;\mathrm{m/s^2}$.
+\begin{subpart}
+\item Find the spring constant $k$ of the wire.
+\item Find how far it stretches.
+\end{subpart}
+\end{pproblem}
+\begin{solution}
+(a) $k = YA/\ell = (200\times10^{9})(1.0\times10^{-6})/2.0 = 1.0\times 10^{5}\;
+\mathrm{N/m}$.
+
+(b) The tension is $F = mg = 200\;\mathrm{N}$, so
+$\Delta \ell = F/k = 200/(1.0\times10^{5}) = 2.0\times 10^{-3}\;\mathrm{m}
+= 2.0\;\mathrm{mm}$.
+
+As a check, the strain is $2.0\;\mathrm{mm}/2.0\;\mathrm{m} = 10^{-3}$, and the stress is
+$200\;\mathrm{N}/10^{-6}\;\mathrm{m}^2 = 2\times10^{8}\;\mathrm{Pa}$; their ratio is
+$2\times 10^{11}\;\mathrm{Pa} = Y$, as it must be.
+\end{solution}
+
+\pts{3}
+\begin{pproblem}
+Two wires are made of the same metal. Wire 2 is three times as long as wire 1 and has
+twice the radius. By what factor is wire 2's spring constant larger or smaller than wire
+1's? By what factor does their Young's modulus differ?
+\end{pproblem}
+\begin{solution}
+$k = YA/\ell \propto r^2/\ell$. Doubling $r$ multiplies $k$ by $4$; tripling $\ell$
+divides it by $3$. So $k_2/k_1 = 4/3$. Young's modulus is identical for both --- they are
+the same metal --- so it differs by a factor of $1$.
+\end{solution}
+
+\pts{3}
+\begin{pproblem}
+A rubber band and a steel wire of identical dimensions are each stretched by the same
+\emph{force}. Which stretches further, and by roughly what factor? (Use
+$Y_{\text{rubber}} \approx 0.05\;\mathrm{GPa}$.)
+\end{pproblem}
+\begin{solution}
+Same $F$, same $A$ means same stress, so $\varepsilon = \sigma/Y$ says the strain is
+inversely proportional to $Y$. The rubber stretches by a factor
+$Y_{\text{steel}}/Y_{\text{rubber}} = 200/0.05 = 4000$ more than the steel.
+\end{solution}
+
+\section{Oscillations on a Wire}
+
+\begin{psidea}{A hanging mass on a wire is just a mass on a spring}{}
+Once you know $k = YA/\ell$, vertical oscillations need nothing new:
+\[
+f = \frac{1}{2\pi}\sqrt{\frac{k}{m}}
+= \frac{1}{2\pi}\sqrt{\frac{YA}{\ell m}}.
+\]
+Gravity does not appear. It shifts the equilibrium point down by $mg/k$ but does not
+change the stiffness, exactly as for an ordinary vertical spring.
+\end{psidea}
+
+\begin{psexample}{The question you saw on the practice exam}{}
+\emph{Steel has $Y = 200\;\mathrm{GPa}$. A mass $m = 300\;\mathrm{kg}$ hangs from a steel
+wire of circular cross-section with radius $r = 0.15\;\mathrm{cm}$ and length
+$\ell = 2\;\mathrm{m}$. Find the frequency of vertical oscillations.}
+
+First the area: $r = 0.15\;\mathrm{cm} = 1.5\times 10^{-3}\;\mathrm{m}$, so
+\[
+A = \pi r^2 = \pi (1.5\times10^{-3})^2 = 7.07\times 10^{-6}\;\mathrm{m}^2.
+\]
+Then the spring constant:
+\[
+k = \frac{YA}{\ell} = \frac{(200\times10^{9})(7.07\times10^{-6})}{2}
+= 7.07\times 10^{5}\;\mathrm{N/m}.
+\]
+Then the frequency:
+\[
+f = \frac{1}{2\pi}\sqrt{\frac{k}{m}}
+= \frac{1}{2\pi}\sqrt{\frac{7.07\times10^{5}}{300}}
+= \frac{1}{2\pi}\sqrt{2360}
+= \frac{48.6}{2\pi} \approx 7.7\;\mathrm{Hz}.
+\]
+The only step that is specific to this topic is $k = YA/\ell$. Everything after it is
+ordinary SHM. Watch the centimetres: writing $r = 0.15$ instead of $0.0015$ costs a
+factor of $100$ in $r$, hence $10^4$ in $A$ and $100$ in $f$.
+\end{psexample}
+
+\pts{3}
+\begin{pproblem}
+In the example above, how far below the wire's unstretched end does the mass hang at
+equilibrium? Compare that sag with the amplitude of a small oscillation, and comment on
+whether the wire ever goes slack.
+\end{pproblem}
+\begin{solution}
+The static stretch is $\Delta \ell = mg/k = (300)(9.8)/(7.07\times 10^5)
+= 4.2\times 10^{-3}\;\mathrm{m} \approx 4.2\;\mathrm{mm}$. Any oscillation with amplitude
+smaller than $4.2\;\mathrm{mm}$ keeps the wire in tension the whole time, so the motion
+stays simple harmonic. A larger amplitude would let the wire go slack at the top of the
+motion, where it can push nothing --- and then the motion is no longer SHM.
+\end{solution}
+
+\section{Dimensional Analysis with $Y$}
+
+\begin{psidea}{$\sqrt{Y/\rho}$ is a speed}{}
+$Y$ has dimensions $ML^{-1}T^{-2}$ and density $\rho$ has dimensions $ML^{-3}$. Divide:
+\[
+\left[\frac{Y}{\rho}\right] = \frac{ML^{-1}T^{-2}}{ML^{-3}} = L^2T^{-2},
+\]
+which is a velocity squared. So $\sqrt{Y/\rho}$ is the only speed you can build from a
+material's stiffness and its density --- and it is, up to a factor of order $1$, the
+\textbf{speed of sound in that material}. Stiffer material, faster sound; heavier
+material, slower sound.
+\end{psidea}
+
+\pts{3}
+\begin{pproblem}
+Estimate the speed of sound in steel, using $Y = 200\;\mathrm{GPa}$ and
+$\rho = 8000\;\mathrm{kg/m^3}$. Compare with the speed of sound in air
+($340\;\mathrm{m/s}$).
+\end{pproblem}
+\begin{solution}
+$v = \sqrt{Y/\rho} = \sqrt{(2\times10^{11})/(8\times10^{3})} = \sqrt{2.5\times 10^{7}}
+= 5.0\times 10^{3}\;\mathrm{m/s}$. That is about $15$ times the speed of sound in air.
+(The measured value for steel is about $5900\;\mathrm{m/s}$, so the estimate is good.)
+\end{solution}
+
+\pts{4}
+\begin{pproblem} \advanced
+A wire of length $\ell$, area $A$, density $\rho$ and Young's modulus $Y$ hangs with a
+mass $m$ on the end. Without solving anything, use dimensional analysis to argue that the
+oscillation frequency must have the form
+$f = \dfrac{1}{2\pi}\sqrt{\dfrac{YA}{\ell m}} \times g(\text{dimensionless})$, and
+identify a dimensionless ratio the leftover function could depend on.
+\end{pproblem}
+\begin{solution}
+$YA$ has dimensions $(ML^{-1}T^{-2})(L^2) = MLT^{-2}$, a force. Dividing by $\ell m$ gives
+$MLT^{-2}/(LM) = T^{-2}$, so $\sqrt{YA/(\ell m)}$ is a frequency --- the only one you can
+build from those four quantities. Anything else must be dimensionless. The natural
+dimensionless ratio available is the mass of the wire to the hanging mass,
+$\rho A \ell / m$; the exact answer does depend on it slightly, because the wire itself
+has to move too. When the wire is light compared with the load, that ratio is near zero
+and $g \to 1$, recovering the formula used above.
+\end{solution}
+
+\section{Common Traps}
+
+\begin{psremark*}{}{}
+\begin{itemize}
+\item[$\bullet$] \textbf{``Longer means less stiff'' applies to $k$, never to $Y$.} A
+longer rope has a smaller spring constant and the identical Young's modulus. If a problem
+changes the length and you find yourself changing $Y$, stop.
+\item[$\bullet$] \textbf{Watch the area units.} $1\;\mathrm{mm}^2 = 10^{-6}\;\mathrm{m}^2$
+and $1\;\mathrm{cm}^2 = 10^{-4}\;\mathrm{m}^2$. Squaring turns a small slip into a factor
+of $100$ or $10^4$.
+\item[$\bullet$] \textbf{A radius given in centimetres must be converted before squaring.}
+This is the single most common way to lose the steel-wire problem.
+\item[$\bullet$] \textbf{Strain is a fraction, not a length.} $\Delta \ell$ is a length;
+$\Delta \ell / \ell$ is the strain. Only the second one goes into $\sigma = Y\varepsilon$.
+\item[$\bullet$] \textbf{Stiff is not the same as strong.} $Y$ tells you how much it
+stretches under load; the breaking stress tells you when it snaps. Materials can be high
+in one and low in the other.
+\end{itemize}
+\end{psremark*}
+
+\section{F = ma Style Questions}
+
+\noindent
+Four questions in the style of the exam. Answer each in about two minutes.
+
+\pts{4}
+\begin{pproblem}
+A steel wire of length $\ell$ and cross-sectional area $A$ stretches by $1.0\;\mathrm{mm}$
+when a certain mass is hung from it. A second wire, made of the same steel with the same
+cross-sectional area but \emph{twice the length}, carries the same mass. Compared with the
+first wire, the second wire has
+\begin{mcchoices}
+\item the same Young's modulus, half the spring constant, and stretches $2.0\;\mathrm{mm}$.
+\item half the Young's modulus, half the spring constant, and stretches $2.0\;\mathrm{mm}$.
+\item the same Young's modulus, twice the spring constant, and stretches
+$0.50\;\mathrm{mm}$.
+\item the same Young's modulus, the same spring constant, and stretches
+$1.0\;\mathrm{mm}$.
+\item twice the Young's modulus, the same spring constant, and stretches
+$0.50\;\mathrm{mm}$.
+\end{mcchoices}
+\end{pproblem}
+\begin{solution}
+\textbf{(A).} Young's modulus is a property of steel and does not know how long the wire
+is, so it is unchanged. The spring constant $k = YA/\ell$ is halved when $\ell$ doubles.
+With the same force and half the spring constant, $\Delta \ell = F/k$ doubles to
+$2.0\;\mathrm{mm}$.
+
+Equivalently and even faster: the same mass on the same cross-section gives the same
+stress, hence the same \emph{strain}. Same fractional stretch on twice the length is twice
+the absolute stretch.
+\end{solution}
+
+\pts{4}
+\begin{pproblem}
+A steel wire ($Y = 200\;\mathrm{GPa}$) of length $2.0\;\mathrm{m}$ and cross-sectional
+area $1.0\;\mathrm{mm}^2$ supports a $20\;\mathrm{kg}$ mass. Taking
+$g = 10\;\mathrm{m/s^2}$, the wire stretches by about
+\begin{mcchoices}
+\item $0.20\;\mathrm{mm}$
+\item $0.50\;\mathrm{mm}$
+\item $1.0\;\mathrm{mm}$
+\item $2.0\;\mathrm{mm}$
+\item $4.0\;\mathrm{mm}$
+\end{mcchoices}
+\end{pproblem}
+\begin{solution}
+\textbf{(D).} The tension is $F = mg = 200\;\mathrm{N}$, so the stress is
+$\sigma = 200/(1.0\times10^{-6}) = 2.0\times 10^{8}\;\mathrm{Pa}$. The strain is
+$\varepsilon = \sigma/Y = (2.0\times10^{8})/(2.0\times10^{11}) = 1.0\times 10^{-3}$.
+Therefore $\Delta \ell = \varepsilon \ell = (1.0\times10^{-3})(2.0\;\mathrm{m})
+= 2.0\times 10^{-3}\;\mathrm{m} = 2.0\;\mathrm{mm}$.
+\end{solution}
+
+\pts{4}
+\begin{pproblem}
+The speed $v$ of a sound pulse traveling along a thin solid rod depends only on the rod's
+Young's modulus $Y$ and its density $\rho$. For steel, $Y = 200\;\mathrm{GPa}$ and
+$\rho = 8000\;\mathrm{kg/m^3}$. The speed is closest to
+\begin{mcchoices}
+\item $160\;\mathrm{m/s}$
+\item $1600\;\mathrm{m/s}$
+\item $5000\;\mathrm{m/s}$
+\item $25000\;\mathrm{m/s}$
+\item $2.5\times 10^{7}\;\mathrm{m/s}$
+\end{mcchoices}
+\end{pproblem}
+\begin{solution}
+\textbf{(C).} Only one combination of $Y$ and $\rho$ has dimensions of speed. Since
+$[Y] = ML^{-1}T^{-2}$ and $[\rho] = ML^{-3}$, the ratio $Y/\rho$ has dimensions
+$L^2T^{-2}$, so $v = \sqrt{Y/\rho}$. Numerically
+$v = \sqrt{(2\times10^{11})/(8\times10^{3})} = \sqrt{2.5\times10^{7}}
+= 5.0\times 10^{3}\;\mathrm{m/s}$.
+
+Distractor (E) is $Y/\rho$ without the square root, and (A) is $\sqrt{\rho/Y}$ scaled ---
+both are what you get by taking the combination in the wrong order, which the dimensions
+rule out immediately.
+\end{solution}
+
+\pts{4}
+\begin{pproblem}
+A mass $m$ hangs from a steel wire of length $\ell$ and cross-sectional area $A$, and
+oscillates vertically with frequency $f$. The wire is replaced by one of the same steel
+and the same length, but with \emph{four times} the cross-sectional area. The new
+frequency is
+\begin{mcchoices}
+\item $f/4$
+\item $f/2$
+\item $f$
+\item $2f$
+\item $4f$
+\end{mcchoices}
+\end{pproblem}
+\begin{solution}
+\textbf{(D).} The spring constant is $k = YA/\ell$, so quadrupling $A$ quadruples $k$.
+Since $f = \frac{1}{2\pi}\sqrt{k/m}$ and $m$ is unchanged, $f \propto \sqrt{k}$, and
+$\sqrt{4} = 2$. The frequency doubles.
+
+Note that $Y$ never changes --- it is the same steel throughout. Only the geometry moved.
+\end{solution}
+
+\vspace{1em}
+\begin{center}
+\emph{End of handout. If you remember only one line, make it $k = YA/\ell$: the material
+contributes $Y$, the object contributes $A$ and $\ell$, and everything else is the spring
+physics you already know.}
+\end{center}
+
+\end{document}

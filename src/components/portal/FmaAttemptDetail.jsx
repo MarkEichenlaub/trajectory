@@ -3,11 +3,20 @@ import { renderStatementHtml } from '../../utils/renderStatement'
 import ScratchWorkLink from './ScratchWorkLink'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
+const LIMIT_SEC = 75 * 60
 
 function formatSeconds(s) {
   if (!s || s < 1) return null
   const m = Math.floor(s / 60), sec = Math.round(s % 60)
   return m > 0 ? `~${m}m ${sec}s` : `~${sec}s`
+}
+
+// Time actually spent working, banked by the runner. Not submitted_at -
+// started_at: that counts every hour the test sat saved-and-exited too.
+function formatDuration(s) {
+  if (!s || s < 60) return null
+  const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60)
+  return h > 0 ? `${h}h ${m}m` : `${m} min`
 }
 
 export default function FmaAttemptDetail({ detail, onBack }) {
@@ -58,7 +67,15 @@ export default function FmaAttemptDetail({ detail, onBack }) {
         <div className="fma-summary-score">{attempt.score != null ? `${attempt.score}/${outOf}` : '—'}</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 500 }}>{attempt.handouts?.name || attempt.exam_id}</div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{date} · {attempt.mode.replace('_', ' ')}</div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+            {date} · {attempt.mode.replace('_', ' ')}
+            {formatDuration(attempt.active_seconds) && <> · {formatDuration(attempt.active_seconds)} working time</>}
+          </div>
+          {attempt.active_seconds > LIMIT_SEC && (
+            <div style={{ fontSize: 11, color: 'var(--yellow)', marginTop: 2 }}>
+              Ran {formatDuration(attempt.active_seconds - LIMIT_SEC)} past the 75-minute limit.
+            </div>
+          )}
           {graded && attempt.mode !== 'score_only' && (
             <div className="fma-summary-counts">
               <span><b className="ok">{nCorrect}</b> correct</span>
@@ -69,6 +86,22 @@ export default function FmaAttemptDetail({ detail, onBack }) {
         </div>
         <ScratchWorkLink path={attempt.scratch_work_url} />
       </div>
+
+      {attempt.tutor_report && (
+        <div
+          className="fma-tutor-report"
+          style={{
+            background: 'var(--surface)', border: '1px solid var(--accent)',
+            borderRadius: 'var(--radius)', padding: 16, marginBottom: 20,
+          }}
+        >
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Mark's report on this test</div>
+          <div
+            style={{ fontSize: 13, lineHeight: 1.6 }}
+            dangerouslySetInnerHTML={{ __html: renderStatementHtml(attempt.tutor_report) }}
+          />
+        </div>
+      )}
 
       {graded && attempt.mode !== 'score_only' && (
         <div style={{ marginBottom: 20 }}>

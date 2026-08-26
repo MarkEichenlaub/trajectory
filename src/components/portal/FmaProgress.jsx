@@ -7,6 +7,7 @@ import FmaTestRunner from './FmaTestRunner'
 import FmaBatchEntry from './FmaBatchEntry'
 import FmaScoreOnly from './FmaScoreOnly'
 import FmaAttemptDetail from './FmaAttemptDetail'
+import { renderStatementHtml } from '../../utils/renderStatement'
 
 // Rough USAPhO-qualifying score cutoffs, shaded on the chart as three bands:
 // below BORDERLINE_LOW (unlikely to qualify), the "USAPhO Borderline" band
@@ -22,6 +23,15 @@ const MODES = [
 ]
 
 const MODE_LABEL = { live: 'live entry', paper_first: 'paper first', score_only: 'score only' }
+
+const LIMIT_SEC = 75 * 60
+
+// The clock only advances while the test is actually open, so a test left
+// saved-and-exited for a week still has its remaining time waiting for it.
+function minutesLeft(activeSeconds) {
+  const left = LIMIT_SEC - (activeSeconds || 0)
+  return left <= 0 ? 'over the 75 min limit' : `${Math.ceil(left / 60)} min left`
+}
 
 export function FmaChart({ attempts, onSelect }) {
   const scored = attempts
@@ -207,6 +217,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
 
   const inProgress = attempts.filter(a => a.status === 'in_progress')
   const finished = attempts.filter(a => a.status !== 'in_progress')
+  const reports = attempts.filter(a => a.tutor_report)
   const examById = useMemo(() => Object.fromEntries(exams.map(e => [e.id, e])), [exams])
 
   function enterAttempt(attempt, questions, state) {
@@ -348,6 +359,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
                   <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
                     {' · '}{MODE_LABEL[a.mode] || a.mode}
                     {' · started '}{new Date(a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    {a.mode === 'live' && ` · ${minutesLeft(a.active_seconds)}`}
                   </span>
                 </div>
                 <button className="primary sm" disabled={busyAttemptId === a.id} onClick={() => handleResume(a)}>
@@ -356,6 +368,33 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* A written report is the part worth reading first, so it sits above the
+          chart rather than buried inside one attempt's detail page. */}
+      {reports.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {reports.map(a => (
+            <div
+              key={a.id}
+              style={{ background: 'var(--surface)', border: '1px solid var(--accent)', borderRadius: 'var(--radius)', padding: 16 }}
+            >
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
+                <div style={{ fontSize: 13, fontWeight: 600 }}>Mark's report — {a.handouts?.name || a.exam_id}</div>
+                {a.score != null && (
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{a.score}/{MAX_SCORE}</div>
+                )}
+              </div>
+              <div
+                style={{ fontSize: 13, lineHeight: 1.6 }}
+                dangerouslySetInnerHTML={{ __html: renderStatementHtml(a.tutor_report) }}
+              />
+              <button className="sm" style={{ marginTop: 12 }} onClick={() => handleViewAttempt(a.id)}>
+                See the question-by-question breakdown →
+              </button>
+            </div>
+          ))}
         </div>
       )}
 

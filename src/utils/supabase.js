@@ -769,6 +769,21 @@ export async function logFmaQuestionView(attemptId, questionId) {
   if (error) console.warn('fma: view event not logged', error.message)
 }
 
+// Banks the running total of time actually spent in the test. The exam clock
+// used to be wall-clock from started_at, which kept draining while the student
+// was away; the runner now flushes its own accumulated total here every 15s.
+// Sending a total rather than a delta means a dropped or duplicated flush costs
+// nothing, and the RPC clamps monotonically so it can only ever move forwards.
+// Purely a clock update — never surface a failure as an error mid-test.
+export async function bumpFmaActiveSeconds(attemptId, seconds) {
+  const { data, error } = await supabase.rpc('bump_fma_active_seconds', {
+    p_attempt_id: attemptId,
+    p_seconds: Math.round(seconds),
+  })
+  if (error) { console.warn('fma: clock not saved', error.message); return null }
+  return data
+}
+
 // Answers already recorded for an attempt, so a resumed test can be rehydrated.
 export async function fetchFmaAttemptAnswers(attemptId) {
   const { data, error } = await supabase
