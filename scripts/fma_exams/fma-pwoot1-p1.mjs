@@ -233,7 +233,7 @@ The center of mass frame has the balls initially approach at the same speed, so 
     tags: ['moment of inertia', 'rolling without slipping', 'inclined planes'],
     solution: `$$\\boxed{\\mathrm{(c)} \\quad 1}$$
 
-The solid disk and the wheel must have the same coefficient in front of their moment of inertia. For the wheel, $$I = \\dfrac12 mr^2.$$ For the hub, the central mass doesn't contribute to the moment of inertia, while the moment of inertia of a hoop is $$mr^2$$. The hub and rim must have equal mass so the moment of inertia is $$\\dfrac12 mr^2$$ over all. The ratio is $$1.$$`,
+The solid disk and the wheel must have the same coefficient in front of their moment of inertia. For the solid disk, $$I = \\dfrac12 mr^2.$$ For the wheel, the central hub doesn't contribute to the moment of inertia because its radius is negligible, while the rim is a hoop with moment of inertia $$m_r r^2$$. The hub and rim must have equal mass so the moment of inertia is $$\\dfrac12 mr^2$$ overall. The ratio is $$1.$$`,
   },
   {
     n: 11, correct: 'D',

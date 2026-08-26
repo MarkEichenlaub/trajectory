@@ -738,9 +738,9 @@ If we blow this triangle up, it looks like this:
 
 The vertical side of the triangle is the extra distance the liner travels to get to the new intercept point. The highest side of the triangle is the extra distance the small boat travels. These two should take the same amount of time, so
 
-$$\\sin\\theta = \\dfrac{v_{sb}}{v_{l}},$$
+$$\\sin\\theta = \\dfrac{v_{sb}}{v_{\\ell}},$$
 
-where $$v_{sb}$$ is the speed of the small boat and $$v_l$$ is the speed of the liner.
+where $$v_{sb}$$ is the speed of the small boat and $$v_\\ell$$ is the speed of the liner.
 
 This implies $$\\sin\\theta = \\dfrac{12}{20},$$ so $$\\sin\\theta = \\dfrac35$$ and $$\\cos\\theta = \\dfrac45.$$ The distance traveled by the boat is
 
@@ -751,11 +751,11 @@ d & = \\dfrac{1 \\text{ nautical mile}}{\\cos\\theta} \\\\
 
 An alternative solution, avoiding the use of infinitesimal angles, is below:
 
-Let $$v_s = 12 \\, \\mathrm{kt}$$, $$v_l = 20 \\, \\mathrm{kt}$$, and $$L = 1 \\, \\mathrm{nmi}.$$ Let's work in the liner's frame of reference, in which the port is moving past the liner at a constant speed $$v_l.$$ What is the range of positions the small boat can pass through after leaving port?
+Let $$v_s = 12 \\, \\mathrm{kt}$$, $$v_\\ell = 20 \\, \\mathrm{kt}$$, and $$L = 1 \\, \\mathrm{nmi}.$$ Let's work in the liner's frame of reference, in which the port is moving past the liner at a constant speed $$v_\\ell.$$ What is the range of positions the small boat can pass through after leaving port?
 
 At the moment it leaves, of course, the boat is in port.
 
-After some time $$t$$, the port has moved $$v_l t$$ from its starting point, and the boat could be as far as $$v_s t$$ from the port:
+After some time $$t$$, the port has moved $$v_\\ell t$$ from its starting point, and the boat could be as far as $$v_s t$$ from the port:
 
 After some more time:
 
@@ -765,7 +765,7 @@ The boat shown above left with plenty of time to spare. If it leaves at the last
 
 The angle marked in the diagram must be a right angle because the line marking the limit of the boat's range is tangent to the circle. From here it's just a geometry problem to solve for the desired distance $$d$$,
 
-$$d = \\frac{L}{\\sqrt{1 - (v_s / v_l)^2}}.$$`,
+$$d = \\frac{L}{\\sqrt{1 - (v_s / v_\\ell)^2}}.$$`,
   },
   {
     n: 24, correct: 'C', // why: boxed value x = (2/3)b matches choice C
