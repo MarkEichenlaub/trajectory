@@ -40,6 +40,49 @@ export type CalEvent = {
   conferenceData?: { entryPoints?: Array<{ entryPointType?: string; uri?: string }> }
 }
 
+/**
+ * List calendar events matching `query` in a time range, following pageToken to
+ * the end of the result set.
+ *
+ * Returns ok:false if the listing could not be completed. Callers MUST NOT treat
+ * that as "no events exist" — the sync functions delete sessions that have no
+ * matching event, so a failed or partial listing deletes a real schedule. This
+ * previously ran with maxResults=50 and no paging, which silently truncated any
+ * student with more than 50 events in the window (5-a-week schedules hit it) and
+ * then deleted the overflow as orphans on every run.
+ */
+export async function listCalendarEvents(
+  accessToken: string,
+  query: string,
+  timeMin: string,
+  timeMax: string,
+): Promise<{ ok: boolean; events: CalEvent[] }> {
+  const events: CalEvent[] = []
+  let pageToken = ''
+  for (let page = 0; page < 20; page++) {
+    const params = new URLSearchParams({
+      q: query, timeMin, timeMax,
+      singleEvents: 'true', orderBy: 'startTime', maxResults: '250',
+    })
+    if (pageToken) params.set('pageToken', pageToken)
+    const res = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
+      { headers: { 'Authorization': `Bearer ${accessToken}` } },
+    )
+    if (!res.ok) {
+      console.error('Calendar list failed:', query, res.status, await res.text())
+      return { ok: false, events: [] }
+    }
+    const data = await res.json() as { items?: CalEvent[]; nextPageToken?: string }
+    events.push(...(data.items ?? []))
+    if (!data.nextPageToken) return { ok: true, events }
+    pageToken = data.nextPageToken
+  }
+  // Bail rather than reconcile against a partial view of the calendar.
+  console.error('Calendar list exceeded page limit for', query)
+  return { ok: false, events: [] }
+}
+
 // Return the event's existing Google Meet link, or create one and return it.
 export async function ensureMeet(accessToken: string, event: CalEvent): Promise<string> {
   const existing = event.hangoutLink ||

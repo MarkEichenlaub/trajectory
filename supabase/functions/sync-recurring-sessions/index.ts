@@ -6,7 +6,9 @@
 // only covers students set up through the new admin Schedule-tab feature.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { getGoogleAccessToken, toCompactUTC, ensureMeet, type CalEvent } from '../_shared/google-auth.ts'
+import {
+  getGoogleAccessToken, toCompactUTC, ensureMeet, listCalendarEvents, type CalEvent,
+} from '../_shared/google-auth.ts'
 import { createSessionBoard, ensureBoardSharing, ensureMiroInDescription } from '../_shared/miro.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
@@ -45,23 +47,22 @@ async function syncOneSchedule(
   const now = new Date()
   const maxDate = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
 
-  async function listEvents(timeMin: string, timeMax: string): Promise<CalEvent[]> {
-    const params = new URLSearchParams({
-      q: QUERY, timeMin, timeMax, singleEvents: 'true', orderBy: 'startTime', maxResults: '50',
-    })
-    const res = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
-      { headers: { 'Authorization': `Bearer ${accessToken}` } },
-    )
-    if (!res.ok) {
-      console.error(`Calendar list failed for ${STUDENT_ID}:`, res.status, await res.text())
-      return []
+  async function listEvents(
+    timeMin: string, timeMax: string,
+  ): Promise<{ ok: boolean; events: CalEvent[] }> {
+    const { ok, events } = await listCalendarEvents(accessToken, QUERY, timeMin, timeMax)
+    return {
+      ok,
+      events: events.filter(e => (e.summary ?? '').toLowerCase() === QUERY.toLowerCase()),
     }
-    const data = await res.json() as { items?: CalEvent[] }
-    return (data.items ?? []).filter(e => (e.summary ?? '').toLowerCase() === QUERY.toLowerCase())
   }
 
-  const events = await listEvents(now.toISOString(), maxDate.toISOString())
+  const listing = await listEvents(now.toISOString(), maxDate.toISOString())
+  if (!listing.ok) {
+    // Bail out without reconciling; the next run retries.
+    return [{ eventId: '', date: '', status: 'calendar_list_failed', error: STUDENT_ID }]
+  }
+  const events = listing.events
 
   for (const event of events) {
     const eventId = event.id
@@ -187,6 +188,22 @@ async function syncOneSchedule(
     .like('id', `${idPrefix}%`)
     .gte('scheduled_at', now.toISOString())
     .lte('scheduled_at', maxDate.toISOString())
+
+  // A calendar that lists zero events while the student still has a schedule of
+  // future sessions is far more likely to be a bad `q` match or a partial API
+  // response than a genuinely cleared calendar. Refuse to mass-delete on it.
+  if (events.length === 0 && (futureSessions?.length ?? 0) > 0) {
+    console.error(
+      `Refusing orphan cleanup for ${STUDENT_ID}: calendar returned 0 events but ` +
+      `${futureSessions!.length} future sessions exist.`,
+    )
+    results.push({
+      eventId: '', date: '', status: 'orphan_cleanup_skipped',
+      error: `0 events vs ${futureSessions!.length} sessions`,
+    })
+    return results
+  }
+
   for (const s of futureSessions ?? []) {
     if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
     const { error } = await supabase.from('sessions').delete().eq('id', s.id)
@@ -197,8 +214,10 @@ async function syncOneSchedule(
   // 14-day lookback cleanup, so an event moved off a recent past date doesn't
   // leave a stale row behind (Borna's sync function established this fix).
   const lookbackDate = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
-  const pastEvents = await listEvents(lookbackDate.toISOString(), now.toISOString())
-  for (const e of pastEvents) {
+  const pastListing = await listEvents(lookbackDate.toISOString(), now.toISOString())
+  // Same rule as above: a failed listing is not an empty calendar.
+  if (!pastListing.ok) return results
+  for (const e of pastListing.events) {
     if (e.start.dateTime) validIds.add(`${idPrefix}${toCompactUTC(e.start.dateTime)}`)
   }
   const { data: pastSessions } = await supabase

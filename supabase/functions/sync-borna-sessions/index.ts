@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { createSessionBoard, ensureBoardSharing, ensureMiroInDescription } from '../_shared/miro.ts'
+import { listCalendarEvents } from '../_shared/google-auth.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
@@ -105,29 +106,16 @@ Deno.serve(async (req) => {
   // this rolling — events further out are picked up as they enter range.
   const now = new Date()
   const maxDate = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000)
-  const params = new URLSearchParams({
-    q: 'Borna',
-    timeMin: now.toISOString(),
-    timeMax: maxDate.toISOString(),
-    singleEvents: 'true',
-    orderBy: 'startTime',
-    maxResults: '50',
-  })
-
-  const calRes = await fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/primary/events?${params}`,
-    { headers: { 'Authorization': `Bearer ${accessToken}` } },
+  const listing = await listCalendarEvents(
+    accessToken, 'Borna', now.toISOString(), maxDate.toISOString(),
   )
-  if (!calRes.ok) {
-    const text = await calRes.text()
-    console.error('Calendar list failed:', calRes.status, text)
-    return new Response(JSON.stringify({ error: 'calendar list failed', detail: text }), {
+  if (!listing.ok) {
+    return new Response(JSON.stringify({ error: 'calendar list failed' }), {
       status: 500, headers: { 'Content-Type': 'application/json' },
     })
   }
 
-  const calData = await calRes.json() as { items?: CalEvent[] }
-  const events = (calData.items ?? []).filter(e =>
+  const events = listing.events.filter(e =>
     (e.summary ?? '').toLowerCase().includes('borna')
   )
 
@@ -314,6 +302,20 @@ Deno.serve(async (req) => {
     .like('id', 'gcal-borna-%')
     .gte('scheduled_at', now.toISOString())
     .lte('scheduled_at', maxDate.toISOString())
+
+  // A calendar that lists zero events while the student still has future
+  // sessions is far more likely to be a bad match or a partial API response
+  // than a genuinely cleared calendar. Refuse to mass-delete on it.
+  if (events.length === 0 && (futureSessions?.length ?? 0) > 0) {
+    console.error(
+      `Refusing orphan cleanup for ${STUDENT_ID}: calendar returned 0 events but ` +
+      `${futureSessions!.length} future sessions exist.`,
+    )
+    return new Response(JSON.stringify({
+      ok: false, error: 'orphan cleanup skipped', events: 0, sessions: futureSessions!.length, results,
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } })
+  }
+
   for (const s of futureSessions ?? []) {
     if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
     const { error } = await supabase.from('sessions').delete().eq('id', s.id)
