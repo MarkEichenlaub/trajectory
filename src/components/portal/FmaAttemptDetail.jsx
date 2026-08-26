@@ -19,7 +19,7 @@ function formatDuration(s) {
   return h > 0 ? `${h}h ${m}m` : `${m} min`
 }
 
-export default function FmaAttemptDetail({ detail, onBack }) {
+export default function FmaAttemptDetail({ detail, onBack, isAdmin = false }) {
   const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
   const questionRefs = useRef({})
 
@@ -34,16 +34,26 @@ export default function FmaAttemptDetail({ detail, onBack }) {
     })
   }
 
-  // An ungraded attempt must not reveal the key: correct_choice comes back null
-  // from the server until the attempt is graded, and we hide the verdict UI too.
   const graded = attempt.status === 'graded'
+  // A student's own ungraded attempt must not reveal the key: correct_choice
+  // comes back null from the server until the attempt is graded. Mark is
+  // allowed to see it any time, so the RPC also fills it in whenever the
+  // caller is an admin -- that's what lets him watch a still-in-progress test.
+  const canReveal = graded || isAdmin
   const outOf = questions.length || 25
 
   // A skipped question is a question you got wrong -- there's no partial credit
-  // on the F=ma -- so it belongs in the same bucket as a wrong answer.
+  // on the F=ma -- so it belongs in the same bucket as a wrong answer. Verdicts
+  // are derived from correct_choice/also_accepted rather than the stored
+  // is_correct column, because is_correct is only computed at grading time and
+  // stays null for an attempt Mark is peeking at before the student submits.
   const verdicts = questions.map(q => {
     const ans = answerByQuestion.get(q.id)
     if (!ans?.selected_choice) return 'unanswered'
+    if (q.correct_choice != null) {
+      const credited = ans.selected_choice === q.correct_choice || (q.also_accepted || []).includes(ans.selected_choice)
+      return credited ? 'correct' : 'incorrect'
+    }
     return ans.is_correct ? 'correct' : 'incorrect'
   })
   const nCorrect = verdicts.filter(v => v === 'correct').length
@@ -64,7 +74,13 @@ export default function FmaAttemptDetail({ detail, onBack }) {
       <button className="sm" onClick={onBack} style={{ marginBottom: 16 }}>← Back</button>
 
       <div className="fma-summary">
-        <div className="fma-summary-score">{attempt.score != null ? `${attempt.score}/${outOf}` : '—'}</div>
+        <div className="fma-summary-score">
+          {attempt.score != null
+            ? `${attempt.score}/${outOf}`
+            : canReveal && attempt.mode !== 'score_only'
+              ? `${nCorrect}/${outOf} so far`
+              : '—'}
+        </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 500 }}>{attempt.handouts?.name || attempt.exam_id}</div>
           <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
@@ -76,7 +92,12 @@ export default function FmaAttemptDetail({ detail, onBack }) {
               Ran {formatDuration(attempt.active_seconds - LIMIT_SEC)} past the 75-minute limit.
             </div>
           )}
-          {graded && attempt.mode !== 'score_only' && (
+          {!graded && isAdmin && (
+            <div style={{ fontSize: 11, color: 'var(--yellow)', marginTop: 2 }}>
+              Still in progress — the student hasn't submitted yet. Showing work saved so far.
+            </div>
+          )}
+          {canReveal && attempt.mode !== 'score_only' && (
             <div className="fma-summary-counts">
               <span><b className="ok">{nCorrect}</b> correct</span>
               <span><b className="bad">{nIncorrect}</b> wrong</span>
@@ -103,7 +124,7 @@ export default function FmaAttemptDetail({ detail, onBack }) {
         </div>
       )}
 
-      {graded && attempt.mode !== 'score_only' && (
+      {canReveal && attempt.mode !== 'score_only' && (
         <div style={{ marginBottom: 20 }}>
           <div className="fma-grid">
             {questions.map((q, i) => (
@@ -127,7 +148,7 @@ export default function FmaAttemptDetail({ detail, onBack }) {
 
       {attempt.mode === 'score_only' ? (
         <div className="empty-state">Score-only attempt — no per-question answers recorded.</div>
-      ) : !graded ? (
+      ) : !canReveal ? (
         <div className="empty-state">
           This attempt is still in progress — answers and the answer key stay hidden until you submit it.
         </div>

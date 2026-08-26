@@ -114,19 +114,31 @@ Deno.serve(async (req) => {
     // navigation, 'answer' on a click) marks that question as on screen from
     // that instant until the next event elsewhere. paper_first enters answers
     // in bulk, so there is no meaningful per-question time to report.
+    //
+    // Measured along the exam clock (active_seconds on each event), not the
+    // calendar, so the stretches where the clock was paused -- save-and-exit,
+    // another tab, a closed laptop -- don't get billed to whichever question was
+    // open at the time. This has to match the portal's arithmetic in
+    // fetchFmaAttemptDetail, or the email and the review page disagree about the
+    // same sitting. Attempts predating the stamp fall back to wall clock.
     const secondsBy = new Map<string, number>()
     if (attempt.mode === 'live') {
       const { data: events } = await admin
         .from('fma_answer_events')
-        .select('question_id, clicked_at')
+        .select('question_id, clicked_at, active_seconds')
         .eq('attempt_id', attempt_id)
         .order('clicked_at')
+      const stamped = (events || []).some(ev => ev.active_seconds != null)
       const endedAt = attempt.submitted_at ? new Date(attempt.submitted_at).getTime() : null
+      const posOf = (ev: { clicked_at: string; active_seconds: number | null }) =>
+        stamped ? ev.active_seconds : new Date(ev.clicked_at).getTime() / 1000
+      const finalPos = stamped ? attempt.active_seconds : endedAt && endedAt / 1000
       ;(events || []).forEach((ev, i) => {
         const nextEv = (events || [])[i + 1]
-        const next = nextEv ? new Date(nextEv.clicked_at).getTime() : endedAt
-        if (!next) return
-        const span = (next - new Date(ev.clicked_at).getTime()) / 1000
+        const from = posOf(ev)
+        const to = nextEv ? posOf(nextEv) : finalPos
+        if (from == null || to == null) return
+        const span = to - from
         if (span <= 0) return
         secondsBy.set(ev.question_id, (secondsBy.get(ev.question_id) || 0) + span)
       })

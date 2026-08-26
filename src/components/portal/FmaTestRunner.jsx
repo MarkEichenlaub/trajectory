@@ -89,7 +89,10 @@ function useExamClock(attemptId, baseSeconds) {
     }
   }, [total, pause, resume, flush])
 
-  return { seconds, flush, pause }
+  // `total` is exposed so events can be stamped with the clock reading at the
+  // instant they happen: per-question times are differences of those stamps, so
+  // they inherit this clock's pausing instead of measuring wall time.
+  return { seconds, total, flush, pause }
 }
 
 // Counts down like a live sitting and warns as the time goes, but never submits
@@ -153,8 +156,8 @@ function Navigator({ questions, answers, flags, index, onJump }) {
   )
 }
 
-export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, initialFlags, initialEliminated, onDone, onCancel }) {
-  const [index, setIndex] = useState(0)
+export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, initialFlags, initialEliminated, initialIndex = 0, onDone, onCancel }) {
+  const [index, setIndex] = useState(initialIndex)
   const [answers, setAnswers] = useState(initialAnswers || {})
   const [flags, setFlags] = useState(initialFlags || {})
   const [eliminated, setEliminated] = useState(initialEliminated || {})
@@ -167,7 +170,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const [overAcked, setOverAcked] = useState(false)
   const fileInputRef = useRef(null)
 
-  const { seconds, flush } = useExamClock(attempt.id, attempt.active_seconds)
+  const { seconds, total, flush } = useExamClock(attempt.id, attempt.active_seconds)
   const overTime = seconds > LIMIT_SEC
 
   const q = questions[index]
@@ -176,8 +179,8 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const flagged = questions.filter(x => flags[x.id])
 
   useEffect(() => {
-    if (q && !reviewing) logFmaQuestionView(attempt.id, q.id)
-  }, [attempt.id, q?.id, reviewing])
+    if (q && !reviewing) logFmaQuestionView(attempt.id, q.id, total())
+  }, [attempt.id, q?.id, reviewing, total])
 
   // The portal header and tab strip are dead weight mid-test -- they eat a
   // couple of hundred pixels and the header overlaps the tabs once you scroll.
@@ -203,7 +206,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     setAnswers(prev => ({ ...prev, [q.id]: choice }))
     setErr(null)
     try {
-      await saveFmaAnswer(attempt.id, q.id, choice)
+      await saveFmaAnswer(attempt.id, q.id, choice, total())
     } catch (e) {
       setAnswers(prev => { const next = { ...prev }; delete next[q.id]; return next })
       setErr(`Couldn't save that answer — check your connection and tap it again. (${e.message})`)

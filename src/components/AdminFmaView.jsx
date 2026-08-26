@@ -47,7 +47,7 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
     // Needs its own scroll too: a 25-question review is the longest page here.
     return (
       <div className="admin-pane">
-        <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} />
+        <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} isAdmin />
       </div>
     )
   }

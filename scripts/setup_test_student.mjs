@@ -51,7 +51,12 @@ async function magicLink() {
   const { data, error } = await sb.auth.admin.generateLink({
     type: 'magiclink',
     email: EMAIL,
-    options: { redirectTo: `${PORTAL}/${STUDENT_ID}/fma-progress` },
+    // A logged-in student's tab is the FIRST path segment (StudentView reads
+    // pathSegs[0]); the /:slug/:tab form is admin-preview only. This used to
+    // send `/test-student/fma-progress`, where 'test-student' isn't a valid tab
+    // name, so the link silently landed on Assigned instead of the F=ma tab it
+    // advertises.
+    options: { redirectTo: `${PORTAL}/fma-progress` },
   })
   if (error) throw new Error(error.message)
   return data.properties.action_link

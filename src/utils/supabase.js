@@ -729,7 +729,11 @@ export async function createFmaAttempt(studentId, examId, mode) {
 // and appends a timestamped event so every click — not just the final one — is
 // logged. The event log is analysis-only, so a failure there must not surface as
 // an error on an answer that genuinely saved.
-export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
+//
+// `activeSeconds` is the exam clock's reading at the moment of the click. Per-
+// question times are differences of these readings, so they exclude the time the
+// clock was paused; see the note on fetchFmaAttemptDetail.
+export async function saveFmaAnswer(attemptId, questionId, selectedChoice, activeSeconds) {
   const { error } = await supabase
     .from('fma_attempt_answers')
     .upsert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice }, { onConflict: 'attempt_id,question_id' })
@@ -737,8 +741,18 @@ export async function saveFmaAnswer(attemptId, questionId, selectedChoice) {
 
   await supabase
     .from('fma_answer_events')
-    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice, event_type: 'answer' })
+    .insert({
+      attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice,
+      event_type: 'answer', active_seconds: stampSeconds(activeSeconds),
+    })
     .then(({ error: evErr }) => { if (evErr) console.warn('fma: answer event not logged', evErr.message) })
+}
+
+// Exam-clock reading to store on an event row, or null when the caller has no
+// clock (paper-first entry, or any legacy call site). Null means "fall back to
+// wall-clock" on the way out, so a missing stamp degrades rather than breaks.
+function stampSeconds(activeSeconds) {
+  return Number.isFinite(activeSeconds) ? Math.max(0, Math.round(activeSeconds)) : null
 }
 
 // Flag / unflag a question for review. A flag may exist before any answer, so
@@ -762,10 +776,13 @@ export async function setFmaEliminated(attemptId, questionId, eliminated) {
 // events this gives an honest per-question time: a question is "active" from
 // the moment it is shown until the next event on a different question. Purely
 // analytical — never blocks or errors the student's flow.
-export async function logFmaQuestionView(attemptId, questionId) {
+export async function logFmaQuestionView(attemptId, questionId, activeSeconds) {
   const { error } = await supabase
     .from('fma_answer_events')
-    .insert({ attempt_id: attemptId, question_id: questionId, selected_choice: null, event_type: 'view' })
+    .insert({
+      attempt_id: attemptId, question_id: questionId, selected_choice: null,
+      event_type: 'view', active_seconds: stampSeconds(activeSeconds),
+    })
   if (error) console.warn('fma: view event not logged', error.message)
 }
 
@@ -898,11 +915,28 @@ export async function fetchFmaAttemptDetail(attemptId) {
   // there is no meaningful per-question time to report.
   const events = attempt.mode === 'live' ? await fetchFmaAnswerEvents(attemptId) : []
   const secondsByQuestion = new Map()
+
+  // Measure along the exam clock, not the calendar. Events carry the clock
+  // reading at the instant they fired, and the clock stops whenever the test
+  // isn't on screen — so a save-and-exit, a switch to another tab or a closed
+  // laptop no longer lands on whichever question happened to be open. Before
+  // that stamp existed these spans were wall-clock, and a two-minute sitting
+  // could report 10 minutes on question 1 while the header said "2 min".
+  //
+  // Old attempts have no stamps, so they keep the wall-clock arithmetic rather
+  // than losing their timings entirely.
+  const stamped = events.some(ev => ev.active_seconds != null)
   const endedAt = attempt.submitted_at ? new Date(attempt.submitted_at) : null
+  const posOf = ev => (stamped ? ev.active_seconds : new Date(ev.clicked_at).getTime() / 1000)
+  const finalPos = stamped ? attempt.active_seconds : endedAt && endedAt.getTime() / 1000
+
   events.forEach((ev, i) => {
-    const next = events[i + 1] ? new Date(events[i + 1].clicked_at) : endedAt
-    if (!next) return
-    const span = (next - new Date(ev.clicked_at)) / 1000
+    const from = posOf(ev)
+    const to = events[i + 1] ? posOf(events[i + 1]) : finalPos
+    // A mixed attempt (stamped events plus a few unstamped ones from an older
+    // tab) drops the unmeasurable spans instead of mixing the two scales.
+    if (from == null || to == null) return
+    const span = to - from
     if (span <= 0) return
     secondsByQuestion.set(ev.question_id, (secondsByQuestion.get(ev.question_id) || 0) + span)
   })
