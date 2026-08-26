@@ -64,43 +64,10 @@ async function resolveSelfStudent(admin: any, userId: string) {
   return student
 }
 
-function toIcsDate(iso: string): string {
-  return iso.replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
-}
-
-function toBase64(str: string): string {
-  const bytes = new TextEncoder().encode(str)
-  let binary = ''
-  bytes.forEach(b => { binary += String.fromCharCode(b) })
-  return btoa(binary)
-}
-
-function buildCancelIcs(params: {
-  uid: string; summary: string; start: string; end: string; attendeeEmails: string[]
-}): string {
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Eichenlaub Physics//Portal//EN',
-    'METHOD:CANCEL',
-    'BEGIN:VEVENT',
-    `UID:${params.uid}`,
-    `DTSTAMP:${toIcsDate(new Date().toISOString())}`,
-    `DTSTART:${toIcsDate(params.start)}`,
-    `DTEND:${toIcsDate(params.end)}`,
-    'SEQUENCE:2',
-    `SUMMARY:${params.summary}`,
-    'STATUS:CANCELLED',
-    'ORGANIZER:mailto:mark@eichenlaubphysics.com',
-    ...params.attendeeEmails.map(e => `ATTENDEE;RSVP=TRUE:mailto:${e}`),
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ]
-  return lines.join('\r\n')
-}
-
-async function sendIcsEmail(params: {
-  to: string[]; subject: string; text: string; icsContent: string
+// Deleting the Google event with sendUpdates=all already removes it from every
+// guest's calendar, so this is a plain notice with no .ics cancellation attached.
+async function sendPlainEmail(params: {
+  to: string[]; subject: string; text: string
 }): Promise<void> {
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -111,7 +78,6 @@ async function sendIcsEmail(params: {
       to: params.to,
       subject: params.subject,
       text: params.text,
-      attachments: [{ filename: 'session.ics', content: toBase64(params.icsContent) }],
     }),
   }).catch(e => console.error('Email send failed:', e))
 }
@@ -178,8 +144,10 @@ Deno.serve(async (req) => {
   if (session.gcal_event_id) {
     const accessToken = await getGoogleAccessToken()
     if (accessToken) {
+      // sendUpdates=all so Google removes the event from every guest's calendar and
+      // sends the cancellation notice, matching delete-session-event.
       const delRes = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/primary/events/${session.gcal_event_id}`,
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events/${session.gcal_event_id}?sendUpdates=all`,
         { method: 'DELETE', headers: { Authorization: `Bearer ${accessToken}` } },
       )
       if (!delRes.ok && delRes.status !== 404 && delRes.status !== 410) {
@@ -248,17 +216,6 @@ Deno.serve(async (req) => {
   if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
 
   const when = fmtWhen(session.scheduled_at as string, tz)
-  const sessionEnd = session.end_time
-    ? (session.end_time as string)
-    : new Date(new Date(session.scheduled_at as string).getTime() + SESSION_DURATION_MIN * 60_000).toISOString()
-
-  const icsContent = buildCancelIcs({
-    uid: session_id,
-    summary: `${student.name}/Mark Physics`,
-    start: session.scheduled_at as string,
-    end: sessionEnd,
-    attendeeEmails: [...studentEmails, MARK_EMAIL],
-  })
 
   const cancelBody = [
     `Your physics session for ${when} has been cancelled.`,
@@ -268,20 +225,18 @@ Deno.serve(async (req) => {
   ].join('\n')
 
   if (studentEmails.length) {
-    await sendIcsEmail({
+    await sendPlainEmail({
       to: studentEmails,
       subject: `Session cancelled: ${when}`,
       text: cancelBody,
-      icsContent,
     })
   }
   // Only notify Mark when a student self-cancels; Mark doesn't need a notice about their own cancellation
   if (!isAdminCaller) {
-    await sendIcsEmail({
+    await sendPlainEmail({
       to: [MARK_EMAIL],
       subject: `Session cancelled: ${student.name} – ${when}`,
       text: `${student.name} cancelled their session for ${when}.${message ? '\n\nMessage: ' + message : ''}`,
-      icsContent,
     })
   }
 

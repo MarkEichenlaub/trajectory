@@ -15,7 +15,6 @@ const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
-const MIN_NOTICE_HOURS = 24
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -64,46 +63,10 @@ async function resolveSelfStudent(admin: any, userId: string) {
   return student
 }
 
-function toIcsDate(iso: string): string {
-  return iso.replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
-}
-
-function toBase64(str: string): string {
-  const bytes = new TextEncoder().encode(str)
-  let binary = ''
-  bytes.forEach(b => { binary += String.fromCharCode(b) })
-  return btoa(binary)
-}
-
-function buildIcs(params: {
-  uid: string; summary: string; description: string
-  start: string; end: string; method: 'REQUEST' | 'CANCEL'
-  attendeeEmails: string[]; sequence?: number
-}): string {
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Eichenlaub Physics//Portal//EN',
-    `METHOD:${params.method}`,
-    'BEGIN:VEVENT',
-    `UID:${params.uid}`,
-    `DTSTAMP:${toIcsDate(new Date().toISOString())}`,
-    `DTSTART:${toIcsDate(params.start)}`,
-    `DTEND:${toIcsDate(params.end)}`,
-    `SEQUENCE:${params.sequence ?? 0}`,
-    `SUMMARY:${params.summary}`,
-    `DESCRIPTION:${params.description.replace(/\n/g, '\\n')}`,
-    'ORGANIZER:mailto:mark@eichenlaubphysics.com',
-    ...params.attendeeEmails.map(e => `ATTENDEE;RSVP=TRUE:mailto:${e}`),
-    ...(params.method === 'CANCEL' ? ['STATUS:CANCELLED'] : []),
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ]
-  return lines.join('\r\n')
-}
-
-async function sendIcsEmail(params: {
-  to: string[]; subject: string; text: string; icsContent: string
+// Calendar entries are delivered as real Google Calendar invitations (see the
+// attendee PATCH below), so this is a plain notification email with no .ics.
+async function sendPlainEmail(params: {
+  to: string[]; subject: string; text: string
 }): Promise<void> {
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -114,7 +77,6 @@ async function sendIcsEmail(params: {
       to: params.to,
       subject: params.subject,
       text: params.text,
-      attachments: [{ filename: 'session.ics', content: toBase64(params.icsContent) }],
     }),
   }).catch(e => console.error('Email send failed:', e))
 }
@@ -215,10 +177,10 @@ Deno.serve(async (req) => {
 
   const slotDate = new Date(slot)
   if (isNaN(slotDate.getTime())) return json({ error: 'invalid slot' }, 400)
-  // The 24h-notice rule is a guard rail for student self-booking; an admin
-  // booking on a family's behalf may schedule sooner.
-  if (!isAdminCaller && slotDate.getTime() - Date.now() < MIN_NOTICE_HOURS * 3_600_000) {
-    return json({ error: 'slot is too soon (24h minimum notice required)' }, 400)
+  // No minimum-notice rule: last-minute booking is allowed on purpose. The only
+  // floor is that the slot hasn't already started.
+  if (slotDate.getTime() < Date.now()) {
+    return json({ error: 'slot is in the past' }, 400)
   }
 
   const endDate = new Date(slotDate.getTime() + SESSION_DURATION_MIN * 60_000)
@@ -233,6 +195,19 @@ Deno.serve(async (req) => {
   // Re-verify the slot is still available (prevents race conditions)
   const busy = await fetchBusy(accessToken, slot, endDate.toISOString())
   if (overlapsAny(slotDate, busy)) return json({ error: 'slot is no longer available' }, 409)
+
+  // Contacts opted into meeting invites become real Google Calendar guests, so
+  // Google keeps their copy in sync whenever the event is moved or cancelled —
+  // including when Mark drags it in his own calendar. Fetched before the event is
+  // created so they can be attached in the same pass. (receives_meets = the
+  // "Meet invites" checkbox; the recurring-schedule functions use the same flag.)
+  const { data: contacts } = await admin
+    .from('student_contacts').select('email')
+    .eq('student_id', student.id)
+    .eq('receives_meets', true)
+    .eq('verified', true).eq('bounced', false)
+  const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
+  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
 
   // Create Google Calendar event (with a Google Meet conference)
   const dateStr = slotDate.toLocaleDateString('en-US', {
@@ -303,20 +278,30 @@ Deno.serve(async (req) => {
     console.error('Miro fetch error:', e)
   }
 
-  // Patch Google Calendar event description with Miro + Meet URLs
-  if (miroBoardUrl) {
-    const descLines = [
-      'Physics tutoring session',
-      '',
-      ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
-      ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
-      `Portal: ${PORTAL_URL}`,
-    ]
-    await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events/${gcalEventId}`, {
+  // Attach the guests and the final description in one PATCH, with sendUpdates=all
+  // so the single Google invitation that goes out already carries the Miro/Meet
+  // links. The event is created guest-free above precisely so this is the only
+  // notification the family receives.
+  const descLines = [
+    'Physics tutoring session',
+    '',
+    ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
+    ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
+    `Portal: ${PORTAL_URL}`,
+  ]
+  const attendeePatch = await fetch(
+    `https://www.googleapis.com/calendar/v3/calendars/primary/events/${gcalEventId}?sendUpdates=all`,
+    {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ description: descLines.join('\n') }),
-    }).catch(e => console.error('Calendar PATCH error:', e))
+      body: JSON.stringify({
+        description: descLines.join('\n'),
+        attendees: studentEmails.map(email => ({ email })),
+      }),
+    },
+  ).catch(e => { console.error('Calendar PATCH error:', e); return null })
+  if (attendeePatch && !attendeePatch.ok) {
+    console.error('Calendar guest PATCH failed:', attendeePatch.status, await attendeePatch.text())
   }
 
   // Insert session row
@@ -338,33 +323,10 @@ Deno.serve(async (req) => {
     return json({ error: 'DB insert failed', detail: dbErr.message }, 500)
   }
 
-  // Get student contact emails for schedule notifications (receives_meets = "Meet invites" checkbox)
-  const { data: contacts } = await admin
-    .from('student_contacts').select('email')
-    .eq('student_id', student.id)
-    .eq('receives_meets', true)
-    .eq('verified', true).eq('bounced', false)
-  const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
-  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
-
-  // Send ICS confirmation email (formatted in the student's own timezone)
+  // Friendly confirmation email (formatted in the student's own timezone). No .ics
+  // attachment: the calendar entry comes from the Google invitation sent above, and
+  // a second attached copy would land as a duplicate event.
   const when = fmtWhen(slotDate.toISOString(), tz)
-  const icsUid = sessionId
-  const icsDescription = [
-    ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
-    ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
-    `Portal: ${PORTAL_URL}`,
-  ].join('\n')
-
-  const icsContent = buildIcs({
-    uid: icsUid,
-    summary: `${student.name}/Mark Physics`,
-    description: icsDescription,
-    start: slotDate.toISOString(),
-    end: endDate.toISOString(),
-    method: 'REQUEST',
-    attendeeEmails: [...studentEmails, MARK_EMAIL],
-  })
 
   const confirmText = [
     `Hi ${(student.first_name as string | undefined) || (student.name as string).split(' ')[0]},`,
@@ -381,18 +343,16 @@ Deno.serve(async (req) => {
   ].join('\n')
 
   if (studentEmails.length) {
-    await sendIcsEmail({
+    await sendPlainEmail({
       to: studentEmails,
       subject: `Session confirmed: ${when}`,
       text: confirmText,
-      icsContent,
     })
   }
-  await sendIcsEmail({
+  await sendPlainEmail({
     to: [MARK_EMAIL],
     subject: `New session booked: ${student.name} – ${when}`,
     text: `${student.name} booked a session for ${when}.\n\nMiro: ${miroBoardUrl || '(pending)'}`,
-    icsContent,
   })
 
   return json({

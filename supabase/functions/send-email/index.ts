@@ -40,7 +40,10 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { to, subject, body } = await req.json()
+    // `attachments` is an optional Resend-shaped array ({ filename, content }, with
+    // content base64-encoded) — used for one-off calendar (.ics) sends. Every existing
+    // caller omits it and keeps sending plain mail exactly as before.
+    const { to, subject, body, attachments } = await req.json()
 
     // Body may be plain text or HTML — send as html when it looks like markup
     // so existing plain-text callers keep their line breaks.
@@ -58,6 +61,7 @@ Deno.serve(async (req) => {
         to: Array.isArray(to) ? to : [to],
         subject,
         ...(isHtml ? { html: body } : { text: body }),
+        ...(Array.isArray(attachments) && attachments.length ? { attachments } : {}),
       }),
     })
 

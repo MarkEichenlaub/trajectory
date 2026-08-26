@@ -13,7 +13,6 @@ const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
-const MIN_NOTICE_HOURS = 24
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -62,44 +61,11 @@ async function resolveSelfStudent(admin: any, userId: string) {
   return student
 }
 
-function toIcsDate(iso: string): string {
-  return iso.replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z')
-}
-
-function toBase64(str: string): string {
-  const bytes = new TextEncoder().encode(str)
-  let binary = ''
-  bytes.forEach(b => { binary += String.fromCharCode(b) })
-  return btoa(binary)
-}
-
-function buildIcs(params: {
-  uid: string; summary: string; description: string
-  start: string; end: string; attendeeEmails: string[]; sequence?: number
-}): string {
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Eichenlaub Physics//Portal//EN',
-    'METHOD:REQUEST',
-    'BEGIN:VEVENT',
-    `UID:${params.uid}`,
-    `DTSTAMP:${toIcsDate(new Date().toISOString())}`,
-    `DTSTART:${toIcsDate(params.start)}`,
-    `DTEND:${toIcsDate(params.end)}`,
-    `SEQUENCE:${params.sequence ?? 1}`,
-    `SUMMARY:${params.summary}`,
-    `DESCRIPTION:${params.description.replace(/\n/g, '\\n')}`,
-    'ORGANIZER:mailto:mark@eichenlaubphysics.com',
-    ...params.attendeeEmails.map(e => `ATTENDEE;RSVP=TRUE:mailto:${e}`),
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ]
-  return lines.join('\r\n')
-}
-
-async function sendIcsEmail(params: {
-  to: string[]; subject: string; text: string; icsContent: string
+// The calendar entry is moved by the Google invitation update (sendUpdates=all on
+// the event PATCH), so this is a plain heads-up email with no .ics attachment.
+// An attached copy would be a second, competing event in the family's calendar.
+async function sendPlainEmail(params: {
+  to: string[]; subject: string; text: string
 }): Promise<void> {
   await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -110,7 +76,6 @@ async function sendIcsEmail(params: {
       to: params.to,
       subject: params.subject,
       text: params.text,
-      attachments: [{ filename: 'session.ics', content: toBase64(params.icsContent) }],
     }),
   }).catch(e => console.error('Email send failed:', e))
 }
@@ -172,8 +137,9 @@ Deno.serve(async (req) => {
 
   const newSlotDate = new Date(new_slot)
   if (isNaN(newSlotDate.getTime())) return json({ error: 'invalid new_slot' }, 400)
-  if (newSlotDate.getTime() - Date.now() < MIN_NOTICE_HOURS * 3_600_000) {
-    return json({ error: 'new slot is too soon (24h minimum notice required)' }, 400)
+  // No minimum-notice rule: moving a session at short notice is allowed on purpose.
+  if (newSlotDate.getTime() < Date.now()) {
+    return json({ error: 'new slot is in the past' }, 400)
   }
   const newEndDate = new Date(newSlotDate.getTime() + SESSION_DURATION_MIN * 60_000)
 
@@ -195,16 +161,30 @@ Deno.serve(async (req) => {
   })
   if (overlapsAny(newSlotDate, filteredBusy)) return json({ error: 'new slot is not available' }, 409)
 
-  // Patch Google Calendar event if this session has a gcal_event_id
+  // Contacts opted into meeting invites. This is the same flag book-session and the
+  // recurring-schedule functions use — the set of people who receive updates must be
+  // the set who were invited, or someone is left holding a stale calendar entry.
+  const { data: contacts } = await admin
+    .from('student_contacts').select('email')
+    .eq('student_id', student.id)
+    .eq('receives_meets', true)
+    .eq('verified', true).eq('bounced', false)
+  const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
+  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
+
+  // Patch Google Calendar event if this session has a gcal_event_id. sendUpdates=all
+  // makes Google move every guest's copy and notify them. The guest list is restated
+  // so a session booked before guests were used still picks them up here.
   if (session.gcal_event_id) {
     const patchRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${session.gcal_event_id}`,
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${session.gcal_event_id}?sendUpdates=all`,
       {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           start: { dateTime: newSlotDate.toISOString(), timeZone: tz },
           end: { dateTime: newEndDate.toISOString(), timeZone: tz },
+          attendees: studentEmails.map(email => ({ email })),
         }),
       },
     )
@@ -252,26 +232,6 @@ Deno.serve(async (req) => {
     }).catch(e => console.error('Warning email failed:', e))
   }
 
-  // Get contact emails
-  const { data: contacts } = await admin
-    .from('student_contacts').select('email')
-    .eq('student_id', student.id)
-    .eq('receives_schedule_changes', true)
-    .eq('verified', true).eq('bounced', false)
-  const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
-  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
-
-  const miroUrl = session.miro_board_url as string | undefined
-  const icsContent = buildIcs({
-    uid: session_id,
-    summary: `${student.name}/Mark Physics`,
-    description: `Rescheduled session.${miroUrl ? `\n\nMiro whiteboard: ${miroUrl}` : ''}\nPortal: ${PORTAL_URL}`,
-    start: newSlotDate.toISOString(),
-    end: newEndDate.toISOString(),
-    attendeeEmails: [...studentEmails, MARK_EMAIL],
-    sequence: 1,
-  })
-
   const rescheduleText = [
     `Hi ${(student.first_name as string | undefined) || (student.name as string).split(' ')[0]},`,
     '',
@@ -284,18 +244,16 @@ Deno.serve(async (req) => {
   ].join('\n')
 
   if (studentEmails.length) {
-    await sendIcsEmail({
+    await sendPlainEmail({
       to: studentEmails,
       subject: `Session rescheduled: ${newWhen}`,
       text: rescheduleText,
-      icsContent,
     })
   }
-  await sendIcsEmail({
+  await sendPlainEmail({
     to: [MARK_EMAIL],
     subject: `Session rescheduled: ${student.name} – ${newWhen}`,
     text: `${student.name} rescheduled.\n\nPreviously: ${oldWhen}\nNow: ${newWhen}`,
-    icsContent,
   })
 
   return json({ ok: true, scheduled_at: newSlotDate.toISOString(), end_time: newEndDate.toISOString() })

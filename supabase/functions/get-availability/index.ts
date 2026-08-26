@@ -11,7 +11,6 @@ const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
 const SLOT_INCREMENT_MIN = 30
-const MIN_NOTICE_HOURS = 24
 
 // Working hours in Eastern time. Day 0 = Sunday, 6 = Saturday.
 const WORKING_HOURS: Record<number, { start: string; end: string }[]> = {
@@ -159,8 +158,9 @@ Deno.serve(async (req) => {
     return json({ error: 'FreeBusy query failed', detail: String(e) }, 500)
   }
 
+  // Any free slot that hasn't started yet is offered — there is no minimum-notice
+  // rule, so same-day and next-hour slots show up like any other.
   const now = Date.now()
-  const minNoticeMs = MIN_NOTICE_HOURS * 3_600_000
   const slots: string[] = []
 
   // Iterate Eastern calendar dates from `from` to `to` inclusive
@@ -169,7 +169,7 @@ Deno.serve(async (req) => {
   while (cur <= end) {
     const dateStr = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE }).format(cur)
     for (const slot of generateSlots(dateStr)) {
-      if (slot.getTime() - now < minNoticeMs) continue
+      if (slot.getTime() <= now) continue
       if (!overlapsAny(slot, busy)) slots.push(slot.toISOString())
     }
     cur.setUTCDate(cur.getUTCDate() + 1)

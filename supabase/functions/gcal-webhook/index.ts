@@ -44,6 +44,7 @@ type CalEvent = {
   summary?: string
   start?: { dateTime?: string }
   end?: { dateTime?: string }
+  attendees?: { email?: string }[]
 }
 
 Deno.serve(async (req) => {
@@ -165,6 +166,36 @@ Deno.serve(async (req) => {
     const newEnd = event.end?.dateTime
     if (!newStart || !newEnd) continue
 
+    // Guests on the event are what keep the family's calendar in sync: when Mark
+    // drags a session in his own calendar, Google moves every guest's copy for us.
+    // A session whose event somehow has no guests would silently strand the family
+    // on the old time, so attach them here. Only when the list is empty — Google has
+    // already notified everyone on an event that does have guests, and re-patching
+    // would send a second, redundant update.
+    if (!event.attendees?.length) {
+      const { data: contacts } = await admin
+        .from('student_contacts').select('email')
+        .eq('student_id', session.student_id)
+        .eq('receives_meets', true)
+        .eq('verified', true).eq('bounced', false)
+      const emails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
+      if (emails.length) {
+        const res = await fetch(
+          `https://www.googleapis.com/calendar/v3/calendars/primary/events/${event.id}?sendUpdates=all`,
+          {
+            method: 'PATCH',
+            headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ attendees: emails.map(email => ({ email })) }),
+          },
+        ).catch(e => { console.error('Guest backfill error:', e); return null })
+        if (res && !res.ok) {
+          console.error('Guest backfill failed:', res.status, await res.text())
+        } else if (res) {
+          console.log(`Added guests to ${event.id}: ${emails.join(', ')}`)
+        }
+      }
+    }
+
     if (newStart !== session.scheduled_at || newEnd !== session.end_time) {
       const { error } = await admin.from('sessions').update({
         scheduled_at: newStart,
@@ -175,8 +206,12 @@ Deno.serve(async (req) => {
       } else {
         console.log(`Session ${session.id}: ${session.scheduled_at} → ${newStart}`)
 
-        // Warn Mark if any overridden due dates exist for this student
-        const studentName = (session.students as { name: string }).name
+        // Warn Mark if any overridden due dates exist for this student.
+        // The embedded row comes back as an object or a single-element array
+        // depending on how the join is inferred; handle both so the email doesn't
+        // address "undefined's session".
+        const rel = session.students as unknown as { name?: string } | { name?: string }[]
+        const studentName = (Array.isArray(rel) ? rel[0]?.name : rel?.name) ?? 'A student'
         const { data: overridden } = await admin
           .from('assignments')
           .select('problem_id, due_date')
