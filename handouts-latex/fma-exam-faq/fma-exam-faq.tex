@@ -1,0 +1,362 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+% Latin Modern is Computer Modern redrawn as a scalable outline font. custom.sty
+% switches on microtype's automatic font expansion, which pdfTeX can only do
+% with scalable fonts -- and the bold dollar signs in the fees section pull in a
+% bitmap text-companion face that aborts the build. Loading lmodern first makes
+% every face scalable; the document looks the same as the other handouts.
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+% The timeline runs longer than the space left on its page. A plain tabular
+% cannot break, so it would be shunted whole onto the next page and leave a
+% third of a page blank; longtable lets it flow.
+\usepackage{longtable}
+\usepackage{custom}
+
+% color boxes
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{theorems}
+\newtcolorbox{official}{colback=red!8,colframe=red!55!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+\newtcolorbox{keybox}{colback=blue!8,colframe=blue!40!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+\newtcolorbox{tipbox}{colback=green!8,colframe=green!40!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+
+% headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{F = ma Exam FAQ}
+\chead{}
+\rhead{EichenlaubPhysics}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\newcommand{\psettitle}[1]{
+    \begin{center}
+    \huge \textbf{#1}
+    \end{center}
+}
+
+% A FAQ question. Kept with at least the start of its answer so a question never
+% ends up stranded alone at the foot of a page.
+\definecolor{qblue}{rgb}{0.10,0.22,0.50}
+\newcommand{\Q}[1]{\par\medskip\noindent\textbf{\color{qblue}#1}\par\nobreak\vspace{1pt}\nobreak}
+
+\linespread{1.03}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\psettitle{F = ma Exam FAQ}
+\begin{center}
+\large Everything about \emph{taking} the exam --- the logistics, not the physics
+\end{center}
+
+\begin{official}
+\textbf{The AAPT website is the final word.}\\[4pt]
+Everything in this handout is my summary, written to save you time. If anything here
+disagrees with AAPT, \textbf{AAPT is right and I am wrong}. Check the official site
+before you rely on any date, fee, or rule:
+\begin{center}
+\large\bfseries
+\href{https://www.aapt.org/physicsteam/}{www.aapt.org/physicsteam}
+\end{center}
+The two pages worth bookmarking are
+\href{https://www.aapt.org/physicsteam/registration.cfm}{Registration} and
+\href{https://www.aapt.org/physicsteam/PT-rules.cfm}{Rules}.
+
+\textbf{A note on dates and fees.} The numbers below are from the \textbf{2026 cycle},
+which is the most recent one AAPT has published in full. At the time I wrote this, AAPT
+had not yet posted the next cycle's page. Use the 2026 figures to understand the
+\emph{shape} of the year --- roughly when things happen and roughly what they cost ---
+and confirm the actual dates on the AAPT site once they are announced. Dates move.
+\end{official}
+
+\section{The Short Version}
+
+\begin{keybox}
+\textbf{The F = ma exam is 25 multiple-choice questions in 75 minutes, on mechanics
+only.} You take it \textbf{in person, on a computer, with a live proctor watching}, on a
+single day in February. \textbf{Your school has to register you} --- you cannot sign
+yourself up --- and registration closes about three weeks before the exam. Score high
+enough (recently 14--18 out of 25) and you are invited to the USAPhO exam in April.
+\end{keybox}
+
+\textbf{The single most important thing in this document:} the step most likely to stop
+you is not the physics. It is finding a teacher willing to proctor and getting your school
+registered before the deadline. Start asking in the fall.
+
+\section{Timeline: What To Do, and When}
+
+Dates are the 2026 cycle's; treat the left column as your real deadline structure.
+
+\begin{longtable}{p{0.24\textwidth}p{0.66\textwidth}}
+\hline
+\textbf{When} & \textbf{What you should be doing} \\
+\hline
+\endfirsthead
+\hline
+\textbf{When} & \textbf{What you should be doing} \emph{(continued)} \\
+\hline
+\endhead
+September--October &
+Ask your physics teacher whether the school will run the F = ma exam. If they have never
+heard of it, send them the AAPT link. This is the step that fails most often, and it fails
+because people leave it until January. \\[3pt]
+October--November &
+Confirm \emph{who} is registering and whether the school will pay the fee. Get a name, not
+a vague yes. If your school says no, start looking elsewhere now (see below). \\[3pt]
+December--early January &
+Make sure the proctor has actually registered. Do not assume. Ask them to confirm they
+have submitted it. \\[3pt]
+Mid-January &
+\textbf{Registration deadline.} In 2026 this was January 20 (extended to January 21). Once
+it passes, there is no way in for that year. \\[3pt]
+Mid-February &
+\textbf{Exam day.} In 2026 it was February 12, in a 1:00--4:00 pm EST window --- your
+proctor picks the start time inside that window. In 2024 and 2023 it was February 8 and 9. \\[3pt]
+Early March &
+Solutions posted (March 5 in 2026), then results (March 9 in 2026). \\[3pt]
+April &
+\textbf{USAPhO}, if you qualified. April 10 in 2026, a 1:00--5:00 pm EDT window. \\[3pt]
+May--June &
+USAPhO Plus, then the roughly 20 students invited to the training camp
+(May 30--June 9, 2026, at the University of Maryland). \\
+\hline
+\end{longtable}
+
+\section{The Exam Itself}
+
+\Q{What is on it?}
+Mechanics only --- kinematics, Newton's laws, energy, momentum, rotation, oscillations,
+gravitation, fluids. No electricity and magnetism, no thermodynamics, no optics, no modern
+physics.
+
+\Q{How long is it and how many questions?}
+25 multiple-choice questions in 75 minutes. That is three minutes per question on average.
+
+\Q{Do I need calculus?}
+No. Every question can be done without it. Calculus occasionally makes a problem faster,
+but nothing on the exam requires it.
+
+\Q{How is it scored? Is there a guessing penalty?}
+One point for each correct answer, and \textbf{zero points for a wrong answer or a blank}.
+AAPT's own instructions say ``There is no additional penalty for incorrect answers.''
+
+\begin{tipbox}
+\textbf{So never leave a question blank.} A blank and a wrong answer score identically, and
+a guess among five choices is worth $0.2$ points on average. If you have eliminated even one
+option, guess. With two minutes left, put an answer on everything you have not reached.
+\end{tipbox}
+
+\Q{Are the questions in order of difficulty?}
+Roughly, but not reliably. AAPT states that ``All questions are equally weighted, but are
+not necessarily equally difficult.'' Since every question is worth the same one point,
+there is no reason to grind on question 8 while questions 20 and 21 --- which you might find
+easier --- sit unread. Take a pass through the whole exam.
+
+\Q{What value of $g$ should I use?}
+The exam tells you: use $g = 10$ N/kg unless a question says otherwise. This is deliberate
+--- it keeps the arithmetic clean.
+
+\section{How You Actually Take It}
+
+\Q{Is it on paper or on a computer?}
+On a computer. As of the 2026 cycle, AAPT states that the F = ma and USAPhO exams are
+``conducted online via Educational Vistas only,'' and that ``There will be no printable
+versions of the exams available.'' This changed recently --- older exams were paper with a
+bubble sheet, and in 2021 the platform was Art of Problem Solving --- so ignore what you
+read in older guides.
+
+\Q{Can I take it at home?}
+No. It is proctored and taken live, in person, at your school or another approved site,
+with everyone at that site testing at the same time. It is not a take-home or an
+open-window online test.
+
+\Q{Do I get scratch paper?}
+Yes, and only from the proctor. The rule is that ``Only scratch paper provided by the
+proctors may be used,'' and ``The proctors must collect it immediately after the exam.''
+So you cannot bring your own paper, and you do not get your work back.
+
+\Q{What are the calculator rules?}
+You may use a hand-held calculator, subject to all of the following:
+
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Not a graphing calculator.}
+\item Its display has \textbf{no more than three lines}.
+\item Its \textbf{memory must be completely cleared} of data and programs immediately
+before the exam.
+\item \textbf{Only the basic functions} found on a simple scientific calculator.
+\item \textbf{Calculators may not be shared.}
+\end{itemize}
+
+A cheap scientific calculator is the safe choice. Do not show up with a TI-84 and expect
+to use it. Bring your own, and clear it before you sit down.
+
+\Q{What else is banned?}
+Cell phones may not be used during the exam or while the exam materials are present, and
+you may not use any external references --- no books, no formula sheets, no notes. There is
+no formula sheet provided either.
+
+\Q{Can I talk about the questions afterwards?}
+Not right away. Each exam carries an embargo: the 2025 paper told students not to
+communicate anything about the questions or their solutions until after February 13, 2025 ---
+the day after the exam. Respect it. Solutions are posted publicly a few weeks later.
+
+\section{Getting a Seat: Proctors, Registration, and Fees}
+
+\Q{Who signs me up?}
+Not you. \textbf{Your school registers you.} AAPT says ``It is preferred that one person
+register all students from a school,'' and that person is normally the teacher who will
+proctor. Your job is to find that person and make sure they do it before the deadline.
+
+\Q{Who is allowed to proctor?}
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item A proctor ``should have at least a 2-year degree, though this degree does not need to
+be related to physics.'' Your English teacher can proctor.
+\item \textbf{Not} a parent, relative, or close friend or acquaintance of a student taking
+the exam.
+\item \textbf{Not} a for-profit test prep centre or educational service --- AAPT
+specifically disallows this now.
+\item They should register with an official school email address where possible.
+\end{itemize}
+
+\Q{What does it cost?}
+In 2026: \textbf{\$75 per school} (\$37.50 if the registering teacher is an AAPT member)
+\textbf{plus \$15.50 per student.} Note the shape of that --- most of the cost is a flat
+per-school fee, so the more students who sign up, the cheaper it gets per person.
+
+\Q{Do I have to pay it?}
+Often not. \textbf{Many schools cover the fee} out of a department or activities budget,
+especially if a few students sign up together. Ask --- do not assume you will be billed. If
+cost is genuinely the obstacle, tell me and we will sort it out.
+
+\begin{tipbox}
+\textbf{Recruit a friend or two.} It makes the per-student cost lower, it makes the school
+far more likely to say yes, and it gives the teacher a reason to run it. ``Can you proctor
+an exam for five of us?'' is a much easier ask than ``Can you proctor an exam for me?''
+\end{tipbox}
+
+\Q{My school says no, or has no physics teacher. Now what?}
+You are not stuck. You need a proctor and a site, and it does not have to be your own
+school:
+
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Another school.} A nearby high school already running the exam can usually
+add one more student. This is common and entirely allowed.
+\item \textbf{A community college or university.} Many have a testing centre.
+\item \textbf{A public library.} Some offer proctoring services.
+\end{itemize}
+
+AAPT's advice to homeschooled students is exactly this --- contact community colleges,
+universities, or libraries. The same route works for anyone whose school will not host it.
+
+\Q{Will AAPT find me a proctor or a test centre?}
+No. AAPT is explicit that it ``does not facilitate or arrange test centers, teachers, or
+proctors,'' and does not keep a list you can consult. Finding a site is on you. Start early
+and ask several places at once.
+
+\Q{Am I eligible?}
+You must be a U.S. citizen, a U.S. permanent resident (green card holder), or currently
+attending a U.S. school --- \textbf{and you must be physically located in the U.S. when you
+take it}. There is no grade-level or age restriction on the F = ma exam itself. Age limits
+apply only later, to the training camp and the international team.
+
+\Q{Can I take it more than once in a year?}
+Not currently. There is one exam per year. In 2022 there were two (an A and a B version)
+and students could sit both, but every year since has had a single exam. If you miss it,
+you wait a year.
+
+\section{What Score Do I Need?}
+
+\Q{What is the cutoff?}
+There is no fixed cutoff. AAPT sets it \emph{after} the exam, at whatever score invites
+roughly 400--500 students to the USAPhO. So it moves every year with the difficulty of the
+paper. Here is the actual history:
+
+\begin{center}
+\begin{tabular}{llrrrcl}
+\hline
+\textbf{Year} & \textbf{Exam date} & \textbf{Took it} & \textbf{Median} & \textbf{Mean} &
+\textbf{Cutoff} & \textbf{Qualified} \\
+\hline
+2021       & Feb 18 & 3524 & 8  & 8.89  & 15 & --- \\
+2022 (A)   & Feb 9  & 2038 & 8  & 8.24  & 15 & --- \\
+2022 (B)   & Feb 15 & 2518 & 8  & 8.51  & 15 & --- \\
+2023       & Feb 9  & 5173 & 10 & 10.29 & 18 & 417 \; (8.1\%) \\
+2024       & Feb 8  & 6061 & 7  & 7.93  & 14 & 500 \; (8.2\%) \\
+2025       & Feb 12 & 5848 & 7  & 8.21  & 15 & 518 \; (8.9\%) \\
+2026       & Feb 12 & 6682 & 8  & 8.90  & 16 & 440 \; (6.6\%) \\
+\hline
+\end{tabular}
+\end{center}
+
+\emph{Source: AAPT's official ``F = ma Contest Results'' documents for each year.}
+
+\Q{So what should I actually aim for?}
+Read the table two ways.
+
+First, the cutoff has sat between \textbf{14 and 18} for six years running. Aiming at 14
+because ``that was enough in 2024'' is how people miss by a point --- in 2023 the same
+performance would have been four points short. \textbf{Target 18--20.} That clears every
+recent cutoff with room for a bad day.
+
+Second, look at the medians: 7 to 10 out of 25. \textbf{Half of everyone who sits this
+exam scores single digits}, and these are self-selected students who chose to take a
+physics olympiad qualifier. Qualifying means finishing in roughly the top 7--9\% of that
+group. A score you might think of as mediocre --- 12, 13 --- is well above the national
+median. Do not measure yourself against 25.
+
+\Q{Does my score get published?}
+No. Individual scores are not disclosed publicly. AAPT publishes the aggregate statistics
+and the cutoff, and notifies qualifiers.
+
+\section{After the Exam}
+
+\Q{What happens if I qualify?}
+You are invited to the \textbf{USAPhO} --- a much longer free-response exam, also
+proctored, held in April (April 10 in 2026, scheduled in a 1:00--5:00 pm EDT window). It is
+a completely different animal: a handful of long multi-part problems where you show all
+your work, not multiple choice. Check AAPT for the exact length and structure in the year
+you sit it.
+
+\Q{And after that?}
+Top USAPhO scorers take the USAPhO Plus exam, from which about 20 students are invited to
+the training camp at the University of Maryland in late May. Five are eventually selected
+for the U.S. team at the International Physics Olympiad.
+
+\Q{What if I do not qualify?}
+Almost nobody qualifies the first time they sit it. The exam is offered every year, the
+scores in the table above tell you how selective it is, and the ordinary path is to take
+it, see where you stand, and come back stronger. That is what the practice tests and the
+handouts are for.
+
+\section{Your Checklist}
+
+\begin{keybox}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+\item[$\square$] Asked a teacher about proctoring \textbf{(do this in the fall)}
+\item[$\square$] Confirmed who is registering and whether the school pays
+\item[$\square$] Recruited a friend or two to bring the cost down
+\item[$\square$] Confirmed the proctor actually submitted the registration
+\item[$\square$] Checked the exam date and start time with the proctor
+\item[$\square$] Bought a non-graphing scientific calculator and cleared its memory
+\item[$\square$] Know that blanks score zero, so nothing gets left blank
+\end{enumerate}
+\end{keybox}
+
+\vspace{0.5em}
+\begin{center}
+\emph{Questions this handout does not answer? Ask me --- and check
+\href{https://www.aapt.org/physicsteam/}{aapt.org/physicsteam}, which is always the final
+authority.}
+\end{center}
+
+\end{document}
