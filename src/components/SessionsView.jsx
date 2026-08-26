@@ -8,12 +8,22 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
   const student = students.find(s => s.id === activeStudentId)
   const now = new Date().toISOString()
 
-  const upcomingSessions = sessions
-    .filter(s => s.student_id === activeStudentId && s.scheduled_at > now)
+  // Parent check-ins share this table but are not tutoring sessions — no notes,
+  // no on-deck problems, no paid/unpaid state — so they get their own list below
+  // instead of being mixed into these two.
+  const studentSessions = sessions
+    .filter(s => s.student_id === activeStudentId && s.session_type !== 'checkin')
+
+  const upcomingSessions = studentSessions
+    .filter(s => s.scheduled_at > now)
     .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))
 
-  const pastSessions = sessions
-    .filter(s => s.student_id === activeStudentId && (s.end_time ?? s.scheduled_at) <= now)
+  const pastSessions = studentSessions
+    .filter(s => (s.end_time ?? s.scheduled_at) <= now)
+    .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
+
+  const checkins = sessions
+    .filter(s => s.student_id === activeStudentId && s.session_type === 'checkin')
     .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
   const onDeckBySession = {}
@@ -277,6 +287,33 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {checkins.length > 0 && (
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+            Parent check-ins
+          </div>
+          <div className="assigned-list">
+            {checkins.map(s => {
+              const upcoming = s.scheduled_at > now
+              return (
+                <div key={s.id} className="assigned-row" style={{ alignItems: 'center', gap: 12 }}>
+                  <span className="p-label" style={{ color: 'var(--text-dim)', fontSize: 11, flex: 1 }}>
+                    {formatDate(s.scheduled_at)}
+                  </span>
+                  <div className="assigned-row-links">
+                    {upcoming && s.meet_url && (
+                      <a href={s.meet_url} target="_blank" rel="noreferrer">Meet ↗</a>
+                    )}
+                    <button className="sm danger" style={{ fontSize: 11, padding: '1px 6px' }}
+                      title="Delete check-in" onClick={() => handleDelete(s)}>✕</button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       )}
     </div>

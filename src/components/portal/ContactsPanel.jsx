@@ -9,6 +9,10 @@ import InvoiceList from './InvoiceList'
 
 const CONTACT_TOGGLES = [
   ['receives_meets', 'Meet invites'],
+  // Separate from "Meet invites" on purpose: a check-in is a parents-only call,
+  // so a contact can be on one list without being on the other. Ticking this box
+  // is also what makes the check-in option appear on the scheduling page.
+  ['receives_checkins', 'Check-in invites'],
   ['receives_reports', 'Progress reports'],
   ['receives_invoices', 'Invoices'],
   ['receives_assignments', 'Assignments'],

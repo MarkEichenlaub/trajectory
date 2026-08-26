@@ -13,6 +13,7 @@ const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
+const CHECKIN_DURATION_MIN = 15
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -80,9 +81,11 @@ async function sendPlainEmail(params: {
   }).catch(e => console.error('Email send failed:', e))
 }
 
-function overlapsAny(slotStart: Date, busy: { start: string; end: string }[]): boolean {
+function overlapsAny(
+  slotStart: Date, busy: { start: string; end: string }[], durationMin: number,
+): boolean {
   const s = slotStart.getTime()
-  const e = s + SESSION_DURATION_MIN * 60_000
+  const e = s + durationMin * 60_000
   return busy.some(b => s < new Date(b.end).getTime() && e > new Date(b.start).getTime())
 }
 
@@ -127,12 +130,17 @@ Deno.serve(async (req) => {
   // Fetch session and verify ownership
   const { data: session } = await admin
     .from('sessions')
-    .select('id, student_id, scheduled_at, end_time, gcal_event_id, balance_decremented, miro_board_url')
+    .select('id, student_id, session_type, scheduled_at, end_time, gcal_event_id, balance_decremented, miro_board_url')
     .eq('id', session_id).eq('student_id', student.id).maybeSingle()
   if (!session) return json({ error: 'session not found' }, 404)
+  // A moved check-in keeps its own 15-minute length; reusing the hour-long
+  // constant would silently grow it into a full session slot.
+  const isCheckin = session.session_type === 'checkin'
+  const durationMin = isCheckin ? CHECKIN_DURATION_MIN : SESSION_DURATION_MIN
+  const noun = isCheckin ? 'check-in' : 'session'
   if (session.balance_decremented) return json({ error: 'session already completed' }, 400)
   if (session.end_time && new Date(session.end_time as string).getTime() < Date.now()) {
-    return json({ error: 'session has already ended' }, 400)
+    return json({ error: `${noun} has already ended`, }, 400)
   }
 
   const newSlotDate = new Date(new_slot)
@@ -141,7 +149,7 @@ Deno.serve(async (req) => {
   if (newSlotDate.getTime() < Date.now()) {
     return json({ error: 'new slot is in the past' }, 400)
   }
-  const newEndDate = new Date(newSlotDate.getTime() + SESSION_DURATION_MIN * 60_000)
+  const newEndDate = new Date(newSlotDate.getTime() + durationMin * 60_000)
 
   let accessToken: string
   try {
@@ -153,24 +161,29 @@ Deno.serve(async (req) => {
   // Verify new slot is available, excluding the current session's time window
   const busy = await fetchBusy(accessToken, new_slot, newEndDate.toISOString())
   const oldStart = new Date(session.scheduled_at as string).getTime()
-  const oldEnd = session.end_time ? new Date(session.end_time as string).getTime() : oldStart + SESSION_DURATION_MIN * 60_000
+  const oldEnd = session.end_time ? new Date(session.end_time as string).getTime() : oldStart + durationMin * 60_000
   const filteredBusy = busy.filter(b => {
     const bStart = new Date(b.start).getTime()
     const bEnd = new Date(b.end).getTime()
     return !(bStart >= oldStart && bEnd <= oldEnd)
   })
-  if (overlapsAny(newSlotDate, filteredBusy)) return json({ error: 'new slot is not available' }, 409)
+  if (overlapsAny(newSlotDate, filteredBusy, durationMin)) {
+    return json({ error: 'new slot is not available' }, 409)
+  }
 
   // Contacts opted into meeting invites. This is the same flag book-session and the
   // recurring-schedule functions use — the set of people who receive updates must be
   // the set who were invited, or someone is left holding a stale calendar entry.
+  // Check-ins were invited off receives_checkins, so they must be moved off it too.
   const { data: contacts } = await admin
     .from('student_contacts').select('email')
     .eq('student_id', student.id)
-    .eq('receives_meets', true)
+    .eq(isCheckin ? 'receives_checkins' : 'receives_meets', true)
     .eq('verified', true).eq('bounced', false)
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
-  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
+  if (!isCheckin && !studentEmails.length && student.email) {
+    studentEmails.push(student.email as string)
+  }
 
   // Patch Google Calendar event if this session has a gcal_event_id. sendUpdates=all
   // makes Google move every guest's copy and notify them. The guest list is restated
@@ -203,8 +216,10 @@ Deno.serve(async (req) => {
   const oldWhen = fmtWhen(session.scheduled_at as string, tz)
   const newWhen = fmtWhen(newSlotDate.toISOString(), tz)
 
-  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those)
-  const { data: overridden } = await admin
+  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those).
+  // Check-ins are exempt from the due-date trigger entirely, so moving one changes
+  // no due dates and there is nothing to warn about.
+  const { data: overridden } = isCheckin ? { data: null } : await admin
     .from('assignments')
     .select('problem_id, due_date')
     .eq('student_id', student.id)
@@ -232,28 +247,43 @@ Deno.serve(async (req) => {
     }).catch(e => console.error('Warning email failed:', e))
   }
 
-  const rescheduleText = [
-    `Hi ${(student.first_name as string | undefined) || (student.name as string).split(' ')[0]},`,
-    '',
-    `Your physics session has been rescheduled.`,
-    '',
-    `Previously: ${oldWhen}`,
-    `Now: ${newWhen}`,
-    '',
-    `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
-  ].join('\n')
+  const firstName = (student.first_name as string | undefined)
+    || (student.name as string).split(' ')[0]
 
+  const rescheduleText = isCheckin
+    ? [
+      'Hello,',
+      '',
+      `Our check-in about ${firstName} has been rescheduled.`,
+      '',
+      `Previously: ${oldWhen}`,
+      `Now: ${newWhen}`,
+      '',
+      `You can reschedule or cancel it anytime at: ${PORTAL_URL}`,
+    ].join('\n')
+    : [
+      `Hi ${firstName},`,
+      '',
+      `Your physics session has been rescheduled.`,
+      '',
+      `Previously: ${oldWhen}`,
+      `Now: ${newWhen}`,
+      '',
+      `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
+    ].join('\n')
+
+  const subjectNoun = isCheckin ? 'Check-in' : 'Session'
   if (studentEmails.length) {
     await sendPlainEmail({
       to: studentEmails,
-      subject: `Session rescheduled: ${newWhen}`,
+      subject: `${subjectNoun} rescheduled: ${newWhen}`,
       text: rescheduleText,
     })
   }
   await sendPlainEmail({
     to: [MARK_EMAIL],
-    subject: `Session rescheduled: ${student.name} – ${newWhen}`,
-    text: `${student.name} rescheduled.\n\nPreviously: ${oldWhen}\nNow: ${newWhen}`,
+    subject: `${subjectNoun} rescheduled: ${student.name} – ${newWhen}`,
+    text: `${student.name}'s ${noun} was rescheduled.\n\nPreviously: ${oldWhen}\nNow: ${newWhen}`,
   })
 
   return json({ ok: true, scheduled_at: newSlotDate.toISOString(), end_time: newEndDate.toISOString() })

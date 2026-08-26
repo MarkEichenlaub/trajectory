@@ -115,12 +115,17 @@ export default function StudentView({ student, assignments, sessions, problems, 
 
   const sortedSessions = [...(sessions || [])].sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at))
 
+  // Parent check-ins share the sessions table but are not tutoring sessions:
+  // they carry no summary or homework, so they belong only on the scheduling
+  // screen (which gets the unfiltered list) and never in these counts.
+  const tutoringSessions = sortedSessions.filter(s => s.session_type !== 'checkin')
+
   const now = new Date().toISOString()
-  const nextSession = [...(sessions || [])]
+  const nextSession = [...tutoringSessions]
     .filter(s => s.scheduled_at > now)
     .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))[0] || null
 
-  const pastSessions = sortedSessions.filter(s => s.end_time && s.end_time <= now)
+  const pastSessions = tutoringSessions.filter(s => s.end_time && s.end_time <= now)
 
   const allTagCounts = {}
   pastSessions.forEach(s => {
@@ -210,7 +215,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
           <div>
             <h1>{student?.name ? `${student.name}'s Portal` : 'My Portal'}</h1>
             <p className="sp-subtitle">
-              {assignedItems.length} assigned · {completedItems.length} completed · {sortedSessions.length} sessions
+              {assignedItems.length} assigned · {completedItems.length} completed · {tutoringSessions.length} sessions
               {canBill && student?.session_balance != null && (
                 <span style={{
                   marginLeft: 8,
@@ -249,7 +254,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
             .map(a => a.problem_id)}
         />
       ) : tab === 'scheduling' ? (
-        <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} />
+        <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} viewerRole={role} />
       ) : tab === 'invoices' ? (
         <InvoicesTab invoices={invoices} setInvoices={setInvoices} isAdmin={isPreview} />
       ) : tab === 'account' ? (

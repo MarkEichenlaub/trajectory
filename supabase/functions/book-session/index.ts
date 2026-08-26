@@ -16,6 +16,9 @@ const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const PORTAL_URL = 'https://portal.eichenlaubphysics.com/'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
+// A parent check-in is a short, unbilled catch-up. It is deliberately not a
+// "short session": no whiteboard, no homework, and the student is not invited.
+const CHECKIN_DURATION_MIN = 15
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
@@ -117,9 +120,11 @@ async function ensureMeet(accessToken: string, eventId: string): Promise<string>
   return ''
 }
 
-function overlapsAny(slotStart: Date, busy: { start: string; end: string }[]): boolean {
+function overlapsAny(
+  slotStart: Date, busy: { start: string; end: string }[], durationMin: number,
+): boolean {
   const s = slotStart.getTime()
-  const e = s + SESSION_DURATION_MIN * 60_000
+  const e = s + durationMin * 60_000
   return busy.some(b => s < new Date(b.end).getTime() && e > new Date(b.start).getTime())
 }
 
@@ -155,8 +160,15 @@ Deno.serve(async (req) => {
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-  const { slot, student_id: bookForId } = await req.json() as { slot: string; student_id?: string }
+  const { slot, student_id: bookForId, session_type: rawType } = await req.json() as {
+    slot: string; student_id?: string; session_type?: string
+  }
   if (!slot) return json({ error: 'slot required' }, 400)
+  if (rawType && rawType !== 'session' && rawType !== 'checkin') {
+    return json({ error: 'invalid session_type' }, 400)
+  }
+  const isCheckin = rawType === 'checkin'
+  const durationMin = isCheckin ? CHECKIN_DURATION_MIN : SESSION_DURATION_MIN
 
   // A caller normally books for their own linked student. An admin may pass a
   // student_id to book on that student's behalf (e.g. a parent emailed a time).
@@ -184,7 +196,7 @@ Deno.serve(async (req) => {
     return json({ error: 'slot is in the past' }, 400)
   }
 
-  const endDate = new Date(slotDate.getTime() + SESSION_DURATION_MIN * 60_000)
+  const endDate = new Date(slotDate.getTime() + durationMin * 60_000)
 
   let accessToken: string
   try {
@@ -195,31 +207,55 @@ Deno.serve(async (req) => {
 
   // Re-verify the slot is still available (prevents race conditions)
   const busy = await fetchBusy(accessToken, slot, endDate.toISOString())
-  if (overlapsAny(slotDate, busy)) return json({ error: 'slot is no longer available' }, 409)
+  if (overlapsAny(slotDate, busy, durationMin)) {
+    return json({ error: 'slot is no longer available' }, 409)
+  }
 
   // Contacts opted into meeting invites become real Google Calendar guests, so
   // Google keeps their copy in sync whenever the event is moved or cancelled —
   // including when Mark drags it in his own calendar. Fetched before the event is
   // created so they can be attached in the same pass. (receives_meets = the
   // "Meet invites" checkbox; the recurring-schedule functions use the same flag.)
+  //
+  // Check-ins use their own flag: it is a parents-only call, so the student is
+  // normally on receives_meets but not receives_checkins, and a parent may want
+  // check-ins without being copied on every tutoring session.
+  const inviteFlag = isCheckin ? 'receives_checkins' : 'receives_meets'
   const { data: contacts } = await admin
     .from('student_contacts').select('email')
     .eq('student_id', student.id)
-    .eq('receives_meets', true)
+    .eq(inviteFlag, true)
     .eq('verified', true).eq('bounced', false)
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
-  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
+
+  if (isCheckin) {
+    // No falling back to the student's own address here — that would quietly
+    // invite the student to a call that is meant to be about them.
+    if (!studentEmails.length) {
+      return json({ error: 'no contacts are set up for check-ins' }, 400)
+    }
+  } else if (!studentEmails.length && student.email) {
+    studentEmails.push(student.email as string)
+  }
 
   // Create Google Calendar event (with a Google Meet conference)
   const dateStr = slotDate.toLocaleDateString('en-US', {
     month: 'short', day: 'numeric', year: 'numeric', timeZone: tz,
   })
+  // The summary must not read as a tutoring session: sync-leo-sessions and the
+  // gcal-webhook resync both match Leo's events by title ("leo" + "mark physics"),
+  // and a check-in that matched would be mirrored back as a billable session.
+  const summary = isCheckin
+    ? `Parent check-in: ${student.name}`
+    : `${student.name}/Mark Physics`
   const calRes = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1', {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      summary: `${student.name}/Mark Physics`,
-      description: `Physics tutoring session\n\nPortal: ${PORTAL_URL}`,
+      summary,
+      description: isCheckin
+        ? `${CHECKIN_DURATION_MIN}-minute check-in about ${student.first_name || student.name}\n\nPortal: ${PORTAL_URL}`
+        : `Physics tutoring session\n\nPortal: ${PORTAL_URL}`,
       start: { dateTime: slotDate.toISOString(), timeZone: tz },
       end: { dateTime: endDate.toISOString(), timeZone: tz },
       conferenceData: {
@@ -246,17 +282,21 @@ Deno.serve(async (req) => {
   if (!meetUrl) meetUrl = await ensureMeet(accessToken, gcalEventId)
 
   // Create Miro board. A failure here is not fatal — the session is still
-  // booked, and the next sync pass backfills the board.
+  // booked, and the next sync pass backfills the board. Check-ins get no board:
+  // nothing is worked through on one, and an empty board in the invite only
+  // invites confusion.
   let miroBoardUrl = ''
   let miroBoardId = ''
-  try {
-    const board = await createSessionBoard(
-      MIRO_ACCESS_TOKEN, MIRO_TEAM_ID, `${student.name} – ${dateStr}`,
-    )
-    miroBoardId = board.id
-    miroBoardUrl = board.url
-  } catch (e) {
-    console.error('Miro create error:', e)
+  if (!isCheckin) {
+    try {
+      const board = await createSessionBoard(
+        MIRO_ACCESS_TOKEN, MIRO_TEAM_ID, `${student.name} – ${dateStr}`,
+      )
+      miroBoardId = board.id
+      miroBoardUrl = board.url
+    } catch (e) {
+      console.error('Miro create error:', e)
+    }
   }
 
   // Attach the guests and the final description in one PATCH, with sendUpdates=all
@@ -264,7 +304,9 @@ Deno.serve(async (req) => {
   // links. The event is created guest-free above precisely so this is the only
   // notification the family receives.
   const descLines = [
-    'Physics tutoring session',
+    isCheckin
+      ? `${CHECKIN_DURATION_MIN}-minute check-in about ${student.first_name || student.name}`
+      : 'Physics tutoring session',
     '',
     ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`] : []),
     ...(meetUrl ? [`Google Meet: ${meetUrl}`] : []),
@@ -285,11 +327,14 @@ Deno.serve(async (req) => {
     console.error('Calendar guest PATCH failed:', attendeePatch.status, await attendeePatch.text())
   }
 
-  // Insert session row
-  const sessionId = `gcal-${student.id}-${gcalEventId}`
+  // Insert session row. The `checkin-` prefix keeps these rows outside the
+  // `gcal-<student>-%` pattern that the per-student calendar syncs use to hunt
+  // for orphans, so a check-in can never be swept up as a stale session row.
+  const sessionId = `${isCheckin ? 'checkin' : 'gcal'}-${student.id}-${gcalEventId}`
   const { error: dbErr } = await admin.from('sessions').insert({
     id: sessionId,
     student_id: student.id,
+    session_type: isCheckin ? 'checkin' : 'session',
     scheduled_at: slotDate.toISOString(),
     end_time: endDate.toISOString(),
     notes: '',
@@ -308,37 +353,61 @@ Deno.serve(async (req) => {
   // attachment: the calendar entry comes from the Google invitation sent above, and
   // a second attached copy would land as a duplicate event.
   const when = fmtWhen(slotDate.toISOString(), tz)
+  const firstName = (student.first_name as string | undefined)
+    || (student.name as string).split(' ')[0]
 
-  const confirmText = [
-    `Hi ${(student.first_name as string | undefined) || (student.name as string).split(' ')[0]},`,
-    '',
-    `Your physics session is confirmed for:`,
-    `  ${when}`,
-    '',
-    ...(meetUrl ? [`Join by video (Google Meet): ${meetUrl}`, ''] : []),
-    ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`, ''] : []),
-    `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
-    '',
-    'See you then!',
-    'Mark',
-  ].join('\n')
+  // The check-in note is addressed to the parents, so it opens with a neutral
+  // greeting and talks about the student in the third person.
+  const confirmText = isCheckin
+    ? [
+      'Hello,',
+      '',
+      `Our ${CHECKIN_DURATION_MIN}-minute check-in about ${firstName} is confirmed for:`,
+      `  ${when}`,
+      '',
+      ...(meetUrl ? [`Join by video (Google Meet): ${meetUrl}`, ''] : []),
+      `You can reschedule or cancel it anytime at: ${PORTAL_URL}`,
+      '',
+      'See you then!',
+      'Mark',
+    ].join('\n')
+    : [
+      `Hi ${firstName},`,
+      '',
+      `Your physics session is confirmed for:`,
+      `  ${when}`,
+      '',
+      ...(meetUrl ? [`Join by video (Google Meet): ${meetUrl}`, ''] : []),
+      ...(miroBoardUrl ? [`Miro whiteboard: ${miroBoardUrl}`, ''] : []),
+      `Schedule sessions, view assignments, and check session summaries anytime at: ${PORTAL_URL}`,
+      '',
+      'See you then!',
+      'Mark',
+    ].join('\n')
 
   if (studentEmails.length) {
     await sendPlainEmail({
       to: studentEmails,
-      subject: `Session confirmed: ${when}`,
+      subject: isCheckin
+        ? `Check-in confirmed: ${when}`
+        : `Session confirmed: ${when}`,
       text: confirmText,
     })
   }
   await sendPlainEmail({
     to: [MARK_EMAIL],
-    subject: `New session booked: ${student.name} – ${when}`,
-    text: `${student.name} booked a session for ${when}.\n\nMiro: ${miroBoardUrl || '(pending)'}`,
+    subject: isCheckin
+      ? `New check-in booked: ${student.name} – ${when}`
+      : `New session booked: ${student.name} – ${when}`,
+    text: isCheckin
+      ? `A ${CHECKIN_DURATION_MIN}-minute parent check-in about ${student.name} was booked for ${when}.\n\nGuests: ${studentEmails.join(', ')}`
+      : `${student.name} booked a session for ${when}.\n\nMiro: ${miroBoardUrl || '(pending)'}`,
   })
 
   return json({
     ok: true,
     session_id: sessionId,
+    session_type: isCheckin ? 'checkin' : 'session',
     scheduled_at: slotDate.toISOString(),
     end_time: endDate.toISOString(),
     miro_board_url: miroBoardUrl,

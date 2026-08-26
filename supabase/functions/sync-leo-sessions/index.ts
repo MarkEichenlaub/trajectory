@@ -269,10 +269,14 @@ Deno.serve(async (req) => {
       .filter(e => e.start.dateTime)
       .map(e => `gcal-leo-${toCompactUTC(e.start.dateTime!)}`),
   )
+  // session_type is belt-and-braces alongside the id pattern: a parent check-in
+  // is never in `events` (it has a different calendar title), so without this it
+  // would look like an orphan and be deleted on the next run.
   const { data: futureSessions } = await supabase
     .from('sessions')
     .select('id')
     .eq('student_id', STUDENT_ID)
+    .eq('session_type', 'session')
     .like('id', 'gcal-leo-%')
     .gte('scheduled_at', now.toISOString())
     .lte('scheduled_at', maxDate.toISOString())

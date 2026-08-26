@@ -1,7 +1,22 @@
 import { useState, useEffect, useMemo } from 'react'
 import { getAvailability, bookSession, rescheduleSession, cancelSession } from '../../utils/supabase'
 
-export default function SchedulingTab({ sessions, formatDate, student, isPreview, isAdmin, sessionProblems, allProblems }) {
+const CHECKIN_MIN = 15
+
+// A check-in is a short, unbilled catch-up with a student's parents. It shares
+// this whole screen with tutoring sessions — same calendar, same available
+// times, same reschedule and cancel buttons — and differs only in length, in
+// who is invited, and in never touching the student's balance or homework.
+function isCheckin(s) {
+  return s?.session_type === 'checkin'
+}
+
+export default function SchedulingTab({
+  sessions, formatDate, student, isPreview, isAdmin, sessionProblems, allProblems,
+  // 'parent' when the signed-in account is a parent rather than the student.
+  // Parents are the people check-ins are for, so the picker starts there.
+  viewerRole,
+}) {
   const nowIso = new Date().toISOString()
   const tz = student?.timezone || 'America/New_York'
   const tzAbbr = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'short' })
@@ -25,12 +40,31 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
     [effectiveSessions, nowIso]
   )
 
+  const pastCheckins = useMemo(() =>
+    effectiveSessions
+      .filter(s => isCheckin(s) && s.scheduled_at <= nowIso)
+      .sort((a, b) => b.scheduled_at.localeCompare(a.scheduled_at)),
+    [effectiveSessions, nowIso]
+  )
+
+  // What the viewer may book. Parents and Mark always get the choice; a student
+  // only sees it once check-ins are actually in use for them, so the picker
+  // doesn't appear on portals where it would do nothing.
+  const checkinsAvailable = isAdmin || viewerRole === 'parent'
+    || effectiveSessions.some(isCheckin)
+
+  const [bookingType, setBookingType] = useState(
+    () => (viewerRole === 'parent' ? 'checkin' : 'session')
+  )
+
   const [viewDate, setViewDate] = useState(() => { const d = new Date(); d.setDate(1); return d })
   const viewYear = viewDate.getFullYear()
   const viewMonth = viewDate.getMonth()
 
-  // Availability slots by student timezone date
-  const [slotsByDate, setSlotsByDate] = useState({})
+  // Availability slots by student timezone date, tagged with the kind of booking
+  // they were fetched for — a 15-minute check-in fits gaps an hour-long session
+  // can't, so the two lists genuinely differ and must not be mixed.
+  const [slots, setSlots] = useState({ type: 'session', byDate: {} })
   const [slotsLoading, setSlotsLoading] = useState(false)
   const [slotsError, setSlotsError] = useState(null)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -46,6 +80,17 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
   const [actionError, setActionError] = useState(null)
   const [successMsg, setSuccessMsg] = useState(null)
 
+  const reschedulingSession = useMemo(
+    () => effectiveSessions.find(s => s.id === reschedulingId) || null,
+    [effectiveSessions, reschedulingId]
+  )
+
+  // Moving an existing booking keeps its own length, so the slots offered during
+  // a reschedule follow that booking rather than whatever the picker last showed.
+  const slotType = reschedulingSession
+    ? (isCheckin(reschedulingSession) ? 'checkin' : 'session')
+    : bookingType
+
   // Fetch availability for the visible month. Previously-loaded days stay on
   // screen (dimmed) while the new month loads — keys are full dates, so months
   // never collide.
@@ -55,28 +100,36 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
     setSlotsError(null)
     const from = new Date(viewYear, viewMonth, 1).toLocaleDateString('en-CA')
     const to = new Date(viewYear, viewMonth + 1, 0).toLocaleDateString('en-CA')
-    getAvailability(from, to)
-      .then(slots => {
+    getAvailability(from, to, slotType)
+      .then(isos => {
         const byDate = {}
-        slots.forEach(iso => {
+        isos.forEach(iso => {
           const key = new Date(iso).toLocaleDateString('en-CA', { timeZone: tz })
           if (!byDate[key]) byDate[key] = []
           byDate[key].push(iso)
         })
         // Replace this month's entries wholesale (a re-fetch must drop days
         // whose slots were booked out) but keep other months' cached days.
+        // Switching booking type throws the cache away instead: those days were
+        // computed for a different meeting length.
         const monthPrefix = `${viewYear}-${String(viewMonth + 1).padStart(2, '0')}`
-        setSlotsByDate(prev => {
+        setSlots(prev => {
           const next = {}
-          for (const [day, isos] of Object.entries(prev)) {
-            if (!day.startsWith(monthPrefix)) next[day] = isos
+          if (prev.type === slotType) {
+            for (const [day, list] of Object.entries(prev.byDate)) {
+              if (!day.startsWith(monthPrefix)) next[day] = list
+            }
           }
-          return { ...next, ...byDate }
+          return { type: slotType, byDate: { ...next, ...byDate } }
         })
       })
       .catch(e => setSlotsError(e.message))
       .finally(() => setSlotsLoading(false))
-  }, [viewYear, viewMonth, student?.id, isPreview, refreshKey, tz])
+  }, [viewYear, viewMonth, student?.id, isPreview, refreshKey, tz, slotType])
+
+  // Slots fetched for the other booking length are not shown at all — an empty
+  // calendar for a moment beats offering a time that can't be booked.
+  const slotsByDate = slots.type === slotType ? slots.byDate : {}
 
   const sessionsByDate = useMemo(() => {
     const map = {}
@@ -122,20 +175,17 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
     }
   }
 
-  async function handleBook(slot) {
-    if (!student || isPreview) return
-    setPendingSlot(slot)
-  }
-
   async function confirmBook() {
     if (!pendingSlot || working) return
     setWorking(true); setActionError(null)
+    const booking = bookingType
     try {
       // Admins book on the active student's behalf; students book for themselves.
-      const result = await bookSession(pendingSlot, isAdmin ? student.id : undefined)
+      const result = await bookSession(pendingSlot, isAdmin ? student.id : undefined, booking)
       setLocalAdded(prev => [...prev, {
         id: result.session_id,
         student_id: student.id,
+        session_type: result.session_type || booking,
         scheduled_at: result.scheduled_at,
         end_time: result.end_time,
         miro_board_url: result.miro_board_url,
@@ -143,9 +193,16 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
         meet_url: result.meet_url,
         gcal_event_id: result.gcal_event_id,
       }])
-      setSuccessMsg(isAdmin
-        ? `Session booked for ${student?.first_name || student?.name}! The calendar invite, Google Meet link, and whiteboard have been emailed to the family.`
-        : 'Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
+      const who = student?.first_name || student?.name
+      setSuccessMsg(
+        booking === 'checkin'
+          ? (isAdmin
+            ? `Check-in booked. The calendar invite and Google Meet link have been emailed to ${who}'s parents.`
+            : 'Check-in booked! A calendar invite with the Google Meet link is on its way to your email.')
+          : (isAdmin
+            ? `Session booked for ${who}! The calendar invite, Google Meet link, and whiteboard have been emailed to the family.`
+            : 'Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
+      )
       setRefreshKey(k => k + 1)
       clearAction()
     } catch (e) {
@@ -158,13 +215,16 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
   async function confirmReschedule() {
     if (!pendingSlot || !reschedulingId || working) return
     setWorking(true); setActionError(null)
+    const wasCheckin = isCheckin(reschedulingSession)
     try {
       const result = await rescheduleSession(reschedulingId, pendingSlot)
       setUpdatedSessions(prev => ({ ...prev, [reschedulingId]: {
         scheduled_at: result.scheduled_at,
         end_time: result.end_time,
       }}))
-      setSuccessMsg('Session rescheduled! Check your email for the updated calendar invite.')
+      setSuccessMsg(wasCheckin
+        ? 'Check-in rescheduled! Check your email for the updated calendar invite.'
+        : 'Session rescheduled! Check your email for the updated calendar invite.')
       setRefreshKey(k => k + 1)
       clearAction()
     } catch (e) {
@@ -177,12 +237,14 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
   async function confirmCancel() {
     if (!cancelingSession || working) return
     setWorking(true); setActionError(null)
+    const wasCheckin = isCheckin(cancelingSession)
     try {
       await cancelSession(cancelingSession.id, cancelMsg || undefined)
       setCanceledIds(prev => new Set([...prev, cancelingSession.id]))
+      const noun = wasCheckin ? 'Check-in' : 'Session'
       setSuccessMsg(isAdmin
-        ? 'Session cancelled. A cancellation email has been sent to the family.'
-        : 'Session cancelled. A confirmation has been sent to your email.'
+        ? `${noun} cancelled. A cancellation email has been sent to the family.`
+        : `${noun} cancelled. A confirmation has been sent to your email.`
       )
       setRefreshKey(k => k + 1)
       clearAction()
@@ -196,6 +258,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
   // Determine panel mode
   const inRescheduleSlotPick = reschedulingId && !pendingSlot
   const daySlots = (selectedDay ? slotsByDate[selectedDay] : null) || []
+  const bookingCheckin = bookingType === 'checkin'
 
   // Right panel content
   function renderPanel() {
@@ -210,9 +273,10 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
 
     if (cancelingSession) {
       const when = formatDate(cancelingSession.scheduled_at)
+      const checkin = isCheckin(cancelingSession)
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>Cancel session?</div>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>{checkin ? 'Cancel check-in?' : 'Cancel session?'}</div>
           <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>{when}</div>
           <input
             placeholder={isAdmin ? 'Optional explanation to include in cancellation email to family…' : 'Optional message to Mark…'}
@@ -236,14 +300,24 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
         weekday: 'long', month: 'long', day: 'numeric',
         hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
       })
+      const who = student?.first_name || student?.name
+      let heading
+      if (reschedulingId) {
+        heading = isCheckin(reschedulingSession) ? 'Move the check-in to this time?' : 'Reschedule to this time?'
+      } else if (bookingCheckin) {
+        heading = isAdmin ? `Book a check-in about ${who}?` : 'Book this check-in?'
+      } else {
+        heading = isAdmin ? `Book this session for ${who}?` : 'Book this session?'
+      }
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ fontSize: 14, fontWeight: 600 }}>
-            {reschedulingId ? 'Reschedule to this time?'
-              : isAdmin ? `Book this session for ${student?.first_name || student?.name}?`
-              : 'Book this session?'}
-          </div>
+          <div style={{ fontSize: 14, fontWeight: 600 }}>{heading}</div>
           <div style={{ fontSize: 13 }}>{when}</div>
+          {!reschedulingId && bookingCheckin && (
+            <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+              {CHECKIN_MIN} minutes, by Google Meet. There's no charge for a check-in.
+            </div>
+          )}
           {actionError && <div style={{ fontSize: 12, color: 'var(--red)' }}>{actionError}</div>}
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="sm primary" disabled={working} onClick={reschedulingId ? confirmReschedule : confirmBook}>
@@ -259,11 +333,14 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
       const dateLabel = new Date(`${selectedDay}T12:00:00Z`).toLocaleDateString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
       })
+      const heading = inRescheduleSlotPick
+        ? 'Pick new time'
+        : bookingCheckin ? `Available check-in times (${CHECKIN_MIN} min)` : 'Available times'
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ fontSize: 13, fontWeight: 600 }}>
-              {inRescheduleSlotPick ? 'Pick new time' : 'Available times'} — {dateLabel}
+              {heading} — {dateLabel}
             </div>
             <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
           </div>
@@ -293,6 +370,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
 
     if (selectedSession) {
       const canReschedule = !!selectedSession.gcal_event_id
+      const checkin = isCheckin(selectedSession)
       const sessionOnDeck = isAdmin
         ? (sessionProblems || []).filter(sp => sp.session_id === selectedSession.id)
         : []
@@ -300,7 +378,10 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 600 }}>{formatDate(selectedSession.scheduled_at)}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
+                {formatDate(selectedSession.scheduled_at)}
+                {checkin && <CheckinBadge />}
+              </div>
               <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 2 }}>
                 {new Date(selectedSession.scheduled_at).toLocaleTimeString('en-US', {
                   hour: 'numeric', minute: '2-digit', timeZone: tz,
@@ -325,7 +406,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
                   setCancelingSession(selectedSession)
                   setSelectedSession(null)
                 }}>
-                  Cancel session
+                  {checkin ? 'Cancel check-in' : 'Cancel session'}
                 </button>
               </>
             ) : (
@@ -344,7 +425,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
                     setCancelingSession(selectedSession)
                     setSelectedSession(null)
                   }}>
-                    Cancel session
+                    {checkin ? 'Cancel check-in' : 'Cancel session'}
                   </button>
                 )}
               </>
@@ -375,7 +456,9 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
     if (inRescheduleSlotPick) {
       return (
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>Rescheduling — pick a new day</div>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>
+            {isCheckin(reschedulingSession) ? 'Moving the check-in' : 'Rescheduling'} — pick a new day
+          </div>
           <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>Click any highlighted day to see available times.</div>
           <button className="sm" style={{ alignSelf: 'flex-start' }} onClick={clearAction}>Cancel</button>
         </div>
@@ -391,6 +474,31 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
 
   return (
     <div style={{ maxWidth: 520, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      {checkinsAvailable && !reschedulingId && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {[
+              ['checkin', `Check-in (${CHECKIN_MIN} min)`],
+              ['session', 'Session (1 hour)'],
+            ].map(([value, label]) => (
+              <button
+                key={value}
+                className={`sm${bookingType === value ? ' primary' : ''}`}
+                style={{ fontSize: 12 }}
+                onClick={() => { setBookingType(value); clearAction() }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>
+            {bookingCheckin
+              ? `A short catch-up about ${student?.first_name || student?.name || 'your student'} — no charge.`
+              : 'A full tutoring hour.'}
+          </div>
+        </div>
+      )}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <button className="sm" onClick={prevMonth}>‹</button>
         <span style={{ fontSize: 15, fontWeight: 600, flex: 1, textAlign: 'center' }}>{monthLabel}</span>
@@ -417,6 +525,7 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
           const daySlotList = slotsByDate[key] || []
           const hasSession = daySessions.length > 0
           const hasSlots = daySlotList.length > 0
+          const allCheckins = hasSession && daySessions.every(isCheckin)
           const isToday = key === todayKey
           const isSelected = (selectedSession && new Date(selectedSession.scheduled_at).toLocaleDateString('en-CA') === key)
             || selectedDay === key
@@ -453,7 +562,16 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
                 {dayNum}
               </span>
               {hasSession && (
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: isSelected ? 'rgba(255,255,255,0.8)' : 'var(--accent)' }} />
+                // A hollow marker distinguishes a day that holds only check-ins
+                // from a day with a booked tutoring session.
+                <span style={{
+                  width: 5, height: 5, borderRadius: '50%',
+                  background: allCheckins ? 'transparent'
+                    : isSelected ? 'rgba(255,255,255,0.8)' : 'var(--accent)',
+                  border: allCheckins
+                    ? `1px solid ${isSelected ? 'rgba(255,255,255,0.8)' : 'var(--accent)'}`
+                    : 'none',
+                }} />
               )}
               {!hasSession && hasSlots && (
                 <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--text-dim)', opacity: 0.4 }} />
@@ -465,16 +583,48 @@ export default function SchedulingTab({ sessions, formatDate, student, isPreview
 
       {renderPanel()}
 
+      {pastCheckins.length > 0 && (
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: 12 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+            Past check-ins
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {pastCheckins.map(c => (
+              <div key={c.id} style={{ display: 'flex', alignItems: 'baseline', gap: 8, fontSize: 13 }}>
+                <span>{formatDate(c.scheduled_at)}</span>
+                <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+                  {new Date(c.scheduled_at).toLocaleTimeString('en-US', {
+                    hour: 'numeric', minute: '2-digit', timeZone: tz,
+                  })}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {!isPreview && (
         <div style={{ borderTop: '1px solid var(--border)', paddingTop: 12 }}>
           <div style={{ fontSize: 12, color: 'var(--text-dim)', lineHeight: 1.5 }}>
             {slotsLoading
               ? 'Checking availability…'
-              : `Filled days ● have sessions · bordered days have available times · all times ${tzAbbr}`}
+              : `Filled days ● have sessions · hollow ○ are check-ins · bordered days have available times · all times ${tzAbbr}`}
           </div>
         </div>
       )}
     </div>
+  )
+}
+
+function CheckinBadge() {
+  return (
+    <span style={{
+      fontSize: 10, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.06em',
+      color: 'var(--text-dim)', border: '1px solid var(--border)', borderRadius: 4,
+      padding: '1px 5px',
+    }}>
+      Check-in
+    </span>
   )
 }
 

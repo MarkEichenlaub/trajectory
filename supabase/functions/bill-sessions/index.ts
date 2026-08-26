@@ -94,6 +94,7 @@ async function checkReportReminder(
     .from('sessions')
     .select('id', { count: 'exact', head: true })
     .eq('student_id', student.id)
+    .eq('session_type', 'session')
     .not('end_time', 'is', null)
     .lte('end_time', nowIso)
   if (anchor) q = q.gt('end_time', anchor)
@@ -161,6 +162,7 @@ async function checkVenmoReminders() {
       .from('sessions')
       .select('id, scheduled_at, tags')
       .eq('student_id', student.id)
+      .eq('session_type', 'session')
       .eq('balance_decremented', true)
       .eq('venmo_invoiced', false)
       .order('scheduled_at', { ascending: true })
@@ -186,9 +188,12 @@ Deno.serve(async (req) => {
 
   const cutoff = new Date(Date.now() - 15 * 60 * 1000).toISOString()
 
+  // Parent check-ins are free, so they must never reach the balance decrement
+  // below — a 15-minute call would otherwise cost the family a full session.
   const { data: sessions, error } = await supabase
     .from('sessions')
     .select('id, student_id, end_time')
+    .eq('session_type', 'session')
     .not('end_time', 'is', null)
     .lte('end_time', cutoff)
     .eq('balance_decremented', false)

@@ -48,8 +48,11 @@ export default function SessionLauncher() {
   const session = useMemo(() => {
     if (!sessions) return null
     if (sessionId) return sessions.find(s => s.id === sessionId) || null
+    // Skip parent check-ins: there's no board to open and no homework to review,
+    // so landing on one would hide the real next session.
     const now = Date.now()
     return sessions
+      .filter(s => s.session_type !== 'checkin')
       .filter(s => new Date(s.scheduled_at).getTime() > now)
       .sort((a, b) => new Date(a.scheduled_at) - new Date(b.scheduled_at))[0] || null
   }, [sessions, sessionId])

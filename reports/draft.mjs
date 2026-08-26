@@ -98,6 +98,9 @@ async function main() {
   let sq = db.from('sessions')
     .select('scheduled_at, end_time, summary, tags')
     .eq('student_id', studentId)
+    // Tutoring sessions only — a parent check-in carries no summary or tags and
+    // would land in the report's session log as a blank row.
+    .eq('session_type', 'session')
     .not('end_time', 'is', null)
     .lte('end_time', nowIso)
     .order('scheduled_at', { ascending: true })

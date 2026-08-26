@@ -16,6 +16,9 @@ Deno.serve(async (req) => {
 
   // Find sessions starting in 8–13 minutes that haven't had a reminder sent yet.
   // The 5-minute window ensures we catch sessions even if the cron fires slightly late.
+  // Parent check-ins are excluded: the reminder is addressed to the student and
+  // points at their whiteboard, neither of which applies to a check-in. Google
+  // Calendar's own notification already covers those guests.
   const { data: sessions, error: sErr } = await admin
     .from('sessions')
     .select(`
@@ -26,6 +29,7 @@ Deno.serve(async (req) => {
       miro_board_url,
       students!inner(id, first_name, name, timezone)
     `)
+    .eq('session_type', 'session')
     .gte('scheduled_at', new Date(Date.now() + 8 * 60 * 1000).toISOString())
     .lt('scheduled_at', new Date(Date.now() + 13 * 60 * 1000).toISOString())
     .is('session_reminder_sent_at', null)

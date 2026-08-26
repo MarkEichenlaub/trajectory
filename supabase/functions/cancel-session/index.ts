@@ -60,7 +60,7 @@ async function resolveSelfStudent(admin: any, userId: string) {
   const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
   if (!link) return null
   const { data: student } = await admin
-    .from('students').select('id, name, email, timezone').eq('id', link.student_id).maybeSingle()
+    .from('students').select('id, name, first_name, email, timezone').eq('id', link.student_id).maybeSingle()
   return student
 }
 
@@ -110,7 +110,7 @@ Deno.serve(async (req) => {
   if (isAdminCaller) {
     const { data: sess } = await admin
       .from('sessions')
-      .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
+      .select('id, student_id, session_type, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
       .eq('id', session_id).maybeSingle()
     if (!sess) return json({ error: 'session not found' }, 404)
     if (sess.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
@@ -119,7 +119,7 @@ Deno.serve(async (req) => {
     }
     session = sess
     const { data: s } = await admin
-      .from('students').select('id, name, email, timezone').eq('id', sess.student_id).maybeSingle()
+      .from('students').select('id, name, first_name, email, timezone').eq('id', sess.student_id).maybeSingle()
     if (!s) return json({ error: 'student not found' }, 404)
     student = s
   } else {
@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
     student = selfStudent
     const { data: sess } = await admin
       .from('sessions')
-      .select('id, student_id, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
+      .select('id, student_id, session_type, scheduled_at, end_time, gcal_event_id, miro_board_id, balance_decremented')
       .eq('id', session_id).eq('student_id', student.id).maybeSingle()
     if (!sess) return json({ error: 'session not found' }, 404)
     if (sess.balance_decremented) return json({ error: 'session already completed, cannot cancel' }, 400)
@@ -139,6 +139,7 @@ Deno.serve(async (req) => {
   }
 
   const tz = (student.timezone as string) || TIMEZONE
+  const isCheckin = session.session_type === 'checkin'
 
   // Delete Google Calendar event if we have the event ID (best-effort)
   if (session.gcal_event_id) {
@@ -176,8 +177,9 @@ Deno.serve(async (req) => {
     .eq('id', session_id).eq('balance_decremented', false)
   if (dbErr) return json({ error: 'DB delete failed', detail: dbErr.message }, 500)
 
-  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those)
-  const { data: overridden } = await admin
+  // Warn Mark if any assignments have manually-overridden due dates (trigger won't touch those).
+  // Check-ins never fed the due-date trigger, so cancelling one moves nothing.
+  const { data: overridden } = isCheckin ? { data: null } : await admin
     .from('assignments')
     .select('problem_id, due_date')
     .eq('student_id', student.id)
@@ -206,28 +208,40 @@ Deno.serve(async (req) => {
     }).catch(e => console.error('Warning email failed:', e))
   }
 
-  // Get contact emails (use receives_meets — the "Meet invites" checkbox)
+  // Get contact emails (use receives_meets — the "Meet invites" checkbox).
+  // A cancellation must reach exactly the people who were invited, so check-ins
+  // read the same flag book-session used to build their guest list.
   const { data: contacts } = await admin
     .from('student_contacts').select('email')
     .eq('student_id', student.id)
-    .eq('receives_meets', true)
+    .eq(isCheckin ? 'receives_checkins' : 'receives_meets', true)
     .eq('verified', true).eq('bounced', false)
   const studentEmails = (contacts ?? []).map(c => c.email as string).filter(Boolean)
-  if (!studentEmails.length && student.email) studentEmails.push(student.email as string)
+  if (!isCheckin && !studentEmails.length && student.email) {
+    studentEmails.push(student.email as string)
+  }
 
   const when = fmtWhen(session.scheduled_at as string, tz)
 
-  const cancelBody = [
-    `Your physics session for ${when} has been cancelled.`,
-    ...(message ? ['', `Message: ${message}`] : []),
-    '',
-    `To book a new time, or to view assignments and session summaries, visit: ${PORTAL_URL}`,
-  ].join('\n')
+  const cancelBody = isCheckin
+    ? [
+      `Our check-in about ${student.first_name || (student.name as string).split(' ')[0]} for ${when} has been cancelled.`,
+      ...(message ? ['', `Message: ${message}`] : []),
+      '',
+      `To book a new time, visit: ${PORTAL_URL}`,
+    ].join('\n')
+    : [
+      `Your physics session for ${when} has been cancelled.`,
+      ...(message ? ['', `Message: ${message}`] : []),
+      '',
+      `To book a new time, or to view assignments and session summaries, visit: ${PORTAL_URL}`,
+    ].join('\n')
 
+  const subjectNoun = isCheckin ? 'Check-in' : 'Session'
   if (studentEmails.length) {
     await sendPlainEmail({
       to: studentEmails,
-      subject: `Session cancelled: ${when}`,
+      subject: `${subjectNoun} cancelled: ${when}`,
       text: cancelBody,
     })
   }
@@ -235,8 +249,8 @@ Deno.serve(async (req) => {
   if (!isAdminCaller) {
     await sendPlainEmail({
       to: [MARK_EMAIL],
-      subject: `Session cancelled: ${student.name} – ${when}`,
-      text: `${student.name} cancelled their session for ${when}.${message ? '\n\nMessage: ' + message : ''}`,
+      subject: `${subjectNoun} cancelled: ${student.name} – ${when}`,
+      text: `${student.name}'s ${isCheckin ? 'parent check-in' : 'session'} for ${when} was cancelled.${message ? '\n\nMessage: ' + message : ''}`,
     })
   }
 

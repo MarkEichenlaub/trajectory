@@ -10,6 +10,7 @@ const MARK_GMAIL = 'mark.d.eichenlaub@gmail.com'
 const MARK_AOPS = 'eichenlaub@artofproblemsolving.com'
 const TIMEZONE = 'America/New_York'
 const SESSION_DURATION_MIN = 60
+const CHECKIN_DURATION_MIN = 15
 const SLOT_INCREMENT_MIN = 30
 
 // Working hours in Eastern time. Day 0 = Sunday, 6 = Saturday.
@@ -76,8 +77,10 @@ function easternDow(dateStr: string): number {
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(dow)
 }
 
-// Generate 1-hour slot UTC start times for an Eastern calendar date.
-function generateSlots(dateStr: string): Date[] {
+// Generate slot UTC start times for an Eastern calendar date. Starts stay on the
+// same half-hour grid whatever the duration, so a 15-minute check-in slots into
+// the gaps between hour-long sessions without fragmenting the day.
+function generateSlots(dateStr: string, durationMin: number): Date[] {
   const dow = easternDow(dateStr)
   const windows = WORKING_HOURS[dow] ?? []
   const slots: Date[] = []
@@ -85,7 +88,7 @@ function generateSlots(dateStr: string): Date[] {
     let [h, m] = w.start.split(':').map(Number)
     const [eh, em] = w.end.split(':').map(Number)
     const endMin = eh * 60 + em
-    while (h * 60 + m + SESSION_DURATION_MIN <= endMin) {
+    while (h * 60 + m + durationMin <= endMin) {
       slots.push(easternToUtc(dateStr, `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`))
       m += SLOT_INCREMENT_MIN
       h += Math.floor(m / 60)
@@ -95,9 +98,11 @@ function generateSlots(dateStr: string): Date[] {
   return slots
 }
 
-function overlapsAny(slotStart: Date, busy: { start: string; end: string }[]): boolean {
+function overlapsAny(
+  slotStart: Date, busy: { start: string; end: string }[], durationMin: number,
+): boolean {
   const s = slotStart.getTime()
-  const e = s + SESSION_DURATION_MIN * 60_000
+  const e = s + durationMin * 60_000
   return busy.some(b => s < new Date(b.end).getTime() && e > new Date(b.start).getTime())
 }
 
@@ -134,8 +139,14 @@ Deno.serve(async (req) => {
   const { data: { user } } = await userClient.auth.getUser()
   if (!user) return json({ error: 'unauthorized' }, 401)
 
-  const { from, to } = await req.json() as { from: string; to: string }
+  const { from, to, session_type } = await req.json() as {
+    from: string; to: string; session_type?: string
+  }
   if (!from || !to) return json({ error: 'from and to are required' }, 400)
+
+  // Only the two known kinds set a duration — an arbitrary caller-supplied
+  // number would let anyone probe the calendar at any granularity.
+  const durationMin = session_type === 'checkin' ? CHECKIN_DURATION_MIN : SESSION_DURATION_MIN
 
   let accessToken: string
   try {
@@ -168,9 +179,9 @@ Deno.serve(async (req) => {
   const end = new Date(`${to}T12:00:00Z`)
   while (cur <= end) {
     const dateStr = new Intl.DateTimeFormat('en-CA', { timeZone: TIMEZONE }).format(cur)
-    for (const slot of generateSlots(dateStr)) {
+    for (const slot of generateSlots(dateStr, durationMin)) {
       if (slot.getTime() <= now) continue
-      if (!overlapsAny(slot, busy)) slots.push(slot.toISOString())
+      if (!overlapsAny(slot, busy, durationMin)) slots.push(slot.toISOString())
     }
     cur.setUTCDate(cur.getUTCDate() + 1)
   }

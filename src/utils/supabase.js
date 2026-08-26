@@ -62,7 +62,7 @@ export async function removeStudent(id) {
 
 // Explicit columns (the student-facing list + admin billing fields) and a row
 // cap keep this query fast — it runs on every admin boot.
-const ADMIN_SESSION_COLUMNS = 'id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags, paid, balance_decremented'
+const ADMIN_SESSION_COLUMNS = 'id, student_id, session_type, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags, paid, balance_decremented'
 
 export async function fetchSessions(studentId) {
   let q = adminClient().from('sessions').select(ADMIN_SESSION_COLUMNS)
@@ -318,6 +318,7 @@ export async function uploadProgressReport(file, studentId, title) {
   let countQ = client.from('sessions')
     .select('id', { count: 'exact', head: true })
     .eq('student_id', studentId)
+    .eq('session_type', 'session')
     .not('end_time', 'is', null)
     .lte('end_time', new Date().toISOString())
   if (prev?.created_at) countQ = countQ.gt('end_time', prev.created_at)
@@ -380,7 +381,7 @@ export async function resolveMyAccount() {
 export async function fetchStudentSessions() {
   const { data, error } = await supabase
     .from('sessions')
-    .select('id, student_id, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags')
+    .select('id, student_id, session_type, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags')
     .order('scheduled_at', { ascending: false })
   if (error) throw new Error(error.message)
   return data || []
@@ -388,20 +389,27 @@ export async function fetchStudentSessions() {
 
 // ── Direct scheduling (Google Calendar-backed) ────────────────────────────────
 
-export async function getAvailability(from, to) {
+// sessionType is 'session' (default) or 'checkin'. A check-in is 15 minutes
+// rather than an hour, so it fits gaps a full session can't and the slot list
+// genuinely differs between the two.
+export async function getAvailability(from, to, sessionType) {
   const { data, error } = await supabase.functions.invoke('get-availability', {
-    body: { from, to },
+    body: { from, to, ...(sessionType ? { session_type: sessionType } : {}) },
   })
   if (error) throw new Error(error.message || String(error))
   if (data?.error) throw new Error(data.error)
   return data?.slots || []
 }
 
-export async function bookSession(slot, studentId) {
+export async function bookSession(slot, studentId, sessionType) {
   // studentId is supplied only when an admin books on a student's behalf;
   // otherwise the edge function books for the caller's own linked student.
   const { data, error } = await supabase.functions.invoke('book-session', {
-    body: studentId ? { slot, student_id: studentId } : { slot },
+    body: {
+      slot,
+      ...(studentId ? { student_id: studentId } : {}),
+      ...(sessionType ? { session_type: sessionType } : {}),
+    },
   })
   if (error) throw new Error(error.message || String(error))
   if (data?.error) throw new Error(data.error)

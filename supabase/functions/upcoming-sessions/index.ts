@@ -21,9 +21,12 @@ Deno.serve(async (req) => {
   const now = new Date()
   const max = new Date(now.getTime() + 12 * 60 * 60 * 1000)
 
+  // Tutoring sessions only — this feeds the launcher, and there is nothing to
+  // open or prepare for a parent check-in.
   const { data, error } = await supabase
     .from('sessions')
     .select('id, scheduled_at, miro_board_url, student_id, students(name)')
+    .eq('session_type', 'session')
     .gt('scheduled_at', now.toISOString())
     .lte('scheduled_at', max.toISOString())
     .order('scheduled_at', { ascending: true })
