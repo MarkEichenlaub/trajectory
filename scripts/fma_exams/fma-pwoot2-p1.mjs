@@ -359,7 +359,7 @@ The motion must be any periodic motion with a period of one second and an averag
   },
   {
     n: 11, correct: 'A', // why: boxed value r \propto R^{7/3} matches choice (a).
-    statement: `A planet has density $$\\rho$$ and angular momentum per unit mass (about its own axis of rotation) $$\\ell.$$ A satellite is placed in an orbit above the equator so that it stays above the same spot on the planet's surface at all times. How does the radius $$r$$ of this orbit depend on $$R,$$ the radius of the planet?`,
+    statement: `A planet has density $$\\rho$$ and angular momentum per unit mass (about its own axis of rotation) $$h.$$ A satellite is placed in an orbit above the equator so that it stays above the same spot on the planet's surface at all times. How does the radius $$r$$ of this orbit depend on $$R,$$ the radius of the planet?`,
     choices: {
       A: '$$r\\propto R^{7/3}.$$',
       B: '$$r\\propto R^{5/3}.$$',
@@ -378,15 +378,15 @@ $$L = I\\omega \\propto M R^2 \\omega.$$
 
 The angular momentum is also
 
-$$L = \\ell M.$$
+$$L = h M.$$
 
 Combining these, we get
 
-$$\\ell M \\propto MR^2 \\omega,$$
+$$h M \\propto MR^2 \\omega,$$
 
 or
 
-$$\\omega \\propto \\dfrac{\\ell}{R^2}.$$
+$$\\omega \\propto \\dfrac{h}{R^2}.$$
 
 Next we consider the orbital dynamics. The satellite has acceleration
 
@@ -399,9 +399,9 @@ $$\\omega \\propto \\sqrt{\\dfrac{\\rho R^3}{r^3}}.$$
 
 Putting our two findings together,
 
-$$\\dfrac{\\ell}{R^2} \\propto \\sqrt{\\dfrac{\\rho R^3}{r^3}}.$$
+$$\\dfrac{h}{R^2} \\propto \\sqrt{\\dfrac{\\rho R^3}{r^3}}.$$
 
-We can ignore $$\\ell$$ and $$\\rho$$ because they are constants, so
+We can ignore $$h$$ and $$\\rho$$ because they are constants, so
 
 $$R^{-2} \\propto R^{3/2} r^{-3/2},$$
 

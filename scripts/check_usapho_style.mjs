@@ -147,6 +147,12 @@ function typoViolations(body) {
 }
 
 // ---------- main ----------
+if (!process.argv[1] || !process.argv[1].endsWith('check_usapho_style.mjs')) {
+  // imported for locateUsapho only
+} else {
+runMain()
+}
+function runMain() {
 const files = readdirSync(join(ROOT, dir)).filter(f => /^\d+-\d+\.tex$/.test(f))
   .filter(f => /\\USAPhOproblem\{/.test(readFileSync(join(ROOT, dir, f), 'utf8')))
 
@@ -186,3 +192,4 @@ for (const f of files) {
     headMix: (subs && subsubs) ? `${subs}/${subsubs}` : '' })
 }
 console.table(summary)
+}
