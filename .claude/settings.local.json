@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(typst compile *)"
+      "Bash(typst compile *)",
+      "WebSearch",
+      "mcp__claude_ai_Gmail__get_draft",
+      "mcp__claude_ai_Gmail__update_draft",
+      "mcp__claude_ai_Gmail__create_draft",
+      "mcp__claude_ai_Gmail__trash_message",
+      "Bash(deno check *)"
     ]
   }
 }

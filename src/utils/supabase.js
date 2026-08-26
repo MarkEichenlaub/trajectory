@@ -284,10 +284,13 @@ export async function sendStagedInvoice(invoice) {
     subject: invoice.staged_email_subject,
     body: invoice.staged_email_body,
   })
-  const dueDate = new Date()
-  dueDate.setDate(dueDate.getDate() + 30)
+  // Only the status changes here. This used to also stamp due_date as "today +
+  // 30 days", which was invented client-side and disagreed with the date Stripe
+  // printed on the customer's invoice (set by days_until_due at finalization) —
+  // so the overdue badge fired weeks late. bill-sessions copies the real value
+  // back from Stripe instead.
   const { error } = await adminClient()
-    .from('invoices').update({ status: 'sent', due_date: dueDate.toISOString() }).eq('id', invoice.id)
+    .from('invoices').update({ status: 'sent' }).eq('id', invoice.id)
   if (error) throw new Error(error.message)
 }
 

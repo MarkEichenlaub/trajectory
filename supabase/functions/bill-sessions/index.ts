@@ -23,6 +23,15 @@ async function stripePost(path: string, params: Record<string, string | number>)
   return json
 }
 
+async function stripeGet(path: string) {
+  const res = await fetch(`https://api.stripe.com/v1/${path}`, {
+    headers: { 'Authorization': `Bearer ${STRIPE_SECRET_KEY}` },
+  })
+  const json = await res.json()
+  if (!res.ok) throw new Error(`Stripe GET ${path} failed: ${json.error?.message || res.status}`)
+  return json
+}
+
 const MARK_EMAIL = 'mark.d.eichenlaub@gmail.com'
 
 async function sendEmail(to: string | string[], subject: string, body: string) {
@@ -146,6 +155,90 @@ async function sendVenmoReminder(
     .in('id', ids)
 }
 
+const WEEK_MS = 7 * 24 * 60 * 60 * 1000
+
+// Stripe owns the due date — it is set by days_until_due at finalization and is
+// what the customer sees on their invoice. The portal used to write its own
+// "send date + 30 days" into this column, which drifted weeks away from reality
+// and made the admin overdue badge useless. Copy the real value back, which also
+// repairs rows written under the old behavior.
+//
+// Nothing else watches unpaid invoices: Stripe's own dunning is off (these are
+// created with auto_advance false so Mark can send his own branded email), and
+// no other job reads due dates. Without the notice below an unpaid invoice is
+// silent forever.
+async function checkOverdueInvoices() {
+  const { data: open } = await supabase
+    .from('invoices')
+    .select('id, student_id, stripe_invoice_id, due_date, status, amount_cents, overdue_notified_at, students(name, billing_name)')
+    .in('status', ['draft', 'sent'])
+    .not('stripe_invoice_id', 'is', null)
+
+  const now = Date.now()
+
+  for (const inv of open || []) {
+    let dueDate = inv.due_date as string | null
+
+    try {
+      const remote = await stripeGet(`invoices/${inv.stripe_invoice_id}`) as {
+        due_date?: number | null; status?: string
+      }
+      // Stripe reports seconds; the column is timestamptz.
+      const remoteDue = remote.due_date ? new Date(remote.due_date * 1000).toISOString() : null
+      if (remoteDue && remoteDue !== dueDate) {
+        const { error } = await supabase.from('invoices')
+          .update({ due_date: remoteDue }).eq('id', inv.id)
+        if (error) console.error('due_date sync failed for', inv.id, error.message)
+        else console.log(`invoice ${inv.id}: due_date ${dueDate} → ${remoteDue}`)
+        dueDate = remoteDue
+      }
+      // The webhook normally marks payment, but a missed delivery would leave a
+      // paid invoice nagging forever. Trust Stripe here.
+      if (remote.status === 'paid' || remote.status === 'void') {
+        await supabase.from('invoices')
+          .update({ status: remote.status === 'paid' ? 'paid' : 'void' }).eq('id', inv.id)
+        continue
+      }
+    } catch (e) {
+      console.error('Stripe invoice fetch failed for', inv.stripe_invoice_id, (e as Error).message)
+      // Fall through and still evaluate the stored date rather than going quiet.
+    }
+
+    if (inv.status !== 'sent' || !dueDate) continue
+    if (new Date(dueDate).getTime() > now) continue
+
+    // Nag once when it lapses, then weekly — this runs every 5 minutes.
+    const last = inv.overdue_notified_at ? new Date(inv.overdue_notified_at as string).getTime() : 0
+    if (last && now - last < WEEK_MS) continue
+
+    const rel = inv.students as unknown as { name?: string; billing_name?: string } | { name?: string; billing_name?: string }[]
+    const s = Array.isArray(rel) ? rel[0] : rel
+    const studentName = s?.name ?? inv.student_id
+    const payer = s?.billing_name ?? 'the family'
+    const amount = ((inv.amount_cents as number) / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    const dueWhen = new Date(dueDate).toLocaleDateString('en-US', {
+      weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York',
+    })
+    const daysLate = Math.floor((now - new Date(dueDate).getTime()) / (24 * 60 * 60 * 1000))
+    const lateLabel = daysLate < 1 ? 'due today' : `${daysLate} day${daysLate === 1 ? '' : 's'} past due`
+
+    try {
+      await sendEmail(
+        MARK_EMAIL,
+        `Unpaid invoice: ${studentName} — ${amount} (${lateLabel})`,
+        `${studentName}'s invoice for ${amount} was due ${dueWhen} and is still unpaid (${lateLabel}).\n\n`
+        + `Billed to: ${payer}\n`
+        + `Stripe: https://dashboard.stripe.com/invoices/${inv.stripe_invoice_id}\n\n`
+        + `You'll get this again in a week if it stays open.`,
+      )
+      await supabase.from('invoices')
+        .update({ overdue_notified_at: new Date().toISOString() }).eq('id', inv.id)
+    } catch (e) {
+      console.error('overdue notice failed for', inv.id, (e as Error).message)
+    }
+  }
+}
+
 // Finds non-invoicing active students whose balance has hit 0 and who have
 // un-emailed sessions, then sends the Venmo reminder. Runs at the end of every
 // cron invocation so it also catches failures from prior runs.
@@ -210,6 +303,11 @@ Deno.serve(async (req) => {
       await checkVenmoReminders()
     } catch (e) {
       console.error('checkVenmoReminders failed:', (e as Error).message)
+    }
+    try {
+      await checkOverdueInvoices()
+    } catch (e) {
+      console.error('checkOverdueInvoices failed:', (e as Error).message)
     }
     return new Response(JSON.stringify({ processed: 0, invoicesSent: [] }), {
       headers: { 'Content-Type': 'application/json' },
@@ -389,6 +487,11 @@ Deno.serve(async (req) => {
     await checkVenmoReminders()
   } catch (e) {
     console.error('checkVenmoReminders failed:', (e as Error).message)
+  }
+  try {
+    await checkOverdueInvoices()
+  } catch (e) {
+    console.error('checkOverdueInvoices failed:', (e as Error).message)
   }
 
   return new Response(JSON.stringify({ processed, invoicesSent, errors }), {
