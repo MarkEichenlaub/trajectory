@@ -194,17 +194,18 @@ export default function SchedulingTab({
         gcal_event_id: result.gcal_event_id,
       }])
       const who = student?.first_name || student?.name
-      setSuccessMsg(
-        booking === 'checkin'
-          ? (isAdmin
-            ? `Check-in booked. The calendar invite and Google Meet link have been emailed to ${who}'s parents.`
-            : 'Check-in booked! A calendar invite with the Google Meet link is on its way to your email.')
-          : (isAdmin
-            ? `Session booked for ${who}! The calendar invite, Google Meet link, and whiteboard have been emailed to the family.`
-            : 'Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
-      )
-      setRefreshKey(k => k + 1)
+      const msg = booking === 'checkin'
+        ? (isAdmin
+          ? `Check-in booked. The calendar invite and Google Meet link have been emailed to ${who}'s parents.`
+          : 'Check-in booked! A calendar invite with the Google Meet link is on its way to your email.')
+        : (isAdmin
+          ? `Session booked for ${who}! The calendar invite, Google Meet link, and whiteboard have been emailed to the family.`
+          : 'Session booked! A confirmation with the calendar invite, Google Meet link, and whiteboard is on its way to your email.')
+      // clearAction() blanks successMsg, so it has to run before the message is
+      // set or React collapses both updates and the confirmation never shows.
       clearAction()
+      setSuccessMsg(msg)
+      setRefreshKey(k => k + 1)
     } catch (e) {
       setActionError(e.message)
     } finally {
@@ -222,11 +223,12 @@ export default function SchedulingTab({
         scheduled_at: result.scheduled_at,
         end_time: result.end_time,
       }}))
-      setSuccessMsg(wasCheckin
+      const msg = wasCheckin
         ? 'Check-in rescheduled! Check your email for the updated calendar invite.'
-        : 'Session rescheduled! Check your email for the updated calendar invite.')
-      setRefreshKey(k => k + 1)
+        : 'Session rescheduled! Check your email for the updated calendar invite.'
       clearAction()
+      setSuccessMsg(msg)
+      setRefreshKey(k => k + 1)
     } catch (e) {
       setActionError(e.message)
     } finally {
@@ -242,12 +244,12 @@ export default function SchedulingTab({
       await cancelSession(cancelingSession.id, cancelMsg || undefined)
       setCanceledIds(prev => new Set([...prev, cancelingSession.id]))
       const noun = wasCheckin ? 'Check-in' : 'Session'
-      setSuccessMsg(isAdmin
+      const msg = isAdmin
         ? `${noun} cancelled. A cancellation email has been sent to the family.`
         : `${noun} cancelled. A confirmation has been sent to your email.`
-      )
-      setRefreshKey(k => k + 1)
       clearAction()
+      setSuccessMsg(msg)
+      setRefreshKey(k => k + 1)
     } catch (e) {
       setActionError(e.message)
     } finally {
