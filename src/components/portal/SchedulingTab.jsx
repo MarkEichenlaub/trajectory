@@ -168,11 +168,11 @@ export default function SchedulingTab({
       if (daySlots.length) { setSelectedDay(key); setSelectedSession(null) }
       return
     }
-    if (daySessions.length) {
-      setSelectedSession(daySessions[0]); setSelectedDay(null)
-    } else if (daySlots.length) {
-      setSelectedDay(key); setSelectedSession(null)
-    }
+    // A day can hold a booking AND still have free time — booking a check-in
+    // right after the student's session is the main reason this exists. Select
+    // both so the session doesn't hide the times behind it.
+    setSelectedSession(daySessions.length ? daySessions[0] : null)
+    setSelectedDay(daySlots.length ? key : null)
   }
 
   async function confirmBook() {
@@ -331,53 +331,57 @@ export default function SchedulingTab({
       )
     }
 
-    if (selectedDay && daySlots.length > 0) {
-      const dateLabel = new Date(`${selectedDay}T12:00:00Z`).toLocaleDateString('en-US', {
+    // The booked item and the day's free times are built separately and both
+    // rendered: a day can hold Leo's session and still have room for a check-in
+    // straight afterwards, and showing only the session would hide that.
+    const dateLabel = selectedDay
+      ? new Date(`${selectedDay}T12:00:00Z`).toLocaleDateString('en-US', {
         weekday: 'long', month: 'long', day: 'numeric',
       })
-      const heading = inRescheduleSlotPick
-        ? 'Pick new time'
-        : bookingCheckin ? `Available check-in times (${CHECKIN_MIN} min)` : 'Available times'
-      return (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ fontSize: 13, fontWeight: 600 }}>
-              {heading} — {dateLabel}
-            </div>
-            <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {daySlots.map(slot => (
-              <button key={slot} className="sm" style={{ fontSize: 12 }}
-                onClick={() => setPendingSlot(slot)}>
-                {new Date(slot).toLocaleTimeString('en-US', {
-                  hour: 'numeric', minute: '2-digit', timeZone: tz,
-                })}
-              </button>
-            ))}
-          </div>
-          <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? `Click a time to book it for ${student?.first_name || student?.name || 'this student'} — all times ${tzAbbr}` : `All times ${tzAbbr}`}</div>
-        </div>
-      )
-    }
+      : ''
+    const timesHeading = inRescheduleSlotPick
+      ? 'Pick new time'
+      : bookingCheckin ? `Available check-in times (${CHECKIN_MIN} min)` : 'Available times'
 
-    if (selectedDay && daySlots.length === 0 && !slotsLoading) {
-      return (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>No available times on this day.</div>
-          <button className="sm" onClick={clearAction}>Back</button>
+    const timesCard = selectedDay && daySlots.length > 0 ? (
+      <div key="times" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ fontSize: 13, fontWeight: 600 }}>
+            {timesHeading} — {dateLabel}
+          </div>
+          <button className="sm" style={{ fontSize: 11, padding: '1px 6px' }} onClick={clearAction}>✕</button>
         </div>
-      )
-    }
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {daySlots.map(slot => (
+            <button key={slot} className="sm" style={{ fontSize: 12 }}
+              onClick={() => setPendingSlot(slot)}>
+              {new Date(slot).toLocaleTimeString('en-US', {
+                hour: 'numeric', minute: '2-digit', timeZone: tz,
+              })}
+            </button>
+          ))}
+        </div>
+        <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{isAdmin ? `Click a time to book it for ${student?.first_name || student?.name || 'this student'} — all times ${tzAbbr}` : `All times ${tzAbbr}`}</div>
+      </div>
+    ) : null
 
+    // Only worth saying when there is nothing else on the day to show.
+    const noTimesCard = selectedDay && daySlots.length === 0 && !slotsLoading && !selectedSession ? (
+      <div key="notimes" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ fontSize: 13, color: 'var(--text-dim)' }}>No available times on this day.</div>
+        <button className="sm" onClick={clearAction}>Back</button>
+      </div>
+    ) : null
+
+    let sessionCard = null
     if (selectedSession) {
       const canReschedule = !!selectedSession.gcal_event_id
       const checkin = isCheckin(selectedSession)
       const sessionOnDeck = isAdmin
         ? (sessionProblems || []).filter(sp => sp.session_id === selectedSession.id)
         : []
-      return (
-        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
+      sessionCard = (
+        <div key="session" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 16px' }}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 10 }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 14, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -451,6 +455,14 @@ export default function SchedulingTab({
             </div>
           )}
           {actionError && <div style={{ fontSize: 12, color: 'var(--red)', marginTop: 8 }}>{actionError}</div>}
+        </div>
+      )
+    }
+
+    if (sessionCard || timesCard || noTimesCard) {
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {sessionCard}{timesCard}{noTimesCard}
         </div>
       )
     }
