@@ -21,9 +21,19 @@ function escapeHtml(s) {
 const HOLE_OPEN = ''
 const HOLE_CLOSE = ''
 
-// One run of prose: $$...$$ segments rendered as INLINE KaTeX, __text__ as
-// bold, everything else escaped.
-function renderInline(text) {
+// A multi-line environment set inline runs into the prose beside it and comes
+// out unreadable, so those get KaTeX's display mode — which centres them on
+// their own line — as does a chunk that is nothing but one formula.
+const BLOCK_ENV = /\\begin\{(aligned|align|alignat|gather|split|cases|array|[bpvBV]?matrix)\*?\}/
+function isDisplayMath(seg, whole) {
+  return BLOCK_ENV.test(seg) || whole.trim() === seg.trim()
+}
+
+// One run of prose: $$...$$ segments rendered as KaTeX, __text__ as bold,
+// everything else escaped. `allowDisplay` is off for answer choices, which are
+// usually nothing but a formula and would each be centred on a line of their
+// own — the list has to stay compact to read as a list.
+function renderInline(text, allowDisplay = true) {
   // Math is rendered first and set aside behind a placeholder so the bold pass
   // sees the text whole. Bolding used to run per-fragment, which meant a __...__
   // run containing a formula had its opening and closing markers land in
@@ -32,7 +42,10 @@ function renderInline(text) {
   const math = []
   const withHoles = text.replace(/\$\$[\s\S]*?\$\$/g, seg => {
     if (seg.length < 4) return seg
-    math.push(katex.renderToString(seg.slice(2, -2), { throwOnError: false, displayMode: false }))
+    math.push(katex.renderToString(seg.slice(2, -2), {
+      throwOnError: false,
+      displayMode: allowDisplay && isDisplayMath(seg, text),
+    }))
     return `${HOLE_OPEN}${math.length - 1}${HOLE_CLOSE}`
   })
   return escapeHtml(withHoles)
@@ -50,7 +63,7 @@ export function renderStatementHtml(text) {
       const stemHtml = stem ? `<p>${renderInline(stem)}</p>` : ''
       if (choices.length === 0) return stemHtml
       const items = choices
-        .map(c => `<div class="statement-choice"><span class="choice-label">(${c.letter})</span> ${renderInline(c.text)}</div>`)
+        .map(c => `<div class="statement-choice"><span class="choice-label">(${c.letter})</span> ${renderInline(c.text, false)}</div>`)
         .join('')
       return `${stemHtml}<div class="statement-choices">${items}</div>`
     })

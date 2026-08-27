@@ -360,6 +360,26 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 .problem-preview-body p { margin: 0 0 10px; }
 .problem-preview-body p:last-child { margin-bottom: 0; }
 
+/* Worked solution under a previewed problem (admin only). Same shape as the
+   F=ma review page's solution block, kept separate because that one is styled
+   for the exam pages' smaller type. */
+.preview-solution { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 10px; }
+.preview-solution-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; padding: 2px 0;
+  font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer;
+}
+.preview-solution-toggle:hover { text-decoration: underline; }
+.preview-solution-body {
+  margin-top: 8px; padding: 12px 14px;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+}
+.preview-solution-body .empty-state { padding: 0; text-align: left; }
+.preview-solution-answer {
+  font-size: 13px; font-weight: 600; color: var(--text-strong);
+  margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+
 /* Multiple-choice answers, one per line as they appear on the real exam.
    Tighter than paragraph spacing so the run still reads as one list. */
 .statement-choices { margin: 0 0 10px; }

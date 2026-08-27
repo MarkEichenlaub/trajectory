@@ -561,6 +561,22 @@ export async function fetchHandoutsPublic() {
   return data || []
 }
 
+// ── Problem solutions (admin only) ────────────────────────────────────────
+
+// The worked solution for one bank problem, or null if none was synced. Fetched
+// per problem as the preview opens rather than with the bank: it is a megabyte
+// of text across the bank, and only the admin may read any of it (RLS returns
+// no rows to a student, so a stray call leaks nothing).
+export async function fetchProblemSolution(problemId) {
+  const { data, error } = await supabase
+    .from('problem_solutions')
+    .select('answer, solution, figure_urls, diagram_count')
+    .eq('problem_id', problemId)
+    .maybeSingle()
+  if (error) throw new Error(error.message)
+  return data || null
+}
+
 // ── Submissions (student uploads work; admin uploads feedback) ────────────────
 
 // Upload a student's submission file and return the public URL.

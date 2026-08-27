@@ -227,6 +227,7 @@ export default function ProblemTable({
             problem={previewProblem}
             onClose={() => setPreviewProblem(null)}
             onExclude={onExclude ? (id) => { onExclude(id); setPreviewProblem(null) } : null}
+            canSeeSolution
           />
         </Suspense>
       )}
