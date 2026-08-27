@@ -50,6 +50,12 @@ function renderInline(text, allowDisplay = true) {
   })
   return escapeHtml(withHoles)
     .replace(/__([\s\S]+?)__/g, '<strong>$1</strong>')
+    // Figures where the author put them: a worked solution says "looks like
+    // this:" and then shows one. Matched after escaping, so any quote in the
+    // URL is already &quot; and cannot break out of the attribute, and the
+    // http(s) requirement rules out a javascript: src.
+    .replace(/!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g,
+      (_, url) => `<img class="statement-figure" src="${url}" alt="" loading="lazy">`)
     .replace(new RegExp(`${HOLE_OPEN}(\\d+)${HOLE_CLOSE}`, 'g'), (_, i) => math[Number(i)])
 }
 

@@ -28,6 +28,22 @@ describe('renderStatementHtml', () => {
     expect(displayCount(html)).toBe(1)
   })
 
+  it('renders a figure where it appears in the prose', () => {
+    const html = renderStatementHtml('The plot looks like this:\n\n![](https://example.com/a%20b.png)')
+    expect(html).toContain('<img class="statement-figure" src="https://example.com/a%20b.png"')
+  })
+
+  // A non-http src is left as inert escaped text rather than becoming an <img>,
+  // and the alt text — the one part an author controls — is dropped, so neither
+  // can carry an attribute out of the tag.
+  it('will not turn a figure into a script vector', () => {
+    const html = renderStatementHtml('![](javascript:alert(1)) ![" onerror="x](https://e.com/a.png)')
+    expect(html).not.toContain('src="javascript:')
+    expect(html).not.toContain('onerror=')
+    expect((html.match(/<img /g) || []).length).toBe(1)
+    expect(html).toContain('src="https://e.com/a.png"')
+  })
+
   it('renders bold that wraps a formula', () => {
     const html = renderStatementHtml('__the speed $$v$$ matters__')
     expect(html).toContain('<strong>')

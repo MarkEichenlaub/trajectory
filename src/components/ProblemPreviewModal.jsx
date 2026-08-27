@@ -107,14 +107,14 @@ export default function ProblemPreviewModal({ problem, onClose, onExclude, canSe
                       </div>
                     )}
                     {solution.solution && (
+                      // Figures are rendered inline by renderStatementHtml, at
+                      // the point in the prose that refers to them, so
+                      // figure_urls is not listed again here.
                       <div
                         className="problem-preview-body"
                         dangerouslySetInnerHTML={{ __html: renderStatementHtml(solution.solution) }}
                       />
                     )}
-                    {(solution.figure_urls || []).map((url, i) => (
-                      <img key={url} src={url} alt={`Solution figure ${i + 1}`} loading="lazy" style={{ maxWidth: '100%', borderRadius: 6, border: '1px solid var(--border)', marginTop: 10 }} />
-                    ))}
                   </>
                 )}
               </div>

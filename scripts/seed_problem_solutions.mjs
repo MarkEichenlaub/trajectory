@@ -12,16 +12,22 @@
 // the portal's convention on the way in: $$..$$ for all math, __text__ for bold,
 // blank lines between paragraphs (cf. scripts/fma_solutions_extracted.mjs).
 //
+// Run scripts/render_solution_figures.mjs FIRST: it renders the Asymptote
+// diagrams a solution refers to, and this script links whatever it finds
+// uploaded (anything missing keeps a "diagram not shown" note instead).
+//
 // Usage:
 //   node scripts/seed_problem_solutions.mjs --dry-run     # report coverage only
 //   node scripts/seed_problem_solutions.mjs --emit-json   # print the rows, don't write
 //   node scripts/seed_problem_solutions.mjs               # upsert + prune orphans
 
 import { createClient } from '@supabase/supabase-js'
-import { readFileSync, existsSync } from 'fs'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
-import { homedir } from 'os'
+import {
+  loadMaster, loadBankProblems, serviceKey,
+  SUPABASE_URL, FIGURE_BUCKET, FIGURE_PREFIX, figureUrl,
+} from './lib/eigennode_master.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -29,41 +35,18 @@ const DRY_RUN = process.argv.includes('--dry-run')
 const EMIT_JSON = process.argv.includes('--emit-json')
 const log = (...a) => { if (!EMIT_JSON) console.log(...a) }
 
-// ---- master.json ----------------------------------------------------------
-// Mirrors _resolve_drive_base() in eigennode/scripts/lib/pdf/master_loader.py.
-function masterPath() {
-  if (process.env.EIGENNODE_MASTER) return process.env.EIGENNODE_MASTER
-  const bases = []
-  if (process.env.EIGENNODE_SYNC_DIR) bases.push(process.env.EIGENNODE_SYNC_DIR)
-  for (const letter of 'DEFGHIJKLMNOPQRSTUVWXYZ') bases.push(`${letter}:/My Drive/EigenNode`)
-  bases.push(join(homedir(), 'My Drive', 'EigenNode'))
-  for (const base of bases) {
-    const p = join(base, 'master.json')
-    if (existsSync(p)) return p
-  }
-  throw new Error('Could not find master.json — set EIGENNODE_MASTER or EIGENNODE_SYNC_DIR')
-}
+const { childrenOf, childNamed, nodeFor, partNodes } = loadMaster()
 
-const master = JSON.parse(readFileSync(masterPath(), 'utf8'))
-const nodes = master.nodes
-
-// Sibling order lives in the parent's `children` array. The node map's own key
-// order is arbitrary, and walking by parentId shuffles a solution's paragraphs
-// into nonsense -- answer first, source in the middle, opening line last.
-const childrenOf = n => (n?.children || []).map(id => nodes[id]).filter(Boolean)
-const childNamed = (n, name) =>
-  childrenOf(n).find(c => String(c.content ?? '').trim().toLowerCase() === name)
-
-// Problem nodes are titled "Problem 6 [32628]" -- the bracketed number is the
-// AoPS problem id the export keeps as `aops_id`, and unlike the EigenNode node
-// id it survives a course re-import.
-const byAopsId = new Map()
-const byStatement = new Map()
-for (const n of Object.values(nodes)) {
-  const content = String(n.content ?? '').trim()
-  const m = /\[(\d+)\]\s*$/.exec(content)
-  if (m) byAopsId.set(m[1], n)
-  if (content.length > 40) byStatement.set(content.slice(0, 80), n)
+// Which Asymptote diagrams render_solution_figures.mjs has actually uploaded.
+// A solution that references one we don't have says so rather than showing a
+// broken image, so the two scripts can be run in either order (or not at all).
+const supabase = createClient(SUPABASE_URL, serviceKey(ROOT), { auth: { persistSession: false } })
+const renderedFigures = new Set()
+{
+  const { data, error } = await supabase.storage
+    .from(FIGURE_BUCKET).list(FIGURE_PREFIX, { limit: 2000 })
+  if (error) log(`warning: could not list rendered figures (${error.message})`)
+  for (const f of data || []) renderedFigures.add(f.name.replace(/\.png$/, ''))
 }
 
 // ---- text normalization ---------------------------------------------------
@@ -89,7 +72,11 @@ function cleanParagraph(text, figures) {
   t = t.replace(ASY_BLOCK, () => { diagrams++; return ' ' })
   for (const m of t.matchAll(IMG_MD)) figures.push(m[1])
   for (const m of t.matchAll(IMG_BB)) figures.push(m[1].trim())
-  t = t.replace(IMG_MD, ' ').replace(IMG_BB, ' ')
+  // Images stay where they are -- a solution says "looks like this:" and then
+  // shows one -- but the alt text goes, since the bbcode strip below would eat
+  // "[Figure 1]" out of the middle and leave the rest as debris.
+  t = t.replace(IMG_MD, (_, url) => ` ![](${url}) `)
+       .replace(IMG_BB, (_, url) => ` ![](${url.trim()}) `)
 
   // Stray literal \t and \r (an AoPS import artifact -- eigennode strips \t
   // too). The negative lookahead keeps \theta, \times, \tan, \rho intact.
@@ -137,8 +124,17 @@ function collect(container) {
     for (const c of childrenOf(node)) {
       const raw = String(c.content ?? '').trim()
       if (raw.toLowerCase().startsWith('#asymptote')) {
-        diagrams++
-        paras.push(DIAGRAM_NOTE)
+        // A diagram, drawn in Asymptote. render_solution_figures.mjs renders it
+        // to a PNG keyed by this node's id; if that hasn't run (or the figure
+        // failed to render) the prose still refers to a picture, so say it's
+        // missing rather than leaving a broken image or silence.
+        if (renderedFigures.has(c.id)) {
+          figures.push(figureUrl(c.id))
+          paras.push(`![](${figureUrl(c.id)})`)
+        } else {
+          diagrams++
+          paras.push(DIAGRAM_NOTE)
+        }
         continue // the subtree below is Asymptote source, not prose
       }
       if (raw.startsWith('#')) {  // #hide / #image markers: drop the label, keep the content
@@ -176,12 +172,6 @@ function cleanAnswer(text) {
 // Multi-part problems ("Problem 6 (Parts A–B)") keep a Problem/Answer/Solution
 // under each part container, and the exported statement concatenates the parts
 // with __(a)__ labels -- so the solution is stitched together the same way.
-function partNodes(problemNode) {
-  const kids = childrenOf(problemNode)
-  if (!kids.length || String(kids[0].content ?? '').trim().toLowerCase() === 'problem') return []
-  return kids.filter(c => childNamed(c, 'problem'))
-}
-
 function solutionFor(problemNode) {
   const parts = partNodes(problemNode)
   if (!parts.length) {
@@ -210,17 +200,7 @@ function solutionFor(problemNode) {
 }
 
 // ---- the portal's problem bank -------------------------------------------
-const index = JSON.parse(readFileSync(join(ROOT, 'data', 'aops-index.json'), 'utf8'))
-const problems = index.files.flatMap(f => JSON.parse(readFileSync(join(ROOT, 'data', f), 'utf8')))
-
-function nodeFor(p) {
-  if (p.aops_id && byAopsId.has(String(p.aops_id))) return byAopsId.get(String(p.aops_id))
-  // Fall back to the statement text: the AoPS script problems carry no aops_id,
-  // and a re-imported course changes the node ids the export used.
-  const stmt = byStatement.get((p.statement || '').trim().slice(0, 80))
-  if (!stmt) return null
-  return nodes[nodes[stmt.parentId]?.parentId] || null
-}
+const problems = loadBankProblems(ROOT)
 
 const rows = []
 const stats = { total: problems.length, matched: 0, withSolution: 0, withAnswer: 0, diagrams: 0, figures: 0 }
@@ -248,7 +228,7 @@ for (const p of problems) {
 log(`${stats.total} problems in the bank`)
 log(`${stats.matched} found in master.json`)
 log(`${rows.length} rows: ${stats.withSolution} with a solution, ${stats.withAnswer} with an answer`)
-log(`${stats.figures} solution figures, ${stats.diagrams} Asymptote diagrams the portal cannot render`)
+log(`${stats.figures} figures shown inline, ${stats.diagrams} diagrams still missing a render`)
 
 if (EMIT_JSON) {
   process.stdout.write(JSON.stringify(rows))
@@ -264,16 +244,6 @@ if (DRY_RUN) {
 }
 
 // ---- upsert ---------------------------------------------------------------
-const SUPABASE_URL = 'https://nxvtaxbntqhcfqtazbnt.supabase.co'
-const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ||
-  readFileSync(join(ROOT, '.env'), 'utf8')
-    .split('\n')
-    .find(l => l.startsWith('VITE_SUPABASE_SERVICE_KEY='))
-    ?.split('=').slice(1).join('=').trim()
-if (!SERVICE_KEY) { console.error('Could not read service key from .env'); process.exit(1) }
-
-const supabase = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } })
-
 for (let i = 0; i < rows.length; i += 200) {
   const batch = rows.slice(i, i + 200)
   const { error } = await supabase.from('problem_solutions').upsert(batch, { onConflict: 'problem_id' })

@@ -360,6 +360,13 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 .problem-preview-body p { margin: 0 0 10px; }
 .problem-preview-body p:last-child { margin-bottom: 0; }
 
+/* A figure sitting inline in a statement or worked solution, where its author
+   put it — "the plot looks like this:" needs the plot next, not at the end. */
+.statement-figure {
+  display: block; max-width: 100%; margin: 10px 0;
+  border: 1px solid var(--border); border-radius: 6px; background: #fff;
+}
+
 /* Worked solution under a previewed problem (admin only). Same shape as the
    F=ma review page's solution block, kept separate because that one is styled
    for the exam pages' smaller type. */
