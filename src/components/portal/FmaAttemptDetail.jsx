@@ -60,6 +60,27 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false }) {
   const nIncorrect = verdicts.filter(v => v === 'incorrect').length
   const nUnanswered = verdicts.filter(v => v === 'unanswered').length
 
+  // Mirrors the email summary Mark already gets, so he doesn't have to click
+  // through every question just to see the right/wrong/time-spent breakdown.
+  const [sortCol, setSortCol] = useState('num')
+  const [sortDir, setSortDir] = useState('asc')
+  function handleSort(col) {
+    if (sortCol === col) setSortDir(d => d === 'asc' ? 'desc' : 'asc')
+    else { setSortCol(col); setSortDir('asc') }
+  }
+  const resultRank = { correct: 0, incorrect: 1, unanswered: 2 }
+  const sortedRows = questions
+    .map((q, i) => ({ q, verdict: verdicts[i], seconds: secondsByQuestion?.get(q.id) || 0 }))
+    .sort((a, b) => {
+      let av, bv
+      if (sortCol === 'result') { av = resultRank[a.verdict]; bv = resultRank[b.verdict] }
+      else if (sortCol === 'time') { av = a.seconds; bv = b.seconds }
+      else { av = a.q.question_num; bv = b.q.question_num }
+      if (av < bv) return sortDir === 'asc' ? -1 : 1
+      if (av > bv) return sortDir === 'asc' ? 1 : -1
+      return 0
+    })
+
   const date = new Date(attempt.submitted_at || attempt.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 
   function jumpTo(qid) {
@@ -142,6 +163,37 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false }) {
             <span><i className="swatch result-correct" /> correct</span>
             <span><i className="swatch result-incorrect" /> wrong</span>
             <span><i className="swatch result-unanswered" /> skipped</span>
+          </div>
+
+          <div className="fma-results-table-wrap">
+            <table className="fma-results-table">
+              <thead>
+                <tr>
+                  <th onClick={() => handleSort('num')}>
+                    #{sortCol === 'num' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                  <th onClick={() => handleSort('result')}>
+                    Result{sortCol === 'result' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                  <th onClick={() => handleSort('time')}>
+                    Time{sortCol === 'time' && <span className="sort-icon">{sortDir === 'asc' ? '▲' : '▼'}</span>}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedRows.map(({ q, verdict, seconds }) => (
+                  <tr key={q.id} onClick={() => jumpTo(q.id)}>
+                    <td>{q.question_num}</td>
+                    <td>
+                      <span className={`fma-tag ${verdict === 'correct' ? 'ok' : 'bad'}`}>
+                        {verdict === 'correct' ? 'correct' : verdict === 'incorrect' ? 'wrong' : 'skipped'}
+                      </span>
+                    </td>
+                    <td>{formatSeconds(seconds) || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}

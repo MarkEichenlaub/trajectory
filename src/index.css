@@ -697,6 +697,17 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fma-tag.ok  { background: var(--green); color: var(--surface); }
 .fma-tag.bad { background: var(--red); color: var(--surface); }
 
+/* Sortable per-question breakdown, mirroring the results email -- the grid
+   above answers "which ones", this answers "how long, sorted". Not wrapped
+   in a scrolling container like the problem browser table, so the sticky
+   thead from that shared table/th ruleset is turned back off here. */
+.fma-results-table-wrap { max-width: 320px; margin-top: 14px; }
+.fma-results-table thead { position: static; }
+.fma-results-table th { font-size: 10px; padding: 6px 10px; }
+.fma-results-table td { padding: 5px 10px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.fma-results-table tbody tr { cursor: pointer; }
+.fma-results-table .fma-tag { margin-left: 0; }
+
 /* Worked solution, collapsed by default. It expands in normal flow so the rest
    of the page is pushed down rather than the solution overlaying anything. */
 .fma-solution-block { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 8px; }
