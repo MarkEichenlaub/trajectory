@@ -7,7 +7,10 @@ const LIMIT_SEC = 75 * 60
 
 function formatSeconds(s) {
   if (!s || s < 1) return null
-  const m = Math.floor(s / 60), sec = Math.round(s % 60)
+  // Round the total first, not the remainder -- rounding sec independently
+  // let 59.6s display as "60s" instead of carrying into the minute.
+  const total = Math.round(s)
+  const m = Math.floor(total / 60), sec = total % 60
   return m > 0 ? `~${m}m ${sec}s` : `~${sec}s`
 }
 
@@ -15,7 +18,8 @@ function formatSeconds(s) {
 // started_at: that counts every hour the test sat saved-and-exited too.
 function formatDuration(s) {
   if (!s || s < 60) return null
-  const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60)
+  const totalMin = Math.round(s / 60)
+  const h = Math.floor(totalMin / 60), m = totalMin % 60
   return h > 0 ? `${h}h ${m}m` : `${m} min`
 }
 
