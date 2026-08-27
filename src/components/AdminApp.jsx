@@ -636,10 +636,13 @@ export default function AdminApp({ userId }) {
 
     const firstName = activeStudent.first_name || activeStudent.name.split(' ')[0] || ''
     const dateStr = new Date().toISOString().slice(0, 10)
+    // Check-ins are parent calls, so the next *tutoring* session is the one the
+    // student needs the Meet and Miro links for.
+    const nextSession = upcomingSessions.find(s => s.session_type !== 'checkin')
     setEmailDraft({
       to: recipients.join(', '),
       subject: `${firstName} physics problems ${dateStr}`,
-      body: buildEmailBody(activeStudent, assignedProblems, takeableExamIds),
+      body: buildEmailBody(activeStudent, assignedProblems, takeableExamIds, nextSession),
     })
   }
 

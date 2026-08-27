@@ -76,10 +76,28 @@ export function buildReportEmail(student, report) {
   return { subject, body }
 }
 
+// Closing block telling the student when we meet next and where to join. Times
+// are shown in the student's own timezone, matching the session reminder email.
+// Returns [] when there's no upcoming session on the books, so the email just
+// ends after the problems.
+function nextSessionLines(student, session) {
+  if (!session?.scheduled_at) return []
+  const when = new Date(session.scheduled_at).toLocaleString('en-US', {
+    timeZone: student.timezone || 'America/New_York',
+    weekday: 'long', month: 'long', day: 'numeric',
+    hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+  })
+  const lines = [`Our next session is ${when}.`]
+  if (session.meet_url) lines.push(`   Video call: ${session.meet_url}`)
+  if (session.miro_board_url) lines.push(`   Whiteboard: ${session.miro_board_url}`)
+  lines.push('')
+  return lines
+}
+
 // `takeableExamIds` are exams that have been digitized into the portal's F=ma
 // runner. Those get a link to the page the student actually sits the test on
 // rather than to the exam PDF, which they can't answer on.
-export function buildEmailBody(student, problems, takeableExamIds = new Set()) {
+export function buildEmailBody(student, problems, takeableExamIds = new Set(), nextSession = null) {
   const firstName = student.first_name || student.name.split(' ')[0]
   const opener = OPENING_LINES[Math.floor(Math.random() * OPENING_LINES.length)](firstName)
   const lines = [opener, '']
@@ -98,6 +116,7 @@ export function buildEmailBody(student, problems, takeableExamIds = new Set()) {
     }
     lines.push('')
   })
+  lines.push(...nextSessionLines(student, nextSession))
   lines.push('-Mark')
   return lines.join('\n')
 }
