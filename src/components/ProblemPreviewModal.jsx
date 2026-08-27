@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import 'katex/dist/katex.min.css'
 import { renderStatementHtml } from '../utils/renderStatement'
+import { problemSourceLine, problemToClipboardText } from '../utils/statementText'
 
 // KaTeX (~280KB + fonts) lives in this module so it loads on the first
 // preview click rather than on portal boot — import this component lazily.
@@ -8,6 +9,8 @@ import { renderStatementHtml } from '../utils/renderStatement'
 // Modal preview of a single problem: full statement with KaTeX, figures, tags
 // and links. Used in the admin Problems browser and the student problem bank.
 export default function ProblemPreviewModal({ problem, onClose, onExclude }) {
+  const [copied, setCopied] = useState(false)
+
   useEffect(() => {
     function onKey(e) { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
@@ -19,11 +22,17 @@ export default function ProblemPreviewModal({ problem, onClose, onExclude }) {
     [problem]
   )
 
-  const subtitle = [
-    problem.contest,
-    problem.lesson,
-    problem.set_label,
-  ].filter(Boolean).join(' · ')
+  const subtitle = problemSourceLine(problem)
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(problemToClipboardText(problem))
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch (e) {
+      console.error('Copy failed:', e)
+    }
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -57,6 +66,9 @@ export default function ProblemPreviewModal({ problem, onClose, onExclude }) {
           {problem.solutionUrl && (
             <a className="pdf-link" href={problem.solutionUrl} target="_blank" rel="noreferrer" style={problem.problemUrl ? {} : { marginRight: 'auto' }}>Solution ↗</a>
           )}
+          <button className="sm" title="Copy source line and problem text" onClick={handleCopy}>
+            {copied ? '✓ Copied' : '📋 Copy'}
+          </button>
           {onExclude && (
             <button
               className="sm"

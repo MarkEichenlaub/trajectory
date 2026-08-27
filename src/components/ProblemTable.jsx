@@ -1,4 +1,5 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { problemToClipboardText } from '../utils/statementText'
 
 // Lazy so KaTeX (and its fonts) load on first preview click, not portal boot.
 const ProblemPreviewModal = lazy(() => import('./ProblemPreviewModal'))
@@ -30,12 +31,28 @@ export default function ProblemTable({
   onExclude, onMarkComplete, markingDoneId,
 }) {
   const [previewProblem, setPreviewProblem] = useState(null)
+  const [copiedId, setCopiedId] = useState(null)
+  const copiedTimer = useRef(null)
   // Rendering all ~900+ rows at once blocks the main thread for over a second,
   // so only a slice is mounted; selection/sort still operate on the full list.
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE)
   useEffect(() => { setVisibleCount(INITIAL_VISIBLE) }, [problems])
+  useEffect(() => () => clearTimeout(copiedTimer.current), [])
   const visibleProblems = problems.length > visibleCount ? problems.slice(0, visibleCount) : problems
   const allSelected = problems.length > 0 && problems.every(p => selected.has(p.id))
+
+  // Source line + statement as plain text with Unicode math — the shape that
+  // pastes cleanly into Miro during a session.
+  async function copyProblem(p) {
+    try {
+      await navigator.clipboard.writeText(problemToClipboardText(p))
+      setCopiedId(p.id)
+      clearTimeout(copiedTimer.current)
+      copiedTimer.current = setTimeout(() => setCopiedId(null), 1500)
+    } catch (e) {
+      console.error('Copy failed:', e)
+    }
+  }
 
   if (problems.length === 0) {
     return (
@@ -155,6 +172,12 @@ export default function ProblemTable({
                         title="Preview problem"
                         onClick={e => { e.stopPropagation(); setPreviewProblem(p) }}
                       >👁</button>
+                      <button
+                        className="sm"
+                        style={{ fontSize: 11, padding: '0 5px', flexShrink: 0 }}
+                        title="Copy source line and problem text"
+                        onClick={e => { e.stopPropagation(); copyProblem(p) }}
+                      >{copiedId === p.id ? '✓' : '📋'}</button>
                     </div>
                     <div className="problem-desc">{p.desc}</div>
                   </td>

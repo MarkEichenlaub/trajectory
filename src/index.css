@@ -360,6 +360,13 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 .problem-preview-body p { margin: 0 0 10px; }
 .problem-preview-body p:last-child { margin-bottom: 0; }
 
+/* Multiple-choice answers, one per line as they appear on the real exam.
+   Tighter than paragraph spacing so the run still reads as one list. */
+.statement-choices { margin: 0 0 10px; }
+.statement-choices:last-child { margin-bottom: 0; }
+.statement-choice { display: flex; gap: 7px; align-items: baseline; }
+.statement-choice .choice-label { color: var(--text-dim); flex-shrink: 0; }
+
 /* ---- Student portal ------------------------------------------ */
 .student-portal { flex: 1; overflow-y: auto; padding: 34px 40px; max-width: 940px; }
 .sp-header { margin-bottom: 22px; }
