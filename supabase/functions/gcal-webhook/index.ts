@@ -44,7 +44,67 @@ type CalEvent = {
   summary?: string
   start?: { dateTime?: string }
   end?: { dateTime?: string }
+  originalStartTime?: { dateTime?: string }
   attendees?: { email?: string }[]
+}
+
+// A cancelled instance of a recurring event is keyed master_20260828T003000Z.
+// Google sends these stripped down — no summary, no start — so the timestamp
+// baked into the id is often the only clue about which session was lost.
+function startFromInstanceId(eventId: string): string | null {
+  const m = eventId.match(/_(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/)
+  if (!m) return null
+  const [, y, mo, d, h, mi, s] = m
+  return `${y}-${mo}-${d}T${h}:${mi}:${s}Z`
+}
+
+// Write down that Google reported an event as cancelled, whether or not a session
+// row is still attached to it. This is the only place the exact minute of a
+// calendar deletion is ever observable: Google's trash keeps the date but not the
+// time, edge function logs age out in a day, and by the time anyone notices a
+// missing session the daily sync has already cleared the orphaned row.
+async function recordCancelledEvent(
+  admin: ReturnType<typeof createClient>,
+  eventId: string,
+  event: CalEvent,
+  session: { id: string; student_id: string; scheduled_at: string; session_type?: string; miro_board_url?: string; balance_decremented?: boolean } | null,
+) {
+  let studentId = session?.student_id ?? null
+  let scheduledAt = session?.scheduled_at
+    ?? event.originalStartTime?.dateTime
+    ?? startFromInstanceId(eventId)
+
+  // No row matched: the sync may already have cleaned it up, or this event was
+  // never a session at all. Only claim it as a session if a sibling instance of
+  // the same recurring series is one — otherwise every deleted personal event
+  // would land in this table.
+  if (!session) {
+    const master = eventId.includes('_') ? eventId.split('_')[0] : ''
+    if (!master) return
+    const { data: sibling } = await admin
+      .from('sessions')
+      .select('student_id')
+      .like('gcal_event_id', `${master}%`)
+      .limit(1)
+      .maybeSingle()
+    if (!sibling) return
+    studentId = sibling.student_id as string
+  }
+
+  const { error } = await admin.from('session_deletions').insert({
+    kind: 'calendar_event_cancelled',
+    session_id: session?.id ?? null,
+    student_id: studentId,
+    scheduled_at: scheduledAt,
+    session_type: session?.session_type ?? null,
+    gcal_event_id: eventId,
+    miro_board_url: session?.miro_board_url ?? null,
+    balance_decremented: session?.balance_decremented ?? null,
+    source: 'gcal-webhook: Google reported the event cancelled',
+    row_snapshot: { event, session_row_still_present: !!session },
+  })
+  if (error) console.error('Failed to record cancelled event:', error.message)
+  else console.log(`Recorded cancelled GCal event ${eventId} (session ${session?.id ?? 'none'})`)
 }
 
 Deno.serve(async (req) => {
@@ -149,18 +209,22 @@ Deno.serve(async (req) => {
 
     const { data: session } = await admin
       .from('sessions')
-      .select('id, student_id, scheduled_at, end_time, balance_decremented, students!inner(name)')
+      .select('id, student_id, scheduled_at, end_time, session_type, miro_board_url, balance_decremented, students!inner(name)')
       .eq('gcal_event_id', event.id)
       .maybeSingle()
-    if (!session) continue
-    if (session.balance_decremented) continue
 
+    // Record cancellations before any of the skips below: a session that was
+    // already billed, or whose row the sync has since removed, is exactly the
+    // case where the audit trail matters most.
     if (event.status === 'cancelled') {
-      // Event was removed from Google Calendar — log but don't auto-delete
-      // (Mark can cancel through the portal to keep things consistent)
-      console.log(`GCal event ${event.id} cancelled; session ${session.id} left untouched`)
+      // Still don't auto-delete the row — cancelling through the portal is what
+      // keeps billing and the family's email in step. Just make it traceable.
+      await recordCancelledEvent(admin, event.id, event, session)
       continue
     }
+
+    if (!session) continue
+    if (session.balance_decremented) continue
 
     const newStart = event.start?.dateTime
     const newEnd = event.end?.dateTime

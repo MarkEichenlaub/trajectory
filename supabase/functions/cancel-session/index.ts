@@ -93,7 +93,11 @@ Deno.serve(async (req) => {
   const { data: { user } } = await userClient.auth.getUser()
   if (!user) return json({ error: 'unauthorized' }, 401)
 
-  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+  // x-app-source names this function in public.session_deletions
+  // (see 20260828010000_session_deletion_log.sql).
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    global: { headers: { 'x-app-source': 'cancel-session' } },
+  })
 
   const { data: callerProfile } = await admin
     .from('profiles').select('account_type').eq('id', user.id).maybeSingle()

@@ -33,7 +33,11 @@ Deno.serve(async (req) => {
     const studentId = String(body.student_id || '')
     if (!studentId) return json({ error: 'student_id required' }, 400)
 
-    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+    // x-app-source names this function in public.session_deletions for the bulk
+    // delete below (see 20260828010000_session_deletion_log.sql).
+    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+      global: { headers: { 'x-app-source': 'cancel-upcoming-sessions' } },
+    })
 
     // Authorize: admin or billing-capable parent/adult
     const { data: profile } = await admin

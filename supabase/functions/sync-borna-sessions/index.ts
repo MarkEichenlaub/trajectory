@@ -93,7 +93,11 @@ Deno.serve(async (req) => {
     })
   }
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
+  // x-app-source names this function in public.session_deletions when the orphan
+  // cleanup below removes a row (see 20260828010000_session_deletion_log.sql).
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+    global: { headers: { 'x-app-source': 'sync-borna-sessions' } },
+  })
 
   const accessToken = await getGoogleAccessToken()
   if (!accessToken) {
