@@ -5,6 +5,7 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { getGoogleAccessToken } from '../_shared/google-auth.ts'
+import { markExpectedCancellation } from '../_shared/expected-cancellations.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
@@ -89,6 +90,9 @@ Deno.serve(async (req) => {
       const searchData = await searchRes.json() as { items?: { id: string; summary?: string }[] }
       for (const ev of (searchData.items ?? [])) {
         if ((ev.summary ?? '').toLowerCase() === schedule.calendar_summary.toLowerCase()) {
+          // Rebuilding a schedule deletes the old series on purpose; mark it so
+          // gcal-webhook doesn't alert on every instance it takes down.
+          await markExpectedCancellation(supabase, ev.id, 'setup-recurring-schedule (rebuilding the series)')
           await fetch(
             `https://www.googleapis.com/calendar/v3/calendars/primary/events/${ev.id}?sendUpdates=all`,
             { method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` } },

@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { markExpectedCancellation } from '../_shared/expected-cancellations.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SUPABASE_ANON_KEY = Deno.env.get('SB_PUBLISHABLE_KEY')!
@@ -149,6 +150,9 @@ Deno.serve(async (req) => {
   if (session.gcal_event_id) {
     const accessToken = await getGoogleAccessToken()
     if (accessToken) {
+      // Tell gcal-webhook this one is intentional before it happens, so its
+      // vanished-session alert doesn't fire on Mark's own cancellation.
+      await markExpectedCancellation(admin, session.gcal_event_id, 'cancel-session (portal cancellation)')
       // sendUpdates=all so Google removes the event from every guest's calendar and
       // sends the cancellation notice, matching delete-session-event.
       const delRes = await fetch(

@@ -10,6 +10,7 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { getGoogleAccessToken } from '../_shared/google-auth.ts'
+import { markExpectedCancellation } from '../_shared/expected-cancellations.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
 const SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
@@ -63,6 +64,9 @@ Deno.serve(async (req) => {
     const accessToken = await getGoogleAccessToken()
     if (!accessToken) return json({ error: 'failed to get Google token' }, 500)
 
+    // Tell gcal-webhook this one is intentional before it happens, so its
+    // vanished-session alert doesn't fire on an admin's own delete.
+    await markExpectedCancellation(supabase, session.gcal_event_id, 'delete-session-event (admin Sessions tab)')
     // sendUpdates=all so the family gets Google's cancellation notice, matching
     // what cancel-session already does for portal-initiated cancellations.
     const res = await fetch(

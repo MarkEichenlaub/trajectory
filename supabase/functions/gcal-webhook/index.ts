@@ -91,20 +91,115 @@ async function recordCancelledEvent(
     studentId = sibling.student_id as string
   }
 
-  const { error } = await admin.from('session_deletions').insert({
-    kind: 'calendar_event_cancelled',
-    session_id: session?.id ?? null,
-    student_id: studentId,
-    scheduled_at: scheduledAt,
-    session_type: session?.session_type ?? null,
-    gcal_event_id: eventId,
-    miro_board_url: session?.miro_board_url ?? null,
-    balance_decremented: session?.balance_decremented ?? null,
-    source: 'gcal-webhook: Google reported the event cancelled',
-    row_snapshot: { event, session_row_still_present: !!session },
-  })
+  // A marker means one of the portal's own cancel paths did this deliberately and
+  // dropped a note before deleting. Deleting a whole series is marked by master id,
+  // which stands in for every instance under it.
+  const master = eventId.includes('_') ? eventId.split('_')[0] : eventId
+  const { data: expected } = await admin
+    .from('expected_calendar_cancellations')
+    .select('gcal_event_id, reason')
+    .in('gcal_event_id', [eventId, master])
+    .limit(1)
+    .maybeSingle()
+
+  // Google re-delivers push notifications, so this handler runs several times for
+  // one deletion. dedupe_key makes the insert the latch: only the invocation that
+  // actually creates the row goes on to email, so Mark gets one alert, not seven.
+  const dedupeKey = `${eventId}:${new Date().toISOString().slice(0, 10)}`
+  const { data: inserted, error } = await admin
+    .from('session_deletions')
+    .upsert({
+      kind: 'calendar_event_cancelled',
+      session_id: session?.id ?? null,
+      student_id: studentId,
+      scheduled_at: scheduledAt,
+      session_type: session?.session_type ?? null,
+      gcal_event_id: eventId,
+      miro_board_url: session?.miro_board_url ?? null,
+      balance_decremented: session?.balance_decremented ?? null,
+      source: expected
+        ? `gcal-webhook: expected — ${expected.reason}`
+        : 'gcal-webhook: cancelled in Google Calendar, no matching portal action',
+      row_snapshot: { event, session_row_still_present: !!session, expected: !!expected },
+      dedupe_key: dedupeKey,
+    }, { onConflict: 'dedupe_key', ignoreDuplicates: true })
+    .select('id')
+
   if (error) console.error('Failed to record cancelled event:', error.message)
   else console.log(`Recorded cancelled GCal event ${eventId} (session ${session?.id ?? 'none'})`)
+
+  // A duplicate delivery: an earlier run already logged and alerted. If the write
+  // failed outright, fall through and email anyway — a missing alert is worse than
+  // a repeated one.
+  if (!error && !inserted?.length) return
+
+  if (expected) {
+    // Only clear an exact-id marker. A master's marker has to outlive the first
+    // instance notification, so leave it for the age-based sweep below.
+    if (expected.gcal_event_id === eventId) {
+      await admin.from('expected_calendar_cancellations').delete().eq('gcal_event_id', eventId)
+    }
+    return
+  }
+
+  // Past sessions can't be rescued, so they are logged but not worth an email.
+  if (!scheduledAt || new Date(scheduledAt).getTime() <= Date.now()) return
+  await alertSessionVanished(admin, eventId, studentId, scheduledAt, !!session)
+}
+
+// The alert this whole audit trail exists for: a session Mark is still expecting
+// to teach is no longer on his calendar, and nothing in the portal asked for that.
+async function alertSessionVanished(
+  admin: ReturnType<typeof createClient>,
+  eventId: string,
+  studentId: string | null,
+  scheduledAt: string,
+  rowStillPresent: boolean,
+) {
+  if (!RESEND_API_KEY) return
+
+  let studentName = 'A student'
+  if (studentId) {
+    const { data: student } = await admin
+      .from('students').select('name').eq('id', studentId).maybeSingle()
+    if (student?.name) studentName = student.name as string
+  }
+
+  const when = new Date(scheduledAt).toLocaleString('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'long', month: 'long', day: 'numeric',
+    hour: 'numeric', minute: '2-digit',
+  })
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from: 'Mark Eichenlaub <mark@eichenlaubphysics.com>',
+      to: [MARK_EMAIL],
+      subject: `Session removed from your calendar: ${studentName}, ${when} ET`,
+      text: [
+        `${studentName}'s session on ${when} ET is no longer on your Google Calendar.`,
+        '',
+        'Google just reported the event as cancelled, and it does not match any',
+        'cancellation made through the portal — so it was deleted directly in',
+        'Google Calendar, either on purpose or by accident.',
+        '',
+        rowStillPresent
+          ? 'The session is still listed in the portal. The 6 AM sync will remove it as an orphan unless the calendar event comes back before then.'
+          : 'The portal session row is already gone too.',
+        '',
+        'If this was deliberate, ignore this. If not, rebook it in the portal and',
+        'the Miro board, Meet link and invite are rebuilt automatically:',
+        PORTAL_URL,
+        '',
+        `Calendar event id: ${eventId}`,
+      ].join('\n'),
+    }),
+  }).catch(e => { console.error('Vanished-session alert failed:', e); return null })
+
+  if (res && !res.ok) console.error('Vanished-session alert failed:', res.status, await res.text())
+  else if (res) console.log(`Alerted Mark: ${studentName} ${scheduledAt} vanished`)
 }
 
 Deno.serve(async (req) => {
@@ -334,6 +429,14 @@ Deno.serve(async (req) => {
     if (typeof EdgeRuntime !== 'undefined') EdgeRuntime.waitUntil(task)
     else await task
   }
+
+  // Sweep markers nobody ever claimed — a calendar delete that failed, or a
+  // notification Google never sent. A week is far longer than the seconds this
+  // handshake normally takes, so anything older is dead weight.
+  await admin
+    .from('expected_calendar_cancellations')
+    .delete()
+    .lt('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
 
   return new Response('ok', { status: 200 })
 })

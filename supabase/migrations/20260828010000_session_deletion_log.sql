@@ -51,6 +51,14 @@ drop policy if exists session_deletions_admin_read on public.session_deletions;
 create policy session_deletions_admin_read on public.session_deletions
   for select using (public.is_admin());
 
+-- This project's default privileges hand new tables only REFERENCES/TRIGGER/
+-- TRUNCATE, so without these grants every edge-function write here fails
+-- silently — the same footgun that left gcal-webhook dead on app_config in June.
+-- (The trigger below is SECURITY DEFINER and runs as postgres, so it would keep
+-- working and hide the gap.)
+grant select, insert, update, delete on public.session_deletions to service_role;
+grant select on public.session_deletions to authenticated;  -- RLS still limits this to admins
+
 create or replace function public.log_session_deletion()
 returns trigger
 language plpgsql

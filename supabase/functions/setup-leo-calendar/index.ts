@@ -1,7 +1,10 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { markExpectedCancellation } from '../_shared/expected-cancellations.ts'
 
 const CRON_SECRET = Deno.env.get('CRON_SECRET')!
 const SB_SECRET_KEY = Deno.env.get('SB_SECRET_KEY')!
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
+const supabase = createClient(SUPABASE_URL, SB_SECRET_KEY)
 const GOOGLE_CLIENT_ID = Deno.env.get('GOOGLE_CLIENT_ID') || ''
 const GOOGLE_CLIENT_SECRET = Deno.env.get('GOOGLE_CLIENT_SECRET') || ''
 const GOOGLE_REFRESH_TOKEN = Deno.env.get('GOOGLE_REFRESH_TOKEN') || ''
@@ -58,6 +61,9 @@ Deno.serve(async (req) => {
     const searchData = await searchRes.json() as { items?: { id: string; summary?: string }[] }
     for (const ev of (searchData.items ?? [])) {
       if ((ev.summary ?? '').toLowerCase().includes('leo / mark physics')) {
+        // Rebuilding Leo's series deletes the old events on purpose; mark them so
+        // gcal-webhook doesn't alert on each one.
+        await markExpectedCancellation(supabase, ev.id, 'setup-leo-calendar (rebuilding the series)')
         await fetch(
           `https://www.googleapis.com/calendar/v3/calendars/primary/events/${ev.id}?sendUpdates=all`,
           { method: 'DELETE', headers: { 'Authorization': `Bearer ${accessToken}` } },
