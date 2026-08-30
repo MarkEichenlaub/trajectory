@@ -197,8 +197,8 @@ Deno.serve(async (req) => {
     .maybeSingle()
   if (!assignment) return json({ error: 'assignment not found' }, 404)
 
-  if (assignment.status === 'reviewed' || assignment.status === 'completed') {
-    return json({ ok: true, skipped: 'assignment already reviewed or completed' })
+  if (assignment.status === 'reviewed') {
+    return json({ ok: true, skipped: 'assignment already reviewed' })
   }
 
   // Insert submission rows
@@ -211,14 +211,15 @@ Deno.serve(async (req) => {
   )
   if (insertErr) return json({ error: insertErr.message }, 500)
 
-  // Flip status on first submission
-  if (assignment.status === 'assigned') {
-    const { error: updateErr } = await admin.from('assignments').update({
-      status: 'submitted',
-      submission_at: new Date().toISOString(),
-    }).eq('id', assignment_id)
-    if (updateErr) return json({ error: updateErr.message }, 500)
-  }
+  // Submitting marks the assignment complete right away -- the student can
+  // still submit more files afterward for an update (blocked only once Mark
+  // has reviewed it, above).
+  const { error: updateErr } = await admin.from('assignments').update({
+    status: 'completed',
+    completed_date: new Date().toISOString().slice(0, 10),
+    submission_at: new Date().toISOString(),
+  }).eq('id', assignment_id)
+  if (updateErr) return json({ error: updateErr.message }, 500)
 
   // Fetch ALL submissions for this assignment (including prior ones) to bundle together.
   const { data: allSubs } = await admin

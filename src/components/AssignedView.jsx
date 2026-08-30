@@ -299,7 +299,10 @@ export default function AssignedView({
                       {(a.assignment_submissions.length === 1) ? 'Submission ↗' : `Sub ${i + 1} ↗`}
                     </a>
                   ))}
-                  {a.status === 'submitted' && (
+                  {/* Submitting now marks the assignment completed directly (see
+                      notify-submission), so this can't gate on status === 'submitted'
+                      anymore -- gate on "has a submission, not yet reviewed" instead. */}
+                  {a.status !== 'reviewed' && (a.assignment_submissions || []).length > 0 && (
                     <button
                       className="sm"
                       style={{ fontSize: 11, padding: '1px 6px' }}

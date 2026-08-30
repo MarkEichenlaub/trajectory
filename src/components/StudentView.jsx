@@ -6,6 +6,7 @@ import {
   fetchStudentContacts,
   fetchInvoices, fetchMyInvoices,
   uploadSubmission, notifySubmission,
+  markMyProblemCompleted,
 } from '../utils/supabase'
 import AccountManagement from './portal/AccountManagement'
 import { ContactsTab } from './portal/ContactsPanel'
@@ -59,6 +60,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [digitizedExamIds, setDigitizedExamIds] = useState(new Set())
   const [submittingId, setSubmittingId] = useState(null)
   const [submitError, setSubmitError] = useState(null)
+  const [markingDoneId, setMarkingDoneId] = useState(null)
   const submitInputRef = useRef(null)
   const pendingSubmitId = useRef(null)
 
@@ -93,7 +95,11 @@ export default function StudentView({ student, assignments, sessions, problems, 
   }
 
   const assignedItems = assignments
-    .filter(a => a.status === 'assigned' || a.status === 'submitted' || a.status === 'reviewed')
+    // A submission-required assignment flips straight to 'completed' on
+    // submit (see notify-submission) but stays here too, alongside Completed,
+    // so the student can still keep adding files for an update afterward.
+    .filter(a => a.status === 'assigned' || a.status === 'submitted' || a.status === 'reviewed'
+      || (a.status === 'completed' && a.requires_submission))
     .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
 
   const completedItems = assignments
@@ -193,10 +199,30 @@ export default function StudentView({ student, assignments, sessions, problems, 
         })
       )
       await notifySubmission(assignmentId, submissions)
+      // notify-submission marks the assignment completed server-side (unless
+      // already reviewed); mirror that locally so the badge updates without
+      // waiting for a reload.
+      const existing = assignments.find(a => a.id === assignmentId)
+      if (existing && existing.status !== 'reviewed' && onMarkCompleted) {
+        onMarkCompleted({ ...existing, status: 'completed', completed_date: new Date().toISOString().slice(0, 10) })
+      }
     } catch (err) {
       setSubmitError(err.message)
     } finally {
       setSubmittingId(null)
+    }
+  }
+
+  async function handleMarkDone(assignment) {
+    if (!student?.id || !onMarkCompleted || isPreview) return
+    setMarkingDoneId(assignment.id)
+    try {
+      const result = await markMyProblemCompleted(student.id, assignment.problem_id)
+      if (result) onMarkCompleted(result)
+    } catch (err) {
+      console.error('Failed to mark done:', err)
+    } finally {
+      setMarkingDoneId(null)
     }
   }
 
@@ -437,7 +463,13 @@ export default function StudentView({ student, assignments, sessions, problems, 
               ? `Due ${a.due_date}`
               : null
             const subs = a.assignment_submissions || []
-            const canSubmit = (a.status === 'assigned' || a.status === 'submitted') && a.requires_submission
+            // Completed is included so a student can keep adding files for an
+            // update after submitting already marked it done.
+            const canSubmit = (a.status === 'assigned' || a.status === 'submitted' || a.status === 'completed') && a.requires_submission
+            // Manual "mark complete" is for problems with no file to turn in —
+            // just a way to flag they've finished working on it. F=ma exams
+            // are excluded: they complete themselves once graded.
+            const canMarkDone = a.status !== 'completed' && !a.requires_submission && p.type !== 'Exam'
             const summary = problemSummary(p)
             return (
               <div key={a.id} className="assigned-row">
@@ -482,6 +514,17 @@ export default function StudentView({ student, assignments, sessions, problems, 
                       title={isPreview ? 'Submit (disabled in preview)' : undefined}
                     >
                       {submittingId === a.id ? 'Uploading…' : subs.length ? 'Add files' : 'Submit'}
+                    </button>
+                  )}
+                  {canMarkDone && !isPreview && onMarkCompleted && (
+                    <button
+                      className="sm"
+                      style={{ fontSize: 11, padding: '1px 6px' }}
+                      disabled={markingDoneId === a.id}
+                      onClick={() => handleMarkDone(a)}
+                      title="Mark this as finished"
+                    >
+                      {markingDoneId === a.id ? '…' : 'Mark complete'}
                     </button>
                   )}
                 </div>
