@@ -209,9 +209,12 @@ async function matchCandidate(senderEmail, threadText) {
     if (hErr) throw new Error(hErr.message)
     const handoutIds = (handouts || []).map(h => h.id)
     if (handoutIds.length > 0) {
+      // Only 'assigned' (not yet completed/reviewed) rows are real candidates —
+      // a handout can be re-assigned after a prior round was already completed,
+      // which would otherwise match the stale, already-done row too.
       const { data: rows, error: aErr } = await supabase
         .from('assignments').select('id, status, problem_id')
-        .eq('student_id', studentId).in('problem_id', handoutIds).neq('status', 'reviewed')
+        .eq('student_id', studentId).in('problem_id', handoutIds).eq('status', 'assigned')
       if (aErr) throw new Error(aErr.message)
       if ((rows || []).length === 1) {
         return { result: 'match', confidence: 'high', reason: 'handout_link', studentId, assignment: rows[0] }
@@ -219,9 +222,12 @@ async function matchCandidate(senderEmail, threadText) {
     }
   }
 
+  // Not gated on requires_submission: in practice handout-based assignments
+  // aren't reliably flagged that way, but an 'assigned' (not yet completed)
+  // row is still the right signal that something is outstanding.
   const { data: outstanding, error: oErr } = await supabase
     .from('assignments').select('id, status, problem_id')
-    .eq('student_id', studentId).eq('requires_submission', true).neq('status', 'reviewed')
+    .eq('student_id', studentId).eq('status', 'assigned')
   if (oErr) throw new Error(oErr.message)
   if ((outstanding || []).length === 1) {
     return { result: 'match', confidence: 'medium', reason: 'sole_outstanding', studentId, assignment: outstanding[0] }
