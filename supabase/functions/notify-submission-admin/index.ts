@@ -2,7 +2,6 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { fileSubmission } from '../_shared/submission-core.ts'
 
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!
-const SUPABASE_ANON_KEY = Deno.env.get('SB_PUBLISHABLE_KEY')!
 const SUPABASE_SERVICE_KEY = Deno.env.get('SB_SECRET_KEY')!
 
 const cors = {
@@ -16,33 +15,34 @@ function json(body: unknown, status = 200) {
   })
 }
 
+// Service-role twin of notify-submission for callers that already know which
+// student/assignment a file belongs to and have no student JWT to prove it
+// (e.g. the homework-email-agent script). Same effect as a portal submission —
+// see _shared/submission-core.ts. Only a caller holding the real service key
+// may call this; there is no other path in.
+function isAuthorized(req: Request): boolean {
+  const token = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
+  return !!token && token === SUPABASE_SERVICE_KEY
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: cors })
-
-  const authHeader = req.headers.get('Authorization') || ''
-  if (!authHeader) return json({ error: 'unauthorized' }, 401)
-
-  const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    global: { headers: { Authorization: authHeader } },
-  })
-  const { data: { user } } = await userClient.auth.getUser()
-  if (!user) return json({ error: 'unauthorized' }, 401)
+  if (!isAuthorized(req)) return json({ error: 'forbidden' }, 403)
 
   const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
-  const { data: links } = await admin
-    .from('student_links').select('student_id, relationship').eq('account_id', user.id)
-  const link = (links || []).find((l: { relationship: string }) => l.relationship === 'self') || (links || [])[0]
-  if (!link) return json({ error: 'no student found' }, 403)
-  const { data: student } = await admin
-    .from('students').select('id, name').eq('id', link.student_id).maybeSingle()
-  if (!student) return json({ error: 'no student found' }, 403)
-
-  const { assignment_id, submissions } = await req.json() as {
+  const { student_id, assignment_id, submissions } = await req.json() as {
+    student_id: string
     assignment_id: string
     submissions: Array<{ url: string; file_name: string }>
   }
-  if (!assignment_id || !submissions?.length) return json({ error: 'missing fields' }, 400)
+  if (!student_id || !assignment_id || !submissions?.length) {
+    return json({ error: 'missing fields' }, 400)
+  }
+
+  const { data: student } = await admin
+    .from('students').select('id, name').eq('id', student_id).maybeSingle()
+  if (!student) return json({ error: 'no student found' }, 404)
 
   const { data: assignment } = await admin
     .from('assignments')
