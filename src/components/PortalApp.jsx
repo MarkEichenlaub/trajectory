@@ -63,6 +63,29 @@ export default function PortalApp({ account, userId, onSignOut }) {
   useEffect(() => { if (hydrated.current.portalAssignments && assignments) cacheSet(k('sb', userId, 'portal', 'assignments'), assignments) }, [assignments])
   useEffect(() => { if (hydrated.current.portalSessions) cacheSet(k('sb', userId, 'portal', 'sessions'), sessions) }, [sessions])
 
+  // Keep an already-open tab current without a manual reload: re-check the
+  // instant the tab is looked at again, plus a slow poll while it's left open
+  // and visible. Deliberately bypasses the boot/swr cache (those promises are
+  // one-shot from page load) and stays quiet on failure — a missed poll just
+  // tries again next cycle rather than surfacing the error page.
+  useEffect(() => {
+    function refreshLiveData() {
+      fetchStudentAssignments().then(setAssignments).catch(() => {})
+      fetchStudentSessions().then(setSessions).catch(() => {})
+    }
+    function onVisible() { if (document.visibilityState === 'visible') refreshLiveData() }
+    document.addEventListener('visibilitychange', onVisible)
+    window.addEventListener('focus', refreshLiveData)
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') refreshLiveData()
+    }, 90_000)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      window.removeEventListener('focus', refreshLiveData)
+      clearInterval(interval)
+    }
+  }, [])
+
   // A handout's solutions stay hidden until the active student's assignment for it
   // is marked completed; only then does solutionUrl become non-null and the
   // "Solution ↗" link appear.
