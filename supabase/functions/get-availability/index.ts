@@ -15,15 +15,15 @@ const SLOT_INCREMENT_MIN = 30
 
 // Working hours in Eastern time. Day 0 = Sunday, 6 = Saturday.
 // `end` is when a booking must FINISH, not the last start time — the evening
-// window running to 22:30 means an hour-long session can start as late as 21:30.
+// window running to 24:00 means an hour-long session can start as late as 23:00.
 const WORKING_HOURS: Record<number, { start: string; end: string }[]> = {
-  0: [{ start: '20:30', end: '22:30' }],
-  1: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '22:30' }],
-  2: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '22:30' }],
-  3: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '22:30' }],
-  4: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '22:30' }],
-  5: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '22:30' }],
-  6: [{ start: '20:30', end: '22:30' }],
+  0: [{ start: '20:30', end: '24:00' }],
+  1: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '24:00' }],
+  2: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '24:00' }],
+  3: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '24:00' }],
+  4: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '24:00' }],
+  5: [{ start: '09:00', end: '16:30' }, { start: '20:30', end: '24:00' }],
+  6: [{ start: '20:30', end: '24:00' }],
 }
 
 const cors = {
