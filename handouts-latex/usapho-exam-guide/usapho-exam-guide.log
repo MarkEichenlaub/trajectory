@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.12)  3 SEP 2026 00:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.12)  3 SEP 2026 01:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1196,17 +1196,17 @@ g off
 [3{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.en
 c}{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C
 :/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
-[4] [5] [6] [7] [8]
+[4] [5] [6] [7] [8] [9]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 546.
+(Font)              <9> on input line 565.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 546.
+(Font)              <5> on input line 565.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 558.
+(Font)              <10> on input line 577.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 558.
- [9] [10{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mat
-hex.enc}] [11]
+(Font)              <7> on input line 577.
+ [10{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathex.
+enc}] [11]
 ignored: Infinite glue shrinkage found in box being split [12] [13] [14]
 (usapho-exam-guide.aux)
  ***********
@@ -1217,13 +1217,13 @@ Package rerunfilecheck Info: File `usapho-exam-guide.out' has not changed.
 (rerunfilecheck)             Checksum: 4BDD149B94096BA6D0D6132448744957;1354.
  ) 
 Here is how much of TeX's memory you used:
- 31781 strings out of 467866
- 632143 string characters out of 5418325
- 1100212 words of memory out of 5000000
- 59835 multiletter control sequences out of 15000+600000
- 771822 words of font info for 254 fonts, out of 8000000 for 9000
+ 31788 strings out of 467866
+ 632213 string characters out of 5418325
+ 1100213 words of memory out of 5000000
+ 59834 multiletter control sequences out of 15000+600000
+ 772187 words of font info for 258 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,104p,1016b,1050s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,104p,1016b,1044s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pf
 b><C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pf
 b><C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pf
@@ -1244,7 +1244,7 @@ Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy8.pfb><C:/U
 sers/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy9.pfb><C:/Us
 ers/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msa
 m10.pfb>
-Output written on usapho-exam-guide.pdf (14 pages, 485949 bytes).
+Output written on usapho-exam-guide.pdf (14 pages, 492892 bytes).
 PDF statistics:
  252 PDF objects out of 1000 (max. 8388607)
  50 named destinations out of 1000 (max. 500000)
