@@ -1001,6 +1001,98 @@ export async function fetchFmaAttemptDetail(attemptId) {
   return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
 }
 
+// ── F=ma weekly homework sets ───────────────────────────────────────────────
+// Deliberately separate from the fma_* exam tables/functions above (see
+// supabase/migrations/20260903070000_fma_homework_sets.sql) so a homework
+// attempt can never be picked up by fetchFmaExams()/fetchFmaAttempts() and
+// leak into the real F=ma practice-exam stats.
+
+const FMA_HOMEWORK_QUESTION_COLS =
+  'id, set_id, question_num, question_type, statement, figure_urls, choices, choice_figure_urls, topics, tags'
+
+// Homework sets that have digitized questions, ordered by set id (i.e. by week).
+export async function fetchFmaHomeworkSets() {
+  const { data, error } = await supabase.from('fma_homework_questions').select('set_id')
+  if (error) throw new Error(error.message)
+  const ids = [...new Set((data || []).map(r => r.set_id))]
+  if (ids.length === 0) return []
+  const { data: sets, error: hErr } = await supabase
+    .from('handouts').select('id, name, year').in('id', ids)
+  if (hErr) throw new Error(hErr.message)
+  return (sets || []).sort((a, b) => a.id.localeCompare(b.id))
+}
+
+export async function fetchFmaHomeworkQuestions(setId) {
+  const { data, error } = await supabase
+    .from('fma_homework_questions').select(FMA_HOMEWORK_QUESTION_COLS).eq('set_id', setId).order('question_num')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function createFmaHomeworkAttempt(studentId, setId) {
+  const { data, error } = await supabase
+    .from('fma_homework_attempts').insert({ student_id: studentId, set_id: setId }).select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+// Upserts the student's current answer for one question — a selected letter
+// for an 'mc' question, or free-text for the 'free_response' one.
+export async function saveFmaHomeworkAnswer(attemptId, questionId, { selectedChoice, freeResponseText } = {}) {
+  const { error } = await supabase
+    .from('fma_homework_attempt_answers')
+    .upsert(
+      { attempt_id: attemptId, question_id: questionId, selected_choice: selectedChoice ?? null, free_response_text: freeResponseText ?? null },
+      { onConflict: 'attempt_id,question_id' }
+    )
+  if (error) throw new Error(error.message)
+}
+
+export async function fetchFmaHomeworkAttemptAnswers(attemptId) {
+  const { data, error } = await supabase
+    .from('fma_homework_attempt_answers').select('*').eq('attempt_id', attemptId)
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+// Discards an attempt the student backed out of with nothing recorded yet —
+// mirrors deleteFmaAttempt.
+export async function deleteFmaHomeworkAttempt(attemptId) {
+  const { error } = await supabase.from('fma_homework_attempts').delete().eq('id', attemptId)
+  if (error) throw new Error(error.message)
+}
+
+// Grades the multiple-choice answers server-side and completes the matching
+// assignment; see submit_fma_homework_attempt() in the migration.
+export async function submitFmaHomeworkAttempt(attemptId) {
+  const { data, error } = await supabase.rpc('submit_fma_homework_attempt', { p_attempt_id: attemptId })
+  if (error) throw new Error(error.message)
+  return Array.isArray(data) ? data[0] : data
+}
+
+export async function fetchFmaHomeworkAttempts(studentId) {
+  const { data, error } = await supabase
+    .from('fma_homework_attempts').select('*, handouts:set_id(id, name)').eq('student_id', studentId).order('started_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchFmaHomeworkAttemptDetail(attemptId) {
+  const { data: attempt, error: aErr } = await supabase
+    .from('fma_homework_attempts').select('*, handouts:set_id(id, name)').eq('id', attemptId).single()
+  if (aErr) throw new Error(aErr.message)
+  const { data: answers, error: ansErr } = await supabase
+    .from('fma_homework_attempt_answers').select('*').eq('attempt_id', attemptId)
+  if (ansErr) throw new Error(ansErr.message)
+  // correct_choice/solution come back non-null only once the attempt is
+  // graded (or for an admin), so an in-progress attempt never leaks the key.
+  const { data: questions, error: qErr } = await supabase
+    .rpc('fma_homework_attempt_questions', { p_attempt_id: attemptId })
+  if (qErr) throw new Error(qErr.message)
+  const answerByQuestion = new Map((answers || []).map(a => [a.question_id, a]))
+  return { attempt, questions: questions || [], answerByQuestion }
+}
+
 // ── Fluency practice ───────────────────────────────────────────────────────
 
 export async function fetchFluencySkills() {

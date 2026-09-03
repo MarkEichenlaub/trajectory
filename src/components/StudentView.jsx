@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
-  fetchFmaExams,
+  fetchFmaExams, fetchFmaHomeworkSets,
   fetchMyContacts, fetchMyContactsView,
   fetchStudentContacts,
   fetchInvoices, fetchMyInvoices,
@@ -14,6 +14,7 @@ import InvoicesTab from './portal/InvoicesTab'
 import ProblemBankBrowser from './portal/ProblemBankBrowser'
 import ProgressAndPlanTab from './portal/ProgressAndPlanTab'
 import FmaProgress from './portal/FmaProgress'
+import FmaHomeworkRunner from './portal/FmaHomeworkRunner'
 import FluencyPractice from './portal/FluencyPractice'
 import SchedulingTab from './portal/SchedulingTab'
 import { problemSummary } from '../utils/problemBank'
@@ -59,6 +60,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
   const [preselectExamId, setPreselectExamId] = useState(null)
   // Which assigned exams can actually be sat in the portal (vs. PDF only).
   const [digitizedExamIds, setDigitizedExamIds] = useState(new Set())
+  // Which assigned F=ma weekly homework sets are digitized and takeable in-portal.
+  const [digitizedHomeworkIds, setDigitizedHomeworkIds] = useState(new Set())
+  const [activeHomeworkSet, setActiveHomeworkSet] = useState(null) // { id, name } | null
   const [submittingId, setSubmittingId] = useState(null)
   const [submitError, setSubmitError] = useState(null)
   const [markingDoneId, setMarkingDoneId] = useState(null)
@@ -87,6 +91,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
     let cancelled = false
     fetchFmaExams()
       .then(e => { if (!cancelled) setDigitizedExamIds(new Set(e.map(x => x.id))) })
+      .catch(() => {})
+    fetchFmaHomeworkSets()
+      .then(s => { if (!cancelled) setDigitizedHomeworkIds(new Set(s.map(x => x.id))) })
       .catch(() => {})
     return () => { cancelled = true }
   }, [])
@@ -270,7 +277,14 @@ export default function StudentView({ student, assignments, sessions, problems, 
         ))}
       </div>
 
-      {tab === 'progress-plan' ? (
+      {activeHomeworkSet ? (
+        <FmaHomeworkRunner
+          studentId={student.id}
+          setId={activeHomeworkSet.id}
+          setName={activeHomeworkSet.name}
+          onExit={() => setActiveHomeworkSet(null)}
+        />
+      ) : tab === 'progress-plan' ? (
         <ProgressAndPlanTab studentId={student.id} />
       ) : tab === 'fma-progress' ? (
         <FmaProgress
@@ -455,11 +469,15 @@ export default function StudentView({ student, assignments, sessions, problems, 
           {assignedItems.map(a => {
             const p = problemById(a.problem_id)
             if (!p) return null
-            const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam'
-            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : p.type === 'Exam' ? 'Test PDF' : 'Problem'
-            // A digitized exam is taken in the portal, so send the student
-            // straight into the runner rather than at a PDF they can't answer on.
+            const isResource = p.type === 'Book' || p.type === 'Handout' || p.type === 'Exam' || p.type === 'Homework'
+            const linkLabel = p.type === 'Book' ? 'Book' : p.type === 'Handout' ? 'Handout' : p.type === 'Exam' ? 'Test PDF' : p.type === 'Homework' ? 'Homework' : 'Problem'
+            // A digitized exam or homework set is taken in the portal, so send
+            // the student straight into the runner rather than at a PDF/nothing.
             const takeable = p.type === 'Exam' && digitizedExamIds.has(p.id) && a.status !== 'completed'
+            // Unlike exams, a completed homework set stays takeable too — the
+            // runner itself shows the graded results once the attempt is graded,
+            // so this doubles as "review your answers."
+            const homeworkTakeable = p.type === 'Homework' && digitizedHomeworkIds.has(p.id)
             const dateLabel = a.status === 'completed' && a.completed_date
               ? `Completed ${a.completed_date}`
               : `Assigned ${a.assigned_date}`
@@ -472,8 +490,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
             const canSubmit = (a.status === 'assigned' || a.status === 'submitted' || a.status === 'completed') && a.requires_submission
             // Manual "mark complete" is for problems with no file to turn in —
             // just a way to flag they've finished working on it. F=ma exams
-            // are excluded: they complete themselves once graded.
-            const canMarkDone = a.status !== 'completed' && !a.requires_submission && p.type !== 'Exam'
+            // and homework sets are excluded: they complete themselves once graded.
+            const canMarkDone = a.status !== 'completed' && !a.requires_submission && p.type !== 'Exam' && p.type !== 'Homework'
             const summary = problemSummary(p)
             return (
               <div key={a.id} className="assigned-row">
@@ -496,6 +514,10 @@ export default function StudentView({ student, assignments, sessions, problems, 
                   {takeable ? (
                     <button className="sm primary" onClick={() => { setPreselectExamId(p.id); setTab('fma-progress') }}>
                       Take Test →
+                    </button>
+                  ) : homeworkTakeable ? (
+                    <button className="sm primary" onClick={() => setActiveHomeworkSet({ id: p.id, name: p.name })}>
+                      Homework →
                     </button>
                   ) : p.problemUrl && (
                     <a href={p.problemUrl} target="_blank" rel="noreferrer">{linkLabel} ↗</a>

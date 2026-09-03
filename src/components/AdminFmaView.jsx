@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { fetchFmaAttempts, fetchFmaAttemptDetail } from '../utils/supabase'
+import { fetchFmaAttempts, fetchFmaAttemptDetail, fetchFmaHomeworkAttempts, fetchFmaHomeworkAttemptDetail } from '../utils/supabase'
 import FmaAttemptDetail from './portal/FmaAttemptDetail'
 import { FmaChart, TagBreakdown } from './portal/FmaProgress'
+import { FmaHomeworkResult } from './portal/FmaHomeworkRunner'
 
 export default function AdminFmaView({ studentId, studentName, initialAttemptId, onAttemptOpened }) {
   const [attempts, setAttempts] = useState([])
@@ -9,15 +10,27 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
   const [err, setErr] = useState(null)
   const [detail, setDetail] = useState(null)
 
+  const [hwAttempts, setHwAttempts] = useState([])
+  const [hwDetail, setHwDetail] = useState(null)
+
   useEffect(() => {
     if (!studentId) return
     setLoading(true)
     setDetail(null)
-    fetchFmaAttempts(studentId)
-      .then(setAttempts)
+    setHwDetail(null)
+    Promise.all([fetchFmaAttempts(studentId), fetchFmaHomeworkAttempts(studentId)])
+      .then(([a, hw]) => { setAttempts(a); setHwAttempts(hw) })
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
   }, [studentId])
+
+  async function handleViewHomework(attemptId) {
+    try {
+      setHwDetail(await fetchFmaHomeworkAttemptDetail(attemptId))
+    } catch (e) {
+      setErr(e.message)
+    }
+  }
 
   // ?attempt=<id> — the link in the F=ma completion email opens that attempt's
   // results directly rather than dropping into the list. The param is cleared
@@ -48,6 +61,19 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
     return (
       <div className="admin-pane">
         <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} isAdmin />
+      </div>
+    )
+  }
+
+  if (hwDetail) {
+    return (
+      <div className="admin-pane">
+        <FmaHomeworkResult
+          attempt={hwDetail.attempt}
+          result={hwDetail}
+          setName={hwDetail.attempt.handouts?.name || hwDetail.attempt.set_id}
+          onBack={() => setHwDetail(null)}
+        />
       </div>
     )
   }
@@ -86,6 +112,32 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
               <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{new Date(a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
               <div style={{ fontSize: 12, fontWeight: 600 }}>
                 {a.score != null ? `${a.score}/25` : a.status === 'in_progress' ? 'in progress' : '—'}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Weekly homework sets — deliberately kept separate from the chart/tag
+          breakdown above, which are scoped to the real F=ma practice exams. */}
+      <h3 style={{ fontSize: 14, fontWeight: 600, margin: '28px 0 4px' }}>F=ma weekly homework</h3>
+      <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 12 }}>
+        Not counted toward F=ma practice-exam stats above.
+      </div>
+      {hwAttempts.length === 0 ? (
+        <div className="empty-state">No homework sets taken yet.</div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {hwAttempts.map(a => (
+            <div
+              key={a.id}
+              onClick={() => handleViewHomework(a.id)}
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
+            >
+              <div style={{ flex: 1, fontSize: 13 }}>{a.handouts?.name || a.set_id}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{new Date(a.started_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+              <div style={{ fontSize: 12, fontWeight: 600 }}>
+                {a.score != null ? `${a.score} correct` : a.status === 'in_progress' ? 'in progress' : '—'}
               </div>
             </div>
           ))}

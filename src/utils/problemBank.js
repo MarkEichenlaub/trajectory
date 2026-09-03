@@ -24,6 +24,7 @@ export function handoutSource(h) {
   if (h.resource_type === 'summary' || (h.tags || []).includes('summary')) return 'summary'
   if (h.resource_type === 'book') return 'book'
   if (h.resource_type === 'exam') return 'exam'
+  if (h.resource_type === 'homework') return 'homework'
   return 'handout'
 }
 
@@ -39,7 +40,10 @@ function handoutToProblem(h) {
   return {
     id: h.id,
     contest: h.source,
-    type: h.resource_type === 'book' ? 'Book' : h.resource_type === 'exam' ? 'Exam' : 'Handout',
+    type: h.resource_type === 'book' ? 'Book'
+      : h.resource_type === 'exam' ? 'Exam'
+      : h.resource_type === 'homework' ? 'Homework'
+      : 'Handout',
     source: handoutSource(h),
     name: h.name,
     desc: h.description || '',
