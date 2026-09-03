@@ -853,6 +853,124 @@ Stop. Box whatever you have, write one line saying what remains (``still need to
 the integral and balance against gravity''), and go read the next problem. Its first
 subpart is almost certainly worth more than your next ten minutes on this one.
 
+\section{Part VI: Two Real Papers}
+
+Everything so far has been a constructed example. These two are not. Both pages below are
+real 2018 USAPhO submissions to Problem B2, reproduced as the graders received them, with
+the scores those papers actually earned. The scans carry only the AAPT numbers printed on
+the answer sheet; no names appear on them.
+
+\begin{official}
+\textbf{Question B2 (2018 USAPhO).} In this problem, use a particle-like model of photons:
+they propagate in straight lines and obey the law of reflection, but are subject to the
+quantum uncertainty principle. You may use small-angle approximations throughout.
+
+A photon with wavelength $\lambda$ has traveled from a distant star to a telescope mirror,
+which has a circular cross-section with radius $R$ and a focal length $f \gg R$. The path of
+the photon is nearly aligned to the axis of the mirror, but has some slight uncertainty
+$\Delta\theta$. All small cross-sectional areas of the mirror are equally likely to include
+the point of reflection.
+
+\begin{subpart}
+\item Find the standard deviation $\sigma_r$ of the distribution for $r$, the distance from
+the center of the mirror to the point of reflection.
+\item Use the uncertainty principle, $\sigma_r \sigma_{p_r} \ge \hbar/2$, to place a bound on
+how accurately we can know the angle of the photon from the axis of the telescope. Give your
+answer in terms of $R$ and $\lambda$. \emph{If you were unable to solve part a, you may also
+give your answer in terms of $\sigma_r$.}
+\item Suppose we want to tell with high probability whether a detected photon came from the
+left half or right half of Alpha Centauri A. Approximately how large would the telescope
+have to be? The star is about $4\times10^{16}$ m away with radius about $7\times10^{8}$ m;
+assume $\lambda = 500$ nm.
+\end{subpart}
+\end{official}
+
+Read the italicized sentence in part (b) again. \textbf{The exam is handing you the escape
+hatch from Part II in writing.} Watch which of these two students takes it.
+
+\subsection*{Paper 1 --- 22 out of 25}
+
+\begin{center}
+\fbox{\includegraphics[width=0.86\textwidth]{paper-4717-b2.png}}
+\end{center}
+
+\textbf{What they did.} All of B2 on one side of one sheet, headed \textsf{B2 -- 1/1}. In
+(a) they wrote the area-weighted average straight down,
+$\int_0^R 2\pi r\cdot r^2\,dr\,/\,\pi R^2 = \tfrac{1}{2}R^2$, and took the square root. In
+(b) they sketched the photon and the angle, wrote $p = \hbar/\lambda$ and
+$\Delta p_r = p\,\Delta\theta$, substituted into the uncertainty relation, and boxed
+$\Delta\theta \ge \tfrac{1}{\sqrt2}\,\lambda/R$. In (c) they got the angle the telescope must
+resolve, $7\times10^{8} / 4\times10^{16} = 1.75\times10^{-8}$, rearranged their own (b) for
+$R$, and boxed $\approx 20$ m.
+
+\textbf{Why they got the credit they did.} Each subpart is a short chain a grader can follow
+end to end in a few seconds, and both final answers are boxed. Note that \textbf{part (a) is
+actually wrong}: they computed the root-mean-square radius, not the standard deviation. With
+$\langle r\rangle = 2R/3$, the variance is $\langle r^2\rangle - \langle r\rangle^2 =
+R^2/18$, so $\sigma_r = R/(3\sqrt2)$ --- smaller than what they wrote by a factor of three.
+They lost the points for (a) and kept essentially everything else, because (b) and (c) were
+carried forward correctly \emph{from their own} (a). This is normal: graders mark
+consequentially, and a later part done right on an earlier number that is wrong still earns
+the later points.
+
+\textbf{What would have earned more.} Only that one distinction. Writing down the definition
+they were using --- $\sigma^2 = \langle r^2\rangle - \langle r\rangle^2$ --- before computing
+anything would very likely have caught it, because the missing $\langle r\rangle^2$ term is
+visible the moment the formula is on the page. Naming the principle first is not only a
+courtesy to the grader; it is how you catch your own errors.
+
+\subsection*{Paper 2 --- 5 out of 25}
+
+\begin{center}
+\fbox{\includegraphics[width=0.86\textwidth]{paper-4900-b2.png}}
+\end{center}
+
+Before reading this one as a weak paper: the same student scored \textbf{25/25 on A1 and
+23/25 on A3} that day, on a problem where 45\% of the field scored zero. This is not someone
+who was out of their depth.
+
+\textbf{What they did.} In (a), a pair of axes labeled $r$ with an arrow across them --- no
+distribution, no integral, no answer. In (b), a sketch of a photon striking the mirror and a
+single equation, $p_r = h/\lambda$. In (c), a sketch of the star subtending its angle at
+Earth, and $\Delta\theta < \tan^{-1}(\tfrac{7}{4}\times10^{-8}) = 1.75\times10^{-8}$.
+
+\textbf{Why they got the credit they did.} Two of the three physical ingredients on that page
+are right, and they are the same two Paper 1 used: the photon momentum $h/\lambda$, and the
+angular size of Alpha Centauri A. That is what the 5 points are for. But \textbf{nothing on
+the page connects them.} Part (b) never invokes the uncertainty principle it was asked
+about, so no bound on $\Delta\theta$ ever appears. Part (c) works out the angle the telescope
+must resolve and stops --- the question asked how big the telescope must be, and no size is
+ever computed. Nothing is boxed.
+
+\textbf{What would have earned more.} Three lines, none of which required an idea this
+student did not already have on the page:
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \textbf{Take the offer in part (b).} The problem says in so many words that you may
+answer in terms of $\sigma_r$. Writing $\sigma_r \cdot \tfrac{h}{\lambda}\Delta\theta \ge
+\hbar/2$, and solving for $\Delta\theta$, needs nothing whatsoever from part (a) --- and
+$p = h/\lambda$ was already written down two inches above.
+\item \textbf{Finish (c) with the letters you have.} Even with no bound from (b), $R \sim
+\lambda/\Delta\theta = 5\times10^{-7} / 1.75\times10^{-8} \approx 30$ m is one division, and
+it answers the question that was actually asked. An order-of-magnitude answer scores; a
+correct intermediate quantity that stops short of the question does not score much.
+\item \textbf{Give the sketches a caption.} Three of the marks on this page are drawings with
+no sentence attached. The (c) sketch encodes exactly the right idea --- star radius over
+distance is the angle to be resolved --- but a grader can only credit reasoning they can
+identify, and five words would have made it reasoning instead of a doodle.
+\end{itemize}
+
+\begin{keybox}
+Both students wrote the same two key facts on the page. One turned them into two boxed
+numbers and scored 22; the other left them as unconnected marks and scored 5. Neither
+outcome was about knowing more physics.
+
+And this is not a story about one unlucky paper: B2's mean score was 5.0 out of 25, and
+\textbf{52\% of the field scored zero on it.} Paper 2 is a completely typical B2 submission.
+The exam had told every one of those students, in the text of part (b), how to get past the
+step that stopped them.
+\end{keybox}
+
 \section{Your Checklist}
 
 \begin{keybox}

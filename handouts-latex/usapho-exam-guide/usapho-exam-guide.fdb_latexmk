@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1788413740.88971 "usapho-exam-guide.tex" "usapho-exam-guide.pdf" "usapho-exam-guide" 1788413751.24054 0
+["pdflatex"] 1788415197.13555 "usapho-exam-guide.tex" "usapho-exam-guide.pdf" "usapho-exam-guide" 1788415202.86592 0
   "C:/Users/markd/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1788408676.27898 84879 32df067f21cf626b1dfe520a897868a2 ""
   "C:/Users/markd/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1770906173.49312 13333862 2a4d60108ce5d300266aa72f69031d3e ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc" 1256929440 2375 baa924870cfb487815765f9094cf3728 ""
@@ -66,10 +66,12 @@
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/rm-lmr9.tfm" 1256929440 11884 c93929a6974dce79eabb778f219d7e18 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/tfm/public/lm/ts1-lmr10.tfm" 1256929440 1556 b86d923e6b2f9aab2e313098a95cb0b8 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1247596673 31764 459c573c03a4949a528c2cc7f557e217 ""
+  "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247596673 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pfb" 1256929440 121021 1bf809ce4a594679006bd72263eba59b ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb" 1256929440 116908 1fca96723793882c2e0160350c192fc8 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pfb" 1256929440 23055 2e5b42921de910eaa97b85df04ca4891 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi10.pfb" 1256929440 30388 702fae6a5f0e6e9c48a1d872b442ffcf ""
+  "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi6.pfb" 1256929440 31113 04b711c9a4c7f8cb4ed784c6fc4cc1c5 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi8.pfb" 1256929440 30635 833ec815d446ec453a4913fc26d24cbc ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmi9.pfb" 1256929440 30698 e53a423459271d6c5cdd91f7559396af ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmmib10.pfb" 1256929440 30962 099bdeb826f0ac8e2d3f42a496d47e5f ""
@@ -257,9 +259,11 @@
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/markd/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
   "custom.sty" 1788408353.94797 10254 4752b897f0c7285990e1076ddd92ca1b ""
-  "usapho-exam-guide.aux" 1788413747.67182 1337 0d561760b81cd07f6fe972804124a225 "pdflatex"
-  "usapho-exam-guide.out" 1788413747.68183 1354 4bdd149b94096ba6d0d6132448744957 "pdflatex"
-  "usapho-exam-guide.tex" 1788413727.54155 41807 e61d2f9e03294c722bac77bfef1e2952 ""
+  "paper-4717-b2.png" 1788415195.12598 49971 fd62de76dc16d310832e9d160ca91754 ""
+  "paper-4900-b2.png" 1788415196.12652 29295 9d3d022be824fd0c3bfc391bb85f6405 ""
+  "usapho-exam-guide.aux" 1788415201.5256 1459 03d7b0c244a4c388e4cbf0be0b53726a "pdflatex"
+  "usapho-exam-guide.out" 1788415201.53343 1529 b9e0ce905b66fe474ea44a7349050b21 "pdflatex"
+  "usapho-exam-guide.tex" 1788415146.98709 48889 552eadfde5a1774da51d12e7a9e60ea4 ""
   (generated)
   "usapho-exam-guide.aux"
   "usapho-exam-guide.log"

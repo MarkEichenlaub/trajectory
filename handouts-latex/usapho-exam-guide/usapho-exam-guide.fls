@@ -460,6 +460,20 @@ INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\lmbsy7.tf
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr8.tfm
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\tfm\public\lm\ec-lmr6.tfm
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\enc\dvips\lm\lm-mathex.enc
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4717-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
+INPUT .\paper-4900-b2.png
 INPUT usapho-exam-guide.aux
 INPUT .\usapho-exam-guide.out
 INPUT .\usapho-exam-guide.out
@@ -471,6 +485,8 @@ INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmex10.
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmex10.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi10.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi10.pfb
+INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi6.pfb
+INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi6.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi8.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi8.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmmi9.pfb
@@ -501,3 +517,5 @@ INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy9.p
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\lm\lmsy9.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msam10.pfb
 INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msam10.pfb
+INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msbm10.pfb
+INPUT C:\Users\markd\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\symbols\msbm10.pfb
