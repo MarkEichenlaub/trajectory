@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { fetchSessions, fetchAssignments, fetchStudents, fetchSessionProblems } from '../utils/supabase'
+import { fetchSessions, fetchAssignments, fetchStudents, fetchSessionProblems, firstReview } from '../utils/supabase'
 import { loadProblemBank } from '../utils/problemBank'
 
 // "What's due for this session" — match the recalc_assignment_due_dates trigger:
@@ -76,6 +76,7 @@ export default function SessionLauncher() {
         assignment: a,
         problem: bank.find(p => p.id === a.problem_id) || null,
         submission: submissionUrl(a),
+        review: firstReview(a),
       }))
   }, [session, assignments, bank])
 
@@ -153,7 +154,7 @@ export default function SessionLauncher() {
         {dueItems.length === 0 && (
           <div style={{ color: 'var(--text-dim)', marginTop: 8 }}>Nothing due for this session.</div>
         )}
-        {dueItems.map(({ assignment, problem, submission }) => (
+        {dueItems.map(({ assignment, problem, submission, review }) => (
           <div key={assignment.id} style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
             <div style={{ fontWeight: 500, marginBottom: 6 }}>
               {problem?.name || assignment.problem_id}
@@ -168,6 +169,22 @@ export default function SessionLauncher() {
                 ? <a href={submission} target="_blank" rel="noreferrer">Submission ↗</a>
                 : <span style={{ color: 'var(--text-dim)' }}>No submission yet</span>}
             </div>
+            {review && (
+              <div style={{ marginTop: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+                {review.ai_summary && <div>🤖 {review.ai_summary}</div>}
+                {(review.question_breakdown || []).length > 0 && (
+                  <ul style={{ margin: '4px 0', paddingLeft: 18 }}>
+                    {review.question_breakdown.map((b, i) => (
+                      <li key={i}><strong>{b.verdict}</strong> — {b.question}: {b.note}</li>
+                    ))}
+                  </ul>
+                )}
+                {(review.issues || []).length > 0 && (
+                  <div>Work on: {review.issues.join(', ')}</div>
+                )}
+                {review.mark_notes && <div style={{ marginTop: 2 }}><strong>Your notes:</strong> {review.mark_notes}</div>}
+              </div>
+            )}
           </div>
         ))}
 

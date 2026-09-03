@@ -1,5 +1,42 @@
 import { useState, useRef } from 'react'
 import { problemSummary } from '../utils/problemBank'
+import { firstReview } from '../utils/supabase'
+
+// AI review's mark_notes field (assignment_reviews table) — same edit pattern
+// as NoteField above, kept separate since it saves to a different table/row.
+function ReviewNotesField({ assignmentId, initialNotes, onSave }) {
+  const [value, setValue] = useState(initialNotes || '')
+  const [editing, setEditing] = useState(false)
+
+  function handleBlur() {
+    setEditing(false)
+    if (value !== (initialNotes || '')) onSave(assignmentId, value)
+  }
+
+  if (!editing && !value) {
+    return (
+      <span className="assignment-note-placeholder" onClick={() => setEditing(true)}>
+        Add your notes…
+      </span>
+    )
+  }
+
+  if (editing) {
+    return (
+      <textarea
+        className="assignment-note-input"
+        value={value}
+        autoFocus
+        rows={2}
+        onChange={e => setValue(e.target.value)}
+        onBlur={handleBlur}
+        style={{ width: '100%' }}
+      />
+    )
+  }
+
+  return <span onClick={() => setEditing(true)} style={{ cursor: 'text' }}>{value}</span>
+}
 
 function NoteField({ assignmentId, initialNote, onSave }) {
   const [value, setValue] = useState(initialNote || '')
@@ -89,6 +126,7 @@ export default function AssignedView({
   student, assignments, problems,
   assignedOrder, onReorder,
   onToggleStatus, onUnassign, onGenerateEmail, onUpdateNote, onUpdateDueDate, onUploadFeedback, onToggleRequiresSubmission,
+  onUpdateReviewNotes,
 }) {
   const [statusFilter, setStatusFilter] = useState('all')
   const [dragId, setDragId] = useState(null)
@@ -231,6 +269,7 @@ export default function AssignedView({
             const isBeingDragged = dragId === a.id
             const isDragTarget = dragOverId === a.id
             const summary = problemSummary(p)
+            const review = firstReview(a)
 
             return (
               <div
@@ -322,6 +361,29 @@ export default function AssignedView({
                     title="Remove assignment"
                   >✕</button>
                 </div>
+                {review && (
+                  <div className="assigned-row-review" style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
+                    {review.ai_summary && <div>🤖 {review.ai_summary}</div>}
+                    {(review.question_breakdown || []).length > 0 && (
+                      <ul style={{ margin: '2px 0', paddingLeft: 18 }}>
+                        {review.question_breakdown.map((b, i) => (
+                          <li key={i}><strong>{b.verdict}</strong> — {b.question}: {b.note}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {(review.issues || []).length > 0 && (
+                      <div>Work on: {review.issues.join(', ')}</div>
+                    )}
+                    <div style={{ marginTop: 2 }}>
+                      <strong>Your notes: </strong>
+                      <ReviewNotesField
+                        assignmentId={a.id}
+                        initialNotes={review.mark_notes}
+                        onSave={onUpdateReviewNotes}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             )
           })}

@@ -28,9 +28,29 @@ export async function fetchStudents() {
 
 export async function fetchAssignments() {
   const { data, error } = await adminClient()
-    .from('assignments').select('*, assignment_submissions(id, file_url)').order('assigned_date', { ascending: false })
+    .from('assignments')
+    .select('*, assignment_submissions(id, file_url), assignment_reviews(ai_summary, question_breakdown, issues, mark_notes, graded_at)')
+    .order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data
+}
+
+// Admin-only AI review of a submission — see supabase/migrations/20260903030621_assignment_reviews.sql
+// and scripts/grade-submission-agent.mjs. Upsert-safe so Mark can jot a note
+// before the AI grading pass has run.
+export async function updateAssignmentReviewNotes(assignmentId, notes) {
+  const { error } = await adminClient()
+    .from('assignment_reviews')
+    .upsert({ assignment_id: assignmentId, mark_notes: notes }, { onConflict: 'assignment_id' })
+  if (error) throw new Error(error.message)
+}
+
+// PostgREST's embed shape for assignment_reviews (a unique-FK "child" of
+// assignments) varies by version — sometimes an array, sometimes a single
+// object. Normalize to "the one review or null" everywhere it's consumed.
+export function firstReview(assignment) {
+  const r = assignment?.assignment_reviews
+  return Array.isArray(r) ? (r[0] || null) : (r || null)
 }
 
 export async function insertAssignments(rows) {

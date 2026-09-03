@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule, updateAssignmentReviewNotes } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import InvoicePreviewModal from './InvoicePreviewModal'
@@ -563,6 +563,24 @@ export default function AdminApp({ userId }) {
     }
   }
 
+  // assignment_reviews' PostgREST embed shape can be an array or a single
+  // object depending on version — update whichever shape is present.
+  async function handleUpdateReviewNotes(assignmentId, notes) {
+    try {
+      await updateAssignmentReviewNotes(assignmentId, notes)
+      setAssignments(prev => prev.map(a => {
+        if (a.id !== assignmentId) return a
+        const r = a.assignment_reviews
+        const updated = Array.isArray(r)
+          ? (r.length ? r.map((x, i) => i === 0 ? { ...x, mark_notes: notes } : x) : [{ mark_notes: notes }])
+          : { ...(r || {}), mark_notes: notes }
+        return { ...a, assignment_reviews: updated }
+      }))
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleUpdateDueDate(assignmentId, dueDate) {
     try {
       await updateAssignment(assignmentId, { due_date: dueDate, due_date_overridden: true })
@@ -897,6 +915,7 @@ export default function AdminApp({ userId }) {
             onUpdateDueDate={handleUpdateDueDate}
             onUploadFeedback={handleUploadFeedback}
             onToggleRequiresSubmission={handleToggleRequiresSubmission}
+            onUpdateReviewNotes={handleUpdateReviewNotes}
           />
         )}
 
