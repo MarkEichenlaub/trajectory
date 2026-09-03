@@ -1079,7 +1079,7 @@ function AdminScheduleView({ student, sessions, sessionProblems, allProblems, sh
   }
 
   return (
-    <div style={{ maxWidth: 900, width: '100%', margin: '0 auto', padding: '20px 0' }}>
+    <div className="admin-pane" style={{ maxWidth: 900, width: '100%', margin: '0 auto' }}>
       <h2 style={{ fontSize: 18, fontWeight: 600, marginBottom: 16 }}>{student?.name} — Schedule</h2>
 
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 16px', marginBottom: 20 }}>
