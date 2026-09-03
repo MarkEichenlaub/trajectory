@@ -468,6 +468,177 @@ function genIsolateVariable(level, rng) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 6 — unit dimensional analysis: simplify a fraction of base units,
+// then recall/expand named derived units (N, J, Pa, W, Hz), then read the
+// units of an unknown constant off a physics formula. Every answer is
+// exponents of kg/m/s -- always exact integers, including under a square
+// root, because the templates are built (or curated) so that holds.
+// ═══════════════════════════════════════════════════════════════════════
+const BASE = ['kg', 'm', 's']
+// Exponents of kg, m, s for each named derived unit (all expressible in
+// pure mechanics -- no ampere/kelvin/mole needed).
+const UNIT_EXP = {
+  N: { kg: 1, m: 1, s: -2 },
+  J: { kg: 1, m: 2, s: -2 },
+  Pa: { kg: 1, m: -1, s: -2 },
+  W: { kg: 1, m: 2, s: -3 },
+  Hz: { kg: 0, m: 0, s: -1 },
+  kg: { kg: 1, m: 0, s: 0 },
+  m: { kg: 0, m: 1, s: 0 },
+  s: { kg: 0, m: 0, s: 1 },
+}
+function addExp(a, b, sign = 1) {
+  return { kg: a.kg + sign * b.kg, m: a.m + sign * b.m, s: a.s + sign * b.s }
+}
+function scaleExp(a, k) { return { kg: a.kg * k, m: a.m * k, s: a.s * k } }
+
+// "kg^{2} \cdot m" style tex for a set of base-unit exponents (all >= 0).
+// Units with exponent 0 are omitted; exponent 1 shows no visible power.
+function unitTermTex(exp) {
+  const parts = BASE.filter(u => exp[u] > 0).map(u => (exp[u] === 1 ? u : `${u}^{${exp[u]}}`))
+  return parts.length ? parts.join(' \\cdot ') : '1'
+}
+
+// The always-present "= kg^[_] m^[_] s^[_]" answer tail, shared by every
+// level of this skill so a student always states units the same way Mark
+// asked for: "in kg, m, s."
+function baseExponentBlanks() {
+  return {
+    fields: [
+      { key: 'ekg', label: 'power of kg', type: 'int', placeholder: 'e.g. -1' },
+      { key: 'em', label: 'power of m', type: 'int', placeholder: 'e.g. 3' },
+      { key: 'es', label: 'power of s', type: 'int', placeholder: 'e.g. -2' },
+    ],
+    equation: [
+      { tex: 'kg' }, { blank: 'ekg', sup: true },
+      { tex: '\\, m' }, { blank: 'em', sup: true },
+      { tex: '\\, s' }, { blank: 'es', sup: true },
+    ],
+  }
+}
+function baseExponentAnswer(exp) {
+  return { answer: { ekg: exp.kg, em: exp.m, es: exp.s }, tolerance: { ekg: 0, em: 0, es: 0 } }
+}
+// Same idea as unitTermTex but for a result that may have negative
+// exponents (unitTermTex is display-only for non-negative inputs).
+function fmtExp(exp) {
+  const parts = BASE.filter(u => exp[u] !== 0).map(u => (exp[u] === 1 ? u : `${u}^{${exp[u]}}`))
+  return parts.length ? parts.join('\\cdot ') : '1'
+}
+
+const DERIVED_POOL = ['N', 'J', 'Pa', 'W', 'Hz']
+
+const SQRT_UNIT_TEMPLATES = [
+  { tex: '\\sqrt{J/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$J/kg = kg\\,m^2 s^{-2} / kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
+  { tex: '\\sqrt{N \\cdot m/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$N\\cdot m/kg = (kg\\,m\\,s^{-2})(m)/kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
+  { tex: '\\sqrt{Pa \\cdot m^3/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$Pa\\cdot m^3/kg = (kg\\,m^{-1}s^{-2})(m^3)/kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
+  { tex: '\\sqrt{N/(kg \\cdot m)}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$N/(kg\\cdot m) = (kg\\,m\\,s^{-2})/(kg\\,m) = s^{-2}$$, and $$\\sqrt{s^{-2}} = s^{-1}$$.' },
+  { tex: '\\sqrt{J/(kg \\cdot m^2)}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$J/(kg\\cdot m^2) = (kg\\,m^2 s^{-2})/(kg\\,m^2) = s^{-2}$$, and $$\\sqrt{s^{-2}} = s^{-1}$$.' },
+]
+
+// Each entry states a formula, which quantities' units are given, and
+// derives the unknown's units as exponent-vector arithmetic on those givens
+// -- exact by construction, and hand-checkable the same way a student would.
+const DIMENSIONAL_FORMULAS = [
+  {
+    label: 'G', promptMd: `Newton's law of gravitation is $$F = G\\dfrac{m_1 m_2}{r^2}$$, where F is in newtons, $$m_1$$ and $$m_2$$ are in kg, and r is in m.\n\nFind the units of G.`,
+    exp: addExp(addExp(UNIT_EXP.N, scaleExp(UNIT_EXP.m, 2)), scaleExp(UNIT_EXP.kg, 2), -1),
+    steps: '$$G = \\dfrac{F r^2}{m_1 m_2}$$, so its units are $$N \\cdot m^2 / kg^2$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and simplify.',
+  },
+  {
+    label: 'k', promptMd: `A spring obeys Hooke's law, $$F = kx$$, where F is in newtons and x is in m.\n\nFind the units of the spring constant k.`,
+    exp: addExp(UNIT_EXP.N, UNIT_EXP.m, -1),
+    steps: '$$k = F/x$$, so its units are $$N/m$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and cancel the m.',
+  },
+  {
+    label: 'h', promptMd: `A photon's energy is $$E = hf$$, where E is in joules and f (frequency) is in Hz ($$s^{-1}$$).\n\nFind the units of Planck's constant h.`,
+    exp: addExp(UNIT_EXP.J, UNIT_EXP.Hz, -1),
+    steps: '$$h = E/f$$, so its units are $$J/Hz = J\\cdot s$$ — substitute $$J = kg\\,m^2 s^{-2}$$.',
+  },
+  {
+    label: '\\eta', promptMd: `Stokes' law for drag on a sphere is $$F = 6\\pi\\eta r v$$, where F is in newtons, r is in m, and v (speed) is in m/s.\n\nFind the units of the viscosity η.`,
+    exp: addExp(addExp(UNIT_EXP.N, UNIT_EXP.m, -1), { kg: 0, m: 1, s: -1 }, -1),
+    steps: '$$\\eta = \\dfrac{F}{r v}$$, so its units are $$\\dfrac{N}{m \\cdot (m/s)}$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and simplify.',
+  },
+  {
+    label: 'b', promptMd: `A linear drag force is $$F = bv$$, where F is in newtons and v (speed) is in m/s.\n\nFind the units of the damping coefficient b.`,
+    exp: addExp(UNIT_EXP.N, { kg: 0, m: 1, s: -1 }, -1),
+    steps: '$$b = F/v$$, so its units are $$N/(m/s) = N\\cdot s/m$$ — substitute $$N = kg\\,m\\,s^{-2}$$.',
+  },
+  {
+    label: 'I', promptMd: `Rotational form of Newton's second law: $$\\tau = I\\alpha$$, where torque τ is in $$N\\cdot m$$ and angular acceleration α is in $$s^{-2}$$.\n\nFind the units of the moment of inertia I.`,
+    exp: addExp(addExp(UNIT_EXP.N, UNIT_EXP.m), { kg: 0, m: 0, s: -2 }, -1),
+    steps: '$$I = \\tau/\\alpha$$, so its units are $$(N\\cdot m)/s^{-2} = N\\cdot m\\cdot s^2$$ — substitute $$N = kg\\,m\\,s^{-2}$$.',
+  },
+]
+
+function genUnitDimensions(level, rng) {
+  if (level === 0) {
+    let num, den
+    do { num = { kg: randInt(rng, 0, 3), m: randInt(rng, 0, 3), s: randInt(rng, 0, 3) } } while (num.kg + num.m + num.s === 0)
+    do { den = { kg: randInt(rng, 0, 2), m: randInt(rng, 0, 2), s: randInt(rng, 0, 2) } } while (den.kg + den.m + den.s === 0)
+    const result = addExp(num, den, -1)
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: `Simplify to a single power of each base unit.`,
+      equation: [{ tex: `\\dfrac{${unitTermTex(num)}}{${unitTermTex(den)}}` }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(result),
+      explanationMd: `Subtract exponents base by base: kg, then m, then s. $$\\dfrac{${unitTermTex(num)}}{${unitTermTex(den)}} = ${fmtExp(result)}$$`,
+      timeTargetSec: 20,
+    }
+  }
+  if (level === 1) {
+    const name = randChoice(rng, DERIVED_POOL)
+    const exp = UNIT_EXP[name]
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: `State the definition of a ${name === 'Pa' ? 'pascal' : name === 'Hz' ? 'hertz' : name === 'N' ? 'newton' : name === 'J' ? 'joule' : 'watt'} in kg, m, and s.`,
+      equation: [{ tex: `1\\ \\text{${name}}` }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(exp),
+      explanationMd: `$$1\\ \\text{${name}} = ${fmtExp(exp)}$$ — this is worth memorizing outright; every other derived-unit question builds on it.`,
+      timeTargetSec: 15,
+    }
+  }
+  if (level === 2) {
+    const pool = [...DERIVED_POOL, ...BASE]
+    // At least one derived unit on top, so expansion is unavoidable.
+    const numNames = [randChoice(rng, DERIVED_POOL), randChoice(rng, pool)]
+    const denName = randChoice(rng, pool)
+    const num = addExp(UNIT_EXP[numNames[0]], UNIT_EXP[numNames[1]])
+    const result = addExp(num, UNIT_EXP[denName], -1)
+    const numTex = numNames.map(n => `\\text{${n}}`).join(' \\cdot ')
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: `Expand each unit into kg, m, s, then simplify.`,
+      equation: [{ tex: `\\dfrac{${numTex}}{\\text{${denName}}}` }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(result),
+      explanationMd: `Expand: $$\\text{${numNames[0]}} = ${fmtExp(UNIT_EXP[numNames[0]])}$$, $$\\text{${numNames[1]}} = ${fmtExp(UNIT_EXP[numNames[1]])}$$, $$\\text{${denName}} = ${fmtExp(UNIT_EXP[denName])}$$, then combine exponents base by base.`,
+      timeTargetSec: 30,
+    }
+  }
+  if (level === 3) {
+    const t = randChoice(rng, SQRT_UNIT_TEMPLATES)
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: `Expand, simplify, then take the square root.`,
+      equation: [{ tex: t.tex }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(t.exp),
+      explanationMd: t.steps,
+      timeTargetSec: 35,
+    }
+  }
+  const f = randChoice(rng, DIMENSIONAL_FORMULAS)
+  const blanks = baseExponentBlanks()
+  return {
+    promptMd: f.promptMd,
+    equation: [{ tex: f.label }, { tex: '=' }, ...blanks.equation],
+    fields: blanks.fields, ...baseExponentAnswer(f.exp),
+    explanationMd: f.steps + ` Final units: $$${fmtExp(f.exp)}$$.`,
+    timeTargetSec: 40,
+  }
+}
+
 // ── Catalog ──────────────────────────────────────────────────────────────
 
 export const SKILLS = [
@@ -495,6 +666,11 @@ export const SKILLS = [
     slug: 'isolate-variable', name: 'Isolate a variable, then evaluate',
     description: 'Rearranging a physics formula to solve for a target variable (including one buried under a square or square root).',
     category: 'algebra', maxLevel: 3, generate: genIsolateVariable,
+  },
+  {
+    slug: 'unit-dimensions', name: 'Unit simplification & dimensional analysis',
+    description: 'Simplifying fractions of kg/m/s, recalling derived units (N, J, Pa, W), and reading a constant\'s units off a formula.',
+    category: 'units', maxLevel: 4, generate: genUnitDimensions,
   },
 ]
 

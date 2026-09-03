@@ -153,3 +153,48 @@ describe('spacing', () => {
     expect(plan.every(id => id === 'b')).toBe(true)
   })
 })
+
+describe('unit-dimensions', () => {
+  it('level 1 recall matches the textbook definition of each derived unit', () => {
+    const KNOWN = {
+      N: { ekg: 1, em: 1, es: -2 },
+      J: { ekg: 1, em: 2, es: -2 },
+      Pa: { ekg: 1, em: -1, es: -2 },
+      W: { ekg: 1, em: 2, es: -3 },
+      Hz: { ekg: 0, em: 0, es: -1 },
+    }
+    for (let seed = 1; seed <= 30; seed++) {
+      const problem = generateProblem('unit-dimensions', 1, seed)
+      const unitName = Object.keys(KNOWN).find(n => problem.equation[0].tex.includes(n))
+      expect(problem.answer).toEqual(KNOWN[unitName])
+    }
+  })
+
+  // Ground truth from real SI unit definitions, independent of this codebase's
+  // own exponent arithmetic -- catches a conceptual error, not just a typo.
+  it('level 4 formulas land on each constant\'s real-world SI units', () => {
+    const KNOWN_BY_LABEL = {
+      G: { ekg: -1, em: 3, es: -2 },       // m^3 kg^-1 s^-2
+      k: { ekg: 1, em: 0, es: -2 },        // N/m = kg s^-2
+      h: { ekg: 1, em: 2, es: -1 },        // J*s = kg m^2 s^-1
+      '\\eta': { ekg: 1, em: -1, es: -1 }, // Pa*s = kg m^-1 s^-1
+      b: { ekg: 1, em: 0, es: -1 },        // N*s/m = kg s^-1
+      I: { ekg: 1, em: 2, es: 0 },         // kg m^2
+    }
+    const seenLabels = new Set()
+    for (let seed = 1; seed <= 40; seed++) {
+      const problem = generateProblem('unit-dimensions', 4, seed)
+      const label = problem.equation[0].tex
+      seenLabels.add(label)
+      expect(problem.answer, `label ${label}`).toEqual(KNOWN_BY_LABEL[label])
+    }
+    expect(seenLabels.size).toBe(6) // all 6 formulas got exercised across 40 seeds
+  })
+
+  it('level 3 square-root templates always resolve to an integer exponent triple', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const problem = generateProblem('unit-dimensions', 3, seed)
+      for (const key of ['ekg', 'em', 'es']) expect(Number.isInteger(problem.answer[key])).toBe(true)
+    }
+  })
+})
