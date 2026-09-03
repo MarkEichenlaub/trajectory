@@ -25,14 +25,19 @@ function EquationLine({ equation, fields, values, result, setField }) {
           return <span key={i} className="fl-eq-tex" dangerouslySetInnerHTML={{ __html: katexHtml(seg.tex) }} />
         }
         const f = fields.find(x => x.key === seg.blank)
+        const v = values[seg.blank] ?? ''
+        // Grows with the typed value (e.g. converting 9.6 kg to g needs
+        // "9600") instead of a fixed width that overflows on a longer answer.
+        const minCh = seg.sup ? 3 : 5
         return (
           <input
             key={i}
             type="text" autoComplete="off"
-            value={values[seg.blank] ?? ''}
+            value={v}
             disabled={!!result}
             onChange={e => setField(seg.blank, e.target.value)}
             className={`fl-eq-blank${seg.sup ? ' sup' : ''}${result ? (result.perField[seg.blank] ? ' ok' : ' bad') : ''}`}
+            style={{ width: `${Math.max(minCh, v.length + 1.5)}ch` }}
             aria-label={f?.label}
           />
         )

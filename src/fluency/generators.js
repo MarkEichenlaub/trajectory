@@ -572,8 +572,10 @@ function scaleExp(a, k) { return { kg: a.kg * k, m: a.m * k, s: a.s * k } }
 
 // "kg^{2} \cdot m" style tex for a set of base-unit exponents (all >= 0).
 // Units with exponent 0 are omitted; exponent 1 shows no visible power.
+// Units are set upright (\text{...}) rather than KaTeX's default italic --
+// bare "kg" in math mode reads as the product of variables k and g.
 function unitTermTex(exp) {
-  const parts = BASE.filter(u => exp[u] > 0).map(u => (exp[u] === 1 ? u : `${u}^{${exp[u]}}`))
+  const parts = BASE.filter(u => exp[u] > 0).map(u => (exp[u] === 1 ? `\\text{${u}}` : `\\text{${u}}^{${exp[u]}}`))
   return parts.length ? parts.join(' \\cdot ') : '1'
 }
 
@@ -588,9 +590,9 @@ function baseExponentBlanks() {
       { key: 'es', label: 'power of s', type: 'int', placeholder: 'e.g. -2' },
     ],
     equation: [
-      { tex: 'kg' }, { blank: 'ekg', sup: true },
-      { tex: '\\, m' }, { blank: 'em', sup: true },
-      { tex: '\\, s' }, { blank: 'es', sup: true },
+      { tex: '\\text{kg}' }, { blank: 'ekg', sup: true },
+      { tex: '\\,\\text{m}' }, { blank: 'em', sup: true },
+      { tex: '\\,\\text{s}' }, { blank: 'es', sup: true },
     ],
   }
 }
@@ -600,18 +602,20 @@ function baseExponentAnswer(exp) {
 // Same idea as unitTermTex but for a result that may have negative
 // exponents (unitTermTex is display-only for non-negative inputs).
 function fmtExp(exp) {
-  const parts = BASE.filter(u => exp[u] !== 0).map(u => (exp[u] === 1 ? u : `${u}^{${exp[u]}}`))
+  const parts = BASE.filter(u => exp[u] !== 0).map(u => (exp[u] === 1 ? `\\text{${u}}` : `\\text{${u}}^{${exp[u]}}`))
   return parts.length ? parts.join('\\cdot ') : '1'
 }
 
 const DERIVED_POOL = ['N', 'J', 'Pa', 'W', 'Hz']
 
+// Unit names are wrapped in \text{...} throughout -- upright, not KaTeX's
+// default italic (bare "kg" in math mode reads as k times g).
 const SQRT_UNIT_TEMPLATES = [
-  { tex: '\\sqrt{J/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$J/kg = kg\\,m^2 s^{-2} / kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
-  { tex: '\\sqrt{N \\cdot m/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$N\\cdot m/kg = (kg\\,m\\,s^{-2})(m)/kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
-  { tex: '\\sqrt{Pa \\cdot m^3/kg}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$Pa\\cdot m^3/kg = (kg\\,m^{-1}s^{-2})(m^3)/kg = m^2 s^{-2}$$, and $$\\sqrt{m^2 s^{-2}} = m\\,s^{-1}$$.' },
-  { tex: '\\sqrt{N/(kg \\cdot m)}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$N/(kg\\cdot m) = (kg\\,m\\,s^{-2})/(kg\\,m) = s^{-2}$$, and $$\\sqrt{s^{-2}} = s^{-1}$$.' },
-  { tex: '\\sqrt{J/(kg \\cdot m^2)}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$J/(kg\\cdot m^2) = (kg\\,m^2 s^{-2})/(kg\\,m^2) = s^{-2}$$, and $$\\sqrt{s^{-2}} = s^{-1}$$.' },
+  { tex: '\\sqrt{\\text{J}/\\text{kg}}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$\\text{J}/\\text{kg} = \\text{kg}\\,\\text{m}^2\\,\\text{s}^{-2} / \\text{kg} = \\text{m}^2\\,\\text{s}^{-2}$$, and $$\\sqrt{\\text{m}^2\\,\\text{s}^{-2}} = \\text{m}\\,\\text{s}^{-1}$$.' },
+  { tex: '\\sqrt{\\text{N} \\cdot \\text{m}/\\text{kg}}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$\\text{N}\\cdot\\text{m}/\\text{kg} = (\\text{kg}\\,\\text{m}\\,\\text{s}^{-2})(\\text{m})/\\text{kg} = \\text{m}^2\\,\\text{s}^{-2}$$, and $$\\sqrt{\\text{m}^2\\,\\text{s}^{-2}} = \\text{m}\\,\\text{s}^{-1}$$.' },
+  { tex: '\\sqrt{\\text{Pa} \\cdot \\text{m}^3/\\text{kg}}', exp: { kg: 0, m: 1, s: -1 }, steps: '$$\\text{Pa}\\cdot\\text{m}^3/\\text{kg} = (\\text{kg}\\,\\text{m}^{-1}\\text{s}^{-2})(\\text{m}^3)/\\text{kg} = \\text{m}^2\\,\\text{s}^{-2}$$, and $$\\sqrt{\\text{m}^2\\,\\text{s}^{-2}} = \\text{m}\\,\\text{s}^{-1}$$.' },
+  { tex: '\\sqrt{\\text{N}/(\\text{kg} \\cdot \\text{m})}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$\\text{N}/(\\text{kg}\\cdot\\text{m}) = (\\text{kg}\\,\\text{m}\\,\\text{s}^{-2})/(\\text{kg}\\,\\text{m}) = \\text{s}^{-2}$$, and $$\\sqrt{\\text{s}^{-2}} = \\text{s}^{-1}$$.' },
+  { tex: '\\sqrt{\\text{J}/(\\text{kg} \\cdot \\text{m}^2)}', exp: { kg: 0, m: 0, s: -1 }, steps: '$$\\text{J}/(\\text{kg}\\cdot\\text{m}^2) = (\\text{kg}\\,\\text{m}^2\\,\\text{s}^{-2})/(\\text{kg}\\,\\text{m}^2) = \\text{s}^{-2}$$, and $$\\sqrt{\\text{s}^{-2}} = \\text{s}^{-1}$$.' },
 ]
 
 // Each entry states a formula, which quantities' units are given, and
@@ -621,32 +625,32 @@ const DIMENSIONAL_FORMULAS = [
   {
     label: 'G', promptMd: `Newton's law of gravitation is $$F = G\\dfrac{m_1 m_2}{r^2}$$, where F is in newtons, $$m_1$$ and $$m_2$$ are in kg, and r is in m.\n\nFind the units of G.`,
     exp: addExp(addExp(UNIT_EXP.N, scaleExp(UNIT_EXP.m, 2)), scaleExp(UNIT_EXP.kg, 2), -1),
-    steps: '$$G = \\dfrac{F r^2}{m_1 m_2}$$, so its units are $$N \\cdot m^2 / kg^2$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and simplify.',
+    steps: '$$G = \\dfrac{F r^2}{m_1 m_2}$$, so its units are $$\\text{N} \\cdot \\text{m}^2 / \\text{kg}^2$$ — substitute $$\\text{N} = \\text{kg}\\,\\text{m}\\,\\text{s}^{-2}$$ and simplify.',
   },
   {
     label: 'k', promptMd: `A spring obeys Hooke's law, $$F = kx$$, where F is in newtons and x is in m.\n\nFind the units of the spring constant k.`,
     exp: addExp(UNIT_EXP.N, UNIT_EXP.m, -1),
-    steps: '$$k = F/x$$, so its units are $$N/m$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and cancel the m.',
+    steps: '$$k = F/x$$, so its units are $$\\text{N}/\\text{m}$$ — substitute $$\\text{N} = \\text{kg}\\,\\text{m}\\,\\text{s}^{-2}$$ and cancel the m.',
   },
   {
-    label: 'h', promptMd: `A photon's energy is $$E = hf$$, where E is in joules and f (frequency) is in Hz ($$s^{-1}$$).\n\nFind the units of Planck's constant h.`,
+    label: 'h', promptMd: `A photon's energy is $$E = hf$$, where E is in joules and f (frequency) is in Hz ($$\\text{s}^{-1}$$).\n\nFind the units of Planck's constant h.`,
     exp: addExp(UNIT_EXP.J, UNIT_EXP.Hz, -1),
-    steps: '$$h = E/f$$, so its units are $$J/Hz = J\\cdot s$$ — substitute $$J = kg\\,m^2 s^{-2}$$.',
+    steps: '$$h = E/f$$, so its units are $$\\text{J}/\\text{Hz} = \\text{J}\\cdot\\text{s}$$ — substitute $$\\text{J} = \\text{kg}\\,\\text{m}^2\\,\\text{s}^{-2}$$.',
   },
   {
     label: '\\eta', promptMd: `Stokes' law for drag on a sphere is $$F = 6\\pi\\eta r v$$, where F is in newtons, r is in m, and v (speed) is in m/s.\n\nFind the units of the viscosity η.`,
     exp: addExp(addExp(UNIT_EXP.N, UNIT_EXP.m, -1), { kg: 0, m: 1, s: -1 }, -1),
-    steps: '$$\\eta = \\dfrac{F}{r v}$$, so its units are $$\\dfrac{N}{m \\cdot (m/s)}$$ — substitute $$N = kg\\,m\\,s^{-2}$$ and simplify.',
+    steps: '$$\\eta = \\dfrac{F}{r v}$$, so its units are $$\\dfrac{\\text{N}}{\\text{m} \\cdot (\\text{m}/\\text{s})}$$ — substitute $$\\text{N} = \\text{kg}\\,\\text{m}\\,\\text{s}^{-2}$$ and simplify.',
   },
   {
     label: 'b', promptMd: `A linear drag force is $$F = bv$$, where F is in newtons and v (speed) is in m/s.\n\nFind the units of the damping coefficient b.`,
     exp: addExp(UNIT_EXP.N, { kg: 0, m: 1, s: -1 }, -1),
-    steps: '$$b = F/v$$, so its units are $$N/(m/s) = N\\cdot s/m$$ — substitute $$N = kg\\,m\\,s^{-2}$$.',
+    steps: '$$b = F/v$$, so its units are $$\\text{N}/(\\text{m}/\\text{s}) = \\text{N}\\cdot\\text{s}/\\text{m}$$ — substitute $$\\text{N} = \\text{kg}\\,\\text{m}\\,\\text{s}^{-2}$$.',
   },
   {
-    label: 'I', promptMd: `Rotational form of Newton's second law: $$\\tau = I\\alpha$$, where torque τ is in $$N\\cdot m$$ and angular acceleration α is in $$s^{-2}$$.\n\nFind the units of the moment of inertia I.`,
+    label: 'I', promptMd: `Rotational form of Newton's second law: $$\\tau = I\\alpha$$, where torque τ is in $$\\text{N}\\cdot\\text{m}$$ and angular acceleration α is in $$\\text{s}^{-2}$$.\n\nFind the units of the moment of inertia I.`,
     exp: addExp(addExp(UNIT_EXP.N, UNIT_EXP.m), { kg: 0, m: 0, s: -2 }, -1),
-    steps: '$$I = \\tau/\\alpha$$, so its units are $$(N\\cdot m)/s^{-2} = N\\cdot m\\cdot s^2$$ — substitute $$N = kg\\,m\\,s^{-2}$$.',
+    steps: '$$I = \\tau/\\alpha$$, so its units are $$(\\text{N}\\cdot\\text{m})/\\text{s}^{-2} = \\text{N}\\cdot\\text{m}\\cdot\\text{s}^2$$ — substitute $$\\text{N} = \\text{kg}\\,\\text{m}\\,\\text{s}^{-2}$$.',
   },
 ]
 
