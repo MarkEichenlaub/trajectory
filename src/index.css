@@ -703,6 +703,33 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fl-progress { height: 4px; background: var(--border); border-radius: 2px; margin: 10px 0 16px; overflow: hidden; }
 .fl-progress-fill { height: 100%; background: var(--accent); transition: width 200ms; }
 
+/* Lead-in prose above a problem — sized up from the F=ma runner's default so
+   it's comfortably readable on a phone during a quick between-classes rep. */
+.fl-prompt { font-size: 16px; line-height: 1.7; }
+
+/* The fill-in-the-equation line: static KaTeX segments and inline blanks
+   read left-to-right as one equation (e.g. "7.8 cm = [_] × 10^[_] m")
+   instead of a rendered "?" placeholder (which reads as a 7 at small sizes)
+   plus a detached answer box below it. */
+.fl-eq-row {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px;
+  font-size: 22px; margin: 16px 0 4px;
+}
+.fl-eq-tex { display: inline-flex; align-items: baseline; }
+.fl-eq-blank {
+  width: 5ch; font-size: 1em; padding: 6px 8px; min-height: 40px;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface);
+  text-align: center; font-variant-numeric: tabular-nums;
+}
+/* Raised and shrunk so it sits like an exponent right after the base it follows. */
+.fl-eq-blank.sup {
+  width: 3.5ch; min-height: 30px; padding: 3px 5px;
+  font-size: 0.6em; transform: translateY(-0.9em);
+}
+.fl-eq-blank:focus { outline: none; border-color: var(--accent); }
+.fl-eq-blank.ok { border-color: var(--green-line, var(--green)); background: var(--green-bg, transparent); }
+.fl-eq-blank.bad { border-color: var(--red); }
+
 .fl-fields { display: flex; gap: 14px; flex-wrap: wrap; }
 .fl-field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-dim); }
 .fl-input {
@@ -718,9 +745,21 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fl-feedback.ok { background: var(--green-bg, transparent); border: 1px solid var(--green-line, var(--green)); }
 .fl-feedback.bad { background: rgba(220, 80, 80, 0.08); border: 1px solid var(--red); }
 
+/* Always-reachable Next: a long explanation used to push the only Next
+   button below the fold, so this sticks to the viewport bottom the same way
+   FmaTestRunner's .fma-nav does. */
+.fl-next-bar {
+  position: sticky; bottom: 0; z-index: 2;
+  background: var(--bg, #eef2f7); border-top: 1px solid var(--border);
+  padding: 10px 0; margin-top: 12px; display: flex; justify-content: flex-end;
+}
+
 @media (max-width: 640px) {
   .fl-fields { flex-direction: column; gap: 10px; }
   .fl-input { width: 100%; }
+  .fl-eq-row { font-size: 19px; }
+  .fl-next-bar { justify-content: stretch; }
+  .fl-next-bar button { width: 100%; }
 }
 
 /* ---- F=ma reviewed attempt ------------------------------------- */

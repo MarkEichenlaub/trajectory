@@ -40,7 +40,82 @@ describe('unit-prefix-convert reproduces the squared-unit trap', () => {
   it('mm² to m² uses the 1e-6 factor, not 1e-3', () => {
     // level 1 is power=2, toPrefix='' — same shape as Leo's 2.0 mm² = 2×10⁻⁶ m²
     const problem = generateProblem('unit-prefix-convert', 1, 7)
-    expect(problem.promptMd).toMatch(/\^2/)
+    const lhsTex = problem.equation[0].tex
+    expect(lhsTex).toMatch(/\}\^\{2\}/) // ^2 outside \text{...}, not baked inside it
+    expect(lhsTex).not.toMatch(/\\text\{[^}]*\^/) // never a caret inside a \text group
+  })
+})
+
+// KaTeX renders a parse error as literal red text (throwOnError: false), which
+// is exactly what happened when a unit label's ^2 was built inside \text{...}
+// (see the fix above). Guard every equation/promptMd segment against that
+// whole class of mistake, for every skill/level, not just the one that shipped.
+describe('no LaTeX segment ever puts a caret or underscore inside \\text{...}', () => {
+  const BAD = /\\text\{[^}]*[\^_][^}]*\}/
+  for (const skill of SKILLS) {
+    for (let level = 0; level <= skill.maxLevel; level++) {
+      it(`${skill.slug} level ${level}`, () => {
+        for (let seed = 1; seed <= 15; seed++) {
+          const problem = generateProblem(skill.slug, level, seed * 53 + level)
+          for (const seg of problem.equation || []) {
+            if (seg.tex) expect(seg.tex).not.toMatch(BAD)
+          }
+          expect(problem.promptMd).not.toMatch(BAD)
+          expect(problem.explanationMd).not.toMatch(BAD)
+        }
+      })
+    }
+  }
+})
+
+describe('answerBlanks prefers a plain decimal for small exponents', () => {
+  it('7.8 cm -> m (exponent -2) asks for one decimal field, not coefficient+exponent', () => {
+    // level 0 is power=1, toPrefix='' — cm to m is always a small exponent.
+    for (let seed = 1; seed <= 30; seed++) {
+      const problem = generateProblem('unit-prefix-convert', 0, seed)
+      if (Math.abs(problem.answer.e ?? 0) > 3) continue // only assert when this seed lands in decimal range
+      expect(problem.fields.map(f => f.key)).toEqual(['v'])
+    }
+  })
+  it('mm² -> m² (exponent -6) still uses coefficient x 10^exponent', () => {
+    const problem = generateProblem('unit-prefix-convert', 1, 7)
+    expect(problem.fields.map(f => f.key)).toEqual(['c', 'e'])
+  })
+})
+
+describe('vector-components only uses calculator-free reference angles', () => {
+  const REF = [30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330, 360, 0]
+  // Levels 0-4 give a single vector, so its own angle IS the resultant's
+  // angle — recoverable via atan2. Level 5 sums two vectors (only one of
+  // which is angle-based) so their sum generally lands off the reference
+  // set even though each input was calculator-free; that's expected and
+  // checked separately below.
+  it('levels 0-4 land on a 30-60-90 / 45-45-90 angle', () => {
+    for (let level = 0; level <= 4; level++) {
+      for (let seed = 1; seed <= 20; seed++) {
+        const problem = generateProblem('vector-components', level, seed * 31 + level)
+        const deg = ((Math.round(Math.atan2(problem.answer.y, problem.answer.x) * 180 / Math.PI) % 360) + 360) % 360
+        expect(REF, `level ${level} seed ${seed} got ${deg}°`).toContain(deg)
+      }
+    }
+  })
+  it('level 5 gives vector A as plain integers (no trig needed for that half)', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      const problem = generateProblem('vector-components', 5, seed * 31 + 5)
+      expect(problem.promptMd).toMatch(/Vector A has components \$\$\((-?\d+), (-?\d+)\)\$\$/)
+    }
+  })
+})
+
+describe('isolate-variable roots are always exact integers/half-integers', () => {
+  it('level 1 and 2 (square-root skills) never require an ugly root', () => {
+    for (const level of [1, 2]) {
+      for (let seed = 1; seed <= 20; seed++) {
+        const problem = generateProblem('isolate-variable', level, seed * 17 + level)
+        const key = problem.fields[0].key
+        expect(Number.isInteger(problem.answer[key])).toBe(true)
+      }
+    }
   })
 })
 

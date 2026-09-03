@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import katex from 'katex'
 import {
   fetchFluencySkills, fetchFluencyStudentSkills, fetchFluencySkillState,
   saveFluencySkillState, recordFluencyAttempt, fetchFluencyAttempts,
@@ -6,6 +7,40 @@ import {
 import { generateProblem, gradeAnswer } from '../../fluency/generators'
 import { nextLevel, nextDueAt, buildSessionPlan, MAX_LEVEL, TIMED_MODE_MIN_LEVEL } from '../../fluency/spacing'
 import { renderStatementHtml } from '../../utils/renderStatement'
+
+function katexHtml(tex) {
+  return katex.renderToString(tex, { throwOnError: false, displayMode: false })
+}
+
+// Renders a problem as a real fill-in-the-equation line -- static KaTeX
+// segments alternating with inline <input>s bound to answer fields -- rather
+// than a rendered "?" placeholder (which reads as a 7 at small sizes) plus a
+// detached answer box below. `sup` segments are visually raised to sit like
+// an exponent right after the preceding text.
+function EquationLine({ equation, fields, values, result, setField }) {
+  return (
+    <div className="fl-eq-row">
+      {equation.map((seg, i) => {
+        if (seg.tex) {
+          return <span key={i} className="fl-eq-tex" dangerouslySetInnerHTML={{ __html: katexHtml(seg.tex) }} />
+        }
+        const f = fields.find(x => x.key === seg.blank)
+        return (
+          <input
+            key={i}
+            type="text" inputMode="decimal" autoComplete="off"
+            placeholder={f?.placeholder}
+            value={values[seg.blank] ?? ''}
+            disabled={!!result}
+            onChange={e => setField(seg.blank, e.target.value)}
+            className={`fl-eq-blank${seg.sup ? ' sup' : ''}${result ? (result.perField[seg.blank] ? ' ok' : ' bad') : ''}`}
+            aria-label={f?.label}
+          />
+        )
+      })}
+    </div>
+  )
+}
 
 const SESSION_LENGTH = 8
 
@@ -81,6 +116,8 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   const skill = skillsById[skillId]
   const html = renderStatementHtml(problem.promptMd)
   const explanationHtml = result ? renderStatementHtml(problem.explanationMd) : ''
+  const nextLabel = index + 1 < queue.length ? 'Next →' : 'Finish'
+  const goNext = () => setIndex(i => i + 1)
 
   function setField(key, v) {
     setValues(prev => ({ ...prev, [key]: v }))
@@ -137,29 +174,33 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
 
       <div className="fma-card">
         <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.3 }}>
-          {skill?.name || skillId} · level {problem.level}/{skill ? undefined : ''}
+          {skill?.name || skillId} · level {problem.level}
         </div>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <div className="fl-prompt" dangerouslySetInnerHTML={{ __html: html }} />
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
-          <div className="fl-fields">
-            {problem.fields.map(f => (
-              <label key={f.key} className="fl-field">
-                <span>{f.label}</span>
-                <input
-                  type="text" inputMode="decimal" autoComplete="off"
-                  placeholder={f.placeholder}
-                  value={values[f.key] ?? ''}
-                  disabled={!!result}
-                  onChange={e => setField(f.key, e.target.value)}
-                  className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
-                  autoFocus={f === problem.fields[0]}
-                />
-              </label>
-            ))}
-          </div>
+        <form onSubmit={handleSubmit} style={{ marginTop: 10 }}>
+          {problem.equation ? (
+            <EquationLine equation={problem.equation} fields={problem.fields} values={values} result={result} setField={setField} />
+          ) : (
+            <div className="fl-fields">
+              {problem.fields.map(f => (
+                <label key={f.key} className="fl-field">
+                  <span>{f.label}</span>
+                  <input
+                    type="text" inputMode="decimal" autoComplete="off"
+                    placeholder={f.placeholder}
+                    value={values[f.key] ?? ''}
+                    disabled={!!result}
+                    onChange={e => setField(f.key, e.target.value)}
+                    className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
+                    autoFocus={f === problem.fields[0]}
+                  />
+                </label>
+              ))}
+            </div>
+          )}
           {!result && (
-            <button className="primary" type="submit" disabled={saving || problem.fields.some(f => !values[f.key])} style={{ marginTop: 14 }}>
+            <button className="primary" type="submit" disabled={saving || problem.fields.some(f => !values[f.key])} style={{ marginTop: 16 }}>
               Check
             </button>
           )}
@@ -167,14 +208,22 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
 
         {result && (
           <div className={`fl-feedback${result.correct ? ' ok' : ' bad'}`}>
-            <div style={{ fontWeight: 600, marginBottom: 6 }}>{result.correct ? 'Correct' : 'Not quite'}</div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 8 }}>
+              <div style={{ fontWeight: 600 }}>{result.correct ? 'Correct' : 'Not quite'}</div>
+              <button className="primary sm" onClick={goNext}>{nextLabel}</button>
+            </div>
             <div dangerouslySetInnerHTML={{ __html: explanationHtml }} />
-            <button className="primary" style={{ marginTop: 12 }} onClick={() => setIndex(i => i + 1)}>
-              {index + 1 < queue.length ? 'Next →' : 'Finish'}
-            </button>
           </div>
         )}
       </div>
+
+      {/* Sticky so Next is always reachable without scrolling past a long
+          explanation — same fix FmaTestRunner uses for its nav row. */}
+      {result && (
+        <div className="fl-next-bar">
+          <button className="primary" onClick={goNext}>{nextLabel}</button>
+        </div>
+      )}
     </div>
   )
 }
