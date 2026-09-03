@@ -18,13 +18,14 @@ import StudentView from './StudentView'
 import SchedulingTab from './portal/SchedulingTab'
 import AdminProgressPlanView from './AdminProgressPlanView'
 import AdminFmaView from './AdminFmaView'
+import AdminFluencyView from './AdminFluencyView'
 import Toast from './Toast'
 
 // Occasionally-used admin views load on first open, not at boot.
 const Settings = lazy(() => import('./Settings'))
 const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', FMA: 'fma', BILLING: 'billing', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', FMA: 'fma', FLUENCY: 'fluency', BILLING: 'billing', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -805,6 +806,7 @@ export default function AdminApp({ userId }) {
           <button className={view === VIEWS.TAGS ? 'active' : ''} onClick={() => setView(VIEWS.TAGS)}>Tags</button>
           <button className={view === VIEWS.PROGRESS_PLAN ? 'active' : ''} onClick={() => setView(VIEWS.PROGRESS_PLAN)}>Progress and Plan</button>
           <button className={view === VIEWS.FMA ? 'active' : ''} onClick={() => setView(VIEWS.FMA)}>F=ma</button>
+          <button className={view === VIEWS.FLUENCY ? 'active' : ''} onClick={() => setView(VIEWS.FLUENCY)}>Fluency</button>
           <button className={view === VIEWS.BILLING ? 'active' : ''} onClick={() => setView(VIEWS.BILLING)}>Billing</button>
           <button className={view === VIEWS.SETTINGS ? 'active' : ''} onClick={() => setView(VIEWS.SETTINGS)}>Settings</button>
         </nav>
@@ -976,6 +978,15 @@ export default function AdminApp({ userId }) {
             studentName={activeStudent?.name || ''}
             initialAttemptId={searchParams.get('attempt')}
             onAttemptOpened={() => setSearchParams(p => { p.delete('attempt'); return p }, { replace: true })}
+          />
+        )}
+
+        {view === VIEWS.FLUENCY && (
+          <AdminFluencyView
+            studentId={activeStudentId}
+            studentName={activeStudent?.name || ''}
+            enabled={!!activeStudent?.fluency_practice_enabled}
+            onEnabledChange={enabled => setStudents(prev => prev.map(s => s.id === activeStudentId ? { ...s, fluency_practice_enabled: enabled } : s))}
           />
         )}
 

@@ -14,10 +14,11 @@ import InvoicesTab from './portal/InvoicesTab'
 import ProblemBankBrowser from './portal/ProblemBankBrowser'
 import ProgressAndPlanTab from './portal/ProgressAndPlanTab'
 import FmaProgress from './portal/FmaProgress'
+import FluencyPractice from './portal/FluencyPractice'
 import SchedulingTab from './portal/SchedulingTab'
 import { problemSummary } from '../utils/problemBank'
 
-const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'fma-progress', 'invoices', 'account'])
+const VALID_TABS = new Set(['assigned', 'completed', 'all', 'sessions', 'scheduling', 'progress-plan', 'fma-progress', 'fluency', 'invoices', 'account'])
 
 export default function StudentView({ student, assignments, sessions, problems, accessibleSources, sessionProblems, onMarkCompleted, onSignOut, isPreview, previewRole, account }) {
   // Billing (sessions-remaining, invoices, invoice routing) is visible only to
@@ -170,6 +171,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
     ['scheduling', 'Scheduling', null],
     ['progress-plan', 'Progress and Plan', null],
     ['fma-progress', 'F=ma Progress', null],
+    ...(student?.fluency_practice_enabled ? [['fluency', 'Fluency Practice', null]] : []),
     ...(canBill ? [['invoices', 'Invoices', null]] : []),
     ['account', 'Account', null],
   ]
@@ -279,6 +281,8 @@ export default function StudentView({ student, assignments, sessions, problems, 
             .filter(a => a.student_id === student.id && a.status !== 'completed')
             .map(a => a.problem_id)}
         />
+      ) : tab === 'fluency' ? (
+        <FluencyPractice studentId={student.id} isPreview={isPreview} />
       ) : tab === 'scheduling' ? (
         <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} viewerRole={role} />
       ) : tab === 'invoices' ? (

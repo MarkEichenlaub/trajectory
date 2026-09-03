@@ -1000,3 +1000,76 @@ export async function fetchFmaAttemptDetail(attemptId) {
 
   return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
 }
+
+// ── Fluency practice ───────────────────────────────────────────────────────
+
+export async function fetchFluencySkills() {
+  const { data, error } = await supabase.from('fluency_skills').select('*').eq('active', true).order('name')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchFluencyStudentSkills(studentId) {
+  const { data, error } = await supabase.from('fluency_student_skills').select('*').eq('student_id', studentId)
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function fetchFluencySkillState(studentId) {
+  const { data, error } = await supabase.from('fluency_skill_state').select('*').eq('student_id', studentId)
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+// Upserts (rather than a plain insert) so a fresh skill with no prior state
+// still has somewhere to write its first level change.
+export async function saveFluencySkillState(studentId, skillId, patch) {
+  const { error } = await supabase.from('fluency_skill_state')
+    .upsert({ student_id: studentId, skill_id: skillId, ...patch }, { onConflict: 'student_id,skill_id' })
+  if (error) throw new Error(error.message)
+}
+
+export async function recordFluencyAttempt(row) {
+  const { error } = await supabase.from('fluency_attempts').insert(row)
+  if (error) throw new Error(error.message)
+}
+
+export async function fetchFluencyAttempts(studentId, limit = 200) {
+  const { data, error } = await supabase
+    .from('fluency_attempts').select('*, fluency_skills(name)')
+    .eq('student_id', studentId).order('created_at', { ascending: false }).limit(limit)
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+// ── Fluency admin ───────────────────────────────────────────────────────────
+
+export async function setFluencyPracticeEnabled(studentId, enabled) {
+  const { error } = await adminClient().from('students')
+    .update({ fluency_practice_enabled: enabled }).eq('id', studentId)
+  if (error) throw new Error(error.message)
+}
+
+export async function setFluencyStudentSkillEnabled(studentId, skillId, enabled) {
+  const { error } = await adminClient().from('fluency_student_skills')
+    .upsert({ student_id: studentId, skill_id: skillId, enabled }, { onConflict: 'student_id,skill_id' })
+  if (error) throw new Error(error.message)
+}
+
+export async function addFluencySkillNote(studentId, note) {
+  const { error } = await adminClient().from('fluency_skill_notes').insert({ student_id: studentId, note })
+  if (error) throw new Error(error.message)
+}
+
+export async function fetchFluencySkillNotes(studentId) {
+  const { data, error } = await adminClient().from('fluency_skill_notes')
+    .select('*').eq('student_id', studentId).order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
+export async function resolveFluencySkillNote(id, skillId) {
+  const { error } = await adminClient().from('fluency_skill_notes')
+    .update({ resolved: true, resolved_skill_id: skillId || null }).eq('id', id)
+  if (error) throw new Error(error.message)
+}
