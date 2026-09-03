@@ -108,6 +108,7 @@ export default function SessionLauncher() {
   const links = [
     session.meet_url && { label: 'Join Meet', url: session.meet_url, primary: true },
     session.miro_board_url && { label: 'Whiteboard', url: session.miro_board_url, primary: true },
+    session.prep_note_url && { label: 'Next-time link', url: session.prep_note_url },
   ].filter(Boolean)
   dueItems.forEach(({ problem, submission }) => {
     if (problem?.problemUrl) {
@@ -137,6 +138,23 @@ export default function SessionLauncher() {
     <div style={{ maxWidth: 560, margin: '40px auto', padding: '0 20px' }}>
       <h1 style={{ marginBottom: 4 }}>{student?.name || session.student_id}</h1>
       <div style={{ color: 'var(--text-dim)', marginBottom: 20 }}>{startStr}</div>
+
+      {session.prep_note && (
+        <div style={{
+          background: 'var(--accent-dim, #2a2416)', border: '1px solid var(--accent, #d4a72c)',
+          borderRadius: 'var(--radius, 6px)', padding: '10px 14px', marginBottom: 20,
+        }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
+            Next time
+          </div>
+          <div style={{ fontSize: 14, whiteSpace: 'pre-wrap' }}>{session.prep_note}</div>
+          {session.prep_note_url && (
+            <div style={{ marginTop: 6 }}>
+              <a href={session.prep_note_url} target="_blank" rel="noreferrer">Open link ↗</a>
+            </div>
+          )}
+        </div>
+      )}
 
       <button
         ref={openAllRef}

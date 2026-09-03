@@ -49,6 +49,8 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
       notes: '',
       miro_board_url: '',
       summary: '',
+      prep_note: '',
+      prep_note_url: '',
       tags: [],
       tagsInput: '',
     })
@@ -163,6 +165,26 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
               style={{ flex: 1, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13, resize: 'vertical' }}
             />
           </div>
+          <div className="student-card-row" style={{ alignItems: 'flex-start' }}>
+            <label style={{ paddingTop: 6 }}>Next time</label>
+            <textarea
+              value={draft.prep_note || ''}
+              onChange={e => setDraft(d => ({ ...d, prep_note: e.target.value }))}
+              placeholder="What to do at this session — shows on the launch page when you get ready for it."
+              rows={2}
+              style={{ flex: 1, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '6px 8px', fontSize: 13, resize: 'vertical' }}
+            />
+          </div>
+          <div className="student-card-row">
+            <label>Next time link</label>
+            <input
+              type="url"
+              value={draft.prep_note_url || ''}
+              onChange={e => setDraft(d => ({ ...d, prep_note_url: e.target.value }))}
+              placeholder="Optional link to a handout or problem"
+              style={{ flex: 1 }}
+            />
+          </div>
           <div className="student-card-row">
             <label>Tags</label>
             <input
@@ -207,6 +229,12 @@ export default function SessionsView({ sessions, students, activeStudentId, sess
                         title="Delete session" onClick={() => handleDelete(s)}>✕</button>
                     </div>
                   </div>
+                  {s.prep_note && (
+                    <div style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.5 }}>
+                      📝 {s.prep_note}
+                      {s.prep_note_url && <> — <a href={s.prep_note_url} target="_blank" rel="noreferrer">link ↗</a></>}
+                    </div>
+                  )}
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>
                       On deck

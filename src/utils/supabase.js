@@ -82,7 +82,7 @@ export async function removeStudent(id) {
 
 // Explicit columns (the student-facing list + admin billing fields) and a row
 // cap keep this query fast — it runs on every admin boot.
-const ADMIN_SESSION_COLUMNS = 'id, student_id, session_type, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags, paid, balance_decremented'
+const ADMIN_SESSION_COLUMNS = 'id, student_id, session_type, scheduled_at, notes, miro_board_id, miro_board_url, miro_pdf_url, meet_url, cal_booking_id, cal_uid, gcal_event_id, end_time, created_at, summary, tags, paid, balance_decremented, prep_note, prep_note_url'
 
 export async function fetchSessions(studentId) {
   let q = adminClient().from('sessions').select(ADMIN_SESSION_COLUMNS)
