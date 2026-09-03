@@ -57,10 +57,89 @@ function normalizeSci(value) {
   const abs = Math.abs(value)
   let e = Math.floor(Math.log10(abs))
   let c = abs / 10 ** e
-  // Float log10 can land a hair on the wrong side of a power-of-ten boundary.
+  // Float log10 can land a hair on the wrong side of a power-of-ten boundary
+  // (e.g. 8e-7/8e2 evaluates to 9.999999999999998e-10, not exactly 1e-9).
   if (c >= 10) { c /= 10; e += 1 }
   if (c < 1) { c *= 10; e -= 1 }
-  return { c: sign * Math.round(c * 1000) / 1000, e }
+  c = Math.round(c * 1000) / 1000
+  // Rounding to 3 decimals can itself push c to exactly 10 (9.9999996 -> 10.000)
+  // even though the pre-round value was inside [1, 10) -- re-check after rounding
+  // or the stored answer silently drifts out of proper-scientific-notation range
+  // and no longer matches the freshly-recomputed explanation text.
+  if (c >= 10) { c /= 10; e += 1 }
+  return { c: sign * c, e }
+}
+
+// Evaluates a small arithmetic expression typed as an answer -- "6*sqrt(3)/2"
+// as well as a plain "5.196" -- so a student who works a vector/root problem
+// out to an exact form isn't forced to round it to a decimal by hand just to
+// have something to type. No eval(): a hand-rolled recursive-descent parser
+// over +, -, *, /, ^, parens, and sqrt(...) only. Returns NaN on anything
+// else (including empty input), which the grader already treats as wrong.
+export function evalMathExpr(input) {
+  if (typeof input === 'number') return input
+  if (typeof input !== 'string') return NaN
+  const src = input.trim()
+  if (!src || !/^[-+*/^().\d\s a-zA-Z]*$/.test(src)) return NaN
+  let pos = 0
+  const peek = () => { while (src[pos] === ' ') pos++; return src[pos] }
+  function expr() {
+    let v = term()
+    for (let c = peek(); c === '+' || c === '-'; c = peek()) {
+      pos++
+      v = c === '+' ? v + term() : v - term()
+    }
+    return v
+  }
+  function term() {
+    let v = unary()
+    for (let c = peek(); c === '*' || c === '/'; c = peek()) {
+      pos++
+      v = c === '*' ? v * unary() : v / unary()
+    }
+    return v
+  }
+  function unary() {
+    const c = peek()
+    if (c === '-') { pos++; return -unary() }
+    if (c === '+') { pos++; return unary() }
+    return power()
+  }
+  function power() {
+    const base = atom()
+    if (peek() === '^') { pos++; return Math.pow(base, unary()) }
+    return base
+  }
+  function atom() {
+    peek()
+    if (src[pos] === '(') {
+      pos++
+      const v = expr()
+      if (peek() !== ')') throw new Error('unbalanced')
+      pos++
+      return v
+    }
+    if (src.slice(pos, pos + 4).toLowerCase() === 'sqrt') {
+      pos += 4
+      if (peek() !== '(') throw new Error('sqrt needs (')
+      pos++
+      const v = expr()
+      if (peek() !== ')') throw new Error('unbalanced')
+      pos++
+      return Math.sqrt(v)
+    }
+    const m = /^\d+(\.\d+)?/.exec(src.slice(pos))
+    if (!m) throw new Error('expected a number')
+    pos += m[0].length
+    return parseFloat(m[0])
+  }
+  try {
+    const v = expr()
+    peek()
+    return pos === src.length ? v : NaN
+  } catch {
+    return NaN
+  }
 }
 
 function sciTex(c, e) {
@@ -249,7 +328,7 @@ function genSciNotationArith(level, rng) {
     const raw = (c1 * 10 ** a) / (c2 * 10 ** b)
     const blanks = answerBlanks(raw, null)
     return {
-      promptMd: `Simplify, in proper scientific notation.`,
+      promptMd: `Simplify.`,
       equation: [{ tex: `\\dfrac{${sciTex(c1, a)}}{${sciTex(c2, b)}}` }, { tex: '=' }, ...blanks.equation],
       fields: blanks.fields, answer: blanks.answer, tolerance: blanks.tolerance,
       explanationMd: `Divide the coefficients ($$${c1}/${c2} = ${round2(c1 / c2)}$$) and subtract the exponents ($$${fmtSigned(a)} - (${fmtSigned(b)}) = ${a - b}$$), then renormalize so the coefficient is between 1 and 10.`,
@@ -263,7 +342,7 @@ function genSciNotationArith(level, rng) {
     const raw = (c1 * 10 ** a1 * c2 * 10 ** a2) / (c3 * 10 ** a3)
     const blanks = answerBlanks(raw, null)
     return {
-      promptMd: `Simplify, in proper scientific notation.`,
+      promptMd: `Simplify.`,
       equation: [{ tex: `\\dfrac{(${sciTex(c1, a1)})(${sciTex(c2, a2)})}{${sciTex(c3, a3)}}` }, { tex: '=' }, ...blanks.equation],
       fields: blanks.fields, answer: blanks.answer, tolerance: blanks.tolerance,
       explanationMd: `Multiply the numerator's coefficients and add its exponents first, then divide by the denominator the same way you would in an ordinary fraction — combine all the exponent bookkeeping before renormalizing.`,
@@ -286,7 +365,7 @@ function genSciNotationArith(level, rng) {
     }
     const blanks = answerBlanks(raw, null)
     return {
-      promptMd: `Simplify, in proper scientific notation.`,
+      promptMd: `Simplify.`,
       equation: [{ tex: expr }, { tex: '=' }, ...blanks.equation],
       fields: blanks.fields, answer: blanks.answer, tolerance: blanks.tolerance,
       explanationMd: squareIt
@@ -333,9 +412,7 @@ function genUnitPrefixConvert(level, rng) {
   const blanks = answerBlanks(raw, unitTex(toP, unit, power))
 
   return {
-    promptMd: power > 1
-      ? `Convert. Remember: the conversion factor gets raised to the power on the unit too.`
-      : `Convert.`,
+    promptMd: `Convert.`,
     equation: [{ tex: `${value}\\ ${unitTex(fromP, unit, power)}` }, { tex: '=' }, ...blanks.equation],
     fields: blanks.fields, answer: blanks.answer, tolerance: blanks.tolerance,
     explanationMd: power === 1
@@ -365,7 +442,7 @@ function genVectorComponents(level, rng) {
   else if (level === 3) theta = 360 - ref
 
   if (level <= 3) {
-    promptMd = `A vector has magnitude $$${M}$$ at $$${theta}°$$ (measured counterclockwise from the +x axis — a 30-60-90 or 45-45-90 reference angle, so no calculator needed).\n\nFind its x- and y-components.`
+    promptMd = `A vector has magnitude $$${M}$$ at $$${theta}°$$ from the +x axis.\n\nFind its x- and y-components.`
   } else if (level === 4) {
     const phrasings = [
       { desc: t => `${t}° below the +x-axis`, toStd: t => 360 - t },
@@ -375,7 +452,7 @@ function genVectorComponents(level, rng) {
     ]
     const p = randChoice(rng, phrasings)
     theta = p.toStd(ref)
-    promptMd = `A vector has magnitude $$${M}$$, directed $$${p.desc(ref)}$$.\n\nFind its x- and y-components (standard axes: +x right, +y up).`
+    promptMd = `A vector has magnitude $$${M}$$, directed $$${p.desc(ref)}$$.\n\nFind its x- and y-components.`
   } else {
     const Ax = randChoice(rng, [-12, -8, -6, -4, 0, 4, 6, 8, 12])
     const Ay = randChoice(rng, [-12, -8, -6, -4, 0, 4, 6, 8, 12])
@@ -385,10 +462,10 @@ function genVectorComponents(level, rng) {
     const rad = thB * Math.PI / 180
     const Bx = MB * Math.cos(rad), By = MB * Math.sin(rad)
     return {
-      promptMd: `Vector A has components $$(${Ax}, ${Ay})$$. Vector B has magnitude $$${MB}$$ at $$${thB}°$$ from the +x axis (a 30-60-90 / 45-45-90 angle).\n\nFind the components of the resultant $$\\vec A + \\vec B$$.`,
+      promptMd: `Vector A has components $$(${Ax}, ${Ay})$$. Vector B has magnitude $$${MB}$$ at $$${thB}°$$ from the +x axis.\n\nFind the components of the resultant $$\\vec A + \\vec B$$.`,
       fields: [
-        { key: 'x', label: 'x-component', type: 'decimal', placeholder: 'e.g. -3.2' },
-        { key: 'y', label: 'y-component', type: 'decimal', placeholder: 'e.g. 7.1' },
+        { key: 'x', label: 'x-component', type: 'decimal' },
+        { key: 'y', label: 'y-component', type: 'decimal' },
       ],
       answer: { x: Ax + Bx, y: Ay + By },
       tolerance: { x: 0.02, y: 0.02 },
@@ -696,7 +773,7 @@ export function gradeAnswer(problem, submitted) {
   let allCorrect = true
   for (const f of problem.fields) {
     const raw = submitted[f.key]
-    const val = typeof raw === 'string' ? parseFloat(raw.replace(/,/g, '')) : raw
+    const val = typeof raw === 'string' ? evalMathExpr(raw.replace(/,/g, '')) : raw
     const target = problem.answer[f.key]
     const tol = problem.tolerance[f.key] || 0
     let ok

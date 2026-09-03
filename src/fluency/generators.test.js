@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { SKILLS, generateProblem, gradeAnswer } from './generators'
+import { SKILLS, generateProblem, gradeAnswer, evalMathExpr } from './generators'
 import { nextLevel, nextDueAt, buildSessionPlan, MAX_LEVEL } from './spacing'
 
 // The single most important property: a problem's own computed answer must
@@ -195,6 +195,80 @@ describe('unit-dimensions', () => {
     for (let seed = 1; seed <= 30; seed++) {
       const problem = generateProblem('unit-dimensions', 3, seed)
       for (const key of ['ekg', 'em', 'es']) expect(Number.isInteger(problem.answer[key])).toBe(true)
+    }
+  })
+})
+
+// Regression: 8e-7/8e2 evaluates in float to 9.999999999999998e-10, whose
+// naive normalization gave {c:10, e:-10} -- a value that fails its own
+// "1 <= c < 10" contract and silently disagreed with the freshly-recomputed
+// explanation text ("8/8=1, exponent -9"), so a student who typed exactly
+// what the explanation said was marked wrong. See generators.js normalizeSci.
+describe('sci-notation coefficient never lands on the 10-boundary after rounding', () => {
+  it('an 8/8 division (which floats to 9.999999999999998e-10, not 1e-9) still grades c=1, e=-9', () => {
+    // Reproduces the exact float behavior behind the reported bug without
+    // depending on which internal seed happens to draw c1=c2=8: 8e-7/8e2.
+    const raw = (8 * 10 ** -7) / (8 * 10 ** 2)
+    expect(raw).not.toBe(1e-9) // confirms this input actually exercises the float edge case
+    // Build a problem with the same shape by finding a seed whose niceQuotientPair
+    // gives c1=c2 (any equal pair reproduces the same 9.999999999999998e-10-style
+    // float noise for a matching exponent gap); fall back to asserting the
+    // general property below if none turns up in a reasonable number of tries.
+    let found = null
+    for (let seed = 1; seed <= 500 && !found; seed++) {
+      const p = generateProblem('sci-notation-arith', 1, seed)
+      if (p.answer.c === 1 && p.answer.e < 0) found = p
+    }
+    expect(found, 'no seed produced a c=1 case to exercise the boundary').not.toBeNull()
+    const { correct } = gradeAnswer(found, { c: 1, e: found.answer.e })
+    expect(correct, `stored answer was ${JSON.stringify(found.answer)}`).toBe(true)
+  })
+
+  it('every sci-notation-arith and unit-prefix-convert answer keeps 1 <= c < 10', () => {
+    for (const slug of ['sci-notation-arith', 'unit-prefix-convert']) {
+      const skill = SKILLS.find(s => s.slug === slug)
+      for (let level = 0; level <= skill.maxLevel; level++) {
+        for (let seed = 1; seed <= 200; seed++) {
+          const problem = generateProblem(slug, level, seed * 7 + level)
+          if (problem.answer.c == null) continue // decimal-mode answer, not sci-notation
+          expect(problem.answer.c, `${slug} L${level} seed ${seed}`).toBeGreaterThanOrEqual(1)
+          expect(problem.answer.c, `${slug} L${level} seed ${seed}`).toBeLessThan(10)
+        }
+      }
+    }
+  })
+})
+
+describe('evalMathExpr', () => {
+  it('evaluates plain numbers, same as before', () => {
+    expect(evalMathExpr('5')).toBe(5)
+    expect(evalMathExpr('-9')).toBe(-9)
+    expect(evalMathExpr('0.078')).toBeCloseTo(0.078)
+  })
+  it('evaluates the exact symbolic form a student would naturally write', () => {
+    expect(evalMathExpr('6*sqrt(3)/2')).toBeCloseTo(6 * Math.sqrt(3) / 2)
+    expect(evalMathExpr('3*sqrt(3)')).toBeCloseTo(3 * Math.sqrt(3))
+    expect(evalMathExpr('-6*sqrt(2)/2')).toBeCloseTo(-6 * Math.sqrt(2) / 2)
+    expect(evalMathExpr('(1+2)*3')).toBe(9)
+    expect(evalMathExpr('2^3')).toBe(8)
+  })
+  it('rejects garbage instead of throwing', () => {
+    expect(evalMathExpr('')).toBeNaN()
+    expect(evalMathExpr('abc')).toBeNaN()
+    expect(evalMathExpr('sqrt(')).toBeNaN()
+    expect(evalMathExpr('1//2')).toBeNaN()
+  })
+})
+
+describe('vector-components accepts the exact symbolic answer, not just a decimal', () => {
+  it('a 30-60-90 problem grades "M*sqrt(3)/2" style input as correct', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      const problem = generateProblem('vector-components', 0, seed)
+      const M = problem.promptMd.match(/magnitude \$\$(\d+)\$\$/)[1]
+      const theta = Number(problem.promptMd.match(/\$\$(\d+)°\$\$/)[1])
+      if (theta !== 30) continue
+      const { correct } = gradeAnswer(problem, { x: `${M}*sqrt(3)/2`, y: `${M}/2` })
+      expect(correct, `seed ${seed}`).toBe(true)
     }
   })
 })

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import katex from 'katex'
 import {
   fetchFluencySkills, fetchFluencyStudentSkills, fetchFluencySkillState,
@@ -28,8 +28,7 @@ function EquationLine({ equation, fields, values, result, setField }) {
         return (
           <input
             key={i}
-            type="text" inputMode="decimal" autoComplete="off"
-            placeholder={f?.placeholder}
+            type="text" autoComplete="off"
             value={values[seg.blank] ?? ''}
             disabled={!!result}
             onChange={e => setField(seg.blank, e.target.value)}
@@ -75,6 +74,8 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   const [tally, setTally] = useState({ correct: 0, total: 0 })
   const [levelDeltas, setLevelDeltas] = useState({}) // skillId -> {before, after}
   const [saving, setSaving] = useState(false)
+  const formRef = useRef(null)
+  const nextRef = useRef(null)
 
   useEffect(() => {
     if (index >= queue.length) return
@@ -85,6 +86,16 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
     setResult(null)
     setStartedAt(Date.now())
   }, [index]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Keyboard-only flow: focus the first blank on a fresh problem, then focus
+  // Next once it's graded, so answering never needs a mouse -- type, Enter to
+  // check, Enter again to advance.
+  useEffect(() => {
+    if (!result) formRef.current?.querySelector('input')?.focus()
+  }, [problem, result])
+  useEffect(() => {
+    if (result) nextRef.current?.focus()
+  }, [result])
 
   if (index >= queue.length) {
     return (
@@ -178,7 +189,7 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
         </div>
         <div className="fl-prompt" dangerouslySetInnerHTML={{ __html: html }} />
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 10 }}>
+        <form ref={formRef} onSubmit={handleSubmit} style={{ marginTop: 10 }}>
           {problem.equation ? (
             <EquationLine equation={problem.equation} fields={problem.fields} values={values} result={result} setField={setField} />
           ) : (
@@ -187,13 +198,11 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
                 <label key={f.key} className="fl-field">
                   <span>{f.label}</span>
                   <input
-                    type="text" inputMode="decimal" autoComplete="off"
-                    placeholder={f.placeholder}
+                    type="text" autoComplete="off"
                     value={values[f.key] ?? ''}
                     disabled={!!result}
                     onChange={e => setField(f.key, e.target.value)}
                     className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
-                    autoFocus={f === problem.fields[0]}
                   />
                 </label>
               ))}
@@ -210,7 +219,7 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
           <div className={`fl-feedback${result.correct ? ' ok' : ' bad'}`}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 8 }}>
               <div style={{ fontWeight: 600 }}>{result.correct ? 'Correct' : 'Not quite'}</div>
-              <button className="primary sm" onClick={goNext}>{nextLabel}</button>
+              <button ref={nextRef} className="primary sm" onClick={goNext}>{nextLabel}</button>
             </div>
             <div dangerouslySetInnerHTML={{ __html: explanationHtml }} />
           </div>
