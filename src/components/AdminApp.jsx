@@ -1389,9 +1389,9 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Balance</label>
-            <input type="number" min="0"
+            <input type="number" min="0" step="0.5"
               value={draft.session_balance ?? 0}
-              onChange={e => setDraft(d => ({ ...d, session_balance: parseInt(e.target.value, 10) || 0 }))}
+              onChange={e => setDraft(d => ({ ...d, session_balance: parseFloat(e.target.value) || 0 }))}
               style={{ width: 52, flex: 'none' }}
             />
             <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>sessions</span>

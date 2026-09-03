@@ -285,7 +285,7 @@ Deno.serve(async (req) => {
   // below — a 15-minute call would otherwise cost the family a full session.
   const { data: sessions, error } = await supabase
     .from('sessions')
-    .select('id, student_id, end_time')
+    .select('id, student_id, scheduled_at, end_time')
     .eq('session_type', 'session')
     .not('end_time', 'is', null)
     .lte('end_time', cutoff)
@@ -339,7 +339,18 @@ Deno.serve(async (req) => {
 
       if (!student) continue
 
-      const newBalance = (student.session_balance ?? 0) - 1
+      // A session normally costs 1 credit, but longer bookings (e.g. Akshatha's
+      // 90-minute sessions) cost proportionally more: credits are hours long,
+      // computed from the calendar-synced scheduled_at/end_time span so a
+      // 1.5-hour session counts as 1.5 rather than silently costing the same
+      // as a 1-hour one.
+      const startMs = new Date(session.scheduled_at as string).getTime()
+      const endMs = new Date(session.end_time as string).getTime()
+      const sessionCost = Number.isFinite(startMs) && Number.isFinite(endMs) && endMs > startMs
+        ? Math.round(((endMs - startMs) / (60 * 60 * 1000)) * 100) / 100
+        : 1
+
+      const newBalance = (student.session_balance ?? 0) - sessionCost
 
       await supabase.from('students')
         .update({ session_balance: newBalance })
