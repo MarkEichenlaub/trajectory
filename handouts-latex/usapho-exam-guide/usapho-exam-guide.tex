@@ -1,0 +1,816 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[pdftex]{graphicx}
+\usepackage{amsmath,amssymb,amsthm}
+% Same reason as the F = ma FAQ: microtype's font expansion needs scalable
+% faces, so load Latin Modern before anything pulls in a bitmap font.
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{longtable}
+\usepackage[normalem]{ulem}   % \sout, for the crossed-out dead end in the sample
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\usepackage{custom}
+
+% color boxes
+\usepackage[many]{tcolorbox}
+\tcbuselibrary{theorems,skins}
+\newtcolorbox{official}{colback=red!8,colframe=red!55!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+\newtcolorbox{keybox}{colback=blue!8,colframe=blue!40!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+\newtcolorbox{tipbox}{colback=green!8,colframe=green!40!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+\newtcolorbox{warnbox}{colback=orange!10,colframe=orange!65!black,breakable,enhanced,
+  left=8pt,right=8pt,top=6pt,bottom=6pt}
+
+% The mock answer sheet: a white page with a thin rule, so it reads as a sheet
+% of paper sitting inside the handout rather than as another colored callout.
+\newtcolorbox{sheet}[1]{colback=white,colframe=black!45,breakable,enhanced,
+  boxrule=0.6pt,left=10pt,right=10pt,top=6pt,bottom=8pt,
+  before upper={\par\hfill{\footnotesize\sffamily\begin{tabular}{@{}l@{}}#1\end{tabular}}\par\medskip}}
+
+% headers and footers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{USAPhO Exam Guide}
+\chead{}
+\rhead{EichenlaubPhysics}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\newcommand{\psettitle}[1]{
+    \begin{center}
+    \huge \textbf{#1}
+    \end{center}
+}
+
+\definecolor{qblue}{rgb}{0.10,0.22,0.50}
+\definecolor{gradered}{rgb}{0.72,0.10,0.10}
+\newcommand{\Q}[1]{\par\medskip\noindent\textbf{\color{qblue}#1}\par\nobreak\vspace{1pt}\nobreak}
+% Grader's-eye annotations printed alongside the sample submission.
+\newcommand{\ann}[1]{{\color{gradered}\sffamily\footnotesize #1}}
+
+\linespread{1.03}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+
+\psettitle{The USAPhO Exam}
+\begin{center}
+\large What it is, how it is run, and how to write answers that earn points
+\end{center}
+
+\begin{official}
+For official information, use the AAPT (American Association of Physics Teachers) website.
+Trust that website above anything in this handout.
+\begin{center}
+\large\bfseries
+\href{https://www.aapt.org/physicsteam/}{www.aapt.org/physicsteam}
+\end{center}
+The pages worth bookmarking are
+\href{https://www.aapt.org/physicsteam/PT-rules.cfm}{Rules},
+\href{https://www.aapt.org/physicsteam/PT-students.cfm}{For Students}, and
+\href{https://www.aapt.org/Common2022/pastexams.cfm}{Past Exams}. Everything below comes
+from those pages or from the instruction pages of recent exams, but the exam changes ---
+check before you plan around any of it.
+\end{official}
+
+\section{The Short Version}
+
+\begin{keybox}
+\textbf{The USAPhO is a three-hour, six-problem, free-response exam worth 150 points.} It
+runs in two 90-minute halves of three problems each, with a break between, and you may not
+return to the first half. You qualify by clearing the cutoff on the F = ma exam in
+February; the USAPhO is in April. It is proctored in person. The questions are delivered on
+a computer, but \textbf{you write your solutions by hand on blank paper the proctor gives
+you}, and those pages are scanned and graded by humans. \textbf{You get a reference sheet}
+with constants and a few approximations. A basic scientific calculator is allowed. Almost
+nobody finishes, and partial credit is most of the game.
+\end{keybox}
+
+\section{Part I: The Logistics}
+
+\Q{How do I qualify?}
+By scoring at or above the cutoff on the F = ma exam. AAPT sets that cutoff after the exam,
+at whatever score invites roughly 400--500 students; recent cutoffs have been 14--18 out of
+25. There is no other route in --- you cannot register for the USAPhO directly. See the
+\emph{F = ma Exam FAQ} handout for everything about that exam.
+
+\Q{When is it?}
+April, a few weeks after F = ma results come out. In 2026 it was \textbf{April 10}, inside
+a 1:00--5:00 pm EDT window (the exam is three hours plus a break; your proctor picks the
+start time inside the window). Watch AAPT's ``Important Dates'' page --- in 2026 the date
+moved once, from April 2 to April 10, to avoid a Passover conflict.
+
+\Q{What is the shape of the exam?}
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+& \textbf{Part A} & \textbf{Part B} \\
+\hline
+Length        & 90 minutes            & 90 minutes \\
+Problems      & 3 (A1, A2, A3)        & 3 (B1, B2, B3) \\
+Points each   & 25                    & 25 \\
+Part total    & 75                    & 75 \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{150 points total.} Each problem has several lettered subparts. The instructions say
+plainly that problems worth the same points ``may differ in difficulty,'' so the order on
+the page is \emph{not} a difficulty ranking.
+
+\begin{warnbox}
+\textbf{Part A and Part B are sealed off from each other.} You may not look at Part B during
+Part A, and after the break you may not go back to Part A --- your Part A pages have already
+been collected. Treat them as two separate 90-minute exams. Whatever you did not finish in
+Part A is gone.
+\end{warnbox}
+
+\Q{What topics does it cover?}
+All of introductory physics: mechanics, electricity and magnetism, thermodynamics and
+statistical physics, waves, optics, and relativity and modern physics. Unlike F = ma, it is
+\textbf{not} mechanics-only, and unlike F = ma, \textbf{calculus is expected.} You will
+integrate, differentiate, expand in small parameters, and solve differential equations. The
+2026 exam included a geometrical optics problem, a problem about motion on a cone, a
+blackbody radiation problem, and a rigid-body problem, among others.
+
+\Q{Is it on paper or on a computer?}
+Both, and this is the part people get wrong. Since the 2026 cycle AAPT states that the
+F = ma and USAPhO exams are ``conducted online via Educational Vistas only,'' with ``no
+printable versions of the exams available.'' What that means in practice, from the 2025 and
+2026 student instructions:
+
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item You sit at a designated desktop, laptop, or Chromebook. Phones, tablets, and
+smartwatches are handed in before the exam starts.
+\item \textbf{You read the problems on the screen.} When the exam begins you click the link
+for Part A and a 90-minute timer starts.
+\item \textbf{You write your solutions by hand}, on blank paper the proctor hands you, along
+with a printed instruction page, the reference sheet, and a cover sheet for each problem.
+\item At the end of each part the proctor collects your written pages and scans them. Those
+scans are what get graded.
+\end{itemize}
+
+The delivery is online; the answering is not. You are still writing physics on paper with a
+pen, and a human is still reading it.
+
+\Q{Do I get scratch paper, and how should I use it?}
+Yes, from the proctor only --- ``Only scratch paper provided by the proctors may be used''
+--- and it is all collected at the end. You take none of it home.
+
+The rule that matters is the one about what gets \emph{graded}: ``All work must be done on
+the provided blank pages\ldots\ Work outside of these pages will not be graded,'' and when
+the proctor collects your solutions, ``Do not include scratch work.'' \textbf{Scratch paper
+is invisible to the grader.}
+
+\begin{tipbox}
+\textbf{Use scratch paper for deciding, not for solving.} Scratch is the right place to try
+three approaches and see which two collapse. Once you know which one works, \textbf{switch
+to the answer pages and do the real derivation there.} Do not solve the whole problem on
+scratch and then copy it over --- that is doing the problem twice, and you do not have time
+to do six problems twice. Grinding through a long integral on scratch and transcribing only
+the final line is the worst of both worlds: you spent the time and the grader cannot see the
+work you spent it on.
+\end{tipbox}
+
+\Q{Is there a formula sheet?}
+\textbf{Yes} --- a real difference from F = ma, which gives you nothing. The USAPhO
+reference sheet is printed in the instructions and you may use it for both parts. In 2026 it
+held:
+
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Constants:} $g$, $G$, $k = 1/4\pi\epsilon_0$, $k_m = \mu_0/4\pi$, $c$, $k_B$,
+$N_A$, $R$, $\sigma$, $e$, 1 eV in joules, $h$, and $m_e$.
+\item \textbf{Approximations:} $(1+x)^n \approx 1 + nx + \tfrac{1}{2}n(n-1)x^2$,
+$e^x \approx 1 + x + x^2/2 + x^3/6$, $\sin\theta \approx \theta - \theta^3/6$, and
+$\cos\theta \approx 1 - \theta^2/2$.
+\end{itemize}
+
+That is the whole sheet. \textbf{It is a constants sheet, not a formula sheet.} There is no
+$\tfrac{1}{2}mv^2$, no Maxwell's equations, no moments of inertia, no thermodynamic
+relations, no lens equation. Some years have also carried a short table of integrals and
+trigonometric sum identities; the 2026 sheet did not. Do not count on it. Know your
+formulas.
+
+That they hand you those four approximations is a hint about the exam's taste:
+\textbf{expansions in a small parameter show up constantly}. When a problem hands you a
+condition like $r \ll R$, it is telling you which expansion to run.
+
+\Q{What are the calculator rules?}
+A handheld calculator is allowed, but it ``may not be a graphical calculator, its display
+has no more than three lines,'' and its memory must be cleared of data and programs before
+the exam. No symbolic math, no programming, no graphing. Calculators may not be shared.
+Bring your own; the proctor will not have one. You will use it much less than on F = ma ---
+most answers are symbolic.
+
+\Q{What else is banned?}
+Books, tables, collections of formulas, notes --- anything beyond the provided reference
+sheet. Phones and other internet-connected devices are handed in and may not be used at any
+time while exam materials are present. You must stay in the exam room for the entire testing
+period.
+
+\Q{How is it proctored?}
+In person and live, like F = ma. Proctors need at least a two-year degree, need not be
+physics teachers, and \textbf{may not be a parent, relative, or close friend} of a student
+taking the exam. For-profit test prep centers are not allowed to proctor. If you qualify,
+AAPT emails you and your proctor, and usually the same teacher who ran your F = ma
+administration runs this one.
+
+\Q{Can I talk about the problems afterward?}
+Not until the embargo lifts, which is typically the day after the exam --- the 2025 exam
+told students not to discuss any part of it until April 11, the day after. Violations can
+mean disqualification. Solutions are posted publicly a few weeks later.
+
+\Q{What happens after?}
+Results and an honors list come out in May. About 20 students, chosen on combined USAPhO and
+F = ma performance, are invited to the U.S. Physics Team training camp at the University of
+Maryland in late May. Recent years have added a further exam, the \textbf{USAPhO Plus} (May
+10 in 2026), taken by that group of 20 to select the five students who travel to the
+international competition. The 2026 USAPhO Plus included a problem with an experimental
+component: analyzing data, building and reading plots, extracting parameters, and handling
+uncertainties.
+
+\section{Part II: How to Write an Answer}
+
+\subsection*{Start by picturing the grader}
+
+Your solution is scanned and read by a person who has already read a few hundred versions of
+the same problem, working from a rubric that assigns points to specific milestones: the
+right principle, the right setup, the right intermediate expression, the right final answer.
+They are not trying to reconstruct your thinking. They are trying to find the milestones.
+
+Everything below follows from that one fact.
+
+\begin{keybox}
+\textbf{The five habits.}
+\begin{enumerate}\setlength{\itemsep}{3pt}
+\item \textbf{Draw a labeled diagram and define your symbols on it.} Every angle, distance,
+and force you use should be visible somewhere. A grader who cannot tell what your $\ell$ is
+cannot give you credit for an equation containing $\ell$.
+\item \textbf{Name the principle before you use it.} One short line --- ``torque balance
+about the contact point in the rotating frame,'' ``energy conservation between release and
+the bottom,'' ``Gauss's law on a cylinder of radius $r$.'' This is usually worth points on
+its own, and it costs eight seconds.
+\item \textbf{Work symbolically; substitute numbers last.} Symbols show the grader the
+structure. A page of decimals shows them nothing, and one arithmetic slip poisons everything
+downstream.
+\item \textbf{Box the final answer of every subpart.} The instructions explicitly ask for
+this: ``To help with grading, please draw a clear box around your final answer to each
+subpart.'' An unboxed answer buried mid-page gets missed.
+\item \textbf{One problem per sheet, header on every page.} Never mix two problems on one
+sheet. Label every page in the upper right.
+\end{enumerate}
+\end{keybox}
+
+\subsection*{What the page looks like}
+
+The exact answer-sheet format has drifted --- for years AAPT printed framed answer sheets
+with an information block, and more recently you get a cover sheet per problem plus blank
+paper. What has not changed is the header AAPT asks for in the upper right corner of every
+page:
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+\ \\
+\hspace{2mm}\textsf{Student AAPT ID \#\hspace{12mm}Proctor AAPT ID \#}\hspace{2mm} \\[4pt]
+\hspace{2mm}\textsf{A1 --- 1/3}\hspace{2mm} \\
+\ \\
+\hline
+\end{tabular}
+\end{center}
+
+That last line is the one people forget and the one that matters most: \textbf{problem
+number, then page $n$ of $N$ for that problem}. The scans get split apart and sorted by
+problem before grading. A page labeled only ``2'' can end up in the wrong pile, and a page
+in the wrong pile scores zero.
+
+\begin{warnbox}
+Practical rules that follow from the pages being scanned and sorted:
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Write on one side only.} Older instructions said so outright; graders scan
+fronts.
+\item \textbf{Number every page as $n/N$ and fill in $N$ at the end}, when you know it.
+\item \textbf{Press hard and write dark.} Faint pencil scans badly. Pen is safer, which is
+why crossing out beats erasing.
+\item \textbf{Leave the margins alone.} Anything in the outer half inch may be cropped.
+\item If you continue a problem on extra pages, \textbf{say so at the bottom of the previous
+page} (``continued on A1 -- 3/3'').
+\end{itemize}
+\end{warnbox}
+
+\subsection*{What earns partial credit, and what earns nothing}
+
+\begin{center}
+\begin{tabular}{p{0.46\textwidth}p{0.46\textwidth}}
+\hline
+\textbf{Earns points} & \textbf{Earns nothing} \\
+\hline
+A named principle, even with no algebra after it &
+A page of algebra with no statement of what is being computed \\[3pt]
+A correct setup with the integral left unevaluated &
+A correct final answer with no work \\[3pt]
+A labeled diagram defining your variables &
+Symbols that appear only in equations, never defined \\[3pt]
+``I could not do (a); assume the answer is $X$'' and then a correct (b) &
+A blank (b) because (a) did not work out \\[3pt]
+One clearly boxed answer per subpart &
+Three candidate answers, none crossed out \\[3pt]
+A wrong answer whose method is visible and mostly right &
+A wrong answer whose method is invisible \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{tipbox}
+\textbf{Never leave two live answers on the page.} If you tried something, abandoned it, and
+tried again, put one clean line through the dead attempt. Graders are generally instructed
+to grade what you present, and if you present two contradictory answers they are entitled to
+grade the wrong one. Crossing out is free. Do it.
+\end{tipbox}
+
+\subsection*{Getting past a part you cannot do}
+
+This is the single most valuable habit on this exam, and it is the one students most often
+fail to use.
+
+Subparts are usually graded independently. If part (b) says ``using your result from part
+(a),'' you do not need part (a) to be \emph{right} --- you need it to be \emph{stated}. So:
+
+\begin{keybox}
+When you are stuck on (a) and (b) depends on it, write:
+\begin{center}
+\emph{``Could not complete (a). For (b) I assume the result of (a) is} $T = \ldots$\emph{.''}
+\end{center}
+and then do (b) properly. Full marks on (b) are still available. Two more versions of the
+same move:
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item \textbf{Carry a symbol you cannot evaluate.} If you cannot find the moment of inertia,
+call it $I$, solve the rest of the problem in terms of $I$, and box that. You will lose the
+points for $I$ and keep the rest.
+\item \textbf{Do the special case.} If the general problem is beyond you, solve it for the
+symmetric case, or to leading order in the small parameter, and say clearly that this is
+what you did. It is worth far more than a blank.
+\end{itemize}
+\end{keybox}
+
+\subsection*{Two more things that reliably earn points}
+
+\textbf{Check limiting cases, out loud, on the page.} When you get an answer, test it:
+does it reduce to the earlier part when the correction goes to zero? Is the sign right? Do
+the units work? Writing ``as $h \to 0$ this reduces to part (a) \checkmark'' does two jobs:
+it catches your own errors, and it shows a grader who is deciding between two rubric levels
+that you understand what you produced.
+
+\textbf{Say what you are about to do before you do it.} Two-word headers ---
+``Setup,'' ``Torque about $P$,'' ``Evaluate,'' ``Check'' --- turn a wall of algebra into a
+readable argument. On a page that gets four minutes of attention, structure is worth points.
+
+\section{Part III: Strategy for the Three Hours}
+
+\subsection*{The first five minutes: orient, do not solve}
+
+\textbf{Do not start problem A1 the moment the clock starts.} Spend the first three to five
+minutes reading all three problems in the part. You are looking for:
+
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item Which topic each problem is (mechanics? thermo? circuits?).
+\item How many subparts each has, and whether the early subparts look approachable.
+\item Which problem is \emph{yours} --- the one in your strongest area.
+\end{itemize}
+
+This costs five minutes out of ninety and it protects you from the worst outcome on this
+exam: spending forty minutes on the hardest problem of the set because it happened to be
+printed first, and never reading a problem you could have solved.
+
+\begin{warnbox}
+\textbf{The order on the page is not the order of difficulty.} AAPT says so explicitly.
+A3 is often easier than A2.
+\end{warnbox}
+
+\subsection*{Problem by problem, not skipping around}
+
+Once you have chosen an order, \textbf{work one problem at a time, start to finish.} Long
+free-response physics is not like multiple choice: there is a large cost to reloading a
+problem's setup into your head, so ping-ponging between problems wastes several minutes each
+time.
+
+\textbf{Within a problem, though, skip freely.} If part (b) is stuck, read (c) and (d)
+immediately --- they are often independent, or they depend on (b) in a way you can bridge
+with an assumed result. Some of the cheapest points on the exam sit in the last subpart of a
+problem whose middle nobody finished.
+
+\subsection*{A time budget}
+
+Ninety minutes, three problems: \textbf{30 minutes each}, and the discipline is in the
+checkpoints, not the plan.
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+\textbf{Clock} & \textbf{Where you should be} \\
+\hline
+0:00--0:05 & Read all three problems. Pick an order. \\
+0:05--0:32 & First problem (your best topic). \\
+0:32--0:59 & Second problem. \\
+0:59--1:26 & Third problem. \\
+1:26--1:30 & Harvest: box unboxed answers, fix headers, cross out dead work. \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{tipbox}
+\textbf{Hard stop at 30 minutes per problem, even mid-derivation.} Write down where you got
+to, box whatever partial result you have, and move on. If you have time at the end you can
+come back --- and you will come back with a fresh head, which is often what you needed. The
+alternative, sinking 50 minutes into one problem, costs you the first easy subparts of a
+problem you never read.
+
+\textbf{The five-minute rule for a stuck subpart:} if five minutes of real effort produces
+no new equation, that subpart is over. Write what you know, state your assumption, and go to
+the next subpart.
+\end{tipbox}
+
+\subsection*{The last four minutes of each part}
+
+Stop doing physics and go harvest points:
+
+\begin{enumerate}\setlength{\itemsep}{1pt}
+\item Box every final answer that is not boxed.
+\item Put the problem number and $n/N$ on every page; fill in $N$.
+\item Cross out every abandoned attempt so nothing contradictory is left live.
+\item For every subpart you left blank, write \emph{one line} --- the principle you would
+have used, the diagram you would have drawn, the form you expect the answer to take. A
+sentence beats a blank, and sometimes it is a rubric line.
+\item Sort your pages by problem, then by page number.
+\end{enumerate}
+
+\subsection*{Calibrate: you are not going to get 150}
+
+This matters, because the biggest self-inflicted wound on this exam is a student who treats
+an unfinished problem as a failure and spirals. The USAPhO is built so that the top students
+in the country do not finish it.
+
+\begin{keybox}
+\textbf{Solving two problems completely and making real progress on two more is an excellent
+performance.} A blank subpart is normal. Three blank subparts is normal. \textbf{Your job is
+not to finish the exam --- it is to collect the most points available to you in 180 minutes.}
+Those are different goals and they lead to different behavior: the second one makes you
+leave a hard problem, read the next one, and pick up its first two subparts.
+\end{keybox}
+
+\section{Part IV: What Score Do I Need?}
+
+AAPT does not publish USAPhO score cutoffs, and has said it deliberately does not release
+numerical scores or detailed breakdowns. What it does publish is the \emph{structure} of the
+awards, which is enough to aim by. Awards are given by percentile of the students who take
+the exam:
+
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Award} & \textbf{Share of takers} & \textbf{2026: about} \\
+\hline
+Gold Medal                & top 10--12\%    & top 38 students \\
+Silver Medal              & next 14--16\%   & next 48 \\
+Bronze Medal              & next 20--22\%   & next 63 \\
+Honorable Mention         & next 24--26\%   & next 79 \\
+Distinction               & remainder       & the rest \\
+\hline
+\end{tabular}
+\end{center}
+
+Above all of that sits the \textbf{U.S. Physics Team}: about 20 students invited to camp, on
+combined USAPhO and F = ma performance.
+
+\emph{2026 numbers: 440 students qualified on F = ma and 317 actually sat the USAPhO.}
+
+Two things fall out of that table. First, \textbf{a medal of some color goes to roughly the
+top 47\% of the field}, and some honor goes to nearly three quarters of it. Second,
+\textbf{the field is 300-odd people who already finished in the top 7\% of F = ma takers.}
+Middle of this pack is a genuinely strong physics student.
+
+\begin{tipbox}
+\textbf{A rough way to think about targets.} One problem is 25 points, so on the 150-point
+scale, in a typical year:
+\begin{itemize}\setlength{\itemsep}{1pt}
+\item \textbf{Honorable mention} is in the neighborhood of one problem's worth of credit ---
+which in practice means solid partial credit spread over four or five problems, not one
+perfect problem and five blanks.
+\item \textbf{Bronze} is around one and a half problems' worth; \textbf{silver} around two;
+\textbf{gold} around two and a half or more.
+\end{itemize}
+These are rules of thumb for calibration, not published cutoffs, and they move year to year
+with the difficulty of the exam. The lesson is the same either way: \textbf{scattered
+partial credit across all six problems outscores heroic effort on one.}
+\end{tipbox}
+
+\section{Part V: What a Real Submission Looks Like}
+
+Everything above is abstract until you see a page. So here is one problem worked the way you
+would actually work it under time pressure --- including a wrong turn --- followed by how it
+would be graded.
+
+The problem is \textbf{2014 USAPhO, Problem A1}, which is a good one to practice on: two
+subparts, the second a genuine correction to the first, and a trap in the middle that most
+people fall into.
+
+\begin{official}
+\textbf{Question A1 (2014 USAPhO).} A unicyclist of total height $h$ goes around a circular
+track of radius $R$ while leaning inward at an angle $\theta$ to the vertical. The
+acceleration due to gravity is $g$.
+
+\begin{subpart}
+\item Suppose $h \ll R$. What angular velocity $\omega$ must the unicyclist sustain?
+\item Now model the unicyclist as a uniform rod of length $h$, where $h$ is less than $R$
+but not negligible. This refined model introduces a correction to the previous result. What
+is the new expression for the angular velocity $\omega$? Assume that the rod remains in the
+plane formed by the vertical and radial directions, and that $R$ is measured from the center
+of the circle to the point of contact at the ground.
+\end{subpart}
+\end{official}
+
+\subsection*{The submission}
+
+What follows is typeset so you can read it, but the content, the length, and the mess are
+what a good submission actually looks like. The notes in \ann{red} are mine, pointing out
+the choices that are earning points; they would not be on your page.
+
+\begin{sheet}{Student AAPT ID \#\qquad Proctor AAPT ID \#\\ A1 --- 1/2}
+
+\textbf{(a)} \quad Rotating frame, rider static. Radial-vertical plane:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.3,>=Stealth,font=\small]
+  % ground and the track radius, dimensioned below the ground so the two
+  % horizontal lines do not sit on top of each other
+  \draw[thick] (-5.3,0) -- (1.3,0);
+  \fill (-4.8,0) circle (1.4pt);
+  \node[above] at (-4.8,0.06) {center};
+  \draw[|<->|] (-4.8,-0.5) -- (0,-0.5);
+  \node[below] at (-2.4,-0.46) {$R$};
+  % vertical reference, started above the normal force so they do not overlap
+  \draw[dotted] (0,1.15) -- (0,3.0);
+  % the rider
+  \draw[very thick] (0,0) -- (-1.226,2.628);
+  \node[left] at (-0.95,2.00) {$h$};
+  \fill (0,0) circle (1.7pt);
+  \node[below right] at (0.02,-0.02) {$P$};
+  \draw (0,2.3) arc (90:115:2.3);
+  \node at (-0.62,2.44) {$\theta$};
+  \fill (-0.613,1.314) circle (1.9pt);
+  \node[below left] at (-0.60,1.30) {cm};
+  % forces
+  \draw[->,very thick] (0,0) -- (0,0.95);
+  \node[right] at (0.05,0.55) {$N$};
+  \draw[->,very thick] (0,0.07) -- (-1.05,0.07);
+  \node[above] at (-0.62,0.05) {$f$};
+  \draw[->,very thick] (-0.613,1.314) -- (-0.613,0.42);
+  \node[left] at (-0.66,0.74) {$mg$};
+  \draw[->,very thick] (-0.613,1.314) -- (0.62,1.314);
+  \node[anchor=south west] at (0.10,1.36) {$m\omega^2 R$};
+  % the observation that licenses the whole calculation
+  \node[anchor=west] at (-5.3,2.95) {$h \ll R$:};
+  \node[anchor=west] at (-5.3,2.60) {all of rider at radius $\approx R$,};
+  \node[anchor=west] at (-5.3,2.25) {so centrifugal force acts at cm};
+\end{tikzpicture}
+\end{center}
+
+\ann{$\uparrow$ The diagram is the setup. Every symbol used below --- $P$, $\theta$, cm,
+$R$ --- is defined on it, and the choice of frame is stated in the first line.}
+
+\medskip
+Let cm be a distance $\ell$ up the rod from $P$. Torque about $P$ (rider is static in this
+frame, so $\tau_{\text{net}}=0$; $N$ and $f$ act at $P$ and contribute nothing):
+
+\[ \tau = m\omega^2 R\,(\ell\cos\theta) \;-\; mg\,(\ell\sin\theta) = 0 \]
+
+\ann{$\uparrow$ ``Torque about $P$'' named, and the reason $N$ and $f$ drop out given in
+half a line. This is a rubric line.}
+
+\[ \omega^2 = \frac{g\tan\theta}{R} \]
+
+\sout{$\omega^2 = g\cot\theta / R$ \quad --- lever arms swapped} \quad
+\ann{$\leftarrow$ First attempt, caught and crossed out. See the check below.}
+
+\medskip
+\fbox{$\displaystyle \omega = \sqrt{\frac{g\tan\theta}{R}}$}
+
+\medskip
+\emph{Check:} $\theta \to 0$ (upright) $\Rightarrow \omega \to 0$. \checkmark\ \
+$\theta \to 90^\circ \Rightarrow \omega \to \infty$. \checkmark\ \ Units: $\sqrt{(\text{m/s}^2)/\text{m}}
+= \text{s}^{-1}$. \checkmark
+
+\ann{$\uparrow$ This check is what caught the swapped lever arms. Three lines, thirty
+seconds, and it is the difference between 8/8 and 3/8 on this part.}
+
+\end{sheet}
+
+\begin{sheet}{Student AAPT ID \#\qquad Proctor AAPT ID \#\\ A1 --- 2/2}
+
+\textbf{(b)} \quad Now $h \not\ll R$, so different parts of the rod are at different radii
+and the centrifugal force is \emph{not} uniform.
+
+\medskip
+\sout{Idea: cm sits at radius $R - \tfrac{h}{2}\sin\theta$, so replace $R \to R -
+\tfrac{h}{2}\sin\theta$ in (a).}
+
+\ann{$\leftarrow$ The trap, tried and abandoned. Note the one-line reason written next to it
+rather than a silent erasure:}
+
+\smallskip
+\emph{No --- torque involves the product $r\,z$, and $\langle rz\rangle \neq \langle r
+\rangle\langle z\rangle$. Must integrate.}
+
+\medskip
+\textbf{Setup.} Mass element a distance $s$ along the rod from $P$:
+\[ r = R - s\sin\theta, \qquad z = s\cos\theta, \qquad dm = \frac{m}{h}\,ds,
+\qquad 0 \le s \le h \]
+
+\ann{$\uparrow$ Each of the three is a rubric line on its own. Even if the integral had gone
+nowhere, these are already worth points.}
+
+\medskip
+\textbf{Centrifugal torque about $P$.} Force $\omega^2 r\,dm$ outward, lever arm $z$:
+\[ \tau_c = \int_0^h \omega^2 (R - s\sin\theta)(s\cos\theta)\,\frac{m}{h}\,ds \]
+
+\[ = \frac{m\omega^2\cos\theta}{h}\left[ \frac{Rh^2}{2} - \frac{h^3\sin\theta}{3} \right]
+ = m\omega^2 h\cos\theta \left( \frac{R}{2} - \frac{h\sin\theta}{3} \right) \]
+
+\textbf{Gravity torque about $P$}, at the cm, $h/2$ up the rod:
+\[ \tau_g = -\,mg\,\frac{h}{2}\sin\theta \]
+
+\textbf{Balance.} $\tau_c + \tau_g = 0$:
+\[ \omega^2 h\cos\theta\left( \frac{R}{2} - \frac{h\sin\theta}{3}\right)
+   = g\,\frac{h}{2}\sin\theta
+   \quad\Longrightarrow\quad
+   \omega^2 = \frac{g\tan\theta}{R - \tfrac{2h}{3}\sin\theta} \]
+
+\medskip
+\fbox{$\displaystyle \omega = \sqrt{\frac{g}{R}\tan\theta \left(1 - \frac{2h}{3R}\sin\theta
+\right)^{-1}}$}
+
+\medskip
+\emph{Checks:} $h \to 0$ reduces to (a) \checkmark\ \ Denominator $< R$, so $\omega$ is
+\emph{larger} than in (a) \checkmark\ --- correct, since the rod's mass sits at smaller
+radius than $R$ and so needs a faster spin to hold the lean.
+
+\ann{$\uparrow$ Two lines. The first proves the correction is consistent with (a); the
+second shows the sign of the correction was understood rather than stumbled into.}
+
+\end{sheet}
+
+% Break here so the rubric table lands whole on one page; a two-row orphan with
+% a "(continued)" header is exactly the thing this section is arguing against.
+\pagebreak
+
+\subsection*{How that gets graded}
+
+USAPhO rubrics are not published, so the breakdown below is a reconstruction --- but it is
+the right \emph{shape}: a 25-point problem is cut into five or six milestones, and each is
+awarded on its own.
+
+\begin{center}
+\begin{longtable}{p{0.60\textwidth}cc}
+\hline
+\textbf{Rubric line} & \textbf{Pts} & \textbf{Earned} \\
+\hline
+\endfirsthead
+\multicolumn{3}{l}{\emph{(continued)}} \\
+\hline
+\textbf{Rubric line} & \textbf{Pts} & \textbf{Earned} \\
+\hline
+\endhead
+\multicolumn{3}{l}{\textbf{(a) Point-mass limit}} \\
+Correct force picture: states the frame and identifies the centrifugal force acting at
+the cm & 2 & 2 \\
+Correct torque (or force) balance about the contact point & 3 & 3 \\
+Correct $\omega = \sqrt{g\tan\theta/R}$ & 3 & 3 \\
+\hline
+\multicolumn{3}{l}{\textbf{(b) Extended rod}} \\
+Recognizes the centripetal acceleration varies along the rod, so the cm substitution
+fails & 3 & 3 \\
+Correct parametrization $r = R - s\sin\theta$, $z = s\cos\theta$, $dm = (m/h)ds$ & 4 & 4 \\
+Correct integral expression for the centrifugal torque & 4 & 4 \\
+Correct evaluation $m\omega^2 h\cos\theta\!\left(\tfrac{R}{2} - \tfrac{h\sin\theta}{3}\right)$
+& 3 & 3 \\
+Correct gravitational torque and balance & 3 & 3 \\
+Correct final $\omega$, boxed & 3 & 3 \\
+\hline
+\textbf{Total} & \textbf{25} & \textbf{25} \\
+\hline
+\end{longtable}
+\end{center}
+
+That submission gets full marks, and it is worth noticing how little of the page is
+polished. There is a crossed-out formula, an abandoned idea, and no prose beyond a handful
+of six-word fragments. \textbf{What makes it a 25 is that every rubric line is findable in
+under ten seconds.}
+
+\subsection*{The same physics, written four other ways}
+
+Here is what actually separates scores on this exam. All four of these students did roughly
+the same amount of physics.
+
+\begin{center}
+\begin{longtable}{p{0.62\textwidth}c}
+\hline
+\textbf{What the page contains} & \textbf{Score} \\
+\hline
+\endhead
+\textbf{Ran out of time in (b).} Part (a) complete. In (b): ``the centripetal acceleration
+varies along the rod, so I have to integrate the torque instead of using the cm,'' plus
+$r = R - s\sin\theta$, $z = s\cos\theta$, $dm = (m/h)ds$, and the integral written down but
+never evaluated. & \textbf{18/25} \\[4pt]
+\textbf{Fell into the trap.} Part (a) complete. In (b), substituted $R \to R -
+\tfrac{h}{2}\sin\theta$ with no comment and boxed it. & \textbf{9/25} \\[4pt]
+\textbf{Blew part (a), recovered.} Part (a) has the lever arms swapped and is never checked,
+so $\cot\theta$ is boxed. Part (b) is done correctly from scratch --- correct setup,
+integral, evaluation, balance, and answer. & \textbf{22/25} \\[4pt]
+\textbf{Did all the physics, wrote none of it.} Everything correct, but done on scratch
+paper, with only the two boxed answers copied onto the answer sheets. & \textbf{6/25} \\
+\hline
+\end{longtable}
+\end{center}
+
+\begin{keybox}
+Read those four rows again. The third student got \emph{part (a) wrong} and still scored
+22, because subparts are graded independently and (b) was written out. The fourth student
+solved the entire problem correctly and scored 6, because the work was on the wrong paper.
+
+\textbf{The gap between 6 and 22 on this problem is not physics. It is where you wrote and
+how you labeled it.}
+\end{keybox}
+
+\subsection*{Things that went wrong, and what to do about them}
+
+\Q{You suspect part (a) is wrong but cannot see why.}
+Run the limiting cases --- that is what caught the swapped lever arms above. Set each
+parameter to zero or infinity in turn and ask whether the answer still makes sense. If a
+check fails, you have found a real error in thirty seconds. If they all pass, stop
+worrying and move on; a wrong (a) does not sink (b) anyway.
+
+\Q{You cannot see how to set up the integral in (b).}
+Write down what you \emph{do} know --- ``the acceleration varies along the rod, so
+$\tau_c = \int \omega^2 r z \, dm$'' --- and then define $r$, $z$, and $dm$ one at a time
+against your diagram. That decomposition is worth 7 of the 17 points in (b) on its own,
+before you have integrated anything. Half of getting stuck is trying to write the whole
+setup in one line.
+
+\Q{You get an ugly answer and think you must have erred.}
+Ugly is normal. $\omega^2 = g\tan\theta/(R - \tfrac{2h}{3}\sin\theta)$ is ugly, and correct.
+Check limits, box it, and move on. Do not spend ten minutes hunting for a mistake that
+isn't there because you expected something prettier.
+
+\Q{You have two versions of an answer and no time to decide.}
+Pick the one that passes your limiting checks, box that one, and put a single line through
+the other. Never leave both live.
+
+\Q{You are 30 minutes in with (b) half done.}
+Stop. Box whatever you have, write one line saying what remains (``still need to evaluate
+the integral and balance against gravity''), and go read the next problem. Its first
+subpart is almost certainly worth more than your next ten minutes on this one.
+
+\section{Your Checklist}
+
+\begin{keybox}
+\textbf{Before the exam}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+\item[$\square$] Confirmed the date, start time, and site with your proctor
+\item[$\square$] Non-graphing scientific calculator, memory cleared
+\item[$\square$] Memorized the formulas the reference sheet does \emph{not} give you --- it
+is constants and four approximations, nothing else
+\item[$\square$] Practiced on at least two past USAPhOs \emph{under timed conditions},
+writing on paper, in 90-minute blocks
+\end{enumerate}
+
+\textbf{During the exam}
+\begin{enumerate}\setlength{\itemsep}{2pt}
+\item[$\square$] Read all three problems before starting any of them
+\item[$\square$] Diagram first, symbols defined on it
+\item[$\square$] Name the principle before the algebra
+\item[$\square$] Symbols throughout; numbers only at the end
+\item[$\square$] Box every subpart's final answer
+\item[$\square$] Header on every page: problem number and $n/N$
+\item[$\square$] Solve on the answer sheets, not on scratch
+\item[$\square$] Stuck? State an assumed result and do the next part anyway
+\item[$\square$] 30 minutes per problem, hard stop
+\item[$\square$] Last four minutes: box, label, cross out, sort
+\end{enumerate}
+\end{keybox}
+
+\vspace{0.5em}
+\begin{center}
+\emph{Questions this handout does not answer? Ask me --- and check
+\href{https://www.aapt.org/physicsteam/}{aapt.org/physicsteam}, which is always the final
+authority.}
+\end{center}
+
+\end{document}
