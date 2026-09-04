@@ -116,6 +116,13 @@ export function buildEmailBody(student, problems, takeableExamIds = new Set(), n
     }
     lines.push('')
   })
+  if (student.fluency_practice_enabled) {
+    lines.push(
+      "Also, keep up with your Fluency Practice — a few minutes of quick drills on the algebra moves that should feel automatic on the F=ma:",
+      `   ${PORTAL_URL}/fluency`,
+      '',
+    )
+  }
   lines.push(...nextSessionLines(student, nextSession))
   lines.push('-Mark')
   return lines.join('\n')
