@@ -50,7 +50,7 @@ const OPENING_LINES = [
 // person about the student rather than writing "you" at a mixed audience.
 export function buildReportEmail(student, report) {
   const firstName = student.first_name || student.name.split(' ')[0]
-  const subject = `${firstName}'s progress report — ${report.title}`
+  const subject = `${firstName}'s progress report - ${report.title}`
   const covered = report.sessions_covered
     ? `It covers our last ${report.sessions_covered} sessions`
     : 'It covers our sessions since the last report'
@@ -69,7 +69,7 @@ export function buildReportEmail(student, report) {
     `It's also in the portal under Progress and Plan, along with every earlier report:`,
     `  ${PORTAL_URL}/`,
     ``,
-    `Happy to talk through any of it — just reply to this email.`,
+    `Happy to talk through any of it. Just reply to this email.`,
     ``,
     `-Mark`,
   ].join('\n')

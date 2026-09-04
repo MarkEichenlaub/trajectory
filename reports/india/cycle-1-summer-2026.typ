@@ -6,27 +6,27 @@
   cycle:   "Cycle 1 · Summer 2026",
 
   summary: (
-    "India is working through the Art of Problem Solving Physics 1: Mechanics course, which covers about the same material as an AP-level first course in physics.",
+    "India is working through the Art of Problem Solving Physics 1: Mechanics course, which covers about the same material as an AP-level first course in physics, but with more challenging problems.",
     "We've finished 4 of the course's 24 weeks since June 9, with about a month off in the middle. We're starting week 5, Forms of Energy, now.",
-    "We aren't holding to a fixed schedule. We move on when India has a topic, and so far that's been fast.",
-    "She's doing extraordinarily well. The math is fluent, and she sees the overall shape of a problem rather than just its steps.",
+    "We aren't holding to a fixed schedule. We move on when India masters a topic. She's moving along steadily.",
+    "She's doing extraordinarily well. Her math is fluent, and she sees the overall shape of a problem rather than just its steps.",
   ),
 
   goals: (
-    "Learn the mechanics in the AoPS course: velocity, acceleration, projectile motion, energy, and on through circular motion, rotation, momentum, forces, and fluids.",
-    "Come out of a long calculation still knowing what the whole calculation was for.",
+    "Learn the introductory concepts of mechanics: velocity, acceleration, projectile motion, energy.",
+    "Learn fundamental ideas of physics, especially dimensional analysis.",
     "Recognize which physical idea a problem calls for, and switch between kinematics and energy conservation as the problem demands.",
-    "Tie the equations to physical intuition, and use extreme cases and dimensional analysis to check an answer.",
+    "Tie the equations to physical intuition, and use extreme cases to check an answer.",
   ),
 
   progress: (
     "India is doing extraordinarily well. The hardest part of a physics problem is usually not any single step in it. It's coming out the far end of a long calculation still knowing what you were doing and why. India does this quickly and easily. She can look back at a problem we just spent half an hour on and tell me what the overall approach was.",
     "She also picks the right tool. We've got two big ideas on the table now, kinematics and energy conservation, and different problems want different ones. India recognizes which problem is which, and she moves between the two without getting stuck.",
-    "The math isn't slowing her down. She keeps track of the quantities she's working with in her head, and her written work stays organized enough that she can always reach back for the one she needs. That's what keeps a long problem from falling apart in the middle.",
-    "We spend a lot of time matching the equations up with physical intuition, and India pushes on that herself. Last session we worked out how far a cart shoots off the end of a ramp after sliding down from a height h. The distance doesn't depend on the strength of gravity at all. India found that surprising, and she wasn't willing to let the algebra be the only reason for it.",
-    "So we dug in. Making gravity stronger does two things that work against each other. The cart's moving faster when it leaves the ramp, since it fell through the same height with a bigger pull. But it also comes back down to the ground sooner once it's in the air. Those two effects cancel exactly, and the cart lands in the same place. Once India had that picture, we went back and found it sitting in the algebra.",
+    "The math isn't slowing her down. She keeps track of the quantities she's working with, and her written work stays organized enough that she can always reach back for the one she needs. That's what keeps a long problem from falling apart in the middle.",
+    "We spend a lot of time matching the equations up with physical intuition. India thinks about this without my prompting sometimes. Last session we worked out how far a cart shoots off the end of a ramp after sliding down from a height h. The distance doesn't depend on the strength of gravity at all. India found that surprising, and she wasn't willing to let the algebra be the only reason for it.",
+    "So we dug in. Making gravity stronger does two things that work against each other. The cart's moving faster when it leaves the ramp, since it fell through the same height with a bigger pull. But it also comes back down to the ground sooner once it's in the air. Those two effects cancel exactly, and the cart lands in the same place. Once India had that picture, we went back and found it in the algebra.",
     "Checking an answer is becoming a habit rather than something I have to ask for. On the Atwood machine we derived an acceleration and then looked at two extremes, one where the hanging weight is tiny and one where it's enormous, and confirmed the formula gave zero and g. She's comfortable with dimensional analysis too, which catches a different set of mistakes.",
-    "On pace: 4 weeks of 24 since June 9, or one-sixth of the course, and a month of that stretch was a break. There's a lot of material here, so that's good progress. If the rate holds we'll finish somewhere near the end of the year. I'd rather move at the speed India is actually learning than aim at a date.",
+    "On pace: We've covered 4 weeks of 24 since June 9, or one-sixth of the course, and a month of that stretch was a break. That's good progress. If the rate holds we'll finish somewhere near the end of the school year. I'd rather move at the speed India is actually learning than aim at a date.",
   ),
 
   plan: (
@@ -42,9 +42,9 @@
   ),
 
   support: (
-    "Protect a steady block of time for the homework each week. Doing it near the session helps more than saving it all for later.",
+    "Protect a steady block of time for the homework each week.",
     "If India gets stuck on a problem, it's fine to leave it and bring it in. The stuck problems are usually the most useful ones for us to work through together.",
-    "Ask her to explain a problem out loud sometimes. Explaining it is a good way to find out whether the picture is really there.",
+    "Ask her to explain a problem out loud sometimes.",
     "Let me know about school tests, travel, or busy weeks so we can plan the workload around them.",
   ),
 
