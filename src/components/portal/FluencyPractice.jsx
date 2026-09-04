@@ -275,7 +275,14 @@ function History({ attempts, skillsById, onBack }) {
   )
 }
 
+// The QA test student (scripts/setup_test_student.mjs) has no real progress
+// to protect, so admin preview can drive it live -- letting Mark practice via
+// "Preview as Test Student" instead of a separate magic-link sign-in that
+// would kick his admin session out of the shared browser session.
+const LIVE_PREVIEW_STUDENT_ID = 'test-student'
+
 export default function FluencyPractice({ studentId, isPreview }) {
+  const locked = isPreview && studentId !== LIVE_PREVIEW_STUDENT_ID
   const [view, setView] = useState('home') // 'home' | 'untimed' | 'timed' | 'history'
   const [skills, setSkills] = useState([])
   const [studentSkills, setStudentSkills] = useState([])
@@ -361,14 +368,19 @@ export default function FluencyPractice({ studentId, isPreview }) {
       ) : (
         <>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="primary" disabled={isPreview} onClick={() => startSession('untimed')}>
+            <button className="primary" disabled={locked} onClick={() => startSession('untimed')}>
               Start practice (~5 min)
             </button>
-            <button className="sm" disabled={isPreview || !anyTimedEligible} title={!anyTimedEligible ? 'Get a skill to level 3+ first' : ''} onClick={() => startSession('timed')}>
+            <button className="sm" disabled={locked || !anyTimedEligible} title={!anyTimedEligible ? 'Get a skill to level 3+ first' : ''} onClick={() => startSession('timed')}>
               Timed drill
             </button>
             <button className="sm" onClick={() => setView('history')}>History</button>
           </div>
+          {locked && (
+            <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: -12 }}>
+              Preview only — practicing here would count against this student's real progress. Preview the Test Student instead to try it live.
+            </div>
+          )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {enabledIds.map(id => {
