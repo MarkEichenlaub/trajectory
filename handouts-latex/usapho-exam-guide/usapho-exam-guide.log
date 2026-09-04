@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.12)  4 SEP 2026 01:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (MiKTeX 26.1) (preloaded format=pdflatex 2026.2.12)  4 SEP 2026 01:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1181,7 +1181,7 @@ arkd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-50.
+49.
 
 (C:\Users\markd\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1190,7 +1190,7 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 Package microtype Warning: I cannot find a spacing list for font
 (microtype)                `TS1/lmr/m/n/10.95' (context: `nonfrench'). Switchin
 g off
-(microtype)                spacing for this font on input line 150.
+(microtype)                spacing for this font on input line 149.
 
 [2{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
 [3{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathit.en
@@ -1198,27 +1198,27 @@ c}{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-rm.enc}{C
 :/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-mathsy.enc}]
 [4] [5] [6] [7] [8] [9]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 618.
+(Font)              <9> on input line 611.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 618.
+(Font)              <5> on input line 611.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 630.
+(Font)              <10> on input line 623.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 630.
+(Font)              <7> on input line 623.
  [10] [11{C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ma
 thex.enc}] [12]
 ignored: Infinite glue shrinkage found in box being split [13] [14]
 <paper-4717-b2.png, id=152, 1706.375pt x 1722.435pt>
 File: paper-4717-b2.png Graphic file (type png)
 <use paper-4717-b2.png>
-Package pdftex.def Info: paper-4717-b2.png  used on input line 890.
+Package pdftex.def Info: paper-4717-b2.png  used on input line 877.
 (pdftex.def)             Requested size: 403.9896pt x 407.79474pt.
  [15]
 [16 <./paper-4717-b2.png (PNG copy)>]
 <paper-4900-b2.png, id=167, 1706.375pt x 1567.8575pt>
 File: paper-4900-b2.png Graphic file (type png)
 <use paper-4900-b2.png>
-Package pdftex.def Info: paper-4900-b2.png  used on input line 921.
+Package pdftex.def Info: paper-4900-b2.png  used on input line 907.
 (pdftex.def)             Requested size: 403.9896pt x 371.19777pt.
  [17 <./paper-4900-b2.png (PNG copy)>]
 [18] [19] (usapho-exam-guide.aux)
@@ -1230,13 +1230,13 @@ Package rerunfilecheck Info: File `usapho-exam-guide.out' has not changed.
 (rerunfilecheck)             Checksum: BD48C0F8AB60CB49E0825E6E0B096AA8;1524.
  ) 
 Here is how much of TeX's memory you used:
- 31800 strings out of 467866
- 632525 string characters out of 5418325
+ 31810 strings out of 467866
+ 632622 string characters out of 5418325
  1100213 words of memory out of 5000000
  59854 multiletter control sequences out of 15000+600000
- 771290 words of font info for 248 fonts, out of 8000000 for 9000
+ 771731 words of font info for 253 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,104p,1016b,1050s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,104p,1016b,1050s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx10.pf
 b><C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pf
 b><C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmex10.pf
@@ -1259,7 +1259,7 @@ ers/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy9.pfb><C:/Use
 rs/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msam
 10.pfb><C:/Users/markd/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
 s/symbols/msbm10.pfb>
-Output written on usapho-exam-guide.pdf (19 pages, 628312 bytes).
+Output written on usapho-exam-guide.pdf (19 pages, 620994 bytes).
 PDF statistics:
  297 PDF objects out of 1000 (max. 8388607)
  62 named destinations out of 1000 (max. 500000)
