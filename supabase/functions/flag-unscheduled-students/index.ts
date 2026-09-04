@@ -53,7 +53,9 @@ Deno.serve(async (req) => {
     }
   }
 
-  const flaggedIds = [...lastSessionByStudent.keys()].filter(id => !scheduledIds.has(id))
+  const flaggedIds = [...lastSessionByStudent.keys()].filter(
+    id => !scheduledIds.has(id) && id !== 'test-student',
+  )
 
   if (!flaggedIds.length) {
     return new Response(JSON.stringify({ ok: true, flagged: 0 }), {
