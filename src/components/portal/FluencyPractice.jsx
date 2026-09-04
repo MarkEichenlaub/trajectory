@@ -36,7 +36,7 @@ function EquationLine({ equation, fields, values, result, setField }) {
             value={v}
             disabled={!!result}
             onChange={e => setField(seg.blank, e.target.value)}
-            className={`fl-eq-blank${seg.sup ? ' sup' : ''}${result ? (result.perField[seg.blank] ? ' ok' : ' bad') : ''}`}
+            className={`fl-eq-blank${seg.sup ? ' sup' : ''}${result ? (result.gaveUp ? ' revealed' : (result.perField[seg.blank] ? ' ok' : ' bad')) : ''}`}
             style={{ width: `${Math.max(minCh, v.length + 1.5)}ch` }}
             aria-label={f?.label}
           />
@@ -80,6 +80,22 @@ function fmtDuration(sec) {
 
 const DEFAULT_DAILY_GOAL = 8
 
+// After a second miss, the blanks get filled with the actual answer (rather
+// than just the rule/explanation) so "give up" really does show what was
+// asked for. MC fields aren't included -- McOptions reveals those itself.
+function formatAnswerValue(val) {
+  if (typeof val !== 'number') return String(val)
+  return Number.isInteger(val) ? String(val) : String(Math.round(val * 10000) / 10000)
+}
+function answerDisplayValues(problem) {
+  const out = {}
+  for (const f of problem.fields) {
+    if (f.type === 'mc') continue
+    out[f.key] = formatAnswerValue(problem.answer[f.key])
+  }
+  return out
+}
+
 function levelLabel(level) {
   if (level >= MAX_LEVEL) return 'mastered'
   if (level >= TIMED_MODE_MIN_LEVEL) return 'solid'
@@ -106,7 +122,8 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   const [index, setIndex] = useState(0)
   const [problem, setProblem] = useState(() => generateProblem(queue[0], (stateBySkill[queue[0]]?.level ?? 0), newSeed()))
   const [values, setValues] = useState({})
-  const [result, setResult] = useState(null) // { correct, perField, levelBefore, levelAfter }
+  const [result, setResult] = useState(null) // { correct, perField, levelBefore, levelAfter, retry?, gaveUp? }
+  const [attempt, setAttempt] = useState(0) // 0 = first try, 1 = retry-after-hint
   const [startedAt, setStartedAt] = useState(() => Date.now())
   const [tally, setTally] = useState({ correct: 0, total: 0 })
   const [levelDeltas, setLevelDeltas] = useState({}) // skillId -> {before, after}
@@ -121,6 +138,7 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
     setProblem(generateProblem(skillId, level, newSeed()))
     setValues({})
     setResult(null)
+    setAttempt(0)
     setStartedAt(Date.now())
   }, [index]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -174,8 +192,18 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   async function handleSubmit(e) {
     e.preventDefault()
     if (result || saving) return
-    const responseMs = Date.now() - startedAt
     const graded = gradeAnswer(problem, values)
+
+    // First miss: show the explanation as a hint and let them try again --
+    // nothing is graded or saved yet, so a corrected slip still counts as
+    // getting it right (per Mark: retry with the hint, don't just move on).
+    if (!graded.correct && attempt === 0) {
+      setAttempt(1)
+      setResult({ ...graded, retry: true })
+      return
+    }
+
+    const responseMs = Date.now() - startedAt
     const before = stateBySkill[skillId]?.level ?? 0
     const after = nextLevel({ level: before, correct: graded.correct, mode, responseMs, timeTargetSec: problem.timeTargetSec })
 
@@ -207,9 +235,21 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
     } catch { /* leveling still shows locally even if the write is flaky */ }
     setSaving(false)
 
-    setResult({ ...graded, levelBefore: before, levelAfter: after })
+    // Still wrong after the retry -- this is "giving up": show the actual
+    // answer (not just the rule) by filling it into the same blanks they
+    // typed in. MC fields don't need this -- McOptions highlights the
+    // correct option in green once `result` is set and it's not a retry.
+    if (!graded.correct) {
+      setValues(prev => ({ ...prev, ...answerDisplayValues(problem) }))
+    }
+
+    setResult({ ...graded, levelBefore: before, levelAfter: after, gaveUp: !graded.correct })
     setTally(t => ({ correct: t.correct + (graded.correct ? 1 : 0), total: t.total + 1 }))
     setLevelDeltas(d => ({ ...d, [skillId]: { before: d[skillId]?.before ?? before, after } }))
+  }
+
+  function tryAgain() {
+    setResult(null)
   }
 
   return (
@@ -239,7 +279,7 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
                       options={f.options}
                       value={values[f.key]}
                       disabled={!!result}
-                      correctKey={result ? problem.answer[f.key] : null}
+                      correctKey={result && !result.retry ? problem.answer[f.key] : null}
                       onSelect={key => setField(f.key, key)}
                     />
                   ) : (
@@ -248,7 +288,7 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
                       value={values[f.key] ?? ''}
                       disabled={!!result}
                       onChange={e => setField(f.key, e.target.value)}
-                      className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
+                      className={result ? (result.gaveUp ? 'fl-input revealed' : (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad')) : 'fl-input'}
                     />
                   )}
                 </label>
@@ -266,18 +306,29 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
           <div className={`fl-feedback${result.correct ? ' ok' : ' bad'}`}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 8 }}>
               <div style={{ fontWeight: 600 }}>{result.correct ? 'Correct' : 'Not quite'}</div>
-              <button ref={nextRef} className="primary sm" onClick={goNext}>{nextLabel}</button>
+              {result.retry ? (
+                <button ref={nextRef} className="primary sm" onClick={tryAgain}>Try again</button>
+              ) : (
+                <button ref={nextRef} className="primary sm" onClick={goNext}>{nextLabel}</button>
+              )}
             </div>
             <div dangerouslySetInnerHTML={{ __html: explanationHtml }} />
+            {result.gaveUp && (
+              <div style={{ marginTop: 8, fontSize: 12, fontWeight: 600 }}>Correct answer shown above.</div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Sticky so Next is always reachable without scrolling past a long
-          explanation — same fix FmaTestRunner uses for its nav row. */}
+      {/* Sticky so Next/Try again is always reachable without scrolling past
+          a long explanation — same fix FmaTestRunner uses for its nav row. */}
       {result && (
         <div className="fl-next-bar">
-          <button className="primary" onClick={goNext}>{nextLabel}</button>
+          {result.retry ? (
+            <button className="primary" onClick={tryAgain}>Try again</button>
+          ) : (
+            <button className="primary" onClick={goNext}>{nextLabel}</button>
+          )}
         </div>
       )}
     </div>

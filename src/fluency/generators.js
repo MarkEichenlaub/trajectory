@@ -128,7 +128,10 @@ export function evalMathExpr(input) {
       pos++
       return Math.sqrt(v)
     }
-    const m = /^\d+(\.\d+)?/.exec(src.slice(pos))
+    // Accepts "5", "5.2", and ".5" -- a leading-zero-less decimal like the
+    // last one used to fail to match at all (reported: ".5" graded wrong
+    // even though it equals the expected 0.5).
+    const m = /^(?:\d+\.?\d*|\.\d+)/.exec(src.slice(pos))
     if (!m) throw new Error('expected a number')
     pos += m[0].length
     return parseFloat(m[0])

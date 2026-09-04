@@ -740,6 +740,10 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fl-input:focus { outline: none; border-color: var(--accent); }
 .fl-input.ok { border-color: var(--green-line, var(--green)); background: var(--green-bg, transparent); }
 .fl-input.bad { border-color: var(--red); }
+/* "Gave up" reveal: the blank is filled with the actual answer, not
+   something the student typed -- a distinct color from both ok (green) and
+   bad (red) makes that unambiguous. */
+.fl-input.revealed, .fl-eq-blank.revealed { border-color: var(--accent); background: var(--accent-dim); }
 
 /* Multiple-choice options -- tappable buttons instead of a text input, sized
    for a thumb on a phone (min-height matches .fl-input's 44px tap target). */
@@ -748,7 +752,15 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
   font-size: 14px; padding: 10px 14px; min-height: 44px; text-align: left;
   border: 1px solid var(--border); border-radius: 6px; background: var(--surface);
 }
+/* Global `button:hover` (background: var(--surface2), a pale blue-gray) sits
+   close enough to .selected's pale blue that hovering an unpicked option
+   right after picking a different one reads as "both are highlighted" --
+   reported directly. Hover here gets a plain border-only cue (no fill) so it
+   can never be mistaken for .selected's blue fill, and .selected wins
+   outright over hover so the picked option never looks unpicked. */
+.fl-mc-opt:hover { background: var(--surface); border-color: var(--muted); }
 .fl-mc-opt.selected { border-color: var(--accent); background: var(--accent-dim); }
+.fl-mc-opt.selected:hover { background: var(--accent-dim); border-color: var(--accent); }
 .fl-mc-opt.ok { border-color: var(--green-line, var(--green)); background: var(--green-bg, transparent); }
 .fl-mc-opt.bad { border-color: var(--red); background: rgba(220, 80, 80, 0.08); }
 
