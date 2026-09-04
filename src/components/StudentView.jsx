@@ -296,7 +296,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
             .map(a => a.problem_id)}
         />
       ) : tab === 'fluency' ? (
-        <FluencyPractice studentId={student.id} isPreview={isPreview} />
+        <FluencyPractice studentId={student.id} isPreview={isPreview} dailyGoal={student?.fluency_daily_goal} />
       ) : tab === 'scheduling' ? (
         <SchedulingTab sessions={sortedSessions} formatDate={formatDate} student={student} isPreview={isPreview} viewerRole={role} />
       ) : tab === 'invoices' ? (

@@ -1142,6 +1142,12 @@ export async function setFluencyPracticeEnabled(studentId, enabled) {
   if (error) throw new Error(error.message)
 }
 
+export async function setFluencyDailyGoal(studentId, n) {
+  const { error } = await adminClient().from('students')
+    .update({ fluency_daily_goal: n }).eq('id', studentId)
+  if (error) throw new Error(error.message)
+}
+
 export async function setFluencyStudentSkillEnabled(studentId, skillId, enabled) {
   const { error } = await adminClient().from('fluency_student_skills')
     .upsert({ student_id: studentId, skill_id: skillId, enabled }, { onConflict: 'student_id,skill_id' })

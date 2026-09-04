@@ -741,6 +741,17 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fl-input.ok { border-color: var(--green-line, var(--green)); background: var(--green-bg, transparent); }
 .fl-input.bad { border-color: var(--red); }
 
+/* Multiple-choice options -- tappable buttons instead of a text input, sized
+   for a thumb on a phone (min-height matches .fl-input's 44px tap target). */
+.fl-mc-options { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
+.fl-mc-opt {
+  font-size: 14px; padding: 10px 14px; min-height: 44px; text-align: left;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--surface);
+}
+.fl-mc-opt.selected { border-color: var(--accent); background: var(--accent-dim); }
+.fl-mc-opt.ok { border-color: var(--green-line, var(--green)); background: var(--green-bg, transparent); }
+.fl-mc-opt.bad { border-color: var(--red); background: rgba(220, 80, 80, 0.08); }
+
 .fl-feedback { margin-top: 16px; padding: 14px; border-radius: var(--radius); font-size: 13px; line-height: 1.6; }
 .fl-feedback.ok { background: var(--green-bg, transparent); border: 1px solid var(--green-line, var(--green)); }
 .fl-feedback.bad { background: rgba(220, 80, 80, 0.08); border: 1px solid var(--red); }
@@ -757,6 +768,7 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 @media (max-width: 640px) {
   .fl-fields { flex-direction: column; gap: 10px; }
   .fl-input { width: 100%; }
+  .fl-mc-options { width: 100%; min-width: 0; }
   .fl-eq-row { font-size: 19px; }
   .fl-next-bar { justify-content: stretch; }
   .fl-next-bar button { width: 100%; }

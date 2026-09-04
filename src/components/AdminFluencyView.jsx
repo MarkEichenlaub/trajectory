@@ -1,16 +1,38 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   fetchFluencySkills, fetchFluencyStudentSkills, fetchFluencySkillState, fetchFluencyAttempts,
-  setFluencyPracticeEnabled, setFluencyStudentSkillEnabled,
+  setFluencyPracticeEnabled, setFluencyStudentSkillEnabled, setFluencyDailyGoal,
   addFluencySkillNote, fetchFluencySkillNotes, resolveFluencySkillNote,
 } from '../utils/supabase'
+
+function fmtDuration(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`
+  const m = Math.floor(sec / 60), s = Math.round(sec % 60)
+  return s ? `${m}m ${s}s` : `${m}m`
+}
+
+// One row per calendar day (student's local time, so it lines up with what
+// they'd call "today"), most recent first -- this is the whole point of
+// tracking response_ms per attempt: Mark can see whether 8 questions is
+// actually landing near his 5-minutes-a-day target, or needs adjusting.
+function dailyStats(attempts) {
+  const byDay = new Map()
+  for (const a of attempts) {
+    const day = new Date(a.created_at).toLocaleDateString('en-CA')
+    const rec = byDay.get(day) || { count: 0, ms: 0 }
+    rec.count++
+    rec.ms += a.response_ms || 0
+    byDay.set(day, rec)
+  }
+  return [...byDay.entries()].sort((a, b) => b[0].localeCompare(a[0])).slice(0, 14)
+}
 
 // Mark's tagging + oversight tool: turn the feature on for a student, choose
 // which skills are in their active rotation, jot a quick note during/after a
 // session about a hesitation that doesn't have a generator yet, and review
 // what a student has actually been doing. See "Leo fluency" design spec,
 // open question #3 (tagging workflow) — this is the "quick admin form" answer.
-export default function AdminFluencyView({ studentId, studentName, enabled, onEnabledChange }) {
+export default function AdminFluencyView({ studentId, studentName, enabled, onEnabledChange, dailyGoal, onDailyGoalChange }) {
   const [skills, setSkills] = useState([])
   const [studentSkills, setStudentSkills] = useState([])
   const [state, setState] = useState({})
@@ -20,15 +42,20 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
   const [busy, setBusy] = useState(false)
+  const [goalInput, setGoalInput] = useState(dailyGoal || 8)
+
+  useEffect(() => { setGoalInput(dailyGoal || 8) }, [dailyGoal, studentId])
 
   const load = useCallback(async () => {
     if (!studentId) return
     setLoading(true)
     setErr(null)
     try {
+      // 400 (not 40) so the daily time/count breakdown below has enough
+      // history to actually show a few weeks, not just the last session or two.
       const [sk, ss, st, at, no] = await Promise.all([
         fetchFluencySkills(), fetchFluencyStudentSkills(studentId),
-        fetchFluencySkillState(studentId), fetchFluencyAttempts(studentId, 40),
+        fetchFluencySkillState(studentId), fetchFluencyAttempts(studentId, 400),
         fetchFluencySkillNotes(studentId),
       ])
       setSkills(sk)
@@ -52,6 +79,18 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
       onEnabledChange?.(!enabled)
     } catch (e) { setErr(e.message) } finally { setBusy(false) }
   }
+
+  async function saveGoal() {
+    const n = Math.max(1, Math.min(40, Math.round(Number(goalInput)) || 8))
+    setGoalInput(n)
+    if (n === (dailyGoal || 8)) return
+    try {
+      await setFluencyDailyGoal(studentId, n)
+      onDailyGoalChange?.(n)
+    } catch (e) { setErr(e.message) }
+  }
+
+  const daily = useMemo(() => dailyStats(attempts), [attempts])
 
   async function toggleSkill(skillId, currentlyOn) {
     setStudentSkills(prev => {
@@ -94,14 +133,44 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
     <div className="admin-pane" style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 900 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
         <h3 style={{ fontSize: 15, fontWeight: 600, margin: 0 }}>Fluency Practice — {studentName}</h3>
         <button className="sm" disabled={busy}
           style={{ color: enabled ? 'var(--green)' : 'var(--text-dim)' }}
           onClick={toggleEnabled}>
           {enabled ? '● on' : '○ off'}
         </button>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-dim)' }}>
+          Daily goal
+          <input type="number" min={1} max={40} value={goalInput}
+            onChange={e => setGoalInput(e.target.value)}
+            onBlur={saveGoal}
+            style={{ width: 52, padding: '2px 6px' }} />
+          questions
+        </label>
       </div>
+
+      {daily.length > 0 && (
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: 'var(--text-dim)' }}>
+            Time spent (for calibrating the daily goal above)
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 420 }}>
+            {daily.map(([day, rec]) => (
+              <div key={day} style={{ display: 'flex', gap: 10, fontSize: 12, alignItems: 'baseline' }}>
+                <span style={{ width: 88, color: 'var(--text-dim)' }}>
+                  {new Date(`${day}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+                <span style={{ flex: 1 }}>{rec.count} question{rec.count === 1 ? '' : 's'}</span>
+                <span style={{ color: 'var(--text-dim)' }}>{fmtDuration(rec.ms / 1000)}</span>
+                <span style={{ color: 'var(--text-dim)', width: 56, textAlign: 'right' }}>
+                  {rec.count ? `${Math.round(rec.ms / rec.count / 1000)}s/ea` : ''}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <form onSubmit={submitNote} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: 14 }}>
         <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Quick skill note</div>

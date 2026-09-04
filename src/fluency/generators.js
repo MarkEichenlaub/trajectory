@@ -203,6 +203,14 @@ function answerBlanks(raw, unitTex) {
 }
 
 function fmtSigned(n) { return n >= 0 ? `${n}` : `(${n})` }
+// "1 + coeff*term" written the way a person would write it by hand -- "1 - 2x"
+// rather than the glued "1+-2x" a naive template literal produces for a
+// negative coefficient.
+function fmtTerm(coeff, term) {
+  if (coeff === 1) return `+ ${term}`
+  if (coeff === -1) return `- ${term}`
+  return coeff >= 0 ? `+ ${coeff}${term}` : `- ${Math.abs(coeff)}${term}`
+}
 function round2(x) { return Math.round(x * 100) / 100 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -401,7 +409,14 @@ function genUnitPrefixConvert(level, rng) {
   else if (level === 1) { fromP = randChoice(rng, ['k', 'c', 'm']); toP = ''; power = 2 }
   else if (level === 2) { fromP = randChoice(rng, ['k', 'c', 'm']); toP = ''; power = 3 }
   else if (level === 3) {
-    const opts = [['c', 'm'], ['m', 'c'], ['k', 'm'], ['m', 'k'], ['c', 'k']]
+    // Prefix-to-prefix conversions, not just prefix-to-base -- including pairs
+    // where NEITHER side is the base unit (e.g. "100 kPa in GPa"), which the
+    // level-4 case below never generates because it always converts to base.
+    const opts = [
+      ['c', 'm'], ['m', 'c'], ['k', 'm'], ['m', 'k'], ['c', 'k'],
+      ['k', 'M'], ['M', 'k'], ['k', 'G'], ['G', 'k'], ['M', 'G'], ['G', 'M'],
+      ['m', 'μ'], ['μ', 'm'], ['n', 'μ'], ['μ', 'n'],
+    ]
     ;[fromP, toP] = randChoice(rng, opts)
     power = randChoice(rng, [1, 2])
   } else {
@@ -570,6 +585,16 @@ function addExp(a, b, sign = 1) {
 }
 function scaleExp(a, k) { return { kg: a.kg * k, m: a.m * k, s: a.s * k } }
 
+// A base-unit exponent vector as an actual fraction (positive exponents on
+// top, negative ones flipped to the bottom) -- "kg/(m·s^2)" rather than
+// "kg^1 m^-1 s^-2" -- which is how these show up in a real formula.
+function fracTex(exp) {
+  const pos = BASE.filter(u => exp[u] > 0).map(u => (exp[u] === 1 ? `\\text{${u}}` : `\\text{${u}}^{${exp[u]}}`))
+  const neg = BASE.filter(u => exp[u] < 0).map(u => (-exp[u] === 1 ? `\\text{${u}}` : `\\text{${u}}^{${-exp[u]}}`))
+  const numer = pos.length ? pos.join(' \\cdot ') : '1'
+  return neg.length ? `\\dfrac{${numer}}{${neg.join(' \\cdot ')}}` : numer
+}
+
 // "kg^{2} \cdot m" style tex for a set of base-unit exponents (all >= 0).
 // Units with exponent 0 are omitted; exponent 1 shows no visible power.
 // Units are set upright (\text{...}) rather than KaTeX's default italic --
@@ -709,14 +734,508 @@ function genUnitDimensions(level, rng) {
       timeTargetSec: 35,
     }
   }
-  const f = randChoice(rng, DIMENSIONAL_FORMULAS)
+  if (level === 4) {
+    const f = randChoice(rng, DIMENSIONAL_FORMULAS)
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: f.promptMd,
+      equation: [{ tex: f.label }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(f.exp),
+      explanationMd: f.steps + ` Final units: $$${fmtExp(f.exp)}$$.`,
+      timeTargetSec: 40,
+    }
+  }
+  // Level 5 -- a fraction of two square roots, each itself a fraction of base
+  // units (e.g. sqrt(kg/(m·s^2)) / sqrt(kg/m^3)). `diff` is picked with even
+  // components so (numIn - denIn)/2 is an exact integer vector -- the whole
+  // thing collapses to sqrt(numIn/denIn), which is why the two square roots
+  // don't each need to come out even on their own.
+  let numIn, denIn, diff, tries = 0
+  do {
+    numIn = { kg: randInt(rng, -3, 3), m: randInt(rng, -3, 3), s: randInt(rng, -3, 3) }
+    diff = { kg: randInt(rng, -2, 2) * 2, m: randInt(rng, -2, 2) * 2, s: randInt(rng, -2, 2) * 2 }
+    denIn = addExp(numIn, diff, -1)
+    tries++
+  } while (tries < 50 && (
+    (numIn.kg === 0 && numIn.m === 0 && numIn.s === 0) ||
+    (denIn.kg === 0 && denIn.m === 0 && denIn.s === 0) ||
+    Math.max(Math.abs(denIn.kg), Math.abs(denIn.m), Math.abs(denIn.s)) > 3
+  ))
+  const result = scaleExp(diff, 0.5)
   const blanks = baseExponentBlanks()
   return {
-    promptMd: f.promptMd,
-    equation: [{ tex: f.label }, { tex: '=' }, ...blanks.equation],
-    fields: blanks.fields, ...baseExponentAnswer(f.exp),
-    explanationMd: f.steps + ` Final units: $$${fmtExp(f.exp)}$$.`,
-    timeTargetSec: 40,
+    promptMd: `Simplify.`,
+    equation: [
+      { tex: `\\dfrac{\\sqrt{${fracTex(numIn)}}}{\\sqrt{${fracTex(denIn)}}}` }, { tex: '=' }, ...blanks.equation,
+    ],
+    fields: blanks.fields, ...baseExponentAnswer(result),
+    explanationMd: `Combine into one square root first: $$\\dfrac{\\sqrt{${fracTex(numIn)}}}{\\sqrt{${fracTex(denIn)}}} = \\sqrt{\\dfrac{${fracTex(numIn)}}{${fracTex(denIn)}}}$$, simplify what's inside base by base, *then* take the root. Result: $$${fmtExp(result)}$$.`,
+    timeTargetSec: 45,
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 7 — exponent rules: power-of-a-power, product of powers, and roots
+// of powers (Leo's 2026-09-03 session: sqrt(T^-2)). Deliberately separate
+// from exp-sign-division, which only drills the division-bar sign flip --
+// this one is the other core rules, in both bare-variable and physics form.
+// ═══════════════════════════════════════════════════════════════════════
+const PHYS_EXP_VARS = ['T', 'M', 'L', 'v', 'r', 'm', '\\omega']
+
+function genExponentRules(level, rng) {
+  const V = randChoice(rng, VARS)
+  if (level === 0) {
+    const a = randNonZeroInt(rng, -5, 5), b = randNonZeroInt(rng, -4, 4)
+    const result = a * b
+    return {
+      promptMd: `Simplify to a single power of ${V}.`,
+      equation: [{ tex: `(${V}^{${a}})^{${b}}` }, { tex: '=' }, { tex: V }, { blank: 'exp', sup: true }],
+      fields: [{ key: 'exp', label: 'exponent', type: 'int', placeholder: 'e.g. -6' }],
+      answer: { exp: result }, tolerance: { exp: 0 },
+      explanationMd: `Raising a power to a power multiplies the exponents: $$(${V}^{${a}})^{${b}} = ${V}^{${fmtSigned(a)}\\times ${fmtSigned(b)}} = ${V}^{${result}}$$`,
+      timeTargetSec: 15,
+    }
+  }
+  if (level === 1) {
+    const a = randNonZeroInt(rng, -6, 6), b = randNonZeroInt(rng, -6, 6)
+    const result = a + b
+    return {
+      promptMd: `Simplify to a single power of ${V}.`,
+      equation: [{ tex: `${V}^{${a}} \\cdot ${V}^{${b}}` }, { tex: '=' }, { tex: V }, { blank: 'exp', sup: true }],
+      fields: [{ key: 'exp', label: 'exponent', type: 'int', placeholder: 'e.g. 3' }],
+      answer: { exp: result }, tolerance: { exp: 0 },
+      explanationMd: `Multiplying powers of the same base adds exponents: $$${fmtSigned(a)} + (${fmtSigned(b)}) = ${result}$$`,
+      timeTargetSec: 12,
+    }
+  }
+  if (level === 2) {
+    const PV = randChoice(rng, PHYS_EXP_VARS)
+    const half = randNonZeroInt(rng, -4, 4)
+    const n = half * 2
+    return {
+      promptMd: `Simplify.`,
+      equation: [{ tex: `\\sqrt{${PV}^{${n}}}` }, { tex: '=' }, { tex: PV }, { blank: 'exp', sup: true }],
+      fields: [{ key: 'exp', label: 'exponent', type: 'int', placeholder: 'e.g. -1' }],
+      answer: { exp: half }, tolerance: { exp: 0 },
+      explanationMd: `A square root halves the exponent: $$\\sqrt{${PV}^{${n}}} = ${PV}^{${n}/2} = ${PV}^{${half}}$$ — the same move that turns $$\\sqrt{${PV}^{-2}}$$ into $$${PV}^{-1}$$.`,
+      timeTargetSec: 15,
+    }
+  }
+  if (level === 3) {
+    const PV = randChoice(rng, PHYS_EXP_VARS)
+    let n
+    do { n = randNonZeroInt(rng, -7, 7) } while (n % 2 === 0)
+    const half = n / 2
+    return {
+      promptMd: `Simplify.`,
+      equation: [{ tex: `\\sqrt{${PV}^{${n}}}` }, { tex: '=' }, { tex: PV }, { blank: 'exp', sup: true }],
+      fields: [{ key: 'exp', label: 'exponent', type: 'decimal', placeholder: 'e.g. 1.5' }],
+      answer: { exp: half }, tolerance: { exp: 0.01 },
+      explanationMd: `A square root halves the exponent even when it doesn't land on a whole number: $$${n}/2 = ${half}$$`,
+      timeTargetSec: 18,
+    }
+  }
+  if (rng() < 0.5) {
+    const PV = randChoice(rng, PHYS_EXP_VARS.filter(v => v !== '\\omega'))
+    let a, b, c, inner
+    do {
+      a = randNonZeroInt(rng, -4, 4); b = randNonZeroInt(rng, -3, 3); c = randNonZeroInt(rng, -6, 6)
+      inner = a * b - c
+    } while (inner % 2 !== 0)
+    const result = inner / 2
+    return {
+      promptMd: `Simplify.`,
+      equation: [
+        { tex: `\\sqrt{\\dfrac{(${PV}^{${a}})^{${b}}}{${PV}^{${c}}}}` }, { tex: '=' }, { tex: PV }, { blank: 'exp', sup: true },
+      ],
+      fields: [{ key: 'exp', label: 'exponent', type: 'decimal', placeholder: 'e.g. 2' }],
+      answer: { exp: result }, tolerance: { exp: 0.01 },
+      explanationMd: `Combine the power-of-a-power and the division first: $$${fmtSigned(a)}\\times ${fmtSigned(b)} - ${fmtSigned(c)} = ${inner}$$. Then the square root halves it: $$${inner}/2 = ${result}$$.`,
+      timeTargetSec: 30,
+    }
+  }
+  const V2 = randChoice(rng, VARS.filter(v => v !== V))
+  const a = randNonZeroInt(rng, -4, 4), b = randNonZeroInt(rng, -4, 4), c = randNonZeroInt(rng, -3, 3)
+  return {
+    promptMd: `Simplify $$(${V}^{${a}} ${V2}^{${b}})^{${c}}$$ and give the exponent of ${V}.`,
+    fields: [{ key: 'exp', label: `exponent of ${V}`, type: 'int', placeholder: 'e.g. -6' }],
+    answer: { exp: a * c }, tolerance: { exp: 0 },
+    explanationMd: `Raise each factor to the outer power separately: the exponent of ${V} is $$${a}\\times ${c} = ${a * c}$$ (and ${V2}'s would be $$${b}\\times ${c} = ${b * c}$$).`,
+    timeTargetSec: 25,
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 8 — physics symbol literacy: meaning, pronunciation, SI units, and
+// M/L/T dimensions of the symbols that actually show up on F=ma exams, plus
+// the reverse (name a quantity, pick its symbol). `exp` reuses the same
+// kg/m/s exponent vectors as the unit-dimensions skill; dimensions (M, L, T)
+// are the same numbers under a different label, so no separate data needed.
+// ═══════════════════════════════════════════════════════════════════════
+const PHYSICS_SYMBOLS = [
+  // tier 0 — the everyday Latin letters
+  { symbol: 'F', meaning: 'force', pronunciation: 'eff', greek: false, exp: { kg: 1, m: 1, s: -2 }, namedUnit: 'N', tier: 0 },
+  { symbol: 'm', meaning: 'mass', pronunciation: 'em', greek: false, exp: { kg: 1, m: 0, s: 0 }, namedUnit: null, tier: 0 },
+  { symbol: 'a', meaning: 'acceleration', pronunciation: 'ay', greek: false, exp: { kg: 0, m: 1, s: -2 }, namedUnit: null, tier: 0 },
+  { symbol: 'v', meaning: 'velocity (speed)', pronunciation: 'vee', greek: false, exp: { kg: 0, m: 1, s: -1 }, namedUnit: null, tier: 0 },
+  { symbol: 't', meaning: 'time', pronunciation: 'tee', greek: false, exp: { kg: 0, m: 0, s: 1 }, namedUnit: null, tier: 0 },
+  { symbol: 'g', meaning: 'gravitational acceleration (near a surface)', pronunciation: 'jee', greek: false, exp: { kg: 0, m: 1, s: -2 }, namedUnit: null, tier: 0 },
+  { symbol: 'p', meaning: 'momentum', pronunciation: 'pee', greek: false, exp: { kg: 1, m: 1, s: -1 }, namedUnit: null, tier: 0 },
+  { symbol: 'W', meaning: 'work', pronunciation: 'double-u', greek: false, exp: { kg: 1, m: 2, s: -2 }, namedUnit: 'J', tier: 0 },
+  // tier 1 — less-common Latin letters and the first Greek letters
+  { symbol: 'N', meaning: 'normal force', pronunciation: 'en', greek: false, exp: { kg: 1, m: 1, s: -2 }, namedUnit: 'N', tier: 1 },
+  { symbol: 'k', meaning: 'spring constant', pronunciation: 'kay', greek: false, exp: { kg: 1, m: 0, s: -2 }, namedUnit: null, tier: 1 },
+  { symbol: 'U', meaning: 'potential energy', pronunciation: 'you', greek: false, exp: { kg: 1, m: 2, s: -2 }, namedUnit: 'J', tier: 1 },
+  { symbol: 'K', meaning: 'kinetic energy', pronunciation: 'kay', greek: false, exp: { kg: 1, m: 2, s: -2 }, namedUnit: 'J', tier: 1 },
+  { symbol: 'P', meaning: 'power', pronunciation: 'pee', greek: false, exp: { kg: 1, m: 2, s: -3 }, namedUnit: 'W', tier: 1 },
+  { symbol: 'I', meaning: 'moment of inertia', pronunciation: 'eye', greek: false, exp: { kg: 1, m: 2, s: 0 }, namedUnit: null, tier: 1 },
+  { symbol: 'L', meaning: 'angular momentum', pronunciation: 'el', greek: false, exp: { kg: 1, m: 2, s: -1 }, namedUnit: null, tier: 1 },
+  { symbol: '\\mu', meaning: 'coefficient of friction', pronunciation: 'myoo', greek: true, exp: { kg: 0, m: 0, s: 0 }, namedUnit: null, tier: 1 },
+  { symbol: '\\rho', meaning: 'density', pronunciation: 'row', greek: true, exp: { kg: 1, m: -3, s: 0 }, namedUnit: null, tier: 1 },
+  { symbol: '\\theta', meaning: 'angle', pronunciation: 'THAY-tuh', greek: true, exp: { kg: 0, m: 0, s: 0 }, namedUnit: null, tier: 1 },
+  { symbol: '\\omega', meaning: 'angular velocity', pronunciation: 'oh-MAY-guh', greek: true, exp: { kg: 0, m: 0, s: -1 }, namedUnit: null, tier: 1 },
+  // tier 2 — the ones Leo will only see cold on the real exam
+  { symbol: 'G', meaning: 'universal gravitational constant', pronunciation: 'big jee', greek: false, exp: { kg: -1, m: 3, s: -2 }, namedUnit: null, tier: 2 },
+  { symbol: '\\tau', meaning: 'torque', pronunciation: 'taw', greek: true, exp: { kg: 1, m: 2, s: -2 }, namedUnit: null, tier: 2 },
+  { symbol: '\\alpha', meaning: 'angular acceleration', pronunciation: 'AL-fuh', greek: true, exp: { kg: 0, m: 0, s: -2 }, namedUnit: null, tier: 2 },
+  { symbol: '\\eta', meaning: 'viscosity', pronunciation: 'AY-tuh', greek: true, exp: { kg: 1, m: -1, s: -1 }, namedUnit: null, tier: 2 },
+  { symbol: '\\lambda', meaning: 'linear mass density', pronunciation: 'LAM-duh', greek: true, exp: { kg: 1, m: -1, s: 0 }, namedUnit: null, tier: 2 },
+  { symbol: '\\sigma', meaning: 'stress', pronunciation: 'SIG-muh', greek: true, exp: { kg: 1, m: -1, s: -2 }, namedUnit: 'Pa', tier: 2 },
+  { symbol: 'b', meaning: 'linear drag coefficient', pronunciation: 'bee', greek: false, exp: { kg: 1, m: 0, s: -1 }, namedUnit: null, tier: 2 },
+  { symbol: 'f', meaning: 'frequency', pronunciation: 'eff', greek: false, exp: { kg: 0, m: 0, s: -1 }, namedUnit: 'Hz', tier: 2 },
+]
+
+// M/L/T dimension letters are set upright with \mathrm{}, not \text{} (which
+// is for unit *names* like kg/m/s) and never bare italic.
+function dimensionBlanks() {
+  return {
+    fields: [
+      { key: 'eM', label: 'power of M', type: 'int', placeholder: 'e.g. 1' },
+      { key: 'eL', label: 'power of L', type: 'int', placeholder: 'e.g. -3' },
+      { key: 'eT', label: 'power of T', type: 'int', placeholder: 'e.g. -2' },
+    ],
+    equation: [
+      { tex: '\\mathrm{M}' }, { blank: 'eM', sup: true },
+      { tex: '\\,\\mathrm{L}' }, { blank: 'eL', sup: true },
+      { tex: '\\,\\mathrm{T}' }, { blank: 'eT', sup: true },
+    ],
+  }
+}
+function dimensionAnswer(exp) {
+  return { answer: { eM: exp.kg, eL: exp.m, eT: exp.s }, tolerance: { eM: 0, eL: 0, eT: 0 } }
+}
+function fmtDimensions(exp) {
+  const map = [['M', exp.kg], ['L', exp.m], ['T', exp.s]]
+  const parts = map.filter(([, e]) => e !== 0).map(([u, e]) => (e === 1 ? `\\mathrm{${u}}` : `\\mathrm{${u}}^{${e}}`))
+  return parts.length ? parts.join('\\, ') : '1 (dimensionless)'
+}
+
+function shuffle(rng, arr) {
+  const a = arr.slice()
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+function pickN(rng, pool, n) {
+  return shuffle(rng, pool).slice(0, Math.min(n, pool.length))
+}
+
+// Picks n distractors whose *displayed* text (via textFn) doesn't collide
+// with the correct option's or each other's -- e.g. K, k, and P all
+// pronounce "kay"/"pee", so a plain pickN can silently produce an MC
+// question with two buttons showing the exact same text.
+function pickDistinctDistractors(rng, correct, pool, textFn, n) {
+  const used = new Set([textFn(correct)])
+  const picked = []
+  for (const cand of shuffle(rng, pool)) {
+    const t = textFn(cand)
+    if (used.has(t)) continue
+    used.add(t)
+    picked.push(cand)
+    if (picked.length >= n) break
+  }
+  return picked
+}
+
+function symbolPool(level) {
+  const maxTier = Math.min(level, 2)
+  return PHYSICS_SYMBOLS.filter(s => s.tier <= maxTier)
+}
+
+function genPhysicsSymbols(level, rng) {
+  const pool = symbolPool(level)
+  const kinds = ['meaning', 'meaning-reverse', 'units', 'dimensions']
+  if (pool.some(s => s.greek)) kinds.push('pronunciation')
+  const kind = randChoice(rng, kinds)
+
+  if (kind === 'meaning' || kind === 'pronunciation') {
+    const field = kind === 'meaning' ? 'meaning' : 'pronunciation'
+    const candidates = kind === 'pronunciation' ? pool.filter(s => s.greek) : pool
+    const correct = randChoice(rng, candidates)
+    const distractors = pickDistinctDistractors(rng, correct, pool.filter(s => s !== correct), s => s[field], 3)
+    const options = shuffle(rng, [correct, ...distractors]).map(s => ({ key: s.symbol, label: s[field] }))
+    return {
+      promptMd: kind === 'meaning'
+        ? `In a physics formula, $$${correct.symbol}$$ most commonly stands for:`
+        : `How do you pronounce $$${correct.symbol}$$?`,
+      fields: [{ key: 'ans', type: 'mc', label: '', options }],
+      answer: { ans: correct.symbol }, tolerance: {},
+      explanationMd: kind === 'meaning'
+        ? `$$${correct.symbol}$$ is the standard symbol for **${correct.meaning}**.`
+        : `$$${correct.symbol}$$ is pronounced "${correct.pronunciation}."`,
+      timeTargetSec: 10,
+    }
+  }
+
+  if (kind === 'meaning-reverse') {
+    const correct = randChoice(rng, pool)
+    const distractors = pickN(rng, pool.filter(s => s !== correct), 3)
+    const options = shuffle(rng, [correct, ...distractors]).map(s => ({ key: s.symbol, tex: s.symbol }))
+    return {
+      promptMd: `Which symbol usually stands for **${correct.meaning}**?`,
+      fields: [{ key: 'ans', type: 'mc', label: '', options }],
+      answer: { ans: correct.symbol }, tolerance: {},
+      explanationMd: `${correct.meaning[0].toUpperCase()}${correct.meaning.slice(1)} is usually written $$${correct.symbol}$$.`,
+      timeTargetSec: 12,
+    }
+  }
+
+  if (kind === 'units') {
+    const withNamed = pool.filter(s => s.namedUnit)
+    const withoutNamed = pool.filter(s => !s.namedUnit)
+    const useNamed = withNamed.length > 0 && (withoutNamed.length === 0 || rng() < 0.4)
+    if (useNamed) {
+      const s = randChoice(rng, withNamed)
+      return {
+        promptMd: `What SI unit (symbol) would you measure $$${s.symbol}$$ (${s.meaning}) in?`,
+        fields: [{ key: 'unit', label: 'unit symbol', type: 'text', placeholder: 'e.g. Pa' }],
+        answer: { unit: s.namedUnit }, tolerance: {},
+        explanationMd: `${s.meaning[0].toUpperCase()}${s.meaning.slice(1)} ($$${s.symbol}$$) is measured in ${s.namedUnit === 'N' ? 'newtons' : s.namedUnit === 'J' ? 'joules' : s.namedUnit === 'W' ? 'watts' : s.namedUnit === 'Pa' ? 'pascals' : 'hertz'}, symbol $$\\text{${s.namedUnit}}$$.`,
+        timeTargetSec: 12,
+      }
+    }
+    const s = randChoice(rng, withoutNamed.length ? withoutNamed : pool)
+    const blanks = baseExponentBlanks()
+    return {
+      promptMd: `What SI units would you measure $$${s.symbol}$$ (${s.meaning}) in?`,
+      equation: [{ tex: `[${s.symbol}]` }, { tex: '=' }, ...blanks.equation],
+      fields: blanks.fields, ...baseExponentAnswer(s.exp),
+      explanationMd: `${s.meaning[0].toUpperCase()}${s.meaning.slice(1)} has units $$${fmtExp(s.exp)}$$.`,
+      timeTargetSec: 20,
+    }
+  }
+
+  // kind === 'dimensions'
+  const s = randChoice(rng, pool)
+  const blanks = dimensionBlanks()
+  return {
+    promptMd: `What are the dimensions of $$${s.symbol}$$ (${s.meaning})?`,
+    equation: [{ tex: `[${s.symbol}]` }, { tex: '=' }, ...blanks.equation],
+    fields: blanks.fields, ...dimensionAnswer(s.exp),
+    explanationMd: `${s.meaning[0].toUpperCase()}${s.meaning.slice(1)} has dimensions $$${fmtDimensions(s.exp)}$$ — mass (M), length (L), time (T).`,
+    timeTargetSec: 20,
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 9 — Taylor series to 1st/2nd order. Content pulled from the "Taylor
+// Series for the F = ma Exam" handout (the 5-box summary) plus Morin's
+// Appendix B, both reviewed 2026-09-03. Every problem is either pure recall
+// or a one-line application with "nice" numbers -- nothing here needs more
+// than mental arithmetic, per the handout's own "no calculator" framing.
+// ═══════════════════════════════════════════════════════════════════════
+const TAYLOR_FORMULAS = [
+  { key: 'pow', lhs: '(1+x)^n', rhs: '1 + nx' },
+  { key: 'exp', lhs: 'e^{x}', rhs: '1 + x' },
+  { key: 'expneg', lhs: 'e^{-x}', rhs: '1 - x' },
+  { key: 'ln', lhs: '\\ln(1+x)', rhs: 'x' },
+  { key: 'sin', lhs: '\\sin x', rhs: 'x' },
+  { key: 'cos', lhs: '\\cos x', rhs: '1 - \\tfrac{1}{2}x^2' },
+  { key: 'inv', lhs: '\\dfrac{1}{1+x}', rhs: '1 - x' },
+  { key: 'sqrt', lhs: '\\sqrt{1+x}', rhs: '1 + \\tfrac{1}{2}x' },
+  { key: 'invsqrt', lhs: '\\dfrac{1}{\\sqrt{1+x}}', rhs: '1 - \\tfrac{1}{2}x' },
+  { key: 'invsq', lhs: '\\dfrac{1}{(1+x)^2}', rhs: '1 - 2x' },
+]
+
+const TAYLOR_COEFF_TEMPLATES = [
+  { promptMd: `Fill in the coefficient: $$\\cos x \\approx 1 + a\\,x^2$$`, coeff: -0.5 },
+  { promptMd: `Fill in the coefficient: $$\\sqrt{1+x} \\approx 1 + a\\,x$$`, coeff: 0.5 },
+  { promptMd: `Fill in the coefficient: $$\\dfrac{1}{\\sqrt{1+x}} \\approx 1 + a\\,x$$`, coeff: -0.5 },
+  { promptMd: `Fill in the coefficient: $$\\dfrac{1}{(1+x)^2} \\approx 1 + a\\,x$$`, coeff: -2 },
+  { promptMd: `Fill in the coefficient (2nd order): $$e^{x} \\approx 1 + x + a\\,x^2$$`, coeff: 0.5 },
+]
+
+// build(rng) -> { promptMd, raw, explanationMd } -- same "skin" pattern as
+// SKIN_TEMPLATES above, applying (1+x)^n ≈ 1+nx (or e^x ≈ 1+x) to a small
+// mechanics scenario straight out of the handout's "Physics Applications".
+const TAYLOR_PHYSICS_TEMPLATES = [
+  rng => {
+    const frac = randChoice(rng, [0.001, 0.002, 0.004, 0.005, 0.008, 0.01])
+    return {
+      promptMd: `Near a planet's surface, $$g(h) = g_0(1+h/R)^{-2}$$. If $$h/R = ${frac}$$ (small), by what fraction does $$g$$ decrease? (Answer as a decimal, e.g. 0.01 for 1%.)`,
+      raw: 2 * frac,
+      explanationMd: `$$(1+x)^{-2} \\approx 1-2x$$ with $$x=h/R$$, so $$g$$ drops by about $$2(h/R) = ${round2(2 * frac * 1000) / 1000}$$ — twice the height fraction, because $$n=-2$$.`,
+    }
+  },
+  rng => {
+    const eps = randChoice(rng, [0.02, 0.04, 0.06, 0.08, 0.1, 0.12])
+    return {
+      promptMd: `A pendulum's period is $$T = 2\\pi\\sqrt{L/g}$$. If the length $$L$$ increases by a fraction $$${eps}$$, by what fraction does $$T$$ increase?`,
+      raw: eps / 2,
+      explanationMd: `$$T \\propto L^{1/2}$$, so $$(1+\\epsilon)^{1/2}\\approx 1+\\tfrac12\\epsilon$$: the period grows by half the fractional length change, $$\\tfrac12(${eps}) = ${eps / 2}$$.`,
+    }
+  },
+  rng => {
+    const n = randChoice(rng, [2, 3, -1, -2])
+    const eps = randChoice(rng, [0.01, 0.02, 0.03, 0.04, 0.05])
+    return {
+      promptMd: `A measured speed $$v$$ has fractional uncertainty $$${eps}$$. If $$Q = v^{${n}}$$, what is the fractional uncertainty in $$Q$$? (Give a positive decimal.)`,
+      raw: Math.abs(n) * eps,
+      explanationMd: `A power multiplies percentage error by the exponent: $$(1+\\epsilon)^{${n}} \\approx 1 ${fmtTerm(n, '\\epsilon')}$$, so the fractional error in $$Q$$ is $$|${n}|\\times ${eps} = ${round2(Math.abs(n) * eps * 1000) / 1000}$$.`,
+    }
+  },
+  rng => {
+    const tOverTau = randChoice(rng, [0.01, 0.02, 0.03, 0.04, 0.05])
+    return {
+      promptMd: `A radioactive sample decays as $$N(t)=N_0e^{-t/\\tau}$$. If $$t/\\tau = ${tOverTau}$$ (small), about what fraction of the sample has decayed?`,
+      raw: tOverTau,
+      explanationMd: `$$e^{-x}\\approx 1-x$$ with $$x=t/\\tau$$, so the surviving fraction is $$\\approx 1-${tOverTau}$$ and the decayed fraction is $$\\approx ${tOverTau}$$.`,
+    }
+  },
+  rng => {
+    const v2c2 = randChoice(rng, [0.01, 0.02, 0.03, 0.04])
+    return {
+      promptMd: `Special relativity's $$\\gamma = (1-v^2/c^2)^{-1/2}$$. If $$v^2/c^2 = ${v2c2}$$, estimate $$\\gamma$$.`,
+      raw: 1 + v2c2 / 2,
+      explanationMd: `With $$x=-v^2/c^2$$ and $$n=-\\tfrac12$$: $$\\gamma \\approx 1-\\tfrac12(-${v2c2}) = 1+${v2c2 / 2}$$.`,
+    }
+  },
+]
+
+const TAYLOR_SECOND_ORDER_TEMPLATES = [
+  rng => {
+    const omega = randChoice(rng, [2, 4, 6, 8])
+    return {
+      promptMd: `Expand to second order in $$t$$: $$\\cos(${omega}t) \\approx 1 - a\\,t^2$$. Find $$a$$.`,
+      raw: (omega * omega) / 2,
+      explanationMd: `$$\\cos u \\approx 1-\\tfrac12 u^2$$ with $$u=${omega}t$$, so $$a = \\tfrac12(${omega})^2 = ${(omega * omega) / 2}$$.`,
+    }
+  },
+  rng => {
+    const mgL = randChoice(rng, [2, 4, 6, 8, 10, 12])
+    return {
+      promptMd: `A pendulum's potential energy is $$U(\\theta)=mgL(1-\\cos\\theta)$$, with $$mgL = ${mgL}$$ J. For small $$\\theta$$, $$U \\approx a\\,\\theta^2$$. Find $$a$$.`,
+      raw: mgL / 2,
+      explanationMd: `$$1-\\cos\\theta \\approx \\tfrac12\\theta^2$$, so $$U \\approx \\tfrac12(mgL)\\theta^2$$, giving $$a = ${mgL}/2 = ${mgL / 2}$$.`,
+    }
+  },
+  rng => {
+    const x = randChoice(rng, [0.1, 0.2, 0.06, 0.04])
+    return {
+      promptMd: `Estimate $$e^{${x}}$$ keeping terms through $$x^2$$ (i.e. $$1+x+x^2/2$$).`,
+      raw: 1 + x + (x * x) / 2,
+      explanationMd: `$$e^{${x}} \\approx 1+${x}+\\dfrac{(${x})^2}{2} = ${round2((1 + x + (x * x) / 2) * 10000) / 10000}$$ — closer to the true value than stopping at first order.`,
+    }
+  },
+]
+
+function genTaylorSeries(level, rng) {
+  if (level === 0) {
+    const correct = randChoice(rng, TAYLOR_FORMULAS)
+    const distractors = pickDistinctDistractors(rng, correct, TAYLOR_FORMULAS.filter(f => f !== correct), f => f.rhs, 3)
+    const options = shuffle(rng, [correct, ...distractors]).map(f => ({ key: f.key, tex: f.rhs }))
+    return {
+      promptMd: `For small $$x$$ (angles in radians):\n\n$$${correct.lhs} \\approx\\ ?$$`,
+      fields: [{ key: 'ans', type: 'mc', label: '', options }],
+      answer: { ans: correct.key }, tolerance: {},
+      explanationMd: `$$${correct.lhs} \\approx ${correct.rhs}$$ — one of the handful of Taylor approximations worth memorizing outright.`,
+      timeTargetSec: 10,
+    }
+  }
+  if (level === 1) {
+    const t = randChoice(rng, TAYLOR_COEFF_TEMPLATES)
+    return {
+      promptMd: t.promptMd,
+      fields: [{ key: 'a', label: 'a', type: 'decimal', placeholder: 'e.g. -0.5' }],
+      answer: { a: t.coeff }, tolerance: { a: 0.02 },
+      explanationMd: `Match term by term against the memorized expansion — the coefficient here is $$${t.coeff}$$.`,
+      timeTargetSec: 15,
+    }
+  }
+  if (level === 2) {
+    const mode = randChoice(rng, ['pow', 'sin', 'cos', 'exp', 'ln'])
+    if (mode === 'pow') {
+      const n = randChoice(rng, [2, 3, 4, 5, -1, -2, -3])
+      const x = randChoice(rng, [0.01, 0.02, 0.03, 0.04, -0.01, -0.02, -0.03, -0.04])
+      const base = round2(1 + x)
+      return {
+        promptMd: `Estimate $$(${base})^{${n}}$$ without a calculator (use $$(1+x)^n \\approx 1+nx$$).`,
+        fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 1.08' }],
+        answer: { v: 1 + n * x }, tolerance: { v: 0.02 },
+        explanationMd: `$$x = ${x}$$, $$n = ${n}$$: $$(1+x)^n \\approx 1+nx = 1 ${fmtTerm(n, `(${x})`)} = ${round2((1 + n * x) * 1000) / 1000}$$.`,
+        timeTargetSec: 20,
+      }
+    }
+    if (mode === 'sin') {
+      const x = randChoice(rng, [0.01, 0.02, 0.03, 0.04, 0.05, 0.1])
+      return {
+        promptMd: `Estimate $$\\sin(${x})$$ (x in radians).`,
+        fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 0.03' }],
+        answer: { v: x }, tolerance: { v: 0.02 },
+        explanationMd: `$$\\sin x \\approx x$$, so $$\\sin(${x}) \\approx ${x}$$.`,
+        timeTargetSec: 12,
+      }
+    }
+    if (mode === 'cos') {
+      const x = randChoice(rng, [0.1, 0.2, 0.3, 0.06, 0.04, 0.02])
+      const v = 1 - (x * x) / 2
+      return {
+        promptMd: `Estimate $$\\cos(${x})$$.`,
+        fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 0.98' }],
+        answer: { v }, tolerance: { v: 0.02 },
+        explanationMd: `$$\\cos x \\approx 1-\\tfrac12x^2 = 1 - \\tfrac12(${x})^2 = ${round2(v * 10000) / 10000}$$.`,
+        timeTargetSec: 18,
+      }
+    }
+    if (mode === 'exp') {
+      const x = randChoice(rng, [0.01, 0.02, 0.03, 0.04, 0.05, -0.01, -0.02, -0.03])
+      return {
+        promptMd: `Estimate $$e^{${x}}$$.`,
+        fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 1.03' }],
+        answer: { v: 1 + x }, tolerance: { v: 0.02 },
+        explanationMd: `$$e^x \\approx 1+x$$, so $$e^{${x}} \\approx ${round2((1 + x) * 1000) / 1000}$$.`,
+        timeTargetSec: 12,
+      }
+    }
+    const x = randChoice(rng, [0.01, 0.02, 0.03, 0.04, 0.05, -0.01, -0.02, -0.03])
+    const value = round2(1 + x)
+    return {
+      promptMd: `Estimate $$\\ln(${value})$$.`,
+      fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 0.03' }],
+      answer: { v: x }, tolerance: { v: 0.02 },
+      explanationMd: `Write ${value} as $$1 + (${x})$$: $$\\ln(1+x) \\approx x$$, so $$\\ln(${value}) \\approx ${x}$$.`,
+      timeTargetSec: 15,
+    }
+  }
+  if (level === 3) {
+    const t = randChoice(rng, TAYLOR_PHYSICS_TEMPLATES)(rng)
+    return {
+      promptMd: t.promptMd,
+      fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 0.02' }],
+      answer: { v: t.raw }, tolerance: { v: 0.02 },
+      explanationMd: t.explanationMd,
+      timeTargetSec: 30,
+    }
+  }
+  const t = randChoice(rng, TAYLOR_SECOND_ORDER_TEMPLATES)(rng)
+  return {
+    promptMd: t.promptMd,
+    fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 8' }],
+    answer: { v: t.raw }, tolerance: { v: 0.02 },
+    explanationMd: t.explanationMd,
+    timeTargetSec: 35,
   }
 }
 
@@ -750,8 +1269,23 @@ export const SKILLS = [
   },
   {
     slug: 'unit-dimensions', name: 'Unit simplification & dimensional analysis',
-    description: 'Simplifying fractions of kg/m/s, recalling derived units (N, J, Pa, W), and reading a constant\'s units off a formula.',
-    category: 'units', maxLevel: 4, generate: genUnitDimensions,
+    description: 'Simplifying fractions of kg/m/s (including a fraction of two square-rooted fractions), recalling derived units (N, J, Pa, W), and reading a constant\'s units off a formula.',
+    category: 'units', maxLevel: 5, generate: genUnitDimensions,
+  },
+  {
+    slug: 'exponent-rules', name: 'Exponent rules',
+    description: 'Power-of-a-power, product of powers, and roots of powers (e.g. sqrt(T^-2)), in both bare-variable and physics-flavored form.',
+    category: 'exponents', maxLevel: 4, generate: genExponentRules,
+  },
+  {
+    slug: 'physics-symbols', name: 'Physics symbols: meaning, units & dimensions',
+    description: 'Given a common F=ma symbol, recall its meaning, pronunciation, SI units, or M/L/T dimensions -- and the reverse (name a quantity, pick its symbol).',
+    category: 'symbols', maxLevel: 2, generate: genPhysicsSymbols,
+  },
+  {
+    slug: 'taylor-series', name: 'Taylor series (1st & 2nd order)',
+    description: 'Recall and apply the standard small-x approximations (sin, cos, e^x, (1+x)^n, ...), including simple mechanics applications.',
+    category: 'taylor series', maxLevel: 4, generate: genTaylorSeries,
   },
 ]
 
@@ -777,10 +1311,19 @@ export function gradeAnswer(problem, submitted) {
   let allCorrect = true
   for (const f of problem.fields) {
     const raw = submitted[f.key]
-    const val = typeof raw === 'string' ? evalMathExpr(raw.replace(/,/g, '')) : raw
     const target = problem.answer[f.key]
-    const tol = problem.tolerance[f.key] || 0
     let ok
+    if (f.type === 'mc' || f.type === 'text') {
+      // Multiple-choice (target is the chosen option's key) and short exact-
+      // text answers (e.g. a unit symbol like "Pa") are string matches, not
+      // numeric ones -- skip the tolerance/rounding logic entirely.
+      ok = typeof raw === 'string' && raw.trim() === target
+      perField[f.key] = ok
+      if (!ok) allCorrect = false
+      continue
+    }
+    const val = typeof raw === 'string' ? evalMathExpr(raw.replace(/,/g, '')) : raw
+    const tol = problem.tolerance[f.key] || 0
     if (!Number.isFinite(val)) {
       ok = false
     } else if (tol === 0) {

@@ -46,7 +46,39 @@ function EquationLine({ equation, fields, values, result, setField }) {
   )
 }
 
-const SESSION_LENGTH = 8
+// Renders a multiple-choice field as tappable option buttons instead of a
+// text input -- no typing needed, which is the whole point for a "meaning"
+// or "pronunciation" question on a phone. `correctKey` is only passed once
+// the problem has been graded, so the right/wrong coloring can't leak the
+// answer before that.
+function McOptions({ options, value, disabled, correctKey, onSelect }) {
+  return (
+    <div className="fl-mc-options">
+      {options.map(opt => {
+        const selected = value === opt.key
+        const showCorrect = correctKey != null && opt.key === correctKey
+        const showWrong = correctKey != null && selected && opt.key !== correctKey
+        return (
+          <button
+            key={opt.key} type="button" disabled={disabled}
+            className={`fl-mc-opt${selected ? ' selected' : ''}${showCorrect ? ' ok' : ''}${showWrong ? ' bad' : ''}`}
+            onClick={() => onSelect(opt.key)}
+          >
+            {opt.tex ? <span dangerouslySetInnerHTML={{ __html: katexHtml(opt.tex) }} /> : opt.label}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function fmtDuration(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`
+  const m = Math.floor(sec / 60), s = Math.round(sec % 60)
+  return s ? `${m}m ${s}s` : `${m}m`
+}
+
+const DEFAULT_DAILY_GOAL = 8
 
 function levelLabel(level) {
   if (level >= MAX_LEVEL) return 'mastered'
@@ -201,14 +233,24 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
             <div className="fl-fields">
               {problem.fields.map(f => (
                 <label key={f.key} className="fl-field">
-                  <span>{f.label}</span>
-                  <input
-                    type="text" autoComplete="off"
-                    value={values[f.key] ?? ''}
-                    disabled={!!result}
-                    onChange={e => setField(f.key, e.target.value)}
-                    className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
-                  />
+                  {f.label && <span>{f.label}</span>}
+                  {f.type === 'mc' ? (
+                    <McOptions
+                      options={f.options}
+                      value={values[f.key]}
+                      disabled={!!result}
+                      correctKey={result ? problem.answer[f.key] : null}
+                      onSelect={key => setField(f.key, key)}
+                    />
+                  ) : (
+                    <input
+                      type="text" autoComplete="off"
+                      value={values[f.key] ?? ''}
+                      disabled={!!result}
+                      onChange={e => setField(f.key, e.target.value)}
+                      className={result ? (result.perField[f.key] ? 'fl-input ok' : 'fl-input bad') : 'fl-input'}
+                    />
+                  )}
                 </label>
               ))}
             </div>
@@ -281,8 +323,9 @@ function History({ attempts, skillsById, onBack }) {
 // would kick his admin session out of the shared browser session.
 const LIVE_PREVIEW_STUDENT_ID = 'test-student'
 
-export default function FluencyPractice({ studentId, isPreview }) {
+export default function FluencyPractice({ studentId, isPreview, dailyGoal }) {
   const locked = isPreview && studentId !== LIVE_PREVIEW_STUDENT_ID
+  const goal = dailyGoal || DEFAULT_DAILY_GOAL
   const [view, setView] = useState('home') // 'home' | 'untimed' | 'timed' | 'history'
   const [skills, setSkills] = useState([])
   const [studentSkills, setStudentSkills] = useState([])
@@ -322,7 +365,7 @@ export default function FluencyPractice({ studentId, isPreview }) {
   const anyTimedEligible = enabledIds.some(id => (state[id]?.level ?? 0) >= TIMED_MODE_MIN_LEVEL)
 
   function startSession(mode) {
-    const plan = buildSessionPlan({ enabledSkillIds: enabledIds, stateBySkill: state, targetCount: SESSION_LENGTH, mode })
+    const plan = buildSessionPlan({ enabledSkillIds: enabledIds, stateBySkill: state, targetCount: goal, mode })
     if (plan.length === 0) return
     setQueue(plan)
     setView(mode)
@@ -351,7 +394,10 @@ export default function FluencyPractice({ studentId, isPreview }) {
   }
 
   const today = new Date().toDateString()
-  const doneToday = attempts.filter(a => new Date(a.created_at).toDateString() === today).length
+  const todaysAttempts = attempts.filter(a => new Date(a.created_at).toDateString() === today)
+  const doneToday = todaysAttempts.length
+  const secToday = todaysAttempts.reduce((sum, a) => sum + (a.response_ms || 0), 0) / 1000
+  const goalMet = doneToday >= goal
 
   return (
     <div style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -359,7 +405,7 @@ export default function FluencyPractice({ studentId, isPreview }) {
         <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 4px' }}>Fluency Practice</h3>
         <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
           Short, mixed drills on the algebra moves that should feel automatic on the F=ma.
-          {doneToday > 0 && ` · ${doneToday} done today`}
+          {doneToday > 0 && ` · ${doneToday}/${goal} done today${secToday > 0 ? ` (${fmtDuration(secToday)})` : ''}${goalMet ? ' · goal met 🎉' : ''}`}
         </div>
       </div>
 
@@ -369,13 +415,18 @@ export default function FluencyPractice({ studentId, isPreview }) {
         <>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button className="primary" disabled={locked} onClick={() => startSession('untimed')}>
-              Start practice (~5 min)
+              {goalMet ? 'Keep practicing' : 'Start practice (~5 min)'}
             </button>
             <button className="sm" disabled={locked || !anyTimedEligible} title={!anyTimedEligible ? 'Get a skill to level 3+ first' : ''} onClick={() => startSession('timed')}>
               Timed drill
             </button>
             <button className="sm" onClick={() => setView('history')}>History</button>
           </div>
+          {goalMet && !locked && (
+            <div style={{ fontSize: 12, color: 'var(--green)', marginTop: -12 }}>
+              You hit today's goal ({doneToday}/{goal}) — keep going any time you want more reps.
+            </div>
+          )}
           {locked && (
             <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: -12 }}>
               Preview only — practicing here would count against this student's real progress. Preview the Test Student instead to try it live.
