@@ -189,7 +189,7 @@ $Y = \sigma/\varepsilon$ has exactly the same units as stress:
 \[
 [Y] = \frac{[F]}{[A]} = \frac{\mathrm{N}}{\mathrm{m}^2} = \mathrm{Pa},
 \qquad\text{and in base units}\qquad
-[Y] = \frac{MLT^{-2}}{L^2} = M L^{-1} T^{-2}.
+[Y] = \frac{\mathrm{M}\mathrm{L}\mathrm{T}^{-2}}{\mathrm{L}^2} = \mathrm{M}\, \mathrm{L}^{-1}\, \mathrm{T}^{-2}.
 \]
 Those are the dimensions of pressure, and of energy per unit volume --- all three are the
 same thing dimensionally. Real values are large, so $Y$ is usually quoted in gigapascals
@@ -206,13 +206,13 @@ bone & $15$ GPa & diamond & $1000$ GPa\\
 
 \pts{2}
 \begin{pproblem}
-Show, using base dimensions $M$, $L$, $T$, that Young's modulus has the same dimensions as
+Show, using base dimensions $\mathrm{M}$, $\mathrm{L}$, $\mathrm{T}$, that Young's modulus has the same dimensions as
 energy per unit volume. (This is not a coincidence: stretching a wire stores elastic
 energy, and $Y$ sets how much.)
 \end{pproblem}
 \begin{solution}
-Energy has dimensions $ML^2T^{-2}$ and volume has dimensions $L^3$, so energy per volume
-is $ML^2T^{-2}/L^3 = ML^{-1}T^{-2}$. That is exactly the result computed above for $Y$.
+Energy has dimensions $\mathrm{M}\mathrm{L}^2\mathrm{T}^{-2}$ and volume has dimensions $\mathrm{L}^3$, so energy per volume
+is $\mathrm{M}\mathrm{L}^2\mathrm{T}^{-2}/\mathrm{L}^3 = \mathrm{M}\mathrm{L}^{-1}\mathrm{T}^{-2}$. That is exactly the result computed above for $Y$.
 \end{solution}
 
 \begin{psidea}{An intuition for why the number is so big}{}
@@ -370,9 +370,9 @@ motion, where it can push nothing --- and then the motion is no longer SHM.
 \section{Dimensional Analysis with $Y$}
 
 \begin{psidea}{$\sqrt{Y/\rho}$ is a speed}{}
-$Y$ has dimensions $ML^{-1}T^{-2}$ and density $\rho$ has dimensions $ML^{-3}$. Divide:
+$Y$ has dimensions $\mathrm{M}\mathrm{L}^{-1}\mathrm{T}^{-2}$ and density $\rho$ has dimensions $\mathrm{M}\mathrm{L}^{-3}$. Divide:
 \[
-\left[\frac{Y}{\rho}\right] = \frac{ML^{-1}T^{-2}}{ML^{-3}} = L^2T^{-2},
+\left[\frac{Y}{\rho}\right] = \frac{\mathrm{M}\mathrm{L}^{-1}\mathrm{T}^{-2}}{\mathrm{M}\mathrm{L}^{-3}} = \mathrm{L}^2\mathrm{T}^{-2},
 \]
 which is a velocity squared. So $\sqrt{Y/\rho}$ is the only speed you can build from a
 material's stiffness and its density --- and it is, up to a factor of order $1$, the
@@ -401,8 +401,8 @@ $f = \dfrac{1}{2\pi}\sqrt{\dfrac{YA}{\ell m}} \times g(\text{dimensionless})$, a
 identify a dimensionless ratio the leftover function could depend on.
 \end{pproblem}
 \begin{solution}
-$YA$ has dimensions $(ML^{-1}T^{-2})(L^2) = MLT^{-2}$, a force. Dividing by $\ell m$ gives
-$MLT^{-2}/(LM) = T^{-2}$, so $\sqrt{YA/(\ell m)}$ is a frequency --- the only one you can
+$YA$ has dimensions $(\mathrm{M}\mathrm{L}^{-1}\mathrm{T}^{-2})(\mathrm{L}^2) = \mathrm{M}\mathrm{L}\mathrm{T}^{-2}$, a force. Dividing by $\ell m$ gives
+$\mathrm{M}\mathrm{L}\mathrm{T}^{-2}/(\mathrm{L}\mathrm{M}) = \mathrm{T}^{-2}$, so $\sqrt{YA/(\ell m)}$ is a frequency --- the only one you can
 build from those four quantities. Anything else must be dimensionless. The natural
 dimensionless ratio available is the mass of the wire to the hanging mass,
 $\rho A \ell / m$; the exact answer does depend on it slightly, because the wire itself
@@ -499,8 +499,8 @@ $\rho = 8000\;\mathrm{kg/m^3}$. The speed is closest to
 \end{pproblem}
 \begin{solution}
 \textbf{(C).} Only one combination of $Y$ and $\rho$ has dimensions of speed. Since
-$[Y] = ML^{-1}T^{-2}$ and $[\rho] = ML^{-3}$, the ratio $Y/\rho$ has dimensions
-$L^2T^{-2}$, so $v = \sqrt{Y/\rho}$. Numerically
+$[Y] = \mathrm{M}\mathrm{L}^{-1}\mathrm{T}^{-2}$ and $[\rho] = \mathrm{M}\mathrm{L}^{-3}$, the ratio $Y/\rho$ has dimensions
+$\mathrm{L}^2\mathrm{T}^{-2}$, so $v = \sqrt{Y/\rho}$. Numerically
 $v = \sqrt{(2\times10^{11})/(8\times10^{3})} = \sqrt{2.5\times10^{7}}
 = 5.0\times 10^{3}\;\mathrm{m/s}$.
 
