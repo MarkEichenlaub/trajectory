@@ -1,10 +1,15 @@
-// Batch-build one homework packet per Physics 1: Mechanics week, the way Mark
-// normally does it by hand in the portal: every homework problem for the week,
-// in set order, with that week's hand-written summary on the front.
+// Batch-build one packet per Physics 1: Mechanics week, the way Mark normally
+// does it by hand in the portal: every homework (or script) problem for the
+// week, in set order, with that week's hand-written summary on the front.
 //
 // Usage:
 //   node scripts/build_mechanics_weeks.mjs --weeks 5-24 [--student india]
+//                                          [--source homework|script]
 //                                          [--rebuild] [--dry-run]
+//
+// --source picks which problems from data/aops-mechanics.json go in the
+// packet: 'homework' (default) builds "<Topic> Homework"; 'script' builds
+// "<Topic>: Class Problems" from that week's script problems.
 //
 // --rebuild re-renders weeks that already have an unapproved packet (draft /
 // building / failed), reusing the same row and re-uploading both PDFs. Weeks
@@ -13,8 +18,9 @@
 // For each week it creates a build request (same shape as the portal's
 // "Create assignment…" button), builds the problems + solutions PDFs with
 // EigenNode's builder, uploads both, and leaves the packet in `draft` for
-// review in the portal's Handouts tab. Weeks that already have a packet for
-// this student are skipped, so the script is safe to re-run after a failure.
+// review in the portal's Handouts tab. Weeks that already have a packet with
+// this exact title for this student are skipped, so the script is safe to
+// re-run after a failure.
 
 import { execFileSync } from 'child_process'
 import { readFileSync, existsSync, readdirSync } from 'fs'
@@ -34,6 +40,10 @@ function arg(flag, fallback) {
 const dryRun = process.argv.includes('--dry-run')
 const rebuild = process.argv.includes('--rebuild')
 const student = arg('--student', 'india')
+const source = arg('--source', 'homework')
+if (source !== 'homework' && source !== 'script') {
+  throw new Error(`--source must be "homework" or "script", got "${source}"`)
+}
 // --weeks takes ranges and single weeks: "5-24", "9", "5,10-13,22"
 const weeks = arg('--weeks', '5-24').split(',').flatMap(tok => {
   const [a, b] = tok.split('-').map(Number)
@@ -46,11 +56,13 @@ const hw = (...args) => execFileSync('node', [join(__dirname, 'hw_agent.mjs'), .
   cwd: REPO, encoding: 'utf8',
 }).trim()
 
-// Packet this student already has per lesson, so re-runs skip finished weeks.
+// Packet this student already has with this exact title, so re-runs skip
+// finished weeks without confusing a homework packet for a script one (both
+// share the same lesson string).
 const existing = new Map(
   JSON.parse(hw('list'))
     .filter(r => r.request.student_id === student && r.status !== 'deleted')
-    .map(r => [r.request.lesson, r])
+    .map(r => [r.request.title, r])
 )
 const REBUILDABLE = ['draft', 'building', 'failed', 'requested']
 
@@ -63,17 +75,17 @@ function summaryFor(code) {
 const failures = []
 for (const week of weeks) {
   const set = problems
-    .filter(p => p.source === 'homework' && p.week === week)
+    .filter(p => p.source === source && p.week === week)
     .sort((a, b) => a.set_number - b.set_number)
-  if (!set.length) { console.log(`Week ${week}: no homework problems — skipped`); continue }
+  if (!set.length) { console.log(`Week ${week}: no ${source} problems — skipped`); continue }
 
   const lesson = set[0].lesson                              // "MCH04: Energy Conservation"
   const code = set[0].label                                 // "MCH04"
   const topic = lesson.slice(lesson.indexOf(':') + 1).trim()
-  const title = `${topic} Homework`
+  const title = source === 'script' ? `${topic}: Class Problems` : `${topic} Homework`
   const ids = set.map(p => p.id).join(',')
 
-  const prior = existing.get(lesson)
+  const prior = existing.get(title)
   const reuseId = prior && rebuild && REBUILDABLE.includes(prior.status) ? prior.id : null
   if (prior && !reuseId) {
     const why = prior.status === 'active' ? 'already approved' : 'a packet already exists'
@@ -113,8 +125,9 @@ for (const week of weeks) {
     if (!existsSync(pdf) || !existsSync(sol)) throw new Error('builder produced no PDF')
 
     hw('upload', id, pdf, '--solutions', sol)
+    const kind = source === 'script' ? 'class problems' : 'homework'
     hw('set', id, '--status', 'draft', '--clear-notes', '--name', title,
-      '--description', `${code} ${topic} homework for ${name}, ${set.length} problems`)
+      '--description', `${code} ${topic} ${kind} for ${name}, ${set.length} problems`)
     console.log(`  ✓ draft ready: ${id}`)
   } catch (e) {
     const detail = (e.stderr || e.message || '').toString().trim().split('\n').slice(-6).join('\n')

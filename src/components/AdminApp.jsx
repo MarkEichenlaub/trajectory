@@ -12,6 +12,7 @@ import CreatePacketModal from './CreatePacketModal'
 import FilterSidebar from './FilterSidebar'
 import ProblemTable from './ProblemTable'
 import AssignedView from './AssignedView'
+import UpNextView from './UpNextView'
 import SessionsView from './SessionsView'
 import HandoutsManager from './HandoutsManager'
 import StudentView from './StudentView'
@@ -25,7 +26,7 @@ import Toast from './Toast'
 const Settings = lazy(() => import('./Settings'))
 const TagOntologyView = lazy(() => import('./TagOntologyView'))
 
-const VIEWS = { BROWSER: 'browser', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', FMA: 'fma', FLUENCY: 'fluency', BILLING: 'billing', SETTINGS: 'settings' }
+const VIEWS = { BROWSER: 'browser', UP_NEXT: 'up-next', ASSIGNED: 'assigned', SESSIONS: 'sessions', SCHEDULE: 'schedule', HANDOUTS: 'handouts', TAGS: 'tags', PROGRESS_PLAN: 'progress-plan', FMA: 'fma', FLUENCY: 'fluency', BILLING: 'billing', SETTINGS: 'settings' }
 const MARK_STUDENT_ID = 'mark'
 
 const DEFAULT_FILTERS = {
@@ -456,6 +457,51 @@ export default function AdminApp({ userId }) {
     }
   }
 
+  // Assign one or more ready packets from the "Up Next" queue. Mirrors
+  // handleAssign's co-assign-to-Mark behavior; these are always graded
+  // packets, so requires_submission is always on (matching handleDraftApprove).
+  async function handleAssignUpNext(handoutIds) {
+    if (!activeStudent || handoutIds.length === 0) return
+    const date = new Date().toISOString().slice(0, 10)
+    const toAdd = []
+    const markStatusMap = {}
+    if (activeStudent.id !== MARK_STUDENT_ID) {
+      assignments
+        .filter(a => a.student_id === MARK_STUDENT_ID)
+        .forEach(a => { markStatusMap[a.problem_id] = a.status })
+    }
+    for (const pid of handoutIds) {
+      toAdd.push({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${pid}`,
+        student_id: activeStudent.id,
+        problem_id: pid,
+        status: 'assigned',
+        assigned_date: date,
+        completed_date: null,
+        requires_submission: true,
+      })
+      if (activeStudent.id !== MARK_STUDENT_ID && !markStatusMap[pid]) {
+        toAdd.push({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2)}-mark-${pid}`,
+          student_id: MARK_STUDENT_ID,
+          problem_id: pid,
+          status: 'assigned',
+          assigned_date: date,
+          completed_date: null,
+          requires_submission: true,
+        })
+      }
+    }
+    try {
+      await insertAssignments(toAdd)
+      setAssignments(prev => [...prev, ...toAdd])
+      const studentAssigned = toAdd.filter(a => a.student_id === activeStudent.id).length
+      showToast(`Assigned ${studentAssigned} item${studentAssigned > 1 ? 's' : ''} to ${activeStudent.name}`)
+    } catch (e) {
+      showToast(e.message, 'error')
+    }
+  }
+
   async function handleOnDeck() {
     if (!activeStudent || selected.size === 0) return
     const sessionId = onDeckSessionId || upcomingSessions[0]?.id
@@ -796,6 +842,7 @@ export default function AdminApp({ userId }) {
           <button className={view === VIEWS.BROWSER ? 'active' : ''} onClick={() => setView(VIEWS.BROWSER)}>
             Problems
           </button>
+          <button className={view === VIEWS.UP_NEXT ? 'active' : ''} onClick={() => setView(VIEWS.UP_NEXT)}>Up Next</button>
           <button className={view === VIEWS.ASSIGNED ? 'active' : ''} onClick={() => setView(VIEWS.ASSIGNED)}>
             Assigned
             {assignedCount > 0 && <span className="nav-badge">{assignedCount}</span>}
@@ -901,6 +948,16 @@ export default function AdminApp({ userId }) {
               />
             </div>
           </>
+        )}
+
+        {view === VIEWS.UP_NEXT && (
+          <UpNextView
+            student={activeStudent}
+            aopsProblems={aopsProblems}
+            handouts={handouts}
+            assignments={assignments}
+            onAssign={handleAssignUpNext}
+          />
         )}
 
         {view === VIEWS.ASSIGNED && (
