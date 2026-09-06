@@ -2,6 +2,17 @@ import { useState, useRef } from 'react'
 import { problemSummary } from '../utils/problemBank'
 import { firstReview } from '../utils/supabase'
 
+// Same colour language as the AI review email: right, a slip, a real
+// misunderstanding, or can't tell. (`verdict` is the pre-2026-09 key.)
+const REVIEW_STATUS_COLOR = {
+  correct: 'var(--green, #3a8f4f)',
+  careless: '#c97a1e',
+  misconception: 'var(--red)',
+  unclear: '#a08a1e',
+  incorrect: 'var(--red)',
+  partial: '#c97a1e',
+}
+
 // AI review's mark_notes field (assignment_reviews table) — same edit pattern
 // as NoteField above, kept separate since it saves to a different table/row.
 function ReviewNotesField({ assignmentId, initialNotes, onSave }) {
@@ -363,11 +374,21 @@ export default function AssignedView({
                 </div>
                 {review && (
                   <div className="assigned-row-review" style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
+                    {Number.isFinite(review.score_total) && (
+                      <div style={{ fontWeight: 600, color: 'var(--text)' }}>
+                        {review.score_correct}/{review.score_total}
+                        {review.source_label ? ` — ${review.source_label}` : ''}
+                      </div>
+                    )}
                     {review.ai_summary && <div>🤖 {review.ai_summary}</div>}
                     {(review.question_breakdown || []).length > 0 && (
                       <ul style={{ margin: '2px 0', paddingLeft: 18 }}>
                         {review.question_breakdown.map((b, i) => (
-                          <li key={i}><strong>{b.verdict}</strong> — {b.question}: {b.note}</li>
+                          <li key={i} style={{ color: REVIEW_STATUS_COLOR[b.status || b.verdict] || 'inherit' }}>
+                            <strong>{b.question}</strong>
+                            {b.student_answer ? ` — answered ${b.student_answer}, correct ${b.correct_answer}` : ''}
+                            {b.note ? ` — ${b.note}` : ''}
+                          </li>
                         ))}
                       </ul>
                     )}

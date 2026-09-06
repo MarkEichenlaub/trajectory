@@ -13,10 +13,24 @@ const corsHeaders = {
 // Only internal service-role callers (other edge functions) and admin users may
 // send mail. Without this, any logged-in student/parent could invoke this with an
 // arbitrary recipient/subject/body and use it as a spam relay from Mark's domain.
+// The project has more than one service-role secret key — the local agents on
+// each of Mark's laptops use their own — so exact-matching the one in
+// SB_SECRET_KEY locks the others out. Ask GoTrue instead: only a service-role
+// key can list users. A caller holding one can already read and write the whole
+// database directly, so accepting it here grants nothing new.
+async function isServiceRoleKey(token: string): Promise<boolean> {
+  if (!token.startsWith('sb_secret_')) return false
+  const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users?page=1&per_page=1`, {
+    headers: { apikey: token, Authorization: `Bearer ${token}` },
+  })
+  return res.ok
+}
+
 async function isAuthorized(req: Request): Promise<boolean> {
   const token = (req.headers.get('Authorization') || '').replace(/^Bearer\s+/i, '').trim()
   if (!token) return false
   if (token === SERVICE_KEY) return true
+  if (await isServiceRoleKey(token)) return true
   const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     global: { headers: { Authorization: `Bearer ${token}` } },
   })

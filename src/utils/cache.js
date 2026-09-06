@@ -11,7 +11,7 @@
 const DB_NAME = 'trajectory-cache'
 const STORE = 'kv'
 // Bump to invalidate every cached entry after a shape change.
-const SCHEMA_VERSION = 1
+const SCHEMA_VERSION = 2
 
 let dbPromise = null
 function openDB() {

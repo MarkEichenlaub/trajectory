@@ -29,7 +29,7 @@ export async function fetchStudents() {
 export async function fetchAssignments() {
   const { data, error } = await adminClient()
     .from('assignments')
-    .select('*, assignment_submissions(id, file_url), assignment_reviews(ai_summary, question_breakdown, issues, mark_notes, graded_at)')
+    .select('*, assignment_submissions(id, file_url), assignment_reviews(ai_summary, question_breakdown, issues, mark_notes, graded_at, score_correct, score_total, source_page, source_label)')
     .order('assigned_date', { ascending: false })
   if (error) throw new Error(error.message)
   return data
