@@ -363,7 +363,7 @@ async function gradeSubmission({
 
 // ── The review email ────────────────────────────────────────────────────────
 
-// Row colour by what kind of mistake it is: green right, orange a slip, red a
+// Row color by what kind of mistake it is: green right, orange a slip, red a
 // real misunderstanding, yellow missing or unreadable.
 const STATUS_STYLE = {
   correct:       { bg: '#e3f4e6', mark: '✓', label: 'correct' },

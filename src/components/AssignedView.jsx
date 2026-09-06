@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { problemSummary } from '../utils/problemBank'
 import { firstReview } from '../utils/supabase'
 
-// Same colour language as the AI review email: right, a slip, a real
+// Same color language as the AI review email: right, a slip, a real
 // misunderstanding, or can't tell. (`verdict` is the pre-2026-09 key.)
 const REVIEW_STATUS_COLOR = {
   correct: 'var(--green, #3a8f4f)',
