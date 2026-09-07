@@ -4,7 +4,7 @@ import { firstReview } from '../utils/supabase'
 
 // Same color language as the AI review email: right, a slip, a real
 // misunderstanding, or can't tell. (`verdict` is the pre-2026-09 key.)
-const REVIEW_STATUS_COLOR = {
+export const REVIEW_STATUS_COLOR = {
   correct: 'var(--green, #3a8f4f)',
   careless: '#c97a1e',
   misconception: 'var(--red)',
@@ -15,7 +15,7 @@ const REVIEW_STATUS_COLOR = {
 
 // AI review's mark_notes field (assignment_reviews table) — same edit pattern
 // as NoteField above, kept separate since it saves to a different table/row.
-function ReviewNotesField({ assignmentId, initialNotes, onSave }) {
+export function ReviewNotesField({ assignmentId, initialNotes, onSave }) {
   const [value, setValue] = useState(initialNotes || '')
   const [editing, setEditing] = useState(false)
 

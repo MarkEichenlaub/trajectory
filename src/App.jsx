@@ -9,6 +9,7 @@ import PortalApp from './components/PortalApp'
 // the student-facing bundle.
 const AdminApp = lazy(() => import('./components/AdminApp'))
 const SessionLauncher = lazy(() => import('./components/SessionLauncher'))
+const AssignmentReportView = lazy(() => import('./components/AssignmentReportView'))
 
 const SUPPORT_EMAIL = 'mark@eichenlaubphysics.com'
 const PORTAL_ROLES = ['student', 'parent', 'adult']
@@ -90,6 +91,9 @@ export default function App() {
   if (account.role === 'admin') {
     if (window.location.pathname.startsWith('/launch')) {
       return <Suspense fallback={<Splash />}><SessionLauncher /></Suspense>
+    }
+    if (window.location.pathname.startsWith('/report')) {
+      return <Suspense fallback={<Splash />}><AssignmentReportView /></Suspense>
     }
     return <Suspense fallback={<Splash />}><AdminApp userId={effectiveUserId} /></Suspense>
   }

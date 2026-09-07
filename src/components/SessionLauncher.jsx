@@ -110,12 +110,13 @@ export default function SessionLauncher() {
     session.miro_board_url && { label: 'Whiteboard', url: session.miro_board_url, primary: true },
     session.prep_note_url && { label: 'Next-time link', url: session.prep_note_url },
   ].filter(Boolean)
-  dueItems.forEach(({ problem, submission }) => {
+  dueItems.forEach(({ assignment, problem, submission, review }) => {
     if (problem?.problemUrl) {
       const label = problem.type === 'Book' ? 'Book' : problem.type === 'Handout' ? 'Handout' : 'Problem'
       links.push({ label: `${label} ↗`, url: problem.problemUrl })
     }
     if (submission) links.push({ label: 'Submission ↗', url: submission })
+    if (review) links.push({ label: 'Report ↗', url: `${window.location.origin}/report?assignment=${assignment.id}` })
   })
   onDeckItems.forEach(({ problem }) => {
     if (problem?.problemUrl) {
@@ -186,6 +187,9 @@ export default function SessionLauncher() {
               {submission
                 ? <a href={submission} target="_blank" rel="noreferrer">Submission ↗</a>
                 : <span style={{ color: 'var(--text-dim)' }}>No submission yet</span>}
+              {review && (
+                <a href={`/report?assignment=${assignment.id}`} target="_blank" rel="noreferrer">Report ↗</a>
+              )}
             </div>
             {review && (
               <div style={{ marginTop: 6, fontSize: 13, color: 'var(--text-dim)' }}>
