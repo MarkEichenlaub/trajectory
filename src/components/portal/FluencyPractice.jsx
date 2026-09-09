@@ -128,6 +128,8 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   const [tally, setTally] = useState({ correct: 0, total: 0 })
   const [levelDeltas, setLevelDeltas] = useState({}) // skillId -> {before, after}
   const [saving, setSaving] = useState(false)
+  const [totalMs, setTotalMs] = useState(0)
+  const [unsaved, setUnsaved] = useState(0) // count of attempts that graded locally but failed to persist
   const formRef = useRef(null)
   const nextRef = useRef(null)
 
@@ -162,7 +164,14 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
           <h3 style={{ fontSize: 16, fontWeight: 600, margin: '0 0 8px' }}>Session done</h3>
           <div style={{ fontSize: 13, marginBottom: 14 }}>
             <strong>{tally.correct}</strong> of <strong>{tally.total}</strong> correct
+            {totalMs > 0 && <> &middot; {fmtDuration(totalMs / 1000)}</>}
           </div>
+          {unsaved > 0 && (
+            <div style={{ fontSize: 12, color: 'var(--red)', marginBottom: 14 }}>
+              {unsaved} of {tally.total} result{unsaved === 1 ? '' : 's'} couldn't be saved to the portal
+              (probably a connection drop). Check your internet and redo this session if you want it to count.
+            </div>
+          )}
           {Object.entries(levelDeltas).length > 0 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 16 }}>
               {Object.entries(levelDeltas).map(([sid, { before, after }]) => (
@@ -232,8 +241,16 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
         submitted: values, is_correct: graded.correct, response_ms: responseMs,
         level_before: before, level_after: after,
       })
-    } catch { /* leveling still shows locally even if the write is flaky */ }
+    } catch {
+      // Leveling still shows locally even when the write fails, so the drill
+      // stays usable offline -- but silently eating the error left students
+      // (and Mark, checking the portal after the fact) with no way to tell a
+      // "real" session from one that never made it to the database. Count it
+      // instead, and warn on the session-done screen.
+      setUnsaved(u => u + 1)
+    }
     setSaving(false)
+    setTotalMs(ms => ms + responseMs)
 
     // Still wrong after the retry -- this is "giving up": show the actual
     // answer (not just the rule) by filling it into the same blanks they
