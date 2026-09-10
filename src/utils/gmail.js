@@ -96,8 +96,11 @@ function nextSessionLines(student, session) {
 
 // `takeableExamIds` are exams that have been digitized into the portal's F=ma
 // runner. Those get a link to the page the student actually sits the test on
-// rather than to the exam PDF, which they can't answer on.
-export function buildEmailBody(student, problems, takeableExamIds = new Set(), nextSession = null) {
+// rather than to the exam PDF, which they can't answer on. `takeableHomeworkIds`
+// is the same idea for weekly F=ma homework sets taken online in the portal —
+// they have no PDF at all (problemUrl is blank), so without this they'd get no
+// link in the email whatsoever.
+export function buildEmailBody(student, problems, takeableExamIds = new Set(), nextSession = null, takeableHomeworkIds = new Set()) {
   const firstName = student.first_name || student.name.split(' ')[0]
   const opener = OPENING_LINES[Math.floor(Math.random() * OPENING_LINES.length)](firstName)
   const lines = [opener, '']
@@ -111,6 +114,9 @@ export function buildEmailBody(student, problems, takeableExamIds = new Set(), n
     if (takeableExamIds.has(p.id)) {
       // The F=ma tab opens on whichever exam is assigned, so no deep link needed.
       lines.push(`   Take the test: ${PORTAL_URL}/fma-progress`)
+    } else if (takeableHomeworkIds.has(p.id)) {
+      // Lives under the portal's default Assigned tab, so the root URL gets there.
+      lines.push(`   Take the homework: ${PORTAL_URL}/`)
     } else if (p.problemUrl) {
       lines.push(`   ${resourceLabel(p)}: ${p.problemUrl}`)
     }

@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule, updateAssignmentReviewNotes } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchFmaHomeworkSets, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule, updateAssignmentReviewNotes } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import InvoicePreviewModal from './InvoicePreviewModal'
@@ -179,6 +179,17 @@ export default function AdminApp({ userId }) {
     let cancelled = false
     fetchFmaExams()
       .then(e => { if (!cancelled) setTakeableExamIds(new Set(e.map(x => x.id))) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+
+  // Same idea for weekly F=ma homework sets digitized into the in-portal
+  // runner — the assignment email links these to the portal instead of a PDF.
+  const [takeableHomeworkIds, setTakeableHomeworkIds] = useState(new Set())
+  useEffect(() => {
+    let cancelled = false
+    fetchFmaHomeworkSets()
+      .then(s => { if (!cancelled) setTakeableHomeworkIds(new Set(s.map(x => x.id))) })
       .catch(() => {})
     return () => { cancelled = true }
   }, [])
@@ -707,7 +718,7 @@ export default function AdminApp({ userId }) {
     setEmailDraft({
       to: recipients.join(', '),
       subject: `${firstName} physics problems ${dateStr}`,
-      body: buildEmailBody(activeStudent, assignedProblems, takeableExamIds, nextSession),
+      body: buildEmailBody(activeStudent, assignedProblems, takeableExamIds, nextSession, takeableHomeworkIds),
     })
   }
 
