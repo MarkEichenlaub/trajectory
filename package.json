@@ -10,7 +10,8 @@
     "deploy": "npm run build && gh-pages -d dist",
     "test": "vitest run",
     "ai-server": "node scripts/ai-server.mjs",
-    "miro-auth-setup": "node scripts/miro-auth-setup.mjs"
+    "miro-auth-setup": "node scripts/miro-auth-setup.mjs",
+    "copilot": "node scripts/copilot.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",

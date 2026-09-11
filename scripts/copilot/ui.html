@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session copilot</title>
+<link rel="stylesheet" href="/katex/katex.min.css">
+<script defer src="/katex/katex.min.js"></script>
+<script defer src="/katex/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --bg: #14161a;
+    --panel: #1c1f26;
+    --panel-2: #232730;
+    --line: #2f343f;
+    --ink: #e8eaf0;
+    --dim: #949bab;
+    --accent: #7aa2f7;
+    --good: #7bc96f;
+    --warn: #e0af68;
+    --bad: #f7768e;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 14px/1.55 "Segoe UI", system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    flex: none;
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--dim); flex: none; }
+  .dot.live { background: var(--good); box-shadow: 0 0 8px var(--good); }
+  .dot.busy { background: var(--warn); animation: pulse 1.1s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+  #status { font-size: 12px; color: var(--dim); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  button {
+    font: inherit; font-size: 12px;
+    background: var(--panel-2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 5px;
+    padding: 4px 9px; cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  button.on { border-color: var(--good); color: var(--good); }
+
+  main { flex: 1; overflow-y: auto; padding: 12px; }
+
+  .alert {
+    border-radius: 6px; padding: 9px 11px; margin-bottom: 12px;
+    border-left: 3px solid var(--warn); background: #2a2419;
+  }
+  .alert.mistake { border-left-color: var(--bad); background: #2c1d22; }
+  .alert .where { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); }
+  .alert .body { margin-top: 3px; }
+  .alert button { float: right; margin-left: 8px; }
+
+  .empty { color: var(--dim); text-align: center; padding: 40px 20px; }
+  .empty code { color: var(--accent); }
+
+  h1.title { font-size: 16px; margin: 0 0 2px; font-weight: 600; }
+  .statement { color: var(--dim); font-size: 13px; margin-bottom: 12px; }
+
+  .answer {
+    background: var(--panel); border: 1px solid var(--line);
+    border-left: 3px solid var(--good);
+    border-radius: 6px; padding: 10px 12px; margin-bottom: 14px;
+  }
+  .answer .label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--dim); margin-bottom: 3px; }
+  .answer .val { font-size: 15px; }
+
+  details { margin-bottom: 10px; }
+  details > summary {
+    cursor: pointer; font-size: 11px; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--dim); padding: 4px 0; user-select: none;
+  }
+  details > summary:hover { color: var(--ink); }
+
+  .md h2 { font-size: 14px; margin: 14px 0 4px; }
+  .md h3 { font-size: 13px; margin: 12px 0 4px; color: var(--dim); }
+  .md p { margin: 6px 0; }
+  .md ol, .md ul { margin: 6px 0; padding-left: 20px; }
+  .md li { margin: 4px 0; }
+  .md code { background: var(--panel-2); padding: 1px 4px; border-radius: 3px; font-size: 12px; }
+  .md .katex-display { margin: 8px 0; overflow-x: auto; overflow-y: hidden; }
+
+  .pitfalls li { color: var(--warn); }
+  .pitfalls li span { color: var(--ink); }
+
+  .tline { font-size: 12px; margin: 2px 0; color: var(--dim); }
+  .tline b { color: var(--accent); font-weight: 600; }
+  .tline.student b { color: var(--warn); }
+
+  .histitem { font-size: 12px; color: var(--dim); padding: 2px 0; }
+
+  .logline { font: 11px/1.5 ui-monospace, Consolas, monospace; color: var(--dim); white-space: pre-wrap; }
+
+  footer {
+    flex: none; display: flex; gap: 6px; padding: 8px 12px;
+    border-top: 1px solid var(--line); background: var(--panel);
+  }
+  footer button { flex: 1; padding: 6px 4px; }
+  .conf { font-size: 11px; color: var(--dim); }
+  .conf.low { color: var(--bad); }
+  .conf.medium { color: var(--warn); }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="dot" id="dot"></span>
+  <span id="status">connecting...</span>
+  <button id="watchBtn" title="Watch the board for wrong steps (costs a model call every ~45 s)">watch</button>
+  <button id="pauseBtn" title="Stop capturing entirely">pause</button>
+</header>
+
+<main>
+  <div id="alertBox"></div>
+  <div id="body"><div class="empty">Waiting for a problem to appear on the Miro board.</div></div>
+
+  <details id="transcriptWrap">
+    <summary>What was just said</summary>
+    <div id="transcript"></div>
+  </details>
+
+  <details id="historyWrap" hidden>
+    <summary>Earlier problems</summary>
+    <div id="history"></div>
+  </details>
+
+  <details>
+    <summary>Log</summary>
+    <div id="log"></div>
+  </details>
+</main>
+
+<footer>
+  <button id="solveBtn" title="CapsLock+Q">Solve what's on screen</button>
+  <button id="errorBtn">Where's the error?</button>
+  <button id="hintBtn">Next step only</button>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// Markdown, just enough for a numbered walkthrough. Math spans are pulled out
+// first and put back after, so a $...$ full of backslashes and asterisks never
+// gets mangled by the inline rules.
+function renderMarkdown(src) {
+  const math = [];
+  let s = String(src || '').replace(/\$\$[\s\S]+?\$\$|\$[^\$\n]+?\$/g, m => {
+    math.push(m);
+    return '\u0000M' + (math.length - 1) + '\u0000';
+  });
+
+  s = esc(s);
+
+  const lines = s.split('\n');
+  const out = [];
+  let list = null;
+
+  const closeList = () => { if (list) { out.push('</' + list + '>'); list = null; } };
+  const inline = t => t
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+    if (!line.trim()) { closeList(); continue; }
+
+    let m;
+    if ((m = line.match(/^#{3,}\s+(.*)$/))) { closeList(); out.push('<h3>' + inline(m[1]) + '</h3>'); continue; }
+    if ((m = line.match(/^#{1,2}\s+(.*)$/))) { closeList(); out.push('<h2>' + inline(m[1]) + '</h2>'); continue; }
+    // Carry the author's own number onto the <ol>: a blank line between steps
+    // closes the list, and without `start` every step would render as "1.".
+    if ((m = line.match(/^\s*(\d+)[.)]\s+(.*)$/))) {
+      if (list !== 'ol') { closeList(); out.push('<ol start="' + m[1] + '">'); list = 'ol'; }
+      out.push('<li>' + inline(m[2]) + '</li>');
+      continue;
+    }
+    if ((m = line.match(/^\s*[-*+]\s+(.*)$/))) {
+      if (list !== 'ul') { closeList(); out.push('<ul>'); list = 'ul'; }
+      out.push('<li>' + inline(m[1]) + '</li>');
+      continue;
+    }
+    if (list) { out[out.length - 1] = out[out.length - 1].replace(/<\/li>$/, ' ' + inline(line) + '</li>'); continue; }
+    out.push('<p>' + inline(line) + '</p>');
+  }
+  closeList();
+
+  // Escape the math on the way back in. It skipped esc() so the inline rules
+  // could not touch it, and an unescaped "$r<R$" would otherwise open a bogus
+  // HTML tag and swallow the rest of the line. KaTeX reads textContent, where
+  // those entities have already decoded, so it still sees the real formula.
+  return out.join('\n').replace(/\u0000M(\d+)\u0000/g, (_, i) => esc(math[+i]));
+}
+
+function typeset(el) {
+  if (!window.renderMathInElement) return;
+  try {
+    window.renderMathInElement(el, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true },
+      ],
+      throwOnError: false,
+    });
+  } catch (e) { /* a malformed formula should never blank the panel */ }
+}
+
+const clock = ms => new Date(ms).toLocaleTimeString('en-GB', { hour12: false, hour: '2-digit', minute: '2-digit' });
+
+let lastProblemId = null;
+
+function render(s) {
+  // header
+  const busy = ['solving', 'looking', 'thinking'].includes(s.status);
+  $('dot').className = 'dot' + (busy ? ' busy' : (s.meeting && s.meeting.live ? ' live' : ''));
+  const bits = [];
+  if (s.paused) bits.push('PAUSED');
+  else bits.push(s.status);
+  if (s.meeting) bits.push(s.meeting.live ? 'transcript live' : 'transcript idle');
+  else bits.push('no recording');
+  if (s.frame && !s.frame.windowFound) bits.push('no Miro window — using full screen');
+  bits.push(s.counts.solve + ' solved');
+  $('status').textContent = bits.join(' · ');
+  $('watchBtn').className = s.watching ? 'on' : '';
+  $('pauseBtn').className = s.paused ? 'on' : '';
+
+  // alert
+  if (s.alert) {
+    const kind = s.alert.kind === 'mistake' ? 'mistake' : '';
+    const label = s.alert.kind === 'mistake' ? 'Possible mistake'
+      : s.alert.kind === 'stuck' ? 'Looks stuck' : 'Nudge';
+    $('alertBox').innerHTML =
+      '<div class="alert ' + kind + '">' +
+        '<button data-go="clear">dismiss</button>' +
+        '<div class="where">' + esc(label) + (s.alert.where ? ' · ' + esc(s.alert.where) : '') + '</div>' +
+        '<div class="body">' + renderMarkdown(s.alert.text) + '</div>' +
+      '</div>';
+    typeset($('alertBox'));
+  } else {
+    $('alertBox').innerHTML = '';
+  }
+
+  // body — only re-render on a new problem, so scroll position survives ticks
+  const p = s.current;
+  if (!p) {
+    if (lastProblemId !== null || !$('body').firstChild) {
+      $('body').innerHTML = '<div class="empty">' +
+        (s.status === 'solving' ? 'Solving what is on the board...'
+          : 'Waiting for a problem to appear on the Miro board.') +
+        '</div>';
+      lastProblemId = null;
+    }
+  } else if (p.id !== lastProblemId) {
+    lastProblemId = p.id;
+    const pit = (p.pitfalls || []).map(x => '<li><span>' + renderMarkdown(x).replace(/^<p>|<\/p>$/g, '') + '</span></li>').join('');
+    $('body').innerHTML =
+      '<h1 class="title">' + esc(p.title) + '</h1>' +
+      '<div class="statement">' + esc(p.statement) +
+        ' <span class="conf ' + esc(p.confidence) + '">(' + esc(p.confidence) + ' confidence, ' + p.seconds + 's)</span>' +
+      '</div>' +
+      '<div class="answer"><div class="label">Answer</div><div class="val md">' + renderMarkdown(p.answer) + '</div></div>' +
+      '<div class="md">' + renderMarkdown(p.walkthrough) + '</div>' +
+      (pit ? '<details open><summary>Where this one goes wrong</summary><ul class="md pitfalls">' + pit + '</ul></details>' : '');
+    typeset($('body'));
+    document.querySelector('main').scrollTop = 0;
+  }
+
+  // transcript
+  $('transcript').innerHTML = (s.transcript || []).map(u =>
+    '<div class="tline ' + (u.who === 'Student' ? 'student' : '') + '"><b>' + esc(u.who) + '</b> ' + esc(u.text) + '</div>'
+  ).join('') || '<div class="tline">(nothing in the last 90 seconds)</div>';
+
+  // history
+  $('historyWrap').hidden = !(s.history || []).length;
+  $('history').innerHTML = (s.history || []).map(h =>
+    '<div class="histitem">' + clock(h.at) + ' — ' + esc(h.title) + '</div>'
+  ).join('');
+
+  // log
+  $('log').innerHTML = (s.log || []).map(l => '<div class="logline">' + esc(l) + '</div>').join('');
+}
+
+function go(what) { fetch('/trigger/' + what, { method: 'POST' }).catch(() => {}); }
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-go]');
+  if (b) go(b.dataset.go);
+});
+$('solveBtn').onclick = () => go('solve');
+$('errorBtn').onclick = () => go('error');
+$('hintBtn').onclick = () => go('hint');
+$('watchBtn').onclick = () => go('watch');
+$('pauseBtn').onclick = () => go('pause');
+
+function connect() {
+  const src = new EventSource('/events');
+  src.onmessage = e => { try { render(JSON.parse(e.data)); } catch (err) { console.error(err); } };
+  src.onerror = () => {
+    $('status').textContent = 'disconnected — is the copilot still running?';
+    $('dot').className = 'dot';
+    src.close();
+    setTimeout(connect, 2000);
+  };
+}
+window.addEventListener('DOMContentLoaded', connect);
+</script>
+</body>
+</html>
