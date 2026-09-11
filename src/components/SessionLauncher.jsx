@@ -166,6 +166,19 @@ export default function SessionLauncher() {
         Open all ({links.length})
       </button>
 
+      {/* The copilot runs on Mark's laptop, so this page can only remind him to
+          start it: the portal is HTTPS and browsers block a call to
+          http://localhost, which is why there is no "is it running?" check. */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        color: 'var(--text-dim)', fontSize: 13, marginBottom: 24, marginTop: -12,
+      }}>
+        <span aria-hidden="true">◆</span>
+        <span>
+          Start the session copilot — <strong>CapsLock+M</strong>, or type <code>;tutor</code>
+        </span>
+      </div>
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <LinkRow label="Join Meet" url={session.meet_url} fallback="No Meet link" />
         <LinkRow label="Whiteboard" url={session.miro_board_url} fallback="No whiteboard" />
