@@ -12,3 +12,6 @@ supabase/.temp/
 # F=ma figure cropping scratch space (PDFs + rendered crops, regenerable)
 work/
 scripts/__pycache__/
+
+# Wispr session transcripts (internal only - this repo is public)
+transcripts/

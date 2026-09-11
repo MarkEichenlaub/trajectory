@@ -49,6 +49,12 @@ const RUN_ONCE = process.argv.includes('--once') // one pass then exit (Schedule
 // Wait this long after a session's end_time before summarizing (lets the panel's
 // final auto-snapshot finish uploading).
 const SESSION_SETTLE_MINUTES = 10
+// Wispr finalizes a recording a few minutes after the call ends. Give a session
+// this long to grow a transcript before summarizing it from the board alone —
+// the transcript is by far the better source, so it's worth one or two extra
+// passes' delay. After the grace period an unrecorded session summarizes as it
+// always did.
+const TRANSCRIPT_GRACE_MINUTES = 45
 
 if (!SERVICE_KEY) {
   console.error('ERROR: VITE_SUPABASE_SERVICE_KEY not found in .env')
@@ -222,37 +228,86 @@ async function getSessionContent(sessionId, boardId) {
   throw new Error('No board content available (no snapshot, screenshot, or text)')
 }
 
-// Runs the claude CLI (Mark's subscription) to turn board content into a
-// { summary, tags } object. Reads the file with the Read tool and returns the
-// schema-validated structured output.
-async function analyzeContent({ type, content }) {
-  const effectiveType = type === 'screenshot' ? 'image' : type
-  const ext = effectiveType === 'image' ? '.jpg' : effectiveType === 'pdf' ? '.pdf' : '.txt'
-  const tmpFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}${ext}`)
+// The verbatim Wispr recording of a session, when there is one. Far richer than
+// the whiteboard: it says what was actually explained, where the student got
+// stuck, and what was assigned. Backend-only — see the session_transcripts
+// migration.
+async function getSessionTranscript(sessionId) {
+  try {
+    const res = await fetch(
+      `${REST_URL}/session_transcripts?session_id=eq.${encodeURIComponent(sessionId)}`
+      + '&select=transcript,title,duration_seconds&order=started_at.asc',
+      { headers: DB_HEADERS })
+    if (!res.ok) return null
+    const rows = await res.json()
+    if (!rows.length) return null
+    // A session recorded in two chunks (Wispr stopped and restarted) comes back
+    // as two rows; they belong to one session, so read them as one transcript.
+    return rows.map(r => r.transcript).filter(Boolean).join('\n\n[recording resumed]\n\n') || null
+  } catch (e) {
+    console.error(`[transcript] lookup failed for ${sessionId}: ${e.message}`)
+    return null
+  }
+}
 
-  if (type === 'text') {
-    await writeFile(tmpFile, content)
-  } else if (type === 'screenshot') {
-    await writeFile(tmpFile, content) // content is a Buffer from Playwright
-  } else {
-    const dl = await fetch(content)
-    if (!dl.ok) throw new Error(`Could not download board ${type}: HTTP ${dl.status}`)
-    await writeFile(tmpFile, Buffer.from(await dl.arrayBuffer()))
+// Runs the claude CLI (Mark's subscription) to turn the session's content into a
+// { summary, tags } object. Reads the files with the Read tool and returns the
+// schema-validated structured output. Either source may be absent: a board with
+// no recording still summarizes from the board, and a recorded session whose
+// board was never drawn on still summarizes from the transcript.
+async function analyzeContent(board, transcript) {
+  const tmpFiles = []
+  let boardFile = null
+  let effectiveType = null
+
+  if (board) {
+    const { type, content } = board
+    effectiveType = type === 'screenshot' ? 'image' : type
+    const ext = effectiveType === 'image' ? '.jpg' : effectiveType === 'pdf' ? '.pdf' : '.txt'
+    boardFile = resolve(tmpdir(), `trajectory-session-${randomUUID()}${ext}`)
+    tmpFiles.push(boardFile)
+
+    if (type === 'text' || type === 'screenshot') {
+      await writeFile(boardFile, content) // screenshot content is a Buffer
+    } else {
+      const dl = await fetch(content)
+      if (!dl.ok) throw new Error(`Could not download board ${type}: HTTP ${dl.status}`)
+      await writeFile(boardFile, Buffer.from(await dl.arrayBuffer()))
+    }
+  }
+
+  let transcriptFile = null
+  if (transcript) {
+    transcriptFile = resolve(tmpdir(), `trajectory-transcript-${randomUUID()}.txt`)
+    tmpFiles.push(transcriptFile)
+    await writeFile(transcriptFile, transcript)
   }
 
   try {
-    const subject = effectiveType === 'text'
-      ? `Read the tutoring session whiteboard notes at ${tmpFile}.`
-      : effectiveType === 'pdf'
-        ? `Read the tutoring session whiteboard PDF at ${tmpFile}.`
-        : `Look at the tutoring session whiteboard image at ${tmpFile}.`
+    const sources = []
+    if (boardFile) {
+      sources.push(effectiveType === 'text'
+        ? `Read the whiteboard notes at ${boardFile}.`
+        : effectiveType === 'pdf'
+          ? `Read the whiteboard PDF at ${boardFile}.`
+          : `Look at the whiteboard image at ${boardFile}.`)
+    }
+    if (transcriptFile) {
+      sources.push(`Read the verbatim audio transcript of the same session at ${transcriptFile}`
+        + ' — "Mark" is the tutor and the other speaker is the student.')
+    }
     const prompt = [
-      subject,
-      'It is from a one-on-one physics and math tutoring session.',
+      'This is a one-on-one physics and math tutoring session.',
+      ...sources,
+      transcriptFile && boardFile
+        ? 'The transcript says what was actually discussed and the board shows the written work; use both.'
+        : '',
       'Summarize what was covered in 2-5 sentences: past tense, specific topics and key ideas discussed.',
+      'The student and their parents can read this summary in the portal, so write about the physics'
+      + ' rather than about the student, and do not quote anyone.',
       'List 3-8 concise topic tags (for example: "Taylor series", "small-angle approximation", "energy conservation").',
-      'If the board is essentially blank or unreadable, set summary to an empty string and tags to an empty array.',
-    ].join(' ')
+      'If there is nothing readable to summarize, set summary to an empty string and tags to an empty array.',
+    ].filter(Boolean).join(' ')
 
     const schema = SUMMARY_SCHEMA.replace(/'/g, "''")
     const p = prompt.replace(/'/g, "''")
@@ -286,7 +341,7 @@ async function analyzeContent({ type, content }) {
     }
     return result
   } finally {
-    await unlink(tmpFile).catch(() => {})
+    await Promise.all(tmpFiles.map(f => unlink(f).catch(() => {})))
   }
 }
 
@@ -333,6 +388,24 @@ function blankBackoffActive(entry) {
   return hours < BLANK_RECHECK_HOURS
 }
 
+// ── Wispr transcripts ─────────────────────────────────────────────────────────
+
+// Pull any new Wispr recordings into session_transcripts before summarizing.
+// It's a no-op on a machine without Wispr Flow installed, and a failure here
+// must never stop a pass — the summarizer just falls back to the board.
+async function syncTranscripts() {
+  try {
+    const { stdout } = await execAsync(`node "${resolve(ROOT, 'scripts/sync_transcripts.mjs')}"`, {
+      cwd: ROOT,
+      timeout: 120000,
+      maxBuffer: 4 * 1024 * 1024,
+    })
+    for (const line of stdout.trim().split('\n').filter(Boolean)) console.log(`[transcript] ${line}`)
+  } catch (e) {
+    console.error(`[transcript] sync failed (continuing without it): ${e.message}`)
+  }
+}
+
 // ── Auto-summarization loop ───────────────────────────────────────────────────
 
 let autoRunning = false
@@ -343,6 +416,10 @@ async function runAutoSummarize() {
   autoRunning = true
   lastRun = new Date().toISOString()
   try {
+    // Bring in any new Wispr recordings first, so a session finished in the last
+    // few minutes can be summarized from its transcript on this same pass.
+    await syncTranscripts()
+
     // Find sessions that ended ≥ settle-time ago, have a Miro board, but no
     // summary yet — limit to the last 45 days. Treating an empty-string summary
     // as "needs one" lets Mark regenerate by clearing the field in the portal.
@@ -350,7 +427,7 @@ async function runAutoSummarize() {
     const since = new Date(Date.now() - 45 * 24 * 3600 * 1000).toISOString()
 
     const qs = new URLSearchParams({
-      select: 'id,miro_board_id,miro_pdf_url',
+      select: 'id,miro_board_id,miro_pdf_url,end_time',
       miro_board_id: 'not.is.null',
       order: 'end_time.desc',
       limit: '10',
@@ -389,19 +466,43 @@ async function runAutoSummarize() {
           continue
         }
         console.log(`[auto] Processing ${session.id}...`)
-        const sessionContent = await getSessionContent(session.id, session.miro_board_id)
+        const transcript = await getSessionTranscript(session.id)
 
-        // Detected without asking the model, so an untouched board costs one page
-        // load rather than a full summarization call.
-        if (sessionContent.blank) {
-          const prev = blankState[session.id]?.count || 0
-          blankState[session.id] = { count: prev + 1, lastChecked: new Date().toISOString() }
-          blankStateDirty = true
-          console.log(`[auto] – ${session.id}: board is empty (${prev + 1}x), skipped without an AI call`)
-          continue
+        // A recording that hasn't landed yet is worth waiting a pass or two for.
+        if (!transcript && session.end_time) {
+          const minsSinceEnd = (Date.now() - new Date(session.end_time).getTime()) / 60000
+          if (minsSinceEnd < TRANSCRIPT_GRACE_MINUTES) {
+            console.log(`[auto] – ${session.id}: no transcript yet, waiting `
+              + `(${Math.round(TRANSCRIPT_GRACE_MINUTES - minsSinceEnd)} min left)`)
+            continue
+          }
         }
 
-        const { summary, tags } = await analyzeContent(sessionContent)
+        // A board failure is only fatal when there's no transcript to fall back on.
+        let sessionContent = null
+        try {
+          sessionContent = await getSessionContent(session.id, session.miro_board_id)
+        } catch (e) {
+          if (!transcript) throw e
+          console.log(`[auto] – ${session.id}: no board content (${e.message}); using the transcript alone`)
+        }
+
+        // A blank board is detected without asking the model, so an untouched
+        // board costs one page load rather than a full summarization call. With
+        // a transcript in hand the session is still worth summarizing.
+        if (sessionContent?.blank) {
+          if (!transcript) {
+            const prev = blankState[session.id]?.count || 0
+            blankState[session.id] = { count: prev + 1, lastChecked: new Date().toISOString() }
+            blankStateDirty = true
+            console.log(`[auto] – ${session.id}: board is empty (${prev + 1}x), skipped without an AI call`)
+            continue
+          }
+          console.log(`[auto] – ${session.id}: board is empty; summarizing from the transcript`)
+          sessionContent = null
+        }
+
+        const { summary, tags } = await analyzeContent(sessionContent, transcript)
         // The model can still judge a non-empty board unreadable; leave the summary
         // null so a later pass retries, but count it toward the same backoff so it
         // can't spin every 15 minutes forever either.

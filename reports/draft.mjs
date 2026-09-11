@@ -21,6 +21,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import os from 'node:os'
 import { spawnSync } from 'node:child_process'
 import { createClient } from '@supabase/supabase-js'
 
@@ -96,7 +97,7 @@ async function main() {
   // so the drafted report covers exactly the sessions that triggered it.
   const nowIso = new Date().toISOString()
   let sq = db.from('sessions')
-    .select('scheduled_at, end_time, summary, tags')
+    .select('id, scheduled_at, end_time, summary, tags')
     .eq('student_id', studentId)
     // Tutoring sessions only — a parent check-in carries no summary or tags and
     // would land in the report's session log as a blank row.
@@ -180,7 +181,39 @@ async function main() {
   ctx.push(`ASSIGNMENTS THIS CYCLE (${assignLines.length}):`)
   ctx.push(assignLines.length ? assignLines.join('\n') : '(none recorded)')
 
-  const prompt = buildPrompt(student, cycle, sessions, ctx.join('\n'))
+  // Verbatim Wispr recordings of the sessions in this cycle. They are the best
+  // source for a concrete anecdote — the summaries only say what was covered,
+  // while the transcript says where the student got stuck and what they worked
+  // out themselves. Far too long to paste into the prompt, so they go to disk
+  // and the model reads the ones it wants.
+  const transcriptDir = fs.mkdtempSync(path.join(os.tmpdir(), 'trajectory-report-'))
+  const transcriptLines = []
+  if (sessions.length) {
+    const { data: transcripts = [] } = await db
+      .from('session_transcripts')
+      .select('session_id, transcript, started_at')
+      .in('session_id', sessions.map(s => s.id))
+      .order('started_at', { ascending: true })
+    const bySession = new Map()
+    for (const t of transcripts || []) {
+      // A session recorded in two chunks comes back as two rows.
+      bySession.set(t.session_id, (bySession.get(t.session_id) || '') + t.transcript + '\n')
+    }
+    for (const sess of sessions) {
+      const text = bySession.get(sess.id)
+      if (!text) continue
+      const file = path.join(transcriptDir, `${isoDay(sess.scheduled_at)}.txt`)
+      fs.writeFileSync(file, text)
+      transcriptLines.push(`- ${fmtDate(sess.scheduled_at)}: ${file}`)
+    }
+  }
+  ctx.push('')
+  ctx.push(`SESSION TRANSCRIPTS (${transcriptLines.length} of ${sessions.length} sessions were recorded):`)
+  ctx.push(transcriptLines.length
+    ? transcriptLines.join('\n')
+    : '(none recorded — work from the summaries above)')
+
+  const prompt = buildPrompt(student, cycle, sessions, ctx.join('\n'), transcriptLines.length)
 
   const outDir = path.join(__dirname, studentId)
   fs.mkdirSync(outDir, { recursive: true })
@@ -194,12 +227,15 @@ async function main() {
     return
   }
 
-  console.log(`Drafting ${student.name} — ${cycle} (${sessions.length} sessions) via claude…`)
-  const claudeArgs = ['-p']
+  console.log(`Drafting ${student.name} — ${cycle} (${sessions.length} sessions, `
+    + `${transcriptLines.length} transcripts) via claude…`)
+  const claudeArgs = ['-p', '--allowedTools', 'Read']
   if (model) claudeArgs.push('--model', model)
   const res = spawnSync('claude', claudeArgs, {
     input: prompt, encoding: 'utf8', shell: true, maxBuffer: 16 * 1024 * 1024,
   })
+  // The transcripts have done their job; don't leave copies of them in %TEMP%.
+  fs.rmSync(transcriptDir, { recursive: true, force: true })
   if (res.status !== 0 || !res.stdout?.trim()) {
     console.error('claude CLI failed.', res.stderr || res.error?.message || `exit ${res.status}`)
     process.exit(1)
@@ -312,13 +348,21 @@ function restoreSessionFacts(block, rows) {
   return [...lines.slice(0, open + 1), ...rebuilt, ...lines.slice(close)].join('\n')
 }
 
-function buildPrompt(student, cycle, sessions, context) {
+function buildPrompt(student, cycle, sessions, context, transcriptCount) {
+  const transcriptRules = transcriptCount ? `
+Before you write, read the session transcript files listed under SESSION TRANSCRIPTS.
+They are verbatim recordings of the sessions, where "Mark" is the tutor and the
+other speaker is ${student.name}. Use them for the specifics the summaries leave
+out: the questions ${student.name} asked, what they worked out on their own, where
+they got stuck and how they got unstuck. Paraphrase — never quote the transcript,
+and never mention that the sessions were recorded. Parents read this report.
+` : ''
   return `You are drafting a physics tutoring progress report in the voice of Mark Eichenlaub,
 the tutor. Write in the first person ("I worked with ${student.name} on…"), warm,
 specific, and concrete — like the example tone of an experienced mentor who knows
 the student well. Avoid generic praise; ground observations in the actual session
 data below.
-
+${transcriptRules}
 Output ONLY a Typst data block in EXACTLY this shape, with no prose before or after,
 no markdown code fences, and no #report(...) call:
 
