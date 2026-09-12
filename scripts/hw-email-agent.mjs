@@ -13,6 +13,12 @@
  * anything, or touching Gmail labels. Use this to sanity-check matching
  * against real mail before trusting it to write.
  *
+ * `--match-test --from <email> [--text-file <path>] [--files "a.pdf,b.pdf"]`
+ * runs only the matching step against live assignment data and prints the
+ * result. It touches Gmail not at all, so it works on a machine that has the
+ * Supabase key but no Gmail credentials — which is how you debug "why didn't
+ * it know which assignment this was".
+ *
  * One-time setup: node scripts/get-gmail-refresh-token.mjs, then add
  * GMAIL_REFRESH_TOKEN (and GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET, already
  * used for Calendar access) to .env.
@@ -28,6 +34,11 @@ const execAsync = promisify(exec)
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, '..')
 const DRY_RUN = process.argv.includes('--dry-run')
+const MATCH_TEST = process.argv.includes('--match-test')
+const argValue = (name) => {
+  const i = process.argv.indexOf(name)
+  return i !== -1 ? process.argv[i + 1] : ''
+}
 
 const envText = await readFile(resolve(ROOT, '.env'), 'utf8')
 const env = Object.fromEntries(
@@ -54,7 +65,7 @@ async function log(line) {
 }
 
 if (!SERVICE_KEY) { console.error('ERROR: VITE_SUPABASE_SERVICE_KEY not found in .env'); process.exit(1) }
-if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN) {
+if (!MATCH_TEST && (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GMAIL_REFRESH_TOKEN)) {
   console.error('ERROR: GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / GMAIL_REFRESH_TOKEN not found in .env.')
   console.error('Run: node scripts/get-gmail-refresh-token.mjs')
   process.exit(1)
@@ -188,9 +199,123 @@ async function judgeIsSubmission(messageText) {
   return result
 }
 
+// Second judgment call, used only when the deterministic signals leave more
+// than one outstanding assignment on the table. The assignment email lists the
+// whole problem set, so the thread text always mentions every handout the
+// student has open — the only thing that says *which* one this is, is what the
+// student wrote in their own reply ("here are my Ch. 11 multiple choice") and
+// what they named the file ("morin ch 11.pdf").
+
+const CHOOSE_SCHEMA = JSON.stringify({
+  type: 'object',
+  properties: {
+    assignmentId: { type: 'string' },
+    isSubmission: { type: 'boolean' },
+    reason: { type: 'string' },
+  },
+  required: ['assignmentId', 'isSubmission', 'reason'],
+})
+
+async function chooseAssignment({ ownText, attachmentNames, candidates }) {
+  const prompt = [
+    'A student emailed their physics tutor a completed homework assignment as a',
+    'PDF/image attachment. Work out which of their outstanding assignments it is.',
+    '',
+    'Here is what the student wrote (quoted text from earlier messages in the',
+    'thread has been stripped, so this is their own words only):',
+    '--- student message ---',
+    ownText || '(empty)',
+    '--- end student message ---',
+    '',
+    `Attached file name(s): ${attachmentNames.join(', ') || '(none)'}`,
+    '',
+    "The student's outstanding assignments, one per line, as",
+    '"<assignmentId> | <source material> | <what Mark asked for>":',
+    ...candidates.map(c => `${c.id} | ${c.name} | ${c.notes || '(no note)'}`),
+    '',
+    'Set assignmentId to the id of the one this email is turning in. A chapter',
+    'number, a topic, or a book name in the message text or the file name is',
+    'usually the deciding signal. If nothing distinguishes one candidate from',
+    'another, set assignmentId to the empty string rather than guessing.',
+    '',
+    'Also set isSubmission: true if this email is turning in completed work,',
+    'false if it is clearly something else (a question about the material, a',
+    'scheduling request, an unrelated attachment like a permission slip). An',
+    'empty or minimal body with an attachment IS consistent with a submission.',
+    '',
+    'reason: one short sentence naming the signal you used.',
+  ].join('\n')
+
+  const schema = CHOOSE_SCHEMA.replace(/'/g, "''")
+  const p = prompt.replace(/'/g, "''")
+  const isWin = process.platform === 'win32'
+  const base = `claude -p --output-format json --json-schema '${schema}' '${p}'`
+  const cmd = isWin ? `'' | ${base}` : `${base} < /dev/null`
+
+  const { stdout } = await execAsync(cmd, {
+    shell: isWin ? 'pwsh.exe' : undefined,
+    timeout: 120000,
+    cwd: ROOT,
+    maxBuffer: 10 * 1024 * 1024,
+  })
+  const envelope = JSON.parse(stdout.trim())
+  const result = envelope.structured_output || envelope
+  if (typeof result.assignmentId !== 'string' || typeof result.isSubmission !== 'boolean') {
+    throw new Error(`No structured output from claude: ${stdout.slice(0, 200)}`)
+  }
+  // Never let the model invent an id.
+  if (result.assignmentId && !candidates.some(c => c.id === result.assignmentId)) {
+    return { ...result, assignmentId: '' }
+  }
+  return result
+}
+
+// Strips quoted history so the model sees only what the student typed. Gmail
+// quotes with "> " and prefaces the block with "On <date> ... wrote:".
+function ownWordsOnly(text) {
+  const lines = (text || '').split('\n')
+  const out = []
+  for (const line of lines) {
+    if (/^\s*>/.test(line)) continue
+    if (/^\s*On .*wrote:\s*$/.test(line)) break
+    out.push(line)
+  }
+  return out.join('\n').trim()
+}
+
 // ── Deterministic matching ──────────────────────────────────────────────────
 
-async function matchCandidate(senderEmail, threadText) {
+// Assignments the student takes inside the portal (digitized F=ma exams and
+// weekly F=ma homework sets) can't be turned in as an email attachment, so
+// they're never candidates for filing one. Same source of truth the assignment
+// email uses to decide those get a portal link instead of a PDF link.
+async function portalOnlyProblemIds() {
+  const [{ data: examRows }, { data: hwRows }] = await Promise.all([
+    supabase.from('fma_questions').select('exam_id'),
+    supabase.from('fma_homework_questions').select('set_id'),
+  ])
+  return new Set([
+    ...(examRows || []).map(r => r.exam_id),
+    ...(hwRows || []).map(r => r.set_id),
+  ].filter(Boolean))
+}
+
+// Human-readable name for each candidate, so the model has something to match
+// "Ch. 11" against. Handout-backed assignments are the common case; anything
+// else falls back to its problem id.
+async function describeCandidates(rows) {
+  const ids = [...new Set(rows.map(r => r.problem_id))]
+  const { data: handouts } = await supabase.from('handouts').select('id, name').in('id', ids)
+  const nameById = new Map((handouts || []).map(h => [h.id, h.name]))
+  return rows.map(r => ({
+    id: r.id,
+    problem_id: r.problem_id,
+    name: nameById.get(r.problem_id) || r.problem_id,
+    notes: r.notes || '',
+  }))
+}
+
+async function matchCandidate(senderEmail, threadText, { ownText = '', attachmentNames = [] } = {}) {
   const { data: contacts, error: contactErr } = await supabase
     .from('student_contacts').select('student_id').ilike('email', senderEmail)
   if (contactErr) throw new Error(contactErr.message)
@@ -199,44 +324,69 @@ async function matchCandidate(senderEmail, threadText) {
   if (studentIds.length > 1) return { result: 'ambiguous', reason: 'sender_linked_to_multiple_students', studentIds }
   const studentId = studentIds[0]
 
+  // Only 'assigned' (not yet completed/reviewed) rows are real candidates — a
+  // handout can be re-assigned after a prior round was already completed,
+  // which would otherwise match the stale, already-done row too.
+  //
+  // Not gated on requires_submission: in practice handout-based assignments
+  // aren't reliably flagged that way, but an 'assigned' row is still the right
+  // signal that something is outstanding.
+  const { data: outstandingRaw, error: oErr } = await supabase
+    .from('assignments').select('id, status, problem_id, notes')
+    .eq('student_id', studentId).eq('status', 'assigned')
+  if (oErr) throw new Error(oErr.message)
+
+  const portalOnly = await portalOnlyProblemIds()
+  const outstanding = (outstandingRaw || []).filter(a => !portalOnly.has(a.problem_id))
+
+  if (outstanding.length === 0) {
+    return { result: 'ambiguous', reason: 'no_outstanding_assignments', studentId, candidates: [] }
+  }
+  if (outstanding.length === 1) {
+    return { result: 'match', confidence: 'medium', reason: 'sole_outstanding', studentId, assignment: outstanding[0] }
+  }
+
+  // Narrow by handout PDFs linked anywhere in the thread. This only decides
+  // the match when it leaves exactly one candidate — the assignment email
+  // lists the whole problem set, so normally every open handout is linked and
+  // this narrows nothing.
   const handoutFilenames = [...new Set(
     [...threadText.matchAll(/handout-pdfs\/([\w.-]+\.pdf)/gi)].map(m => m[1])
   )]
-
+  let pool = outstanding
   if (handoutFilenames.length > 0) {
     const orFilter = handoutFilenames.map(f => `pdf_url.ilike.%${f}%`).join(',')
     const { data: handouts, error: hErr } = await supabase.from('handouts').select('id').or(orFilter)
     if (hErr) throw new Error(hErr.message)
-    const handoutIds = (handouts || []).map(h => h.id)
-    if (handoutIds.length > 0) {
-      // Only 'assigned' (not yet completed/reviewed) rows are real candidates —
-      // a handout can be re-assigned after a prior round was already completed,
-      // which would otherwise match the stale, already-done row too.
-      const { data: rows, error: aErr } = await supabase
-        .from('assignments').select('id, status, problem_id')
-        .eq('student_id', studentId).in('problem_id', handoutIds).eq('status', 'assigned')
-      if (aErr) throw new Error(aErr.message)
-      if ((rows || []).length === 1) {
-        return { result: 'match', confidence: 'high', reason: 'handout_link', studentId, assignment: rows[0] }
-      }
+    const linkedIds = new Set((handouts || []).map(h => h.id))
+    const linked = outstanding.filter(a => linkedIds.has(a.problem_id))
+    if (linked.length === 1) {
+      return { result: 'match', confidence: 'high', reason: 'handout_link', studentId, assignment: linked[0] }
     }
+    if (linked.length > 1) pool = linked
   }
 
-  // Not gated on requires_submission: in practice handout-based assignments
-  // aren't reliably flagged that way, but an 'assigned' (not yet completed)
-  // row is still the right signal that something is outstanding.
-  const { data: outstanding, error: oErr } = await supabase
-    .from('assignments').select('id, status, problem_id')
-    .eq('student_id', studentId).eq('status', 'assigned')
-  if (oErr) throw new Error(oErr.message)
-  if ((outstanding || []).length === 1) {
-    return { result: 'match', confidence: 'medium', reason: 'sole_outstanding', studentId, assignment: outstanding[0] }
+  // Still more than one. Let the model read the student's own words and the
+  // attachment name and pick.
+  const candidates = await describeCandidates(pool)
+  const choice = await chooseAssignment({ ownText: ownWordsOnly(ownText), attachmentNames, candidates })
+  if (choice.isSubmission && choice.assignmentId) {
+    return {
+      result: 'match',
+      confidence: 'model',
+      reason: `model_choice: ${choice.reason}`,
+      studentId,
+      assignment: pool.find(a => a.id === choice.assignmentId),
+      judged: { isSubmission: true, reason: choice.reason },
+    }
   }
   return {
     result: 'ambiguous',
-    reason: (outstanding || []).length === 0 ? 'no_outstanding_assignments' : 'multiple_outstanding',
+    reason: choice.isSubmission
+      ? `multiple_outstanding (model could not tell: ${choice.reason})`
+      : `not_a_submission: ${choice.reason}`,
     studentId,
-    candidates: outstanding || [],
+    candidates,
   }
 }
 
@@ -330,7 +480,10 @@ async function run() {
       let threadText = ''
       for (const m of thread.messages || []) walkParts(m.payload, { onText: t => { threadText += t + '\n' }, onAttachment: () => {} })
 
-      const match = await matchCandidate(senderEmail, threadText)
+      const match = await matchCandidate(senderEmail, threadText, {
+        ownText,
+        attachmentNames: attachments.map(a => a.filename),
+      })
       await log(`${messageId} (${senderEmail}, "${subject}"): ${JSON.stringify(match)}`)
 
       if (match.result === 'ignored') {
@@ -346,6 +499,10 @@ async function run() {
             `Subject: ${subject}`,
             `From: ${senderEmail}`,
             `Reason: ${match.reason}`,
+            ...((match.candidates || []).length
+              ? ['', 'Outstanding assignments it could have been:',
+                 ...match.candidates.map(c => `  - ${c.name || c.problem_id}${c.notes ? ` — "${c.notes}"` : ''}`)]
+              : []),
             '',
             `Thread: https://mail.google.com/mail/u/0/#all/${msg.threadId}`,
           ],
@@ -353,8 +510,9 @@ async function run() {
         continue
       }
 
-      // match.result === 'match'
-      const verdict = await judgeIsSubmission(ownText)
+      // match.result === 'match'. A model-chosen match already answered the
+      // "is this even a submission" question, so don't ask twice.
+      const verdict = match.judged || await judgeIsSubmission(ownText)
       await log(`${messageId}: plausibility verdict ${JSON.stringify(verdict)}`)
       if (!verdict.isSubmission) {
         await setLabel(token, messageId, labelIds['HW-Flagged'])
@@ -397,5 +555,20 @@ async function run() {
   }
 }
 
-await run().catch(e => log(`FATAL: ${e.stack || e.message}`))
-await log(DRY_RUN ? '=== dry run done ===' : '=== pass done ===')
+// Matching only, no Gmail: `--match-test --from <email> --text-file <path>`.
+async function matchTest() {
+  const from = argValue('--from').toLowerCase()
+  if (!from) { console.error('--match-test needs --from <email>'); process.exit(1) }
+  const textFile = argValue('--text-file')
+  const text = textFile ? await readFile(resolve(textFile), 'utf8') : argValue('--text')
+  const files = argValue('--files').split(',').map(s => s.trim()).filter(Boolean)
+  const match = await matchCandidate(from, text || '', { ownText: text || '', attachmentNames: files })
+  console.log(JSON.stringify(match, null, 2))
+}
+
+if (MATCH_TEST) {
+  await matchTest().catch(e => { console.error(e.stack || e.message); process.exit(1) })
+} else {
+  await run().catch(e => log(`FATAL: ${e.stack || e.message}`))
+  await log(DRY_RUN ? '=== dry run done ===' : '=== pass done ===')
+}
