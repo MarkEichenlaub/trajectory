@@ -38,7 +38,7 @@ import { promisify } from 'util'
 import { readFile, writeFile, unlink, mkdir, appendFile } from 'fs/promises'
 import { resolve, dirname, extname } from 'path'
 import { fileURLToPath } from 'url'
-import { tmpdir } from 'os'
+import { tmpdir, hostname } from 'os'
 import { randomUUID } from 'crypto'
 import { createClient } from '@supabase/supabase-js'
 
@@ -597,7 +597,11 @@ async function run() {
       .limit(MAX_PER_PASS * 4)
     if (error) throw new Error(error.message)
 
-    const { data: done } = await supabase.from('fma_attempt_narratives').select('attempt_id')
+    // A row with generated_at set is a report that already went out. A row with
+    // only claimed_at is another machine (or a dead pass) mid-flight -- leave it
+    // in the pool and let claim_fma_narrative decide whether we get it.
+    const { data: done } = await supabase
+      .from('fma_attempt_narratives').select('attempt_id').not('generated_at', 'is', null)
     const doneIds = new Set((done || []).map(r => r.attempt_id))
     pending = (candidates || []).filter(a => !doneIds.has(a.id)).slice(0, MAX_PER_PASS)
     if (!pending.length) { await log('No attempts awaiting a narrative.'); return }
@@ -669,6 +673,22 @@ async function run() {
           continue
         }
 
+        // Claim it before the minutes-long claude call, so a second machine
+        // running the same task can't analyze and email the same attempt. This
+        // sits below the dry-run guard on purpose: a dry run inspects, it
+        // doesn't take work.
+        const { data: gotClaim, error: claimErr } = await supabase.rpc('claim_fma_narrative', {
+          p_attempt_id: attempt.id,
+          p_student_id: attempt.student_id,
+          p_exam_id: attempt.exam_id,
+          p_claimed_by: hostname(),
+        })
+        if (claimErr) throw new Error(`claim failed: ${claimErr.message}`)
+        if (!gotClaim && !ONLY_ATTEMPT) {
+          await log(`${attempt.id}: already claimed by another pass, skipping.`)
+          continue
+        }
+
         try {
           result = await runClaude(buildPrompt({
             studentName, examName, attempt, rows,
@@ -683,6 +703,11 @@ async function run() {
           const submittedAt = attempt.submitted_at ? new Date(attempt.submitted_at).getTime() : Date.now()
           const hoursWaiting = (Date.now() - submittedAt) / 3600000
           if (!ONLY_ATTEMPT && hoursWaiting < FALLBACK_AFTER_HOURS) {
+            // Drop the claim so the next pass picks it straight back up rather
+            // than waiting out the stale window.
+            await supabase.from('fma_attempt_narratives')
+              .update({ claimed_at: null, claude_error: e.message })
+              .eq('attempt_id', attempt.id).is('generated_at', null)
             await log(`${attempt.id}: claude failed (${e.message}); ${hoursWaiting.toFixed(1)}h in, retrying next pass.`)
             continue
           }
@@ -704,6 +729,7 @@ async function run() {
           sources,
           email_kind: result ? 'full' : 'table_only',
           claude_error: claudeError,
+          claimed_by: hostname(),
           model: 'claude -p (subscription)',
           generated_at: new Date().toISOString(),
         }, { onConflict: 'attempt_id' })
