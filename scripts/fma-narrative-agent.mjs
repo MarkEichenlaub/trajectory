@@ -1,18 +1,28 @@
 /**
- * Narrative read on a finished F=ma practice exam, for Mark only.
- *
- * The notify-fma-attempt edge function emails the score and the per-question
- * table the instant a student submits. That email answers "what happened".
- * This answers "what does it mean": what the student has learned, what we
+ * The single email Mark gets when a student finishes an F=ma practice exam:
+ * the score, the per-question table with topics and times, the scan of their
+ * work, and the read on the sitting -- what the student has learned, what we
  * worked on that landed this time, what still needs work, what the wrong
- * answers have in common, and -- for every miss -- what the question asked,
- * what they picked, and what would lead a student to pick it.
+ * answers have in common, and, for every miss, what the question asked, what
+ * they picked, and what would lead a student to pick it.
+ *
+ * The notify-fma-attempt edge function used to mail the score and the table by
+ * itself the instant a student submitted, with this following a few minutes
+ * later. Two emails about one sitting was one too many, so that one is now a
+ * silent submit hook and everything arrives here, a few minutes later than the
+ * old score mail but in one place.
  *
  * It runs here rather than in the edge function for two reasons. The analysis
  * goes through Mark's Claude subscription via `claude -p` (never API credits),
  * which needs a shell. And it reads the student's whole history -- earlier
  * attempts, graded homework reviews, session summaries and verbatim session
  * transcripts -- which is far more than the submit path has in hand.
+ *
+ * Because nothing else mails Mark now, a claude call that keeps failing would
+ * mean silence about a finished exam. So an attempt that is still unreported
+ * FALLBACK_AFTER_HOURS after it was submitted gets the table on its own, marked
+ * as such (email_kind = 'table_only'); `--attempt <id>` re-runs it for the full
+ * read once whatever broke is fixed.
  *
  * Run via `node scripts/fma-narrative-agent.mjs`, fired by a Windows Scheduled
  * Task every ~20 minutes (scripts/setup-fma-narrative-task.ps1). Each pass is a
@@ -63,6 +73,14 @@ const MAX_PER_PASS = 5
 const MAX_TRANSCRIPTS = 3
 const MAX_SESSIONS = 12
 const MAX_PRIOR_ATTEMPTS = 8
+// How long an attempt may sit unreported while claude keeps failing before the
+// table goes out without a narrative. Long enough to ride out a transient
+// failure across several 20-minute passes, short enough that Mark still hears
+// about a morning exam the same morning.
+const FALLBACK_AFTER_HOURS = 3
+// Resend caps a message at 40MB and base64 inflates by a third. Dropping an
+// oversized photo costs the attachment; sending it would cost the whole email.
+const MAX_ATTACHMENT_BYTES = 20 * 1024 * 1024
 
 if (!SERVICE_KEY) { console.error('ERROR: VITE_SUPABASE_SERVICE_KEY not found in .env'); process.exit(1) }
 
@@ -427,7 +445,9 @@ const VERDICT_STYLE = {
 
 const TD = 'padding:6px 8px;border:1px solid #d8d8d8;vertical-align:top'
 
-function narrativeEmailHtml({ studentName, examName, attempt, rows, result, workUploaded, resultsUrl }) {
+// `result` is null on a table_only fallback send -- everything narrative drops
+// out and Mark still gets the score, the table and the scan.
+function narrativeEmailHtml({ studentName, examName, attempt, rows, result, workUploaded, resultsUrl, scratchNote, claudeError }) {
   const showTime = attempt.mode === 'live'
   const table = rows.map(r => `<tr${r.correct ? '' : ' style="background:#fdecea"'}>
     <td style="${TD}">${r.num}</td>
@@ -438,7 +458,7 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, work
     <td style="${TD};color:#555">${r.topics.length ? esc(r.topics.join(', ')) : '—'}</td>
   </tr>`).join('')
 
-  const missBlocks = (result.misses || []).map(m => {
+  const missBlocks = ((result && result.misses) || []).map(m => {
     const s = VERDICT_STYLE[m.verdict] || VERDICT_STYLE.unclear
     const tags = (m.topics || []).length
       ? ` <span style="color:#666;font-size:12px">${esc((m.topics || []).join(', '))}</span>` : ''
@@ -458,16 +478,14 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, work
     ${esc(studentName)} wrote down.
   </p>`
 
-  return `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:#222;max-width:760px">
-  <p style="margin:0 0 4px 0"><strong>${esc(studentName)}</strong> — ${esc(examName)}</p>
-  <p style="font-size:22px;font-weight:700;margin:8px 0 4px">${attempt.score ?? '—'} / ${rows.length}</p>
-  <p style="font-size:13px;color:#666;margin:0 0 12px">
-    ${esc(attempt.mode)}${attempt.active_seconds ? ` · ${esc(fmtSeconds(attempt.active_seconds))} working time` : ''}${workUploaded ? '' : ' · no work uploaded'}
-  </p>
-  <p style="margin:0 0 14px 0"><a href="${esc(resultsUrl)}">Open in the portal →</a></p>
+  // No narrative: say why, so a bare table never looks like the whole story.
+  const noRead = result ? '' : `<p style="font-size:13px;margin:0 0 16px;padding:8px 10px;border-left:4px solid #b3261e;background:#fdecea;color:#7a1c14">
+    <strong>No analysis on this one.</strong> The write-up kept failing, so this is the table by
+    itself${claudeError ? ` (${esc(String(claudeError).slice(0, 200))})` : ''}. Re-run it with
+    <code>node scripts/fma-narrative-agent.mjs --attempt ${esc(attempt.id)}</code>.
+  </p>`
 
-  ${noWork}
-
+  const narrative = result ? `
   ${paras(result.headline)}
 
   ${section('What she has learned', result.learned)}
@@ -478,6 +496,19 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, work
 
   <h3 style="margin:24px 0 8px 0;font-size:15px">Each miss</h3>
   ${missBlocks || '<p style="margin:0 0 10px 0">Nothing missed.</p>'}
+` : ''
+
+  return `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:#222;max-width:760px">
+  <p style="margin:0 0 4px 0"><strong>${esc(studentName)}</strong> — ${esc(examName)}</p>
+  <p style="font-size:22px;font-weight:700;margin:8px 0 4px">${attempt.score ?? '—'} / ${rows.length}</p>
+  <p style="font-size:13px;color:#666;margin:0 0 12px">
+    ${esc(attempt.mode)}${attempt.active_seconds ? ` · ${esc(fmtSeconds(attempt.active_seconds))} working time` : ''}${workUploaded ? '' : ' · no work uploaded'}${scratchNote ? ` · ${esc(scratchNote)}` : ''}
+  </p>
+  <p style="margin:0 0 14px 0"><a href="${esc(resultsUrl)}">Open in the portal →</a></p>
+
+  ${noWork}
+  ${noRead}
+  ${narrative}
 
   <h3 style="margin:24px 0 8px 0;font-size:15px">Every question</h3>
   <table style="border-collapse:collapse;font-size:13px;width:100%">
@@ -494,13 +525,13 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, work
 </div>`
 }
 
-async function notifyMark(subject, body) {
+async function notifyMark(subject, body, attachments = []) {
   if (DRY_RUN || NO_EMAIL) { await log(`[skip-email] would email Mark: ${subject}`); return }
   try {
     const res = await fetch(`${FUNCTIONS_URL}/send-email`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${SERVICE_KEY}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to: MARK_EMAIL, subject, body }),
+      body: JSON.stringify({ to: MARK_EMAIL, subject, body, ...(attachments.length ? { attachments } : {}) }),
     })
     const text = await res.text()
     if (!res.ok || /"error"/.test(text)) await log(`[notify-mark] send-email HTTP ${res.status}: ${text.slice(0, 400)}`)
@@ -514,6 +545,9 @@ async function notifyMark(subject, body) {
 // scratch_work_url holds an object path in the private fma-scratch-work bucket
 // (older rows may hold a full public URL from before it was locked down), so
 // pull it with the service key rather than fetching the URL.
+// Returns { path, bytes, tooLarge } -- `path` is a temp file claude reads, and
+// the same bytes ride along as the email attachment so Mark sees the scan
+// without opening the portal.
 async function downloadScratch(scratchWorkUrl) {
   if (!scratchWorkUrl) return null
   const marker = '/fma-scratch-work/'
@@ -525,12 +559,18 @@ async function downloadScratch(scratchWorkUrl) {
     if (error) throw error
     const ext = extname(path) || '.jpg'
     const out = resolve(tmpdir(), `trajectory-fma-scratch-${randomUUID()}${ext}`)
-    await writeFile(out, Buffer.from(await blob.arrayBuffer()))
-    return out
+    const bytes = Buffer.from(await blob.arrayBuffer())
+    await writeFile(out, bytes)
+    return { path: out, bytes, ext, tooLarge: bytes.length > MAX_ATTACHMENT_BYTES }
   } catch (e) {
     await log(`[scratch] download failed for ${path}: ${e.message}`)
     return null
   }
+}
+
+// Keeps the attachment name from breaking mail clients on / \ : and friends.
+function safeFilename(s) {
+  return s.replace(/[\\/:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim()
 }
 
 // ── Main pass ───────────────────────────────────────────────────────────────
@@ -579,13 +619,28 @@ async function run() {
       const rows = await loadAttemptDetail(attempt)
       const workUploaded = Boolean(attempt.scratch_work_url)
 
-      let result
+      // The scan is wanted either way: claude reads it, and it rides along as
+      // the email attachment.
+      const scratch = workUploaded ? await downloadScratch(attempt.scratch_work_url) : null
+      if (scratch) tmpFiles.push(scratch.path)
+      const attachments = (scratch && !scratch.tooLarge)
+        ? [{
+            filename: safeFilename(`${studentName} - ${examName} scratch work${scratch.ext}`),
+            content: scratch.bytes.toString('base64'),
+          }]
+        : []
+      const scratchNote = attachments.length ? 'scratch work attached'
+        : scratch?.tooLarge ? 'scratch work too large to attach — see the portal' : ''
+
+      let result = null
       let sources = null
+      let claudeError = null
       if (RESEND) {
         const { data: stored } = await supabase
           .from('fma_attempt_narratives').select('*').eq('attempt_id', attempt.id).maybeSingle()
         if (!stored) { await log(`${attempt.id}: no stored narrative to resend, skipping`); continue }
-        result = stored
+        result = stored.headline ? stored : null
+        claudeError = stored.claude_error
       } else {
         const history = await loadHistory(attempt.student_id, attempt)
 
@@ -598,9 +653,6 @@ async function run() {
         }, null, 2))
         await writeFile(historyPath, JSON.stringify(history, null, 2))
         tmpFiles.push(attemptPath, historyPath)
-
-        const scratchFile = workUploaded ? await downloadScratch(attempt.scratch_work_url) : null
-        if (scratchFile) tmpFiles.push(scratchFile)
 
         sources = {
           prior_attempts: history.prior.length,
@@ -617,24 +669,41 @@ async function run() {
           continue
         }
 
-        result = await runClaude(buildPrompt({
-          studentName, examName, attempt, rows,
-          attemptPath, historyPath, workUploaded, scratchFile,
-        }))
+        try {
+          result = await runClaude(buildPrompt({
+            studentName, examName, attempt, rows,
+            attemptPath, historyPath, workUploaded, scratchFile: scratch?.path,
+          }))
+        } catch (e) {
+          claudeError = e.message
+          // Nothing else emails Mark now, so a persistently failing write-up
+          // must not turn into silence. Give it a few passes, then send the
+          // table by itself. Before that window is up, leave the attempt
+          // unreported so the next pass can try again.
+          const submittedAt = attempt.submitted_at ? new Date(attempt.submitted_at).getTime() : Date.now()
+          const hoursWaiting = (Date.now() - submittedAt) / 3600000
+          if (!ONLY_ATTEMPT && hoursWaiting < FALLBACK_AFTER_HOURS) {
+            await log(`${attempt.id}: claude failed (${e.message}); ${hoursWaiting.toFixed(1)}h in, retrying next pass.`)
+            continue
+          }
+          await log(`${attempt.id}: claude failed (${e.message}); sending the table without a read.`)
+        }
 
         const { error: upsertErr } = await supabase.from('fma_attempt_narratives').upsert({
           attempt_id: attempt.id,
           student_id: attempt.student_id,
           exam_id: attempt.exam_id,
-          headline: result.headline,
-          learned: result.learned,
-          improved: result.improved,
-          needs_work: result.needs_work,
-          wrong_answer_trend: result.wrong_answer_trend,
-          what_helped: result.what_helped,
-          misses: result.misses,
+          headline: result?.headline ?? null,
+          learned: result?.learned ?? null,
+          improved: result?.improved ?? null,
+          needs_work: result?.needs_work ?? null,
+          wrong_answer_trend: result?.wrong_answer_trend ?? null,
+          what_helped: result?.what_helped ?? null,
+          misses: result?.misses ?? [],
           work_uploaded: workUploaded,
           sources,
+          email_kind: result ? 'full' : 'table_only',
+          claude_error: claudeError,
           model: 'claude -p (subscription)',
           generated_at: new Date().toISOString(),
         }, { onConflict: 'attempt_id' })
@@ -643,10 +712,14 @@ async function run() {
 
       const resultsUrl = `${PORTAL_URL}?view=fma&student=${encodeURIComponent(attempt.student_id)}&attempt=${encodeURIComponent(attempt.id)}`
       await notifyMark(
-        `Read on ${studentName}'s ${examName} — ${attempt.score ?? '?'}/${rows.length}${workUploaded ? '' : ' (no work uploaded)'}`,
-        narrativeEmailHtml({ studentName, examName, attempt, rows, result, workUploaded, resultsUrl }),
+        `${studentName} finished ${examName} — ${attempt.score ?? '?'}/${rows.length}${workUploaded ? '' : ' (no work uploaded)'}`,
+        narrativeEmailHtml({
+          studentName, examName, attempt, rows, result,
+          workUploaded, resultsUrl, scratchNote, claudeError,
+        }),
+        attachments,
       )
-      await log(`${attempt.id}: analyzed and notified.`)
+      await log(`${attempt.id}: sent (${result ? 'full' : 'table only'}).`)
     } catch (e) {
       await log(`${attempt.id}: FAILED — ${e.message}`)
     } finally {

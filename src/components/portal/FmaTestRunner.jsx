@@ -165,6 +165,8 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
   const [submitting, setSubmitting] = useState(false)
   const [reviewing, setReviewing] = useState(false)
+  // Set when Submit was tapped with no scratch work attached; see requestSubmit.
+  const [confirmNoWork, setConfirmNoWork] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [err, setErr] = useState(null)
   const [overAcked, setOverAcked] = useState(false)
@@ -253,6 +255,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     setErr(null)
     try {
       setScratchUrl(await uploadFmaScratchWork(studentId, attempt.id, file))
+      setConfirmNoWork(false)
     } catch (e) {
       setErr(`Scratch work upload failed: ${e.message}`)
     } finally {
@@ -260,7 +263,18 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     }
   }
 
+  // Submitting with no scan attached is allowed, but it has to be a decision
+  // rather than an oversight: almost every student who skipped the upload just
+  // forgot it was there, and without the work Mark can only guess at what led
+  // to a wrong answer. So the first tap on Submit opens the prompt below, and
+  // getting past it takes an explicit "submit without my work".
+  function requestSubmit() {
+    if (!scratchUrl) { setConfirmNoWork(true); return }
+    handleSubmit()
+  }
+
   async function handleSubmit() {
+    setConfirmNoWork(false)
     setSubmitting(true)
     setErr(null)
     try {
@@ -301,9 +315,50 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     </div>
   )
 
+  // Only one of the two screens below renders at a time, so the same ref is
+  // never claimed twice.
+  const hiddenFileInput = (
+    <input ref={fileInputRef} type="file" accept="image/*,application/pdf"
+      style={{ display: 'none' }} onChange={handleFileChange} />
+  )
+
+  // Four ways out, and submitting anyway is the one that takes a deliberate tap
+  // on a plainly-labeled button rather than the primary action.
+  const noWorkPrompt = confirmNoWork && (
+    <div className="fma-card" style={{ borderColor: 'var(--yellow)', marginTop: 16 }}>
+      <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
+        You haven't attached your work. Attach it now?
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
+        A photo of your scratch paper is what lets Mark see where a wrong answer came from,
+        instead of guessing from the letter you picked. One picture of each page is plenty.
+      </div>
+      {err && <div className="fma-err" style={{ marginBottom: 10 }}>{err}</div>}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <button className="primary" disabled={uploading || submitting}
+          onClick={() => fileInputRef.current?.click()}>
+          {uploading ? 'Uploading…' : 'Attach my work'}
+        </button>
+        <button className="sm" disabled={uploading || submitting}
+          onClick={() => { setConfirmNoWork(false); setReviewing(false) }}>
+          Go back to the test
+        </button>
+        <button className="sm" disabled={uploading || submitting}
+          onClick={() => setConfirmNoWork(false)}>
+          Not now
+        </button>
+        <button className="sm" disabled={uploading || submitting} onClick={handleSubmit}
+          style={{ marginLeft: 'auto', color: 'var(--red)' }}>
+          Submit without my work
+        </button>
+      </div>
+    </div>
+  )
+
   if (reviewing) {
     return (
       <div className="fma-runner">
+        {hiddenFileInput}
         {header}
         {overNotice}
         <h3 style={{ fontSize: 16, fontWeight: 600, margin: '8px 0 4px' }}>Review your test</h3>
@@ -342,12 +397,18 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
             Once submitted the test is graded and can't be changed.
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <button className="primary" disabled={submitting} onClick={handleSubmit}>
+            <button className="primary" disabled={submitting || confirmNoWork} onClick={requestSubmit}>
               {submitting ? 'Submitting…' : 'Submit test'}
             </button>
             <button className="sm" disabled={submitting} onClick={() => setReviewing(false)}>Keep working</button>
           </div>
+          {scratchUrl && (
+            <div style={{ fontSize: 12, color: 'var(--green, #1a7f37)', marginTop: 10 }}>
+              Your work is attached. <ScratchWorkLink path={scratchUrl} label="View ↗" />
+            </div>
+          )}
         </div>
+        {noWorkPrompt}
       </div>
     )
   }
@@ -356,7 +417,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
 
   return (
     <div className="fma-runner">
-      <input ref={fileInputRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleFileChange} />
+      {hiddenFileInput}
       {header}
       {overNotice}
 
