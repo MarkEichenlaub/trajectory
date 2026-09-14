@@ -93,14 +93,14 @@ Deno.serve(async (req) => {
   // Iterate over the exam's questions, not the answer rows: a question the
   // student never touched has no fma_attempt_answers row at all, and those
   // blanks are exactly the ones worth seeing.
-  type Row = { num: number; picked: string | null; key: string | null; correct: boolean; secs?: number }
+  type Row = { num: number; picked: string | null; key: string | null; correct: boolean; secs?: number; topics: string[] }
   let rows: Row[] = []
   let outOf = 25
 
   if (!isScoreOnly) {
     const { data: questions } = await admin
       .from('fma_questions')
-      .select('id, question_num, correct_choice')
+      .select('id, question_num, correct_choice, tags')
       .eq('exam_id', attempt.exam_id)
       .order('question_num')
 
@@ -152,6 +152,10 @@ Deno.serve(async (req) => {
         key: q.correct_choice ?? null,
         correct: !!a?.is_correct,
         secs: secondsBy.get(q.id),
+        // `tags` is the per-question topic list ('circular motion', 'springs').
+        // The `topics` column is a coarse subject bucket -- every F=ma question
+        // is 'Mechanics' -- so it says nothing useful here.
+        topics: q.tags || [],
       }
     })
     if (rows.length) outOf = rows.length
@@ -211,6 +215,7 @@ Deno.serve(async (req) => {
         <th style="${th}">Key</th>
         <th style="${th}">Result</th>
         ${showTime ? `<th style="${th}">Time</th>` : ''}
+        <th style="${th}">Topics</th>
       </tr></thead>
       <tbody>
         ${rows.map(r => `<tr>
@@ -219,9 +224,20 @@ Deno.serve(async (req) => {
           <td style="${td}">${esc(r.key)}</td>
           <td style="${td};color:${r.correct ? '#1a7f37' : '#b3261e'};font-weight:600">${r.correct ? 'right' : 'wrong'}</td>
           ${showTime ? `<td style="${td}">${esc(fmtSeconds(r.secs))}</td>` : ''}
+          <td style="${td};color:#555">${r.topics.length ? esc(r.topics.join(', ')) : '<span style="color:#999">—</span>'}</td>
         </tr>`).join('')}
       </tbody>
     </table>` : ''
+
+  // Mark wants a standing flag when there's no scan to look at, so he knows to
+  // ask for it rather than assuming the email lost the attachment. score_only
+  // attempts are a bare number by design and never had work to upload.
+  const noWorkUploaded = !isScoreOnly && !attempt.scratch_work_url
+  const noWorkHtml = noWorkUploaded ? `
+      <p style="font-size:13px;margin:0 0 16px;padding:8px 10px;border-left:4px solid #9a6700;background:#fff8e1;color:#7a4f01">
+        <strong>No scratch work uploaded.</strong> ${esc(student.name)} didn't attach a scan of the
+        work for this attempt, so there's nothing to read alongside the wrong answers.
+      </p>` : ''
 
   const modeLabel = { live: 'timed on-screen', paper_first: 'paper first', score_only: 'score only' }[attempt.mode as string] || attempt.mode
 
@@ -231,9 +247,10 @@ Deno.serve(async (req) => {
       <p style="font-size:22px;font-weight:700;margin:12px 0 4px">${score != null ? `${esc(score)} / ${outOf}` : '—'}</p>
       <p style="font-size:13px;color:#666;margin:0 0 16px">
         ${esc(modeLabel)}${totalSecs != null ? ` · ${esc(fmtSeconds(totalSecs))} working time` : ''}
-        ${attachments.length ? ' · scratch work attached' : ''}${scratchTooLarge ? ' · scratch work too large to attach — see the portal' : ''}
+        ${attachments.length ? ' · scratch work attached' : ''}${scratchTooLarge ? ' · scratch work too large to attach — see the portal' : ''}${noWorkUploaded ? ' · no work uploaded' : ''}
       </p>
       ${overBy ? `<p style="font-size:13px;color:#9a6700;margin:0 0 16px">Ran ${esc(fmtSeconds(overBy))} past the 75-minute limit.</p>` : ''}
+      ${noWorkHtml}
       <p style="margin:0 0 4px"><a href="${esc(resultsUrl)}" style="font-size:14px">Open ${esc(student.name)}'s results in the portal →</a></p>
       ${!isScoreOnly && !showTime ? '<p style="font-size:12px;color:#888;margin:12px 0 0">Per-question times aren\'t recorded for paper-first attempts.</p>' : ''}
       ${tableHtml}
