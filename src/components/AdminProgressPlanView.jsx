@@ -35,6 +35,19 @@ export default function AdminProgressPlanView({ studentId, studentName, onEmailR
       .finally(() => setLoading(false))
   }, [studentId])
 
+  // Inline save from the next-session box; the outline rides along unchanged.
+  async function handleSaveNextSession(text) {
+    setErr(null)
+    try {
+      const row = await saveStudentPlan(studentId, { next_session: text, outline: plan?.outline || outline })
+      setPlan(row)
+      setNextSession(row.next_session)
+    } catch (e) {
+      setErr(e.message)
+      throw e
+    }
+  }
+
   async function handleSavePlan() {
     setSavingPlan(true)
     setErr(null)
@@ -119,18 +132,13 @@ export default function AdminProgressPlanView({ studentId, studentName, onEmailR
           </div>
         </div>
       ) : (
-        <div>
-          {plan?.next_session || plan?.outline ? (
-            <PlanOutline nextSession={plan.next_session} outline={plan.outline} />
-          ) : (
-            <div className="empty-state">No plan yet.</div>
-          )}
-          <div style={{ marginTop: 12 }}>
-            <button className="sm" onClick={() => setEditingPlan(true)}>
-              {plan ? 'Edit plan' : 'Add plan'}
-            </button>
-          </div>
-        </div>
+        <PlanOutline
+          nextSession={plan?.next_session || ''}
+          outline={plan?.outline || ''}
+          editable
+          onSaveNextSession={handleSaveNextSession}
+          onEditPlan={() => setEditingPlan(true)}
+        />
       )}
 
       {/* Draft hint */}

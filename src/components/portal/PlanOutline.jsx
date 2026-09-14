@@ -2,6 +2,8 @@
 // session, then the month-by-month route to the goal exam. Both the admin view
 // and the student/parent view show the same thing; only the admin can edit it.
 
+import { useEffect, useRef, useState } from 'react'
+
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
 
 // Plain text in, month cards out:
@@ -35,28 +37,95 @@ function isCurrentMonth(heading) {
   return h.startsWith(m) && h.includes(String(now.getFullYear()))
 }
 
-export default function PlanOutline({ nextSession, outline }) {
+// In the admin view the next-session line is click-to-edit in place: it's the
+// one part of the plan that changes after every session, and the full editor
+// sits below a year of month cards, off the bottom of the screen.
+function NextSessionBox({ nextSession, editable, onSave }) {
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState(nextSession || '')
+  const [saving, setSaving] = useState(false)
+  const inputRef = useRef(null)
+
+  useEffect(() => { setDraft(nextSession || '') }, [nextSession])
+  useEffect(() => { if (editing) inputRef.current?.focus() }, [editing])
+
+  if (!nextSession && !editable) return null
+
+  async function save() {
+    setSaving(true)
+    try {
+      await onSave(draft.trim())
+      setEditing(false)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  function cancel() {
+    setDraft(nextSession || '')
+    setEditing(false)
+  }
+
+  return (
+    <div style={{
+      background: 'var(--accent-dim)', border: '1px solid var(--border-strong)',
+      borderRadius: 'var(--radius)', padding: '14px 18px',
+      cursor: editable && !editing ? 'text' : 'default',
+    }}
+      onClick={editable && !editing ? () => setEditing(true) : undefined}
+      title={editable && !editing ? 'Click to edit' : undefined}
+    >
+      <div style={{
+        fontSize: 11, fontWeight: 600, color: 'var(--text-dim)',
+        textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6,
+      }}>Next session</div>
+
+      {editing ? (
+        <div>
+          <input
+            ref={inputRef}
+            type="text"
+            value={draft}
+            onChange={e => setDraft(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') save()
+              if (e.key === 'Escape') cancel()
+            }}
+            placeholder="What we're doing next time"
+            style={{ width: '100%', fontSize: 15 }}
+          />
+          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+            <button className="sm primary" onClick={save} disabled={saving}>
+              {saving ? 'Saving…' : 'Save'}
+            </button>
+            <button className="sm" onClick={cancel}>Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <div style={{ fontSize: 15, color: 'var(--text-strong)', lineHeight: 1.5 }}>
+          {nextSession || <span style={{ color: 'var(--muted)' }}>Click to say what's next…</span>}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function PlanOutline({ nextSession, outline, editable = false, onSaveNextSession, onEditPlan }) {
   const blocks = parsePlanOutline(outline)
-  if (!nextSession && blocks.length === 0) return null
+  if (!editable && !nextSession && blocks.length === 0) return null
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {nextSession && (
-        <div style={{
-          background: 'var(--accent-dim)', border: '1px solid var(--border-strong)',
-          borderRadius: 'var(--radius)', padding: '14px 18px',
-        }}>
-          <div style={{
-            fontSize: 11, fontWeight: 600, color: 'var(--text-dim)',
-            textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6,
-          }}>Next session</div>
-          <div style={{ fontSize: 15, color: 'var(--text-strong)', lineHeight: 1.5 }}>{nextSession}</div>
-        </div>
-      )}
+      <NextSessionBox nextSession={nextSession} editable={editable} onSave={onSaveNextSession} />
 
-      {blocks.length > 0 && (
+      {(blocks.length > 0 || editable) && (
         <div>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>The plan</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '0 0 12px' }}>
+            <h3 style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>The plan</h3>
+            {editable && onEditPlan && (
+              <button className="sm" onClick={onEditPlan}>{blocks.length ? 'Edit months' : 'Add months'}</button>
+            )}
+          </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {blocks.map((b, i) => {
               const current = isCurrentMonth(b.heading)
