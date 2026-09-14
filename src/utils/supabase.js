@@ -369,6 +369,33 @@ export async function deleteProgressReport(id) {
   if (error) throw new Error(error.message)
 }
 
+// ── Plan (next session + month-by-month outline) ──────────────────────────────
+
+export async function fetchStudentPlan(studentId) {
+  const { data, error } = await adminClient()
+    .from('student_plans').select('*').eq('student_id', studentId).maybeSingle()
+  if (error) throw new Error(error.message)
+  return data || null
+}
+
+export async function saveStudentPlan(studentId, { next_session, outline }) {
+  const { data, error } = await adminClient()
+    .from('student_plans')
+    .upsert({ student_id: studentId, next_session, outline }, { onConflict: 'student_id' })
+    .select().single()
+  if (error) throw new Error(error.message)
+  return data
+}
+
+// Student/parent side: RLS returns only their own row (admin previewing the
+// portal sees every row, so the caller scopes by student_id the way
+// fetchMyProgressReports' caller does).
+export async function fetchMyStudentPlans() {
+  const { data, error } = await supabase.from('student_plans').select('*')
+  if (error) throw new Error(error.message)
+  return data || []
+}
+
 // ── Progress reports (student, public client + RLS) ───────────────────────────
 
 export async function fetchMyProgressReports() {

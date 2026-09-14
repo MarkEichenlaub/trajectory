@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import {
   fetchProgressReports, uploadProgressReport, deleteProgressReport,
+  fetchStudentPlan, saveStudentPlan,
 } from '../utils/supabase'
+import PlanOutline from './portal/PlanOutline'
 
 export default function AdminProgressPlanView({ studentId, studentName, onEmailReport }) {
   const [reports, setReports] = useState([])
@@ -11,15 +13,41 @@ export default function AdminProgressPlanView({ studentId, studentName, onEmailR
   const [uploading, setUploading] = useState(false)
   const [err, setErr] = useState(null)
 
+  const [plan, setPlan] = useState(null)
+  const [editingPlan, setEditingPlan] = useState(false)
+  const [nextSession, setNextSession] = useState('')
+  const [outline, setOutline] = useState('')
+  const [savingPlan, setSavingPlan] = useState(false)
+
   useEffect(() => {
     if (!studentId) return
     setLoading(true)
     setErr(null)
-    fetchProgressReports(studentId)
-      .then(setReports)
+    setEditingPlan(false)
+    Promise.all([fetchProgressReports(studentId), fetchStudentPlan(studentId)])
+      .then(([rows, p]) => {
+        setReports(rows)
+        setPlan(p)
+        setNextSession(p?.next_session || '')
+        setOutline(p?.outline || '')
+      })
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
   }, [studentId])
+
+  async function handleSavePlan() {
+    setSavingPlan(true)
+    setErr(null)
+    try {
+      const row = await saveStudentPlan(studentId, { next_session: nextSession.trim(), outline })
+      setPlan(row)
+      setEditingPlan(false)
+    } catch (e) {
+      setErr(e.message)
+    } finally {
+      setSavingPlan(false)
+    }
+  }
 
   async function handleUpload() {
     if (!file || !title.trim()) return
@@ -55,6 +83,55 @@ export default function AdminProgressPlanView({ studentId, studentName, onEmailR
 
   return (
     <div className="admin-pane" style={{ maxWidth: 720, display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+      {/* Plan: next session, then the month-by-month route to the goal exam */}
+      {editingPlan ? (
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '16px 18px' }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Edit plan</h3>
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Next session</label>
+          <input
+            type="text"
+            value={nextSession}
+            onChange={e => setNextSession(e.target.value)}
+            placeholder="Finish gravity and Kepler's laws"
+            style={{ width: '100%', margin: '4px 0 14px' }}
+          />
+          <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>
+            Month-by-month plan — one month per block: a <code>Month Year: Title</code> line,
+            an optional <code>&gt;</code> note, then <code>-</code> bullets.
+          </label>
+          <textarea
+            value={outline}
+            onChange={e => setOutline(e.target.value)}
+            rows={20}
+            spellCheck={false}
+            style={{ width: '100%', margin: '4px 0 12px', fontFamily: 'var(--font-mono)', fontSize: 12, lineHeight: 1.6 }}
+          />
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="sm primary" onClick={handleSavePlan} disabled={savingPlan}>
+              {savingPlan ? 'Saving…' : 'Save plan'}
+            </button>
+            <button className="sm" onClick={() => {
+              setNextSession(plan?.next_session || '')
+              setOutline(plan?.outline || '')
+              setEditingPlan(false)
+            }}>Cancel</button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          {plan?.next_session || plan?.outline ? (
+            <PlanOutline nextSession={plan.next_session} outline={plan.outline} />
+          ) : (
+            <div className="empty-state">No plan yet.</div>
+          )}
+          <div style={{ marginTop: 12 }}>
+            <button className="sm" onClick={() => setEditingPlan(true)}>
+              {plan ? 'Edit plan' : 'Add plan'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Draft hint */}
       <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '14px 18px' }}>

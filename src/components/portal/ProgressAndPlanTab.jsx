@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react'
-import { fetchMyProgressReports } from '../../utils/supabase'
+import { fetchMyProgressReports, fetchMyStudentPlans } from '../../utils/supabase'
+import PlanOutline from './PlanOutline'
 
 export default function ProgressAndPlanTab({ studentId }) {
   const [reports, setReports] = useState([])
+  const [plan, setPlan] = useState(null)
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
 
   useEffect(() => {
     // fetchMyProgressReports() returns all rows the caller's RLS allows
     // (admin sees every student), so scope to this student client-side.
-    fetchMyProgressReports()
-      .then(r => setReports(r.filter(rep => rep.student_id === studentId)))
+    Promise.all([fetchMyProgressReports(), fetchMyStudentPlans()])
+      .then(([r, plans]) => {
+        setReports(r.filter(rep => rep.student_id === studentId))
+        setPlan(plans.find(p => p.student_id === studentId) || null)
+      })
       .catch(e => setErr(e.message))
       .finally(() => setLoading(false))
   }, [studentId])
@@ -25,8 +30,10 @@ export default function ProgressAndPlanTab({ studentId }) {
     <div style={{ maxWidth: 680, display: 'flex', flexDirection: 'column', gap: 24 }}>
       {err && <div style={{ fontSize: 12, color: 'var(--red)' }}>{err}</div>}
 
+      {plan && <PlanOutline nextSession={plan.next_session} outline={plan.outline} />}
+
       <div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Progress and Plan</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Progress reports</h3>
         {reports.length === 0 ? (
           <div className="empty-state">No reports yet.</div>
         ) : (
