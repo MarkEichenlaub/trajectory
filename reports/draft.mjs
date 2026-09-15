@@ -83,8 +83,12 @@ function esc(s) { return String(s ?? '').replace(/"/g, '\\"') }
 
 async function main() {
   const { data: student, error: sErr } = await db
-    .from('students').select('id, name, billing_name').eq('id', studentId).single()
+    .from('students').select('id, name, billing_name, gender').eq('id', studentId).single()
   if (sErr || !student) { console.error('Student not found:', studentId, sErr?.message || ''); process.exit(1) }
+  // Same rule as bill-sessions/index.ts and fma-narrative-agent.mjs: 'they' when
+  // gender isn't set, rather than letting the model guess from the name.
+  const pronoun = student.gender === 'female' ? 'she/her'
+    : student.gender === 'male' ? 'he/him' : 'they/them'
 
   // Anchor = last report; the cycle covers everything since then.
   const { data: lastReport } = await db
@@ -165,6 +169,7 @@ async function main() {
   // ---- assemble context the model will read ----
   const ctx = []
   ctx.push(`STUDENT: ${student.name}`)
+  ctx.push(`PRONOUNS: ${pronoun}`)
   ctx.push(`CYCLE LABEL: ${cycle}`)
   ctx.push(lastReport
     ? `PREVIOUS REPORT: "${lastReport.title}" on ${fmtDate(lastReport.created_at)} — only cover progress SINCE then.`
@@ -393,6 +398,8 @@ Rules:
 - sessions: ONE tuple per session listed below, in order, each summary ONE sentence.
   Copy the date and assignment columns EXACTLY as given in SESSION LOG ROWS below;
   only the middle (summary) field is yours to write.
+- Use the pronouns given under PRONOUNS in PORTAL DATA below whenever you refer to
+  ${student.name} in the third person. If PRONOUNS says "they/them", use singular they.
 - Escape any double-quotes inside strings as \\". Keep "cycle" terminology.
 - Plain ASCII punctuation is fine; the layout handles styling.
 

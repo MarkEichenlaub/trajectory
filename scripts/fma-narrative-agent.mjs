@@ -447,7 +447,7 @@ const TD = 'padding:6px 8px;border:1px solid #d8d8d8;vertical-align:top'
 
 // `result` is null on a table_only fallback send -- everything narrative drops
 // out and Mark still gets the score, the table and the scan.
-function narrativeEmailHtml({ studentName, examName, attempt, rows, result, workUploaded, resultsUrl, scratchNote, claudeError }) {
+function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pronoun, pronounVerb, workUploaded, resultsUrl, scratchNote, claudeError }) {
   const showTime = attempt.mode === 'live'
   const table = rows.map(r => `<tr${r.correct ? '' : ' style="background:#fdecea"'}>
     <td style="${TD}">${r.num}</td>
@@ -488,7 +488,7 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, work
   const narrative = result ? `
   ${paras(result.headline)}
 
-  ${section('What she has learned', result.learned)}
+  ${section(`What ${pronoun} ${pronounVerb} learned`, result.learned)}
   ${section('Worked on before, landed this time', result.improved)}
   ${section('Needs work', result.needs_work)}
   ${section('Pattern in the wrong answers', result.wrong_answer_trend)}
@@ -608,8 +608,15 @@ async function run() {
   }
   await log(`Found ${pending.length} attempt(s) to analyze.`)
 
-  const { data: students } = await supabase.from('students').select('id, name')
-  const nameOf = id => (students || []).find(s => s.id === id)?.name || id
+  const { data: students } = await supabase.from('students').select('id, name, gender')
+  const studentRow = id => (students || []).find(s => s.id === id)
+  const nameOf = id => studentRow(id)?.name || id
+  // Same rule as bill-sessions/index.ts: 'they' when gender isn't set.
+  const pronounOf = id => {
+    const gender = studentRow(id)?.gender
+    return gender === 'female' ? 'she' : gender === 'male' ? 'he' : 'they'
+  }
+  const pronounVerbOf = id => pronounOf(id) === 'they' ? 'have' : 'has'
 
   for (const attempt of pending) {
     const tmpFiles = []
@@ -618,6 +625,8 @@ async function run() {
         .from('handouts').select('id, name').eq('id', attempt.exam_id).maybeSingle()
       const examName = exam?.name || attempt.exam_id
       const studentName = nameOf(attempt.student_id)
+      const pronoun = pronounOf(attempt.student_id)
+      const pronounVerb = pronounVerbOf(attempt.student_id)
       await log(`${attempt.id}: ${studentName} — ${examName}`)
 
       const rows = await loadAttemptDetail(attempt)
@@ -740,7 +749,7 @@ async function run() {
       await notifyMark(
         `${studentName} finished ${examName} — ${attempt.score ?? '?'}/${rows.length}${workUploaded ? '' : ' (no work uploaded)'}`,
         narrativeEmailHtml({
-          studentName, examName, attempt, rows, result,
+          studentName, examName, attempt, rows, result, pronoun, pronounVerb,
           workUploaded, resultsUrl, scratchNote, claudeError,
         }),
         attachments,
