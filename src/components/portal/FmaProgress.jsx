@@ -33,7 +33,7 @@ function minutesLeft(activeSeconds) {
   return left <= 0 ? 'over the 75 min limit' : `${Math.ceil(left / 60)} min left`
 }
 
-export function FmaChart({ attempts, onSelect }) {
+export function FmaChart({ attempts, onSelect, showUnguessedScore = false }) {
   const scored = attempts
     .filter(a => a.score != null && (a.submitted_at || a.started_at))
     .sort((a, b) => new Date(a.submitted_at || a.started_at) - new Date(b.submitted_at || b.started_at))
@@ -65,6 +65,14 @@ export function FmaChart({ attempts, onSelect }) {
     .map((a, i) => ({ i, value: a.score_at_limit }))
     .filter(t => t.value != null)
   const showTimed = timed.some(t => t.value !== scored[t.i].score)
+
+  // A third line for a student who stars every guess: the timed score with the
+  // starred questions thrown out, so a guess that happened to land can't
+  // flatter the trend she is reading to predict a real sitting.
+  const unguessed = showUnguessedScore
+    ? scored.map((a, i) => ({ i, value: a.score_without_guesses })).filter(t => t.value != null)
+    : []
+  const showUnguessed = unguessed.some(t => t.value !== scored[t.i].score_at_limit)
 
   if (scored.length === 0) {
     return <div className="empty-state">No graded practice tests yet — take one to start seeing your progress here.</div>
@@ -108,6 +116,23 @@ export function FmaChart({ attempts, onSelect }) {
           fill="none" stroke="var(--yellow)" strokeWidth={1.5} opacity={0.6} strokeDasharray="4 3"
         />
       )}
+      {showUnguessed && unguessed.length > 1 && (
+        <polyline
+          points={unguessed.map(t => `${xAt(t.i)},${yScale(t.value)}`).join(' ')}
+          fill="none" stroke="var(--red)" strokeWidth={1.5} opacity={0.55} strokeDasharray="1 4"
+        />
+      )}
+      {showUnguessed && unguessed.map(t => (
+        <circle
+          key={`u-${scored[t.i].id}`}
+          cx={xAt(t.i)} cy={yScale(t.value)} r={3.5}
+          fill="var(--surface)" stroke="var(--red)" strokeWidth={1.5}
+          style={{ cursor: 'pointer' }}
+          onClick={() => onSelect(scored[t.i].id)}
+        >
+          <title>{`${scored[t.i].handouts?.name || scored[t.i].exam_id}: ${t.value}/${MAX_SCORE} at 75 min, without the guesses`}</title>
+        </circle>
+      ))}
       {showTimed && timed.map(t => (
         <circle
           key={`t-${scored[t.i].id}`}
@@ -136,10 +161,11 @@ export function FmaChart({ attempts, onSelect }) {
         </circle>
       ))}
     </svg>
-    {showTimed && (
+    {(showTimed || showUnguessed) && (
       <div className="fma-chart-legend">
         <span><i className="line solid" /> final score</span>
-        <span><i className="line dashed" /> score at 75 minutes</span>
+        {showTimed && <span><i className="line dashed" /> at 75 minutes</span>}
+        {showUnguessed && <span><i className="line dotted" /> at 75 minutes, without the guesses</span>}
       </div>
     )}
     </>
@@ -212,7 +238,7 @@ export function TagBreakdown({ attempts }) {
   )
 }
 
-export default function FmaProgress({ studentId, isPreview, assignedExamIds = [], preselectExamId = null }) {
+export default function FmaProgress({ studentId, isPreview, assignedExamIds = [], preselectExamId = null, showUnguessedScore = false }) {
   const [view, setView] = useState('list') // 'list' | 'live' | 'batch' | 'score' | 'detail'
   const [exams, setExams] = useState([])
   const [attempts, setAttempts] = useState([])
@@ -385,7 +411,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
     return <FmaScoreOnly attempt={activeAttempt} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'detail' && detail) {
-    return <FmaAttemptDetail detail={detail} onBack={handleBack} />
+    return <FmaAttemptDetail detail={detail} onBack={handleBack} showUnguessedScore={showUnguessedScore} />
   }
 
   return (
@@ -447,7 +473,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
 
       <div>
         <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>F=ma Progress</h3>
-        <FmaChart attempts={attempts} onSelect={handleViewAttempt} />
+        <FmaChart attempts={attempts} onSelect={handleViewAttempt} showUnguessedScore={showUnguessedScore} />
       </div>
 
       <div>
@@ -508,6 +534,11 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
                   {a.score_at_limit != null && a.score_at_limit !== a.score && (
                     <div style={{ fontSize: 10, fontWeight: 500, color: 'var(--yellow)' }}>
                       {a.score_at_limit} at 75 min
+                    </div>
+                  )}
+                  {showUnguessedScore && a.score_without_guesses != null && a.score_without_guesses !== a.score_at_limit && (
+                    <div style={{ fontSize: 10, fontWeight: 500, color: 'var(--red)' }}>
+                      {a.score_without_guesses} without guesses
                     </div>
                   )}
                 </div>

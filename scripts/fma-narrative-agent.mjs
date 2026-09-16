@@ -325,6 +325,9 @@ function buildPrompt({ studentName, examName, attempt, rows, attemptPath, histor
     (attempt.score_at_limit != null && attempt.score_at_limit !== attempt.score)
       ? `Score when the 75 minutes ran out: ${attempt.score_at_limit} / ${rows.length}. They kept working past the limit and the extra time was worth ${attempt.score - attempt.score_at_limit} more. Say something about that gap -- it is the difference between what they know and what they can do inside the clock.`
       : '',
+    (attempt.score_without_guesses != null && luckyStars.length)
+      ? `Score at 75 minutes with the guessed (starred) questions thrown out: ${attempt.score_without_guesses} / ${rows.length}. ${luckyStars.length} guess${luckyStars.length === 1 ? '' : 'es'} landed right (${luckyStars.map(r => r.num).join(', ')}). Treat those as unknown rather than known: they tell you nothing about whether the physics is there.`
+      : '',
     attempt.submitted_at ? `Submitted: ${attempt.submitted_at.slice(0, 10)}` : '',
     attempt.active_seconds ? `Working time: ${fmtSeconds(attempt.active_seconds)} (limit 75:00)` : '',
     `Missed or blank: ${missed.length ? missed.map(r => r.num).join(', ') : 'none'}`,
@@ -468,7 +471,7 @@ const TD = 'padding:6px 8px;border:1px solid #d8d8d8;vertical-align:top'
 
 // `result` is null on a table_only fallback send -- everything narrative drops
 // out and Mark still gets the score, the table and the scan.
-function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pronoun, pronounVerb, workUploaded, resultsUrl, scratchNote, claudeError }) {
+function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pronoun, pronounVerb, workUploaded, resultsUrl, scratchNote, claudeError, showUnguessed }) {
   const showTime = attempt.mode === 'live'
   const starred = rows.filter(r => r.starred)
   const luckyStars = starred.filter(r => r.correct)
@@ -496,17 +499,26 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
   const section = (title, body) => body
     ? `<h3 style="margin:20px 0 6px 0;font-size:15px">${title}</h3>${paras(body)}` : ''
 
-  // A sitting that ran long is two results. The big number above is the
-  // finished test; this says where they stood when the real clock would have
-  // stopped them, which is the number that predicts a real F=ma.
+  // One sitting, up to three numbers. The big number above is the finished
+  // test; the 75-minute one is what predicts a real F=ma; and for a student who
+  // stars every guess, the third says what that would have been had none of the
+  // guesses landed.
   const overBy = (attempt.active_seconds || 0) - 4500
-  const splitScore = (attempt.score_at_limit == null || overBy <= 0) ? '' : `
-  <p style="font-size:13px;margin:0 0 8px;padding:8px 10px;border-left:4px solid #2a4a6d;background:#eef2f7;color:#1f3a5f">
+  const timedLine = (attempt.score_at_limit == null || overBy <= 0) ? '' : `
     <strong>${attempt.score_at_limit} / ${rows.length} at the 75-minute mark</strong>, then
     ${esc(fmtSeconds(overBy))} of extra time took it to ${attempt.score ?? '—'}.
     ${attempt.score > attempt.score_at_limit
       ? `The extra time was worth ${attempt.score - attempt.score_at_limit} more question${attempt.score - attempt.score_at_limit === 1 ? '' : 's'}.`
-      : 'Nothing changed after the clock ran out.'}
+      : 'Nothing changed after the clock ran out.'}`
+  const unguessedLine = (!showUnguessed || attempt.score_without_guesses == null) ? '' : `
+    <br><strong>${attempt.score_without_guesses} / ${rows.length} at 75 minutes without the guesses</strong>
+    — the starred questions thrown out, right or wrong.
+    ${luckyStars.length
+      ? `${luckyStars.length} guess${luckyStars.length === 1 ? '' : 'es'} landed (${esc(luckyStars.map(r => r.num).join(', '))}), so that is the gap.`
+      : 'No guess landed this time, so it matches the timed score.'}`
+  const splitScore = (!timedLine && !unguessedLine) ? '' : `
+  <p style="font-size:13px;margin:0 0 8px;padding:8px 10px;border-left:4px solid #2a4a6d;background:#eef2f7;color:#1f3a5f">
+    ${timedLine}${unguessedLine}
   </p>`
 
   // The student's own flag that they were guessing. Called out above the fold
@@ -656,9 +668,11 @@ async function run() {
   }
   await log(`Found ${pending.length} attempt(s) to analyze.`)
 
-  const { data: students } = await supabase.from('students').select('id, name, gender')
+  const { data: students } = await supabase.from('students').select('id, name, gender, show_unguessed_score')
   const studentRow = id => (students || []).find(s => s.id === id)
   const nameOf = id => studentRow(id)?.name || id
+  // Per-student: only some want the third, guess-free number reported.
+  const showUnguessedFor = id => !!studentRow(id)?.show_unguessed_score
   // Same rule as bill-sessions/index.ts: 'they' when gender isn't set.
   const pronounOf = id => {
     const gender = studentRow(id)?.gender
@@ -808,6 +822,7 @@ async function run() {
       const body = narrativeEmailHtml({
         studentName, examName, attempt, rows, result, pronoun, pronounVerb,
         workUploaded, resultsUrl, scratchNote, claudeError,
+        showUnguessed: showUnguessedFor(attempt.student_id),
       })
       if (DUMP_HTML) {
         await writeFile(DUMP_HTML, body)

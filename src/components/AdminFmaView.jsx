@@ -4,7 +4,7 @@ import FmaAttemptDetail from './portal/FmaAttemptDetail'
 import { FmaChart, TagBreakdown } from './portal/FmaProgress'
 import { FmaHomeworkResult } from './portal/FmaHomeworkRunner'
 
-export default function AdminFmaView({ studentId, studentName, initialAttemptId, onAttemptOpened }) {
+export default function AdminFmaView({ studentId, studentName, showUnguessedScore = false, initialAttemptId, onAttemptOpened }) {
   const [attempts, setAttempts] = useState([])
   const [loading, setLoading] = useState(true)
   const [err, setErr] = useState(null)
@@ -60,7 +60,7 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
     // Needs its own scroll too: a 25-question review is the longest page here.
     return (
       <div className="admin-pane">
-        <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} isAdmin studentName={studentName} />
+        <FmaAttemptDetail detail={detail} onBack={() => setDetail(null)} isAdmin studentName={studentName} showUnguessedScore={showUnguessedScore} />
       </div>
     )
   }
@@ -87,7 +87,7 @@ export default function AdminFmaView({ studentId, studentName, initialAttemptId,
       {attempts.length > 0 && (
         <>
           <div style={{ marginBottom: 20 }}>
-            <FmaChart attempts={attempts} onSelect={handleView} />
+            <FmaChart attempts={attempts} onSelect={handleView} showUnguessedScore={showUnguessedScore} />
           </div>
           <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Performance by tag</h3>
           <div style={{ marginBottom: 24 }}>

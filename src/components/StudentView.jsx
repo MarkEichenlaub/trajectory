@@ -291,6 +291,7 @@ export default function StudentView({ student, assignments, sessions, problems, 
           studentId={student.id}
           isPreview={isPreview}
           preselectExamId={preselectExamId}
+          showUnguessedScore={!!student?.show_unguessed_score}
           assignedExamIds={assignments
             .filter(a => a.student_id === student.id && a.status !== 'completed')
             .map(a => a.problem_id)}

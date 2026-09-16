@@ -217,6 +217,15 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
         </select>
       </div>
       <div className="student-card-row">
+        <label>F=ma scores</label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-dim)' }}
+          title="Adds a third score: the 75-minute score with every starred (guessed) question thrown out">
+          <input type="checkbox" checked={!!draft.show_unguessed_score}
+            onChange={e => set('show_unguessed_score', e.target.checked)} />
+          also show the score without the guesses
+        </label>
+      </div>
+      <div className="student-card-row">
         <label>Notes</label>
         <input value={draft.notes || ''} onChange={e => set('notes', e.target.value)} placeholder="General notes" />
       </div>

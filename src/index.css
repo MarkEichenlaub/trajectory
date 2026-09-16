@@ -1009,3 +1009,5 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 }
 .fma-chart-legend .line.solid { border-top: 2px solid var(--accent); }
 .fma-chart-legend .line.dashed { border-top: 2px dashed var(--yellow); }
+.fma-chart-legend .line.dotted { border-top: 2px dotted var(--red); }
+.fma-summary-split .dim b { color: var(--text-dim); }

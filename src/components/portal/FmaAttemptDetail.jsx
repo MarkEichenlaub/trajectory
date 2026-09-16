@@ -119,7 +119,7 @@ function CopyButtons({ shotRef, workRef, hasWork, examName, questionNum, verdict
   )
 }
 
-export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, studentName = '' }) {
+export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, studentName = '', showUnguessedScore = false }) {
   const { attempt, questions, answerByQuestion, secondsByQuestion, scratchPages = [], workByQuestion } = detail
   const questionRefs = useRef({})
   // Two capture nodes per question: the slice of the card that becomes the
@@ -148,6 +148,12 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
   const outOf = questions.length || 25
   const examName = attempt.handouts?.name || attempt.exam_id
   const wentOver = (attempt.active_seconds || 0) > LIMIT_SEC
+  // The timed line only earns its place once it differs from the final score.
+  const showTimedSplit = wentOver && attempt.score_at_limit != null && attempt.score != null
+  // The "without the guesses" line is per-student: for most of them a third
+  // number is noise, but a student who deliberately stars every guess is asking
+  // exactly this question -- what would this be if none of them had landed?
+  const showGuessSplit = showUnguessedScore && attempt.score_without_guesses != null && attempt.score != null
 
   // A skipped question is a question you got wrong -- there's no partial credit
   // on the F=ma -- so it belongs in the same bucket as a wrong answer. Verdicts
@@ -172,6 +178,8 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
   // is the whole reason the marker exists, so it's reported next to the score
   // rather than left to be discovered question by question.
   const starredQuestions = questions.filter(q => answerByQuestion.get(q.id)?.starred)
+  const luckyStars = starredQuestions
+    .filter(q => verdicts[questions.indexOf(q)] === 'correct').length
 
   // Mirrors the email summary Mark already gets, so he doesn't have to click
   // through every question just to see the right/wrong/time-spent breakdown.
@@ -225,14 +233,23 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
                 ? `${nCorrect}/${outOf} so far`
                 : '—'}
           </div>
-          {/* A sitting that ran past 75 minutes is really two results, and the
-              timed one is the one that says where they'd land on the real
-              exam. Both are shown; the big number stays the finished test. */}
-          {wentOver && attempt.score_at_limit != null && (
+          {/* One sitting, up to three results. The big number above stays the
+              finished test; these say where it stood when the real clock would
+              have stopped them, and -- for a student who wants it -- what that
+              number would have been had every guess missed. */}
+          {(showTimedSplit || showGuessSplit) && (
             <div className="fma-summary-split">
-              <div><b>{attempt.score_at_limit}</b>/{outOf} at 75 min</div>
+              {showGuessSplit && (
+                <div title="Starred questions score nothing here, right or wrong">
+                  <b>{attempt.score_without_guesses}</b>/{outOf} at 75 min, without the guesses
+                </div>
+              )}
+              {showTimedSplit && <div><b>{attempt.score_at_limit}</b>/{outOf} at 75 min</div>}
               <div className="dim">
-                <b>{attempt.score}</b>/{outOf} with {formatDuration(attempt.active_seconds - LIMIT_SEC)} extra
+                <b>{attempt.score}</b>/{outOf}
+                {wentOver
+                  ? ` with ${formatDuration(attempt.active_seconds - LIMIT_SEC)} extra`
+                  : ' final'}
               </div>
             </div>
           )}
@@ -279,6 +296,10 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>
             These are the ones that were a guess, whether or not the guess landed. Worth going over together.
+            {showGuessSplit && luckyStars > 0 && (
+              <> {luckyStars} of them came out right, which is why the score above is also given
+              without the guesses.</>
+            )}
           </div>
         </div>
       )}
