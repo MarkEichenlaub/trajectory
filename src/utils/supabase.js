@@ -911,23 +911,94 @@ export async function fetchFmaAnswerEvents(attemptId) {
   return data || []
 }
 
-// One scratch-work upload per attempt, in every mode. This used to be
-// per-question in live mode, which nobody would realistically do 25 times — and
-// it silently did nothing when the student uploaded before picking an answer,
-// because it UPDATEd an fma_attempt_answers row that did not exist yet.
-export async function uploadFmaScratchWork(studentId, attemptId, file) {
-  const ext = file.name.split('.').pop() || 'bin'
-  const path = `${studentId}/${attemptId}.${ext}`
-  const { error } = await supabase.storage
-    .from('fma-scratch-work')
-    .upload(path, file, { upsert: true, contentType: file.type })
+// One upload of the whole test's work, as however many pages of paper it took.
+//
+// This has always been a single whole-test scan rather than a per-question one
+// (nobody would do that 25 times), but it only ever accepted ONE file, so a
+// student with four sheets had to choose one or staple them into a PDF. Pages
+// now get a row each, and scripts/fma-work-splitter.mjs works out afterwards
+// which part of which page belongs to which question.
+//
+// Pixel dimensions are measured here, in the browser, because it already has
+// the image decoded; the splitter fills them in for anything it can't measure
+// (a PDF) once it has rasterized it.
+async function imageDimensions(file) {
+  if (!file.type.startsWith('image/')) return {}
+  const url = URL.createObjectURL(file)
+  try {
+    const img = await new Promise((resolve, reject) => {
+      const el = new Image()
+      el.onload = () => resolve(el)
+      el.onerror = () => reject(new Error('not decodable'))
+      el.src = url
+    })
+    return { width: img.naturalWidth, height: img.naturalHeight }
+  } catch {
+    return {}
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
+export async function uploadFmaScratchPages(studentId, attemptId, files) {
+  const existing = await fetchFmaScratchPages(attemptId)
+  let nextIndex = existing.reduce((m, p) => Math.max(m, p.page_index), -1) + 1
+  const added = []
+
+  for (const file of files) {
+    const ext = (file.name.split('.').pop() || 'bin').toLowerCase()
+    // The object path has to start with the student id: that first folder
+    // segment is what the bucket's RLS policies check.
+    const path = `${studentId}/${attemptId}/p${nextIndex}-${Date.now()}.${ext}`
+    const { error } = await supabase.storage
+      .from('fma-scratch-work')
+      .upload(path, file, { upsert: true, contentType: file.type })
+    if (error) throw new Error(error.message)
+
+    const { width, height } = await imageDimensions(file)
+    const { data, error: rowErr } = await supabase
+      .from('fma_scratch_pages')
+      .insert({
+        attempt_id: attemptId, page_index: nextIndex, storage_path: path,
+        file_name: file.name, width: width ?? null, height: height ?? null,
+      })
+      .select().single()
+    if (rowErr) throw new Error(rowErr.message)
+    added.push(data)
+    nextIndex++
+  }
+
+  // The first page also goes on the attempt itself, which is what the report
+  // email and the old "Scratch work ↗" link read.
+  const first = existing[0] || added[0]
+  if (first) {
+    await supabase.from('fma_attempts')
+      .update({ scratch_work_url: first.storage_path }).eq('id', attemptId)
+  }
+  return added
+}
+
+export async function fetchFmaScratchPages(attemptId) {
+  const { data, error } = await supabase
+    .from('fma_scratch_pages').select('*').eq('attempt_id', attemptId).order('page_index')
   if (error) throw new Error(error.message)
-  // The bucket is private, so we persist the object path and sign it on demand
-  // rather than storing a permanent world-readable URL.
-  const { error: aErr } = await supabase
-    .from('fma_attempts').update({ scratch_work_url: path }).eq('id', attemptId)
-  if (aErr) throw new Error(aErr.message)
-  return path
+  return data || []
+}
+
+// Removing a page a student is unhappy with (blurry, upside down, wrong test).
+// The storage object goes too, so a replaced photo isn't left lying around.
+export async function deleteFmaScratchPage(page) {
+  const { error } = await supabase.from('fma_scratch_pages').delete().eq('id', page.id)
+  if (error) throw new Error(error.message)
+  await supabase.storage.from('fma-scratch-work').remove([page.storage_path]).catch(() => {})
+}
+
+// Where each question's work sits on those pages, as normalized boxes.
+export async function fetchFmaQuestionWork(attemptId) {
+  const { data, error } = await supabase
+    .from('fma_question_work').select('*').eq('attempt_id', attemptId)
+  if (error) throw new Error(error.message)
+  return data || []
 }
 
 // Short-lived link to a scratch-work file. Accepts a stored path, or a legacy
@@ -1037,7 +1108,25 @@ export async function fetchFmaAttemptDetail(attemptId) {
   const events = attempt.mode === 'live' ? await fetchFmaAnswerEvents(attemptId) : []
   const secondsByQuestion = fmaSecondsByQuestion(events, attempt)
 
-  return { attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion }
+  // The uploaded work, plus the boxes saying which part of it belongs to which
+  // question. Both are optional — an attempt with no scan still reviews fine.
+  const [pages, work] = await Promise.all([
+    fetchFmaScratchPages(attemptId).catch(() => []),
+    fetchFmaQuestionWork(attemptId).catch(() => []),
+  ])
+  const pageByIndex = new Map(pages.map(p => [p.page_index, p]))
+  const workByQuestion = new Map()
+  for (const w of work) {
+    const page = pageByIndex.get(w.page_index)
+    if (!page) continue
+    if (!workByQuestion.has(w.question_id)) workByQuestion.set(w.question_id, [])
+    workByQuestion.get(w.question_id).push({ ...w, page })
+  }
+
+  return {
+    attempt, questions: questions || [], answerByQuestion, events, secondsByQuestion,
+    scratchPages: pages, workByQuestion,
+  }
 }
 
 // ── F=ma weekly homework sets ───────────────────────────────────────────────

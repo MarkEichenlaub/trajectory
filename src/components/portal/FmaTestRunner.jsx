@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
-import ScratchWorkLink from './ScratchWorkLink'
 import {
-  saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt, logFmaQuestionView,
+  saveFmaAnswer, uploadFmaScratchPages, fetchFmaScratchPages, deleteFmaScratchPage,
+  submitFmaAttempt, logFmaQuestionView,
   setFmaFlag, setFmaStar, setFmaEliminated, bumpFmaActiveSeconds,
 } from '../../utils/supabase'
+import WorkUpload from './WorkUpload'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 const LIMIT_SEC = 75 * 60
@@ -165,16 +166,13 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const [flags, setFlags] = useState(initialFlags || {})
   const [stars, setStars] = useState(initialStars || {})
   const [eliminated, setEliminated] = useState(initialEliminated || {})
-  const [uploading, setUploading] = useState(false)
-  const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
+  const [pages, setPages] = useState([])
   const [submitting, setSubmitting] = useState(false)
   const [reviewing, setReviewing] = useState(false)
-  // Set when Submit was tapped with no scratch work attached; see requestSubmit.
+  // Set when Submit was tapped with no work attached; see requestSubmit.
   const [confirmNoWork, setConfirmNoWork] = useState(false)
-  const [dragging, setDragging] = useState(false)
   const [err, setErr] = useState(null)
   const [overAcked, setOverAcked] = useState(false)
-  const fileInputRef = useRef(null)
 
   const { seconds, total, flush } = useExamClock(attempt.id, attempt.active_seconds)
   const overTime = seconds > LIMIT_SEC
@@ -256,30 +254,18 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     }
   }
 
-  async function handleFileChange(e) {
-    const file = e.target.files?.[0]
-    e.target.value = ''
-    await uploadFile(file)
-  }
+  // Pages already uploaded on an earlier sitting of this same attempt.
+  useEffect(() => {
+    let cancelled = false
+    fetchFmaScratchPages(attempt.id)
+      .then(p => { if (!cancelled) setPages(p) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [attempt.id])
 
-  function handleDrop(e) {
-    e.preventDefault()
-    setDragging(false)
-    uploadFile(e.dataTransfer.files?.[0])
-  }
-
-  async function uploadFile(file) {
-    if (!file) return
-    setUploading(true)
-    setErr(null)
-    try {
-      setScratchUrl(await uploadFmaScratchWork(studentId, attempt.id, file))
-      setConfirmNoWork(false)
-    } catch (e) {
-      setErr(`Scratch work upload failed: ${e.message}`)
-    } finally {
-      setUploading(false)
-    }
+  function handlePagesChange(next) {
+    setPages(next)
+    if (next.length) setConfirmNoWork(false)
   }
 
   // Submitting with no scan attached is allowed, but it has to be a decision
@@ -288,7 +274,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   // to a wrong answer. So the first tap on Submit opens the prompt below, and
   // getting past it takes an explicit "submit without my work".
   function requestSubmit() {
-    if (!scratchUrl) { setConfirmNoWork(true); return }
+    if (pages.length === 0) { setConfirmNoWork(true); return }
     handleSubmit()
   }
 
@@ -319,54 +305,59 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
     </div>
   )
 
-  // Going past 75 minutes is allowed -- finishing the questions is worth more
-  // than the deadline on a practice test -- but it shouldn't slip by unnoticed,
-  // so say it once, plainly, and let it be dismissed.
-  const overNotice = overTime && !overAcked && (
-    <div className="fma-card" style={{ borderColor: 'var(--yellow)', marginBottom: 12 }}>
-      <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 4 }}>You're past the 75-minute limit</div>
-      <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 10 }}>
-        Keep going and finish the test — nothing is cut off. Your total working time is being
-        recorded ({fmt(seconds)} so far), so you and Mark can see how far over the real limit
-        this sitting ran.
+  // The clock reaching zero is a decision point, not a cut-off. Nothing is
+  // taken away and nothing is submitted for you: the sitting is scored twice,
+  // once as it stood at 75:00 and once as it finally stands, so carrying on
+  // costs the student nothing and tells Mark something the single number never
+  // could. Say that, and let them choose.
+  const timeUpPrompt = overTime && !overAcked && (
+    <div className="fma-card fma-timeup">
+      <div style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>
+        Your time is up — that's 75:00.
       </div>
-      <button className="sm" onClick={() => setOverAcked(true)}>Got it</button>
+      <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 12 }}>
+        Do you want to keep working, or finish here? Nothing is lost either way: what you had
+        at 75 minutes is recorded as your timed score, and if you keep going you get a second
+        score for the finished test. Both show up on your progress chart.
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <button className="primary" onClick={() => setOverAcked(true)}>Keep working</button>
+        <button className="sm" onClick={() => { setOverAcked(true); setReviewing(true) }}>
+          Finish and submit
+        </button>
+      </div>
     </div>
   )
 
-  // Only one of the two screens below renders at a time, so the same ref is
-  // never claimed twice.
-  const hiddenFileInput = (
-    <input ref={fileInputRef} type="file" accept="image/*,application/pdf"
-      style={{ display: 'none' }} onChange={handleFileChange} />
+  // Once acknowledged the prompt gives way to a quiet running note, so the
+  // extra time is always visible without a dialog in the way.
+  const overNote = overTime && overAcked && !reviewing && (
+    <div style={{ fontSize: 11, color: 'var(--yellow)', marginBottom: 10 }}>
+      {fmt(seconds - LIMIT_SEC)} past the limit — this part counts toward your extra-time score.
+    </div>
   )
 
-  // Four ways out, and submitting anyway is the one that takes a deliberate tap
-  // on a plainly-labeled button rather than the primary action.
+  // Submitting anyway stays possible, but it takes a deliberate tap on a plainly
+  // labeled button rather than the primary action.
   const noWorkPrompt = confirmNoWork && (
     <div className="fma-card" style={{ borderColor: 'var(--yellow)', marginTop: 16 }}>
       <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>
-        You haven't attached your work. Attach it now?
+        You haven't attached your work yet.
       </div>
       <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 12 }}>
-        A photo of your scratch paper is what lets Mark see where a wrong answer came from,
-        instead of guessing from the letter you picked. One picture of each page is plenty.
+        Photos of your scratch paper are what let Mark see where a wrong answer came from,
+        instead of guessing from the letter you picked. The upload box is just above — add
+        every page at once.
       </div>
-      {err && <div className="fma-err" style={{ marginBottom: 10 }}>{err}</div>}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-        <button className="primary" disabled={uploading || submitting}
-          onClick={() => fileInputRef.current?.click()}>
-          {uploading ? 'Uploading…' : 'Attach my work'}
-        </button>
-        <button className="sm" disabled={uploading || submitting}
+        <button className="sm" disabled={submitting}
           onClick={() => { setConfirmNoWork(false); setReviewing(false) }}>
           Go back to the test
         </button>
-        <button className="sm" disabled={uploading || submitting}
-          onClick={() => setConfirmNoWork(false)}>
+        <button className="sm" disabled={submitting} onClick={() => setConfirmNoWork(false)}>
           Not now
         </button>
-        <button className="sm" disabled={uploading || submitting} onClick={handleSubmit}
+        <button className="sm" disabled={submitting} onClick={handleSubmit}
           style={{ marginLeft: 'auto', color: 'var(--red)' }}>
           Submit without my work
         </button>
@@ -377,9 +368,8 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   if (reviewing) {
     return (
       <div className="fma-runner">
-        {hiddenFileInput}
         {header}
-        {overNotice}
+        {timeUpPrompt}
         <h3 style={{ fontSize: 16, fontWeight: 600, margin: '8px 0 4px' }}>Review your test</h3>
         <div style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 16 }}>
           Tap any question to go back to it.
@@ -429,12 +419,15 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
             </button>
             <button className="sm" disabled={submitting} onClick={() => setReviewing(false)}>Keep working</button>
           </div>
-          {scratchUrl && (
-            <div style={{ fontSize: 12, color: 'var(--green, #1a7f37)', marginTop: 10 }}>
-              Your work is attached. <ScratchWorkLink path={scratchUrl} label="View ↗" />
-            </div>
-          )}
         </div>
+
+        {/* The one and only upload, at the end, where "the whole test" is the
+            obvious reading of it. */}
+        <WorkUpload
+          studentId={studentId} attemptId={attempt.id}
+          pages={pages} onPagesChange={handlePagesChange} disabled={submitting}
+        />
+
         {noWorkPrompt}
       </div>
     )
@@ -444,9 +437,9 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
 
   return (
     <div className="fma-runner">
-      {hiddenFileInput}
       {header}
-      {overNotice}
+      {timeUpPrompt}
+      {overNote}
 
       <Navigator questions={questions} answers={answers} flags={flags} stars={stars} index={index} onJump={setIndex} />
 
@@ -504,19 +497,12 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
         </div>
       </div>
 
-      <div
-        className={`fma-scratch${dragging ? ' dragging' : ''}`}
-        onDragOver={e => { e.preventDefault(); setDragging(true) }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={handleDrop}
-      >
-        <button className="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
-          {uploading ? 'Uploading…' : scratchUrl ? 'Replace scratch work' : 'Upload scratch work (whole test)'}
-        </button>
-        <ScratchWorkLink path={scratchUrl} label="View ↗" />
-        <span style={{ fontSize: 11, color: 'var(--text-dim)' }}>
-          {dragging ? 'Drop to upload' : 'or drag a photo here · answers save as you tap them'}
-        </span>
+      {/* No upload button here on purpose. Sitting under a question, it read as
+          "attach your work for THIS question" and put students off uploading at
+          all; there is one upload, on the review screen, for the whole test. */}
+      <div className="fma-work-hint">
+        Answers save as you tap them. You'll upload photos of your work once, at the end,
+        on the Review &amp; submit screen{pages.length ? ` — ${pages.length} page${pages.length === 1 ? '' : 's'} attached so far` : ''}.
       </div>
 
       {/* Sticky: this row used to sit below the fold on a tall question, so the

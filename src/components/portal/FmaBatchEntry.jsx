@@ -1,18 +1,24 @@
-import { useState, useRef } from 'react'
-import { saveFmaAnswer, setFmaStar, uploadFmaScratchWork, submitFmaAttempt } from '../../utils/supabase'
-import ScratchWorkLink from './ScratchWorkLink'
+import { useState, useEffect } from 'react'
+import { saveFmaAnswer, setFmaStar, fetchFmaScratchPages, submitFmaAttempt } from '../../utils/supabase'
+import WorkUpload from './WorkUpload'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 
 export default function FmaBatchEntry({ studentId, attempt, questions, initialAnswers, initialStars, examPdfUrl, onDone, onCancel }) {
   const [answers, setAnswers] = useState(initialAnswers || {}) // questionId -> choice
   const [stars, setStars] = useState(initialStars || {})       // questionId -> true
-  const [uploading, setUploading] = useState(false)
-  const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
+  const [pages, setPages] = useState([])
   const [submitting, setSubmitting] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const [err, setErr] = useState(null)
-  const fileInputRef = useRef(null)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchFmaScratchPages(attempt.id)
+      .then(p => { if (!cancelled) setPages(p) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [attempt.id])
 
   // Written straight through on every tap. Holding 25 answers in local state
   // until submit meant a reload — or a sleeping laptop — silently discarded the
@@ -40,21 +46,6 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
     }
   }
 
-  async function handleFileChange(e) {
-    const file = e.target.files?.[0]
-    e.target.value = ''
-    if (!file) return
-    setUploading(true)
-    setErr(null)
-    try {
-      setScratchUrl(await uploadFmaScratchWork(studentId, attempt.id, file))
-    } catch (e) {
-      setErr(`Scratch work upload failed: ${e.message}`)
-    } finally {
-      setUploading(false)
-    }
-  }
-
   async function handleSubmit() {
     setSubmitting(true)
     setErr(null)
@@ -73,8 +64,6 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
 
   return (
     <div style={{ maxWidth: 520 }}>
-      <input ref={fileInputRef} type="file" accept="image/*,application/pdf" style={{ display: 'none' }} onChange={handleFileChange} />
-
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
         <button className="sm" onClick={onCancel}>← Save &amp; exit</button>
         <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{answeredCount} of {questions.length} entered</div>
@@ -118,12 +107,10 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
         ))}
       </div>
 
-      <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <button className="sm" disabled={uploading} onClick={() => fileInputRef.current?.click()}>
-          {uploading ? 'Uploading…' : scratchUrl ? 'Replace scratch work' : 'Upload scratch work (whole test)'}
-        </button>
-        <ScratchWorkLink path={scratchUrl} label="View ↗" />
-      </div>
+      <WorkUpload
+        studentId={studentId} attemptId={attempt.id}
+        pages={pages} onPagesChange={setPages} disabled={submitting}
+      />
 
       <div style={{ marginTop: 16 }}>
         <button onClick={() => setConfirming(true)} style={{ borderColor: 'var(--green, #22c55e)', color: 'var(--green, #22c55e)' }}>
