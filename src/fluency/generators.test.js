@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { SKILLS, generateProblem, gradeAnswer, evalMathExpr } from './generators'
 import { nextLevel, nextDueAt, buildSessionPlan, MAX_LEVEL } from './spacing'
+import { FMA_FORMULAS } from './fmaFormulaData'
 
 // The single most important property: a problem's own computed answer must
 // pass its own grader, for every skill and every level, across many random
@@ -270,5 +271,79 @@ describe('vector-components accepts the exact symbolic answer, not just a decima
       const { correct } = gradeAnswer(problem, { x: `${M}*sqrt(3)/2`, y: `${M}/2` })
       expect(correct, `seed ${seed}`).toBe(true)
     }
+  })
+})
+
+// The formula-recall cards are hand-written data, so the risk isn't the
+// arithmetic (the self-consistency suite above already covers that) -- it's a
+// typo'd card: a distractor identical to the answer, a fourth option missing,
+// or LaTeX left in a plain-text option that the MC buttons render literally.
+describe('F=ma formula cards', () => {
+  it('every card is well-formed', () => {
+    const keys = new Set()
+    for (const card of FMA_FORMULAS) {
+      expect(keys.has(card.key), `duplicate key ${card.key}`).toBe(false)
+      keys.add(card.key)
+      expect([0, 1, 2], `${card.key} tier`).toContain(card.tier)
+      expect(card.why, `${card.key} why`).toBeTruthy()
+      // `name` is shown as a plain-text button label in reverse mode, so any
+      // math in it would render as literal dollar signs.
+      expect(card.name, `${card.key} name`).toBeTruthy()
+      expect(card.name).not.toMatch(/\$\$/)
+      if (card.concept) {
+        expect(card.concept.wrong, `${card.key} concept options`).toHaveLength(3)
+        for (const w of [card.concept.correct, ...card.concept.wrong]) expect(w).not.toMatch(/\$\$/)
+        expect(new Set(card.concept.wrong).size).toBe(3)
+      } else {
+        expect(card.tex, `${card.key} tex`).toBeTruthy()
+        expect(card.wrong, `${card.key} distractors`).toHaveLength(3)
+        expect(card.wrong, `${card.key} distractor equals answer`).not.toContain(card.tex)
+        expect(new Set(card.wrong).size, `${card.key} duplicate distractors`).toBe(3)
+      }
+    }
+  })
+
+  it('always offers four distinct options with the answer among them', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const problem = generateProblem('fma-formulas', level, seed)
+        const mc = problem.fields.find(f => f.type === 'mc')
+        if (!mc) continue
+        const texts = mc.options.map(o => o.tex ?? o.label)
+        expect(texts, `L${level} seed ${seed}`).toHaveLength(4)
+        expect(new Set(texts).size, `L${level} seed ${seed}: ${texts.join(' | ')}`).toBe(4)
+        expect(mc.options.map(o => o.key)).toContain(problem.answer.ans)
+        for (const t of texts) expect(String(t)).not.toMatch(/\$\$/)
+      }
+    }
+  })
+
+  it('never leaves an unfilled template value in a prompt or explanation', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const problem = generateProblem('fma-formulas', level, seed)
+        for (const text of [problem.promptMd, problem.explanationMd]) {
+          expect(text, `L${level} seed ${seed}`).toBeTruthy()
+          expect(text).not.toMatch(/undefined|NaN/)
+          // Unbalanced $$ swallows the rest of the prompt when KaTeX renders it.
+          expect((text.match(/\$\$/g) || []).length % 2, `L${level} seed ${seed}: ${text}`).toBe(0)
+        }
+      }
+    }
+  })
+
+  it('only offers the core cards at level 0 and the full set from level 2 up', () => {
+    const tiersAt = level => {
+      const tiers = new Set()
+      for (let seed = 1; seed <= 600; seed++) {
+        const prompt = generateProblem('fma-formulas', level, seed).promptMd
+        for (const card of FMA_FORMULAS) {
+          if (prompt.startsWith(card.ask.replace(/[,:]\s*$/, ''))) tiers.add(card.tier)
+        }
+      }
+      return tiers
+    }
+    expect([...tiersAt(0)]).toEqual([0])
+    expect([...tiersAt(2)].sort()).toEqual([0, 1, 2])
   })
 })

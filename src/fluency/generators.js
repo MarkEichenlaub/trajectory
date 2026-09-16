@@ -24,6 +24,8 @@
 // answer inputs; `answer`/`tolerance` are keyed the same way -- tolerance 0
 // means exact (rounded) integer match, otherwise a relative fraction.
 
+import { FMA_FORMULAS } from './fmaFormulaData.js'
+
 function mulberry32(seed) {
   let a = seed >>> 0
   return function rng() {
@@ -1242,6 +1244,116 @@ function genTaylorSeries(level, rng) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 10 — F = ma formula recall. The cards live in fmaFormulaData.js;
+// its header says where they came from (the worked solutions of the 22
+// digitized F=ma papers under scripts/fma_exams/, filtered by hand). Three
+// question shapes share the same cards:
+//   recall   a situation  -> pick the formula out of four
+//   reverse  a formula    -> say which one it is
+//   apply    plug numbers into it
+// Levels 0-2 widen the card pool by tier (core first); levels 3-5 shift the
+// mix toward `apply`, the only shape that catches "I recognize it but can't
+// actually use it". Cards that are a rule rather than an equation (tipping,
+// Kepler's second law, the shell theorem) carry `concept` instead of `tex`
+// and only ever appear as a recall question with plain-text options.
+// ═══════════════════════════════════════════════════════════════════════
+
+const FMA_HELPERS = {
+  randInt, randChoice, randDec,
+  r2: (v, d = 3) => { const f = 10 ** d; return Math.round(v * f) / f },
+}
+
+function fmaPool(level) {
+  const maxTier = Math.min(level, 2)
+  return FMA_FORMULAS.filter(c => c.tier <= maxTier)
+}
+
+// Same job as pickDistinctDistractors, but walks `pool` in the order given
+// instead of shuffling it -- the reverse-mode caller hands it same-category
+// cards first so a formula's decoys are the ones it's actually confusable
+// with, and only falls back to other topics if that category is too small.
+function pickDistinctOrdered(correct, pool, textFn, n) {
+  const used = new Set([textFn(correct)])
+  const picked = []
+  for (const cand of pool) {
+    const t = textFn(cand)
+    if (used.has(t)) continue
+    used.add(t)
+    picked.push(cand)
+    if (picked.length >= n) break
+  }
+  return picked
+}
+
+function fmaRecall(rng, card) {
+  if (card.concept) {
+    const options = shuffle(rng, [
+      { key: 'c', label: card.concept.correct },
+      ...card.concept.wrong.map((w, i) => ({ key: `w${i}`, label: w })),
+    ])
+    return {
+      promptMd: card.ask,
+      fields: [{ key: 'ans', type: 'mc', label: '', options }],
+      answer: { ans: 'c' }, tolerance: {},
+      explanationMd: `**${card.concept.correct}.**\n\n${card.why}`,
+      timeTargetSec: 15,
+    }
+  }
+  const options = shuffle(rng, [
+    { key: 'c', tex: card.tex },
+    ...card.wrong.map((w, i) => ({ key: `w${i}`, tex: w })),
+  ])
+  return {
+    promptMd: `${card.ask.replace(/[,:]\s*$/, '')}:`,
+    fields: [{ key: 'ans', type: 'mc', label: '', options }],
+    answer: { ans: 'c' }, tolerance: {},
+    explanationMd: `$$${card.tex}$$\n\n${card.why}`,
+    timeTargetSec: 12,
+  }
+}
+
+function fmaReverse(rng, card, pool) {
+  const sameCat = shuffle(rng, pool.filter(c => c !== card && c.cat === card.cat))
+  const others = shuffle(rng, pool.filter(c => c !== card && c.cat !== card.cat))
+  const distractors = pickDistinctOrdered(card, [...sameCat, ...others], c => c.name, 3)
+  const options = shuffle(rng, [card, ...distractors]).map(c => ({ key: c.key, label: c.name }))
+  return {
+    promptMd: `What is this formula?\n\n$$${card.tex}$$`,
+    fields: [{ key: 'ans', type: 'mc', label: '', options }],
+    answer: { ans: card.key }, tolerance: {},
+    explanationMd: `That's the ${card.name}.\n\n${card.why}`,
+    timeTargetSec: 12,
+  }
+}
+
+function fmaApply(rng, card) {
+  const t = card.apply(rng, FMA_HELPERS)
+  return {
+    promptMd: t.promptMd,
+    fields: [{ key: 'v', label: 'answer', type: 'decimal', placeholder: 'e.g. 12' }],
+    answer: { v: t.raw }, tolerance: { v: 0.02 },
+    explanationMd: t.explanationMd,
+    timeTargetSec: t.timeTargetSec || 30,
+  }
+}
+
+function genFmaFormulas(level, rng) {
+  const pool = fmaPool(level)
+  const withApply = pool.filter(c => c.apply)
+  const withTex = pool.filter(c => c.tex)
+  let kind
+  if (level === 0) kind = 'recall'
+  else if (level === 1) kind = randChoice(rng, ['recall', 'recall', 'reverse'])
+  else if (level === 2) kind = randChoice(rng, ['recall', 'reverse', 'apply'])
+  else kind = randChoice(rng, ['apply', 'apply', 'recall', 'reverse'])
+  if (kind === 'apply' && withApply.length === 0) kind = 'recall'
+  if (kind === 'reverse' && withTex.length < 4) kind = 'recall'
+  if (kind === 'apply') return fmaApply(rng, randChoice(rng, withApply))
+  if (kind === 'reverse') return fmaReverse(rng, randChoice(rng, withTex), withTex)
+  return fmaRecall(rng, randChoice(rng, pool))
+}
+
 // ── Catalog ──────────────────────────────────────────────────────────────
 
 export const SKILLS = [
@@ -1289,6 +1401,11 @@ export const SKILLS = [
     slug: 'taylor-series', name: 'Taylor series (1st & 2nd order)',
     description: 'Recall and apply the standard small-x approximations (sin, cos, e^x, (1+x)^n, ...), including simple mechanics applications.',
     category: 'taylor series', maxLevel: 4, generate: genTaylorSeries,
+  },
+  {
+    slug: 'fma-formulas', name: 'F=ma formulas',
+    description: 'Recall the formulas the F=ma solutions actually cite -- a = v^2/r and omega^2 r, omega = sqrt(k/m), moments of inertia, orbits, buoyancy -- and plug numbers into them.',
+    category: 'formulas', maxLevel: 5, generate: genFmaFormulas,
   },
 ]
 
