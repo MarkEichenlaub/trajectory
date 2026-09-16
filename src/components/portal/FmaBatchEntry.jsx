@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react'
-import { saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt } from '../../utils/supabase'
+import { saveFmaAnswer, setFmaStar, uploadFmaScratchWork, submitFmaAttempt } from '../../utils/supabase'
 import ScratchWorkLink from './ScratchWorkLink'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 
-export default function FmaBatchEntry({ studentId, attempt, questions, initialAnswers, examPdfUrl, onDone, onCancel }) {
+export default function FmaBatchEntry({ studentId, attempt, questions, initialAnswers, initialStars, examPdfUrl, onDone, onCancel }) {
   const [answers, setAnswers] = useState(initialAnswers || {}) // questionId -> choice
+  const [stars, setStars] = useState(initialStars || {})       // questionId -> true
   const [uploading, setUploading] = useState(false)
   const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
   const [submitting, setSubmitting] = useState(false)
@@ -24,6 +25,18 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
     } catch (e) {
       setAnswers(prev => { const next = { ...prev }; delete next[questionId]; return next })
       setErr(`Couldn't save that answer — check your connection and tap it again. (${e.message})`)
+    }
+  }
+
+  // Same meaning as the star in the live runner: "I guessed on this one, go
+  // over it with me", carried through to the results page and the report.
+  async function toggleStar(questionId) {
+    const next = !stars[questionId]
+    setStars(prev => ({ ...prev, [questionId]: next }))
+    try {
+      await setFmaStar(attempt.id, questionId, next)
+    } catch {
+      setStars(prev => ({ ...prev, [questionId]: !next }))
     }
   }
 
@@ -75,6 +88,10 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
           <> <a href={examPdfUrl} target="_blank" rel="noreferrer">Open the exam PDF ↗</a></>
         )}
         <div style={{ marginTop: 4 }}>Each answer saves as you tap it.</div>
+        <div style={{ marginTop: 4 }}>
+          Tap the star on any question you guessed at — it stays starred on your results page
+          and in Mark's report even if the guess turns out to be right.
+        </div>
       </div>
 
       <div className="fma-card" style={{ padding: 16 }}>
@@ -87,6 +104,16 @@ export default function FmaBatchEntry({ studentId, attempt, questions, initialAn
                 <span>{c}</span>
               </label>
             ))}
+            <button
+              type="button"
+              className={`fma-bubble-star${stars[q.id] ? ' on' : ''}`}
+              onClick={() => toggleStar(q.id)}
+              aria-pressed={stars[q.id] ? 'true' : 'false'}
+              aria-label={`${stars[q.id] ? 'Unstar' : 'Star'} question ${q.question_num}`}
+              title="I guessed on this one"
+            >
+              {stars[q.id] ? '★' : '☆'}
+            </button>
           </div>
         ))}
       </div>

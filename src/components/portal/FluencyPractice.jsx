@@ -7,6 +7,7 @@ import {
 import { generateProblem, gradeAnswer } from '../../fluency/generators'
 import { nextLevel, nextDueAt, buildSessionPlan, MAX_LEVEL, TIMED_MODE_MIN_LEVEL } from '../../fluency/spacing'
 import { renderStatementHtml } from '../../utils/renderStatement'
+import { dayInTz, todayInTz, formatDayLabel, formatDateTimeInTz } from '../../utils/timezone'
 
 function katexHtml(tex) {
   return katex.renderToString(tex, { throwOnError: false, displayMode: false })
@@ -352,34 +353,78 @@ function Runner({ studentId, mode, queue, skillsById, stateBySkill, onFinish, on
   )
 }
 
-function History({ attempts, skillsById, onBack }) {
+// One row per day the student practiced, in their own timezone, newest first.
+// Same rollup Mark sees on his side -- a student asking "have I been keeping
+// up?" needs the day-by-day count far more than a flat list of 200 attempts.
+function dailyStats(attempts, tz) {
+  const byDay = new Map()
+  for (const a of attempts) {
+    const day = dayInTz(a.created_at, tz)
+    const rec = byDay.get(day) || { count: 0, correct: 0, ms: 0 }
+    rec.count++
+    if (a.is_correct) rec.correct++
+    rec.ms += a.response_ms || 0
+    byDay.set(day, rec)
+  }
+  return [...byDay.entries()].sort((a, b) => b[0].localeCompare(a[0]))
+}
+
+function History({ attempts, skillsById, timezone, goal, onBack }) {
+  const daily = useMemo(() => dailyStats(attempts, timezone), [attempts, timezone])
+  const totalCorrect = attempts.filter(a => a.is_correct).length
+
   return (
     <div style={{ maxWidth: 720 }}>
-      <button className="sm" style={{ marginBottom: 16 }} onClick={onBack}>← Fluency Practice</button>
-      <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 12px' }}>Practice history</h3>
+      <button className="sm" style={{ marginBottom: 16 }} onClick={onBack}>&larr; Fluency Practice</button>
+      <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 4px' }}>Practice history</h3>
       {attempts.length === 0 ? (
         <div className="empty-state">No attempts yet.</div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {attempts.map(a => (
-            <div key={a.id} style={{
-              display: 'flex', alignItems: 'center', gap: 10, fontSize: 12,
-              padding: '8px 12px', borderRadius: 'var(--radius)',
-              background: 'var(--surface)', border: '1px solid var(--border)',
-            }}>
-              <span style={{ color: a.is_correct ? 'var(--green)' : 'var(--red)', fontWeight: 700 }}>
-                {a.is_correct ? '✓' : '✕'}
-              </span>
-              <span style={{ flex: 1 }}>{a.fluency_skills?.name || a.skill_id}</span>
-              <span style={{ color: 'var(--text-dim)' }}>L{a.level_before}→{a.level_after}</span>
-              <span style={{ color: 'var(--text-dim)' }}>{a.mode}</span>
-              {a.response_ms != null && <span style={{ color: 'var(--text-dim)' }}>{(a.response_ms / 1000).toFixed(1)}s</span>}
-              <span style={{ color: 'var(--text-dim)' }}>
-                {new Date(a.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </span>
-            </div>
-          ))}
-        </div>
+        <>
+          <div style={{ fontSize: 12, color: 'var(--text-dim)', marginBottom: 16 }}>
+            {attempts.length} question{attempts.length === 1 ? '' : 's'} answered over {daily.length} day
+            {daily.length === 1 ? '' : 's'} &middot; {totalCorrect} right
+          </div>
+
+          <h4 style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', margin: '0 0 8px' }}>Day by day</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 24, maxWidth: 440 }}>
+            {daily.map(([day, rec]) => (
+              <div key={day} style={{
+                display: 'flex', gap: 10, fontSize: 12, alignItems: 'baseline',
+                padding: '6px 10px', borderRadius: 'var(--radius)',
+                background: 'var(--surface)', border: '1px solid var(--border)',
+              }}>
+                <span style={{ width: 82, color: 'var(--text-dim)' }}>{formatDayLabel(day)}</span>
+                <span style={{ flex: 1 }}>
+                  {rec.count} question{rec.count === 1 ? '' : 's'}
+                  {goal && rec.count >= goal && <span style={{ color: 'var(--green)' }}> &middot; goal met</span>}
+                </span>
+                <span style={{ color: 'var(--text-dim)' }}>{rec.correct}/{rec.count} right</span>
+                <span style={{ color: 'var(--text-dim)', width: 48, textAlign: 'right' }}>{fmtDuration(rec.ms / 1000)}</span>
+              </div>
+            ))}
+          </div>
+
+          <h4 style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-dim)', margin: '0 0 8px' }}>Every question</h4>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {attempts.map(a => (
+              <div key={a.id} style={{
+                display: 'flex', alignItems: 'center', gap: 10, fontSize: 12,
+                padding: '8px 12px', borderRadius: 'var(--radius)',
+                background: 'var(--surface)', border: '1px solid var(--border)',
+              }}>
+                <span style={{ color: a.is_correct ? 'var(--green)' : 'var(--red)', fontWeight: 700 }}>
+                  {a.is_correct ? '✓' : '✕'}
+                </span>
+                <span style={{ flex: 1 }}>{a.fluency_skills?.name || a.skill_id}</span>
+                <span style={{ color: 'var(--text-dim)' }}>L{a.level_before}&rarr;{a.level_after}</span>
+                <span style={{ color: 'var(--text-dim)' }}>{a.mode}</span>
+                {a.response_ms != null && <span style={{ color: 'var(--text-dim)' }}>{(a.response_ms / 1000).toFixed(1)}s</span>}
+                <span style={{ color: 'var(--text-dim)' }}>{formatDateTimeInTz(a.created_at, timezone)}</span>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   )
@@ -391,7 +436,7 @@ function History({ attempts, skillsById, onBack }) {
 // would kick his admin session out of the shared browser session.
 const LIVE_PREVIEW_STUDENT_ID = 'test-student'
 
-export default function FluencyPractice({ studentId, isPreview, dailyGoal }) {
+export default function FluencyPractice({ studentId, isPreview, dailyGoal, timezone }) {
   const locked = isPreview && studentId !== LIVE_PREVIEW_STUDENT_ID
   const goal = dailyGoal || DEFAULT_DAILY_GOAL
   const [view, setView] = useState('home') // 'home' | 'untimed' | 'timed' | 'history'
@@ -409,7 +454,9 @@ export default function FluencyPractice({ studentId, isPreview, dailyGoal }) {
     try {
       const [sk, ss, st, at] = await Promise.all([
         fetchFluencySkills(), fetchFluencyStudentSkills(studentId),
-        fetchFluencySkillState(studentId), fetchFluencyAttempts(studentId),
+        // 600 rather than the default: the History screen is meant to be the
+        // student's whole record, not the last week of it.
+        fetchFluencySkillState(studentId), fetchFluencyAttempts(studentId, 600),
       ])
       setSkills(sk)
       setStudentSkills(ss)
@@ -458,11 +505,14 @@ export default function FluencyPractice({ studentId, isPreview, dailyGoal }) {
     )
   }
   if (view === 'history') {
-    return <History attempts={attempts} skillsById={skillsById} onBack={() => setView('home')} />
+    return <History attempts={attempts} skillsById={skillsById} timezone={timezone} goal={goal} onBack={() => setView('home')} />
   }
 
-  const today = new Date().toDateString()
-  const todaysAttempts = attempts.filter(a => new Date(a.created_at).toDateString() === today)
+  // "Today" is the student's today. Practicing at 9pm Pacific used to roll over
+  // into tomorrow for anyone looking from a later timezone, which reset the
+  // daily count mid-session.
+  const today = todayInTz(timezone)
+  const todaysAttempts = attempts.filter(a => dayInTz(a.created_at, timezone) === today)
   const doneToday = todaysAttempts.length
   const secToday = todaysAttempts.reduce((sum, a) => sum + (a.response_ms || 0), 0) / 1000
   const goalMet = doneToday >= goal
@@ -488,7 +538,9 @@ export default function FluencyPractice({ studentId, isPreview, dailyGoal }) {
             <button className="sm" disabled={locked || !anyTimedEligible} title={!anyTimedEligible ? 'Get a skill to level 3+ first' : ''} onClick={() => startSession('timed')}>
               Timed drill
             </button>
-            <button className="sm" onClick={() => setView('history')}>History</button>
+            <button className="sm" onClick={() => setView('history')}>
+              History{attempts.length > 0 ? ` (${attempts.length})` : ''}
+            </button>
           </div>
           {goalMet && !locked && (
             <div style={{ fontSize: 12, color: 'var(--green)', marginTop: -12 }}>

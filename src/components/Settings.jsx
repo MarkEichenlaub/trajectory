@@ -2,6 +2,26 @@ import { useState, useEffect } from 'react'
 import { fetchStudentContacts, createInvite, setStudentStatus, cancelUpcomingSessions, fetchStudentAccessibleSources, saveStudentAccessibleSources, fetchProfiles, fetchStudentLinks, fetchInvites, deleteInvite } from '../utils/supabase'
 import ContactsPanel from './portal/ContactsPanel'
 
+// Where the student actually is. This drives the session times in their
+// reminder and confirmation emails, the scheduling screen, and which calendar
+// day a piece of fluency practice is counted on -- so a student left on the
+// default when they're three hours west gets all three slightly wrong.
+const TIMEZONES = [
+  ['America/New_York', 'Eastern (America/New_York)'],
+  ['America/Chicago', 'Central (America/Chicago)'],
+  ['America/Denver', 'Mountain (America/Denver)'],
+  ['America/Phoenix', 'Arizona (America/Phoenix)'],
+  ['America/Los_Angeles', 'Pacific (America/Los_Angeles)'],
+  ['America/Anchorage', 'Alaska (America/Anchorage)'],
+  ['Pacific/Honolulu', 'Hawaii (Pacific/Honolulu)'],
+  ['Europe/London', 'UK (Europe/London)'],
+  ['Europe/Zagreb', 'Central Europe (Europe/Zagreb)'],
+  ['Asia/Kolkata', 'India (Asia/Kolkata)'],
+  ['Asia/Shanghai', 'China (Asia/Shanghai)'],
+  ['Asia/Tokyo', 'Japan (Asia/Tokyo)'],
+  ['Australia/Sydney', 'Sydney (Australia/Sydney)'],
+]
+
 const TYPE_COLORS = {
   admin: 'var(--accent)',
   parent: 'var(--green)',
@@ -183,6 +203,17 @@ function StudentCard({ student, allSources, onSave, onRemove, onStatusChange, sa
           <option value="">Not set</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
+        </select>
+      </div>
+      <div className="student-card-row">
+        <label>Time zone</label>
+        <select
+          value={draft.timezone || 'America/New_York'}
+          onChange={e => set('timezone', e.target.value)}
+          style={{ fontSize: 13, background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text)', borderRadius: 4, padding: '4px 6px' }}
+          title="Used for session times in their emails and for which day their fluency practice counts on"
+        >
+          {TIMEZONES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
         </select>
       </div>
       <div className="student-card-row">

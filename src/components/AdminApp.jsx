@@ -1053,6 +1053,7 @@ export default function AdminApp({ userId }) {
           <AdminFluencyView
             studentId={activeStudentId}
             studentName={activeStudent?.name || ''}
+            studentTimezone={activeStudent?.timezone}
             enabled={!!activeStudent?.fluency_practice_enabled}
             onEnabledChange={enabled => setStudents(prev => prev.map(s => s.id === activeStudentId ? { ...s, fluency_practice_enabled: enabled } : s))}
             dailyGoal={activeStudent?.fluency_daily_goal}

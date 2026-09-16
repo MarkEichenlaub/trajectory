@@ -39,6 +39,12 @@
   --yellow-bg:  #f3e6cf;
   --yellow-line:#dec59a;
 
+  /* "I guessed on this one" — a student's own marker, deliberately its own
+     colour so it reads as neither right nor wrong. */
+  --star:       #7a5a00;
+  --star-bg:    #fdf3d6;
+  --star-line:  #e2c76a;
+
   --radius: 7px;
   --font:         'IBM Plex Sans', system-ui, -apple-system, sans-serif;
   --font-display: 'Spectral', Georgia, serif;
@@ -589,6 +595,13 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
   position: absolute; top: 2px; right: 2px;
   width: 6px; height: 6px; border-radius: 50%; background: var(--yellow);
 }
+/* A star rides in the bottom-left of the navigator button so it can't collide
+   with the flag dot in the top-right — a question can carry both. */
+.fma-grid-btn.starred { border-color: var(--star-line); }
+.fma-star-mark {
+  position: absolute; bottom: 0; left: 2px;
+  font-size: 10px; line-height: 1; color: var(--star);
+}
 
 .fma-legend {
   display: flex; gap: 14px; flex-wrap: wrap;
@@ -601,6 +614,7 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 }
 .fma-legend .swatch.answered { background: var(--accent-dim); border-color: var(--accent); }
 .fma-legend .swatch.flagged  { border-color: var(--yellow); border-width: 2px; }
+.fma-legend .swatch.starred  { background: var(--star-bg); border-color: var(--star-line); border-width: 2px; }
 
 .fma-qhead {
   display: flex; justify-content: space-between; align-items: center;
@@ -608,6 +622,7 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
   font-size: 12px; color: var(--text-dim); margin-bottom: 8px;
 }
 .fma-flagbtn.on { background: var(--yellow-bg); border-color: var(--yellow-line); color: var(--yellow); }
+.fma-starbtn.on { background: var(--star-bg); border-color: var(--star-line); color: var(--star); font-weight: 600; }
 
 .fma-card {
   background: var(--surface); border: 1px solid var(--border);
@@ -666,6 +681,13 @@ tr.non-physics-row:hover td { background: color-mix(in srgb, var(--red-bg) 70%, 
 }
 .fma-bubble-row label:hover { background: var(--surface2); }
 .fma-bubble-row label.on { background: var(--accent-dim); font-weight: 600; }
+.fma-bubble-star {
+  margin-left: 6px; min-width: 34px; min-height: 34px; padding: 0;
+  font-size: 15px; line-height: 1; border-radius: 6px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.fma-bubble-star.on { background: var(--star-bg); border-color: var(--star-line); color: var(--star); }
 
 @media (max-width: 640px) {
   .fma-card { padding: 14px; }
@@ -813,12 +835,61 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
 .fma-summary-counts b { font-variant-numeric: tabular-nums; }
 .fma-summary-counts b.ok { color: var(--green); }
 .fma-summary-counts b.bad { color: var(--red); }
+.fma-summary-counts b.star { color: var(--star); }
+
+.fma-starred-note {
+  background: var(--star-bg); border: 1px solid var(--star-line);
+  border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px;
+}
+
+/* One reviewed question. A skipped one gets a red frame and a label: with only
+   the green key showing, it used to look exactly like one answered correctly. */
+.fma-review-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px; scroll-margin-top: 12px;
+}
+.fma-review-card.skipped { border: 2px solid var(--red); }
+.fma-review-card.starred { box-shadow: inset 4px 0 0 var(--star-line); }
+
+.fma-card-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.fma-card-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 100px; border: 1px solid transparent;
+}
+.fma-card-badge.bad  { background: var(--red-bg);  border-color: var(--red-line);  color: var(--red); }
+.fma-card-badge.star { background: var(--star-bg); border-color: var(--star-line); color: var(--star); }
+
+/* Copy-to-clipboard row under each reviewed question: one image of the bare
+   problem, one with the answer on it, both sized to drop onto a Miro board. */
+.fma-copy-row {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border);
+}
+.fma-copy-status { font-size: 11px; color: var(--green); }
+.fma-copy-status.err { color: var(--red); }
+
+/* Caption drawn into the copied image only — never rendered on screen. */
+.fma-shot-head { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.fma-shot-title {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-size: 13px; font-weight: 700; color: var(--text-strong);
+}
+.fma-shot-verdict { font-size: 12px; font-weight: 600; color: var(--text-dim); margin-top: 4px; }
+.fma-shot-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 100px; border: 1px solid transparent;
+}
+.fma-shot-badge.bad  { background: var(--red-bg);  border-color: var(--red-line);  color: var(--red); }
+.fma-shot-badge.star { background: var(--star-bg); border-color: var(--star-line); color: var(--star); }
 
 /* Navigator on the review screen: same 25 buttons as the runner, but scored. */
 .fma-grid-btn.result-correct    { background: var(--green-bg); border-color: var(--green-line); color: var(--green); font-weight: 600; }
 .fma-grid-btn.result-incorrect,
 .fma-grid-btn.result-unanswered { background: var(--red-bg); border-color: var(--red-line); color: var(--red); font-weight: 600; }
 .fma-grid-btn.result-unanswered { border-style: dashed; }
+.fma-grid-btn.result-correct.starred,
+.fma-grid-btn.result-incorrect.starred,
+.fma-grid-btn.result-unanswered.starred { border-color: var(--star-line); border-width: 2px; }
 .fma-legend .swatch.result-correct    { background: var(--green-bg); border-color: var(--green-line); }
 .fma-legend .swatch.result-incorrect  { background: var(--red-bg); border-color: var(--red-line); }
 .fma-legend .swatch.result-unanswered { background: var(--red-bg); border-color: var(--red-line); border-style: dashed; }
@@ -842,7 +913,8 @@ body.fma-exam-mode .student-portal { padding: 16px 40px 0; }
    above answers "which ones", this answers "how long, sorted". Not wrapped
    in a scrolling container like the problem browser table, so the sticky
    thead from that shared table/th ruleset is turned back off here. */
-.fma-results-table-wrap { max-width: 320px; margin-top: 14px; }
+.fma-results-table-wrap { max-width: 360px; margin-top: 14px; }
+.fma-results-table .fma-star-cell { color: var(--star); text-align: center; width: 24px; }
 .fma-results-table thead { position: static; }
 .fma-results-table th { font-size: 10px; padding: 6px 10px; }
 .fma-results-table td { padding: 5px 10px; font-size: 12.5px; font-variant-numeric: tabular-nums; }

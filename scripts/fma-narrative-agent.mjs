@@ -152,7 +152,7 @@ async function loadAttemptDetail(attempt) {
 
   const { data: answers } = await supabase
     .from('fma_attempt_answers')
-    .select('question_id, selected_choice, is_correct')
+    .select('question_id, selected_choice, is_correct, starred')
     .eq('attempt_id', attempt.id)
   const answerBy = new Map((answers || []).map(a => [a.question_id, a]))
   const secondsBy = await perQuestionSeconds(attempt)
@@ -166,6 +166,10 @@ async function loadAttemptDetail(attempt) {
       key: q.correct_choice,
       picked: a?.selected_choice ?? null,
       correct: !!a?.is_correct,
+      // The student's own "I guessed on this one" marker, set while they were
+      // taking the test. A starred question they got right is exactly the case
+      // the score hides, so it has to reach Mark.
+      starred: !!a?.starred,
       secs: secondsBy.get(q.id) ?? null,
       // `tags` carries the real per-question topics; the `topics` column is a
       // single coarse bucket ('Mechanics') on every F=ma question.
@@ -300,6 +304,8 @@ const NARRATIVE_SCHEMA = JSON.stringify({
 
 function buildPrompt({ studentName, examName, attempt, rows, attemptPath, historyPath, workUploaded, scratchFile }) {
   const missed = rows.filter(r => !r.correct)
+  const starred = rows.filter(r => r.starred)
+  const luckyStars = starred.filter(r => r.correct)
   const lines = [
     "You are helping a physics tutor (Mark) read a student's finished F=ma",
     'practice exam. The write-up is for Mark only -- the student never sees it,',
@@ -312,6 +318,10 @@ function buildPrompt({ studentName, examName, attempt, rows, attemptPath, histor
     attempt.submitted_at ? `Submitted: ${attempt.submitted_at.slice(0, 10)}` : '',
     attempt.active_seconds ? `Working time: ${fmtSeconds(attempt.active_seconds)} (limit 75:00)` : '',
     `Missed or blank: ${missed.length ? missed.map(r => r.num).join(', ') : 'none'}`,
+    starred.length
+      ? `Starred by ${studentName} while taking it (they were guessing): ${starred.map(r => r.num).join(', ')}` +
+        (luckyStars.length ? `. Of those, ${luckyStars.map(r => r.num).join(', ')} came out RIGHT anyway -- the score hides these, so say what you can about them.` : '')
+      : '',
     '',
     'THE EXAM AND THIS ATTEMPT',
     'Every question, with its full statement, the five choices, the key, what',
@@ -449,11 +459,14 @@ const TD = 'padding:6px 8px;border:1px solid #d8d8d8;vertical-align:top'
 // out and Mark still gets the score, the table and the scan.
 function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pronoun, pronounVerb, workUploaded, resultsUrl, scratchNote, claudeError }) {
   const showTime = attempt.mode === 'live'
-  const table = rows.map(r => `<tr${r.correct ? '' : ' style="background:#fdecea"'}>
+  const starred = rows.filter(r => r.starred)
+  const luckyStars = starred.filter(r => r.correct)
+  const table = rows.map(r => `<tr${r.correct ? (r.starred ? ' style="background:#fdf3d6"' : '') : ' style="background:#fdecea"'}>
     <td style="${TD}">${r.num}</td>
     <td style="${TD}">${r.picked ? esc(r.picked) : '<span style="color:#999">blank</span>'}</td>
     <td style="${TD}">${esc(r.key)}</td>
     <td style="${TD};color:${r.correct ? '#1a7f37' : '#b3261e'};font-weight:600">${r.correct ? 'right' : 'wrong'}</td>
+    <td style="${TD};color:#7a5a00;text-align:center">${r.starred ? '★' : ''}</td>
     ${showTime ? `<td style="${TD}">${esc(fmtSeconds(r.secs))}</td>` : ''}
     <td style="${TD};color:#555">${r.topics.length ? esc(r.topics.join(', ')) : '—'}</td>
   </tr>`).join('')
@@ -471,6 +484,14 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
 
   const section = (title, body) => body
     ? `<h3 style="margin:20px 0 6px 0;font-size:15px">${title}</h3>${paras(body)}` : ''
+
+  // The student's own flag that they were guessing. Called out above the fold
+  // because the ones they guessed RIGHT are invisible in the score and in the
+  // table's colouring -- those are the questions worth reopening together.
+  const starredNote = starred.length === 0 ? '' : `<p style="font-size:13px;margin:0 0 16px;padding:8px 10px;border-left:4px solid #e2c76a;background:#fdf3d6;color:#7a5a00">
+    <strong>${esc(studentName)} starred ${starred.length} question${starred.length === 1 ? '' : 's'} as a guess:</strong>
+    ${esc(starred.map(r => r.num).join(', '))}.${luckyStars.length ? ` ${esc(luckyStars.map(r => r.num).join(', '))} came out right anyway, so ${luckyStars.length === 1 ? 'that one does not' : 'those do not'} show up as a miss.` : ''}
+  </p>`
 
   const noWork = workUploaded ? '' : `<p style="font-size:13px;margin:0 0 16px;padding:8px 10px;border-left:4px solid #9a6700;background:#fff8e1;color:#7a4f01">
     <strong>No scratch work uploaded.</strong> There's no scan for this attempt, so the read on
@@ -506,6 +527,7 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
   </p>
   <p style="margin:0 0 14px 0"><a href="${esc(resultsUrl)}">Open in the portal →</a></p>
 
+  ${starredNote}
   ${noWork}
   ${noRead}
   ${narrative}
@@ -517,6 +539,7 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
       <th style="${TD};text-align:left">Answered</th>
       <th style="${TD};text-align:left">Key</th>
       <th style="${TD};text-align:left">Result</th>
+      <th style="${TD};text-align:center" title="starred as a guess">&#9733;</th>
       ${showTime ? `<th style="${TD};text-align:left">Time</th>` : ''}
       <th style="${TD};text-align:left">Topics</th>
     </tr></thead>

@@ -838,6 +838,18 @@ export async function setFmaFlag(attemptId, questionId, flagged) {
   if (error) throw new Error(error.message)
 }
 
+// Star / unstar a question. Unlike a flag — which is the in-test "come back to
+// this before I submit" marker and gets cleared as the student works through
+// it — a star is a message to the review afterwards: "I guessed here, go over
+// it with me." It survives into the results page and the report email, so a
+// lucky guess doesn't disappear into the correct column.
+export async function setFmaStar(attemptId, questionId, starred) {
+  const { error } = await supabase
+    .from('fma_attempt_answers')
+    .upsert({ attempt_id: attemptId, question_id: questionId, starred }, { onConflict: 'attempt_id,question_id' })
+  if (error) throw new Error(error.message)
+}
+
 // Crossed-out choices for one question, as an array of 'A'..'E'.
 export async function setFmaEliminated(attemptId, questionId, eliminated) {
   const { error } = await supabase

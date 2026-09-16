@@ -3,7 +3,7 @@ import { renderStatementHtml } from '../../utils/renderStatement'
 import ScratchWorkLink from './ScratchWorkLink'
 import {
   saveFmaAnswer, uploadFmaScratchWork, submitFmaAttempt, logFmaQuestionView,
-  setFmaFlag, setFmaEliminated, bumpFmaActiveSeconds,
+  setFmaFlag, setFmaStar, setFmaEliminated, bumpFmaActiveSeconds,
 } from '../../utils/supabase'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
@@ -126,23 +126,25 @@ function Countdown({ seconds }) {
   )
 }
 
-function Navigator({ questions, answers, flags, index, onJump }) {
+function Navigator({ questions, answers, flags, stars, index, onJump }) {
   return (
     <div>
       <div className="fma-grid">
         {questions.map((q, i) => {
           const answered = !!answers[q.id]
           const flagged = !!flags[q.id]
+          const starred = !!stars[q.id]
           return (
             <button
               key={q.id}
-              className={`fma-grid-btn${answered ? ' answered' : ''}${flagged ? ' flagged' : ''}${i === index ? ' current' : ''}`}
+              className={`fma-grid-btn${answered ? ' answered' : ''}${flagged ? ' flagged' : ''}${starred ? ' starred' : ''}${i === index ? ' current' : ''}`}
               onClick={() => onJump(i)}
-              aria-label={`Question ${q.question_num}${answered ? `, answered ${answers[q.id]}` : ', not answered'}${flagged ? ', flagged' : ''}`}
+              aria-label={`Question ${q.question_num}${answered ? `, answered ${answers[q.id]}` : ', not answered'}${flagged ? ', flagged' : ''}${starred ? ', starred' : ''}`}
               aria-current={i === index ? 'true' : undefined}
             >
               {q.question_num}
               {flagged && <span className="fma-flag-dot" aria-hidden="true" />}
+              {starred && <span className="fma-star-mark" aria-hidden="true">★</span>}
             </button>
           )
         })}
@@ -151,15 +153,17 @@ function Navigator({ questions, answers, flags, index, onJump }) {
         <span><i className="swatch answered" /> answered</span>
         <span><i className="swatch" /> unanswered</span>
         <span><i className="swatch flagged" /> flagged</span>
+        <span><i className="swatch starred" /> starred</span>
       </div>
     </div>
   )
 }
 
-export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, initialFlags, initialEliminated, initialIndex = 0, onDone, onCancel }) {
+export default function FmaTestRunner({ studentId, attempt, questions, initialAnswers, initialFlags, initialStars, initialEliminated, initialIndex = 0, onDone, onCancel }) {
   const [index, setIndex] = useState(initialIndex)
   const [answers, setAnswers] = useState(initialAnswers || {})
   const [flags, setFlags] = useState(initialFlags || {})
+  const [stars, setStars] = useState(initialStars || {})
   const [eliminated, setEliminated] = useState(initialEliminated || {})
   const [uploading, setUploading] = useState(false)
   const [scratchUrl, setScratchUrl] = useState(attempt.scratch_work_url || null)
@@ -179,6 +183,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
   const answeredCount = Object.keys(answers).length
   const unanswered = questions.filter(x => !answers[x.id])
   const flagged = questions.filter(x => flags[x.id])
+  const starred = questions.filter(x => stars[x.id])
 
   useEffect(() => {
     if (q && !reviewing) logFmaQuestionView(attempt.id, q.id, total())
@@ -222,6 +227,20 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
       await setFmaFlag(attempt.id, q.id, next)
     } catch {
       setFlags(prev => ({ ...prev, [q.id]: !next }))
+    }
+  }
+
+  // A star outlives the test. Flagging is for "come back to this before I
+  // submit" and gets cleared once you have; starring says "I guessed, go over
+  // this one with me later", and shows up on the results page and in Mark's
+  // report whether the guess landed or not.
+  async function toggleStar() {
+    const next = !stars[q.id]
+    setStars(prev => ({ ...prev, [q.id]: next }))
+    try {
+      await setFmaStar(attempt.id, q.id, next)
+    } catch {
+      setStars(prev => ({ ...prev, [q.id]: !next }))
     }
   }
 
@@ -367,7 +386,7 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
         </div>
         {err && <div className="fma-err">{err}</div>}
 
-        <Navigator questions={questions} answers={answers} flags={flags} index={-1}
+        <Navigator questions={questions} answers={answers} flags={flags} stars={stars} index={-1}
           onJump={i => { setIndex(i); setReviewing(false) }} />
 
         <div className="fma-card" style={{ marginTop: 16 }}>
@@ -385,6 +404,14 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
           {flagged.length > 0 && (
             <div style={{ fontSize: 13, marginBottom: 10 }}>
               Flagged for review: {flagged.map(x => x.question_num).join(', ')}
+            </div>
+          )}
+          {starred.length > 0 && (
+            <div style={{ fontSize: 13, marginBottom: 10 }}>
+              Starred as guesses: {starred.map(x => x.question_num).join(', ')}
+              <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 4 }}>
+                These stay starred on your results page and in Mark's report, even the ones you get right.
+              </div>
             </div>
           )}
           <div style={{ fontSize: 13, marginBottom: 10 }}>
@@ -421,16 +448,24 @@ export default function FmaTestRunner({ studentId, attempt, questions, initialAn
       {header}
       {overNotice}
 
-      <Navigator questions={questions} answers={answers} flags={flags} index={index} onJump={setIndex} />
+      <Navigator questions={questions} answers={answers} flags={flags} stars={stars} index={index} onJump={setIndex} />
 
       {err && <div className="fma-err">{err}</div>}
 
       <div className="fma-qhead">
         <span>Question {q.question_num} of {questions.length} · {answeredCount} answered</span>
-        <button className={`sm fma-flagbtn${flags[q.id] ? ' on' : ''}`} onClick={toggleFlag}
-          aria-pressed={flags[q.id] ? 'true' : 'false'}>
-          {flags[q.id] ? '★ Flagged' : '☆ Flag for review'}
-        </button>
+        <span style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <button className={`sm fma-starbtn${stars[q.id] ? ' on' : ''}`} onClick={toggleStar}
+            aria-pressed={stars[q.id] ? 'true' : 'false'}
+            title="Mark this one as a guess, so it shows up in your results and Mark's report even if you get it right">
+            {stars[q.id] ? '★ Starred' : '☆ Star — I guessed'}
+          </button>
+          <button className={`sm fma-flagbtn${flags[q.id] ? ' on' : ''}`} onClick={toggleFlag}
+            aria-pressed={flags[q.id] ? 'true' : 'false'}
+            title="Come back to this before submitting">
+            {flags[q.id] ? '⚑ Flagged' : '⚐ Flag for review'}
+          </button>
+        </span>
       </div>
 
       <div className="fma-card">

@@ -4,6 +4,7 @@ import {
   setFluencyPracticeEnabled, setFluencyStudentSkillEnabled, setFluencyDailyGoal,
   addFluencySkillNote, fetchFluencySkillNotes, resolveFluencySkillNote,
 } from '../utils/supabase'
+import { dayInTz, formatDayLabel, formatDateTimeInTz, tzAbbrev } from '../utils/timezone'
 
 function fmtDuration(sec) {
   if (sec < 60) return `${Math.round(sec)}s`
@@ -11,14 +12,18 @@ function fmtDuration(sec) {
   return s ? `${m}m ${s}s` : `${m}m`
 }
 
-// One row per calendar day (student's local time, so it lines up with what
-// they'd call "today"), most recent first -- this is the whole point of
-// tracking response_ms per attempt: Mark can see whether 8 questions is
-// actually landing near his 5-minutes-a-day target, or needs adjusting.
-function dailyStats(attempts) {
+// One row per calendar day in the STUDENT's timezone, most recent first --
+// this is the whole point of tracking response_ms per attempt: Mark can see
+// whether 8 questions is actually landing near his 5-minutes-a-day target, or
+// needs adjusting.
+//
+// The day used to come from the viewer's own clock, which put Leo's 9pm
+// Pacific session on the next day as far as Mark's East Coast laptop was
+// concerned -- and split one sitting across two rows whenever it ran past 9.
+function dailyStats(attempts, tz) {
   const byDay = new Map()
   for (const a of attempts) {
-    const day = new Date(a.created_at).toLocaleDateString('en-CA')
+    const day = dayInTz(a.created_at, tz)
     const rec = byDay.get(day) || { count: 0, ms: 0 }
     rec.count++
     rec.ms += a.response_ms || 0
@@ -32,7 +37,7 @@ function dailyStats(attempts) {
 // session about a hesitation that doesn't have a generator yet, and review
 // what a student has actually been doing. See "Leo fluency" design spec,
 // open question #3 (tagging workflow) — this is the "quick admin form" answer.
-export default function AdminFluencyView({ studentId, studentName, enabled, onEnabledChange, dailyGoal, onDailyGoalChange }) {
+export default function AdminFluencyView({ studentId, studentName, studentTimezone, enabled, onEnabledChange, dailyGoal, onDailyGoalChange }) {
   const [skills, setSkills] = useState([])
   const [studentSkills, setStudentSkills] = useState([])
   const [state, setState] = useState({})
@@ -90,7 +95,7 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
     } catch (e) { setErr(e.message) }
   }
 
-  const daily = useMemo(() => dailyStats(attempts), [attempts])
+  const daily = useMemo(() => dailyStats(attempts, studentTimezone), [attempts, studentTimezone])
 
   async function toggleSkill(skillId, currentlyOn) {
     setStudentSkills(prev => {
@@ -153,13 +158,13 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
       {daily.length > 0 && (
         <div>
           <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: 'var(--text-dim)' }}>
-            Time spent (for calibrating the daily goal above)
+            Time spent, by {studentName.split(' ')[0]}'s day{tzAbbrev(studentTimezone) ? ` (${tzAbbrev(studentTimezone)})` : ''} — for calibrating the daily goal above
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 420 }}>
             {daily.map(([day, rec]) => (
               <div key={day} style={{ display: 'flex', gap: 10, fontSize: 12, alignItems: 'baseline' }}>
                 <span style={{ width: 88, color: 'var(--text-dim)' }}>
-                  {new Date(`${day}T12:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  {formatDayLabel(day)}
                 </span>
                 <span style={{ flex: 1 }}>{rec.count} question{rec.count === 1 ? '' : 's'}</span>
                 <span style={{ color: 'var(--text-dim)' }}>{fmtDuration(rec.ms / 1000)}</span>
@@ -239,7 +244,7 @@ export default function AdminFluencyView({ studentId, studentName, enabled, onEn
                     <span style={{ flex: 1 }}>{a.fluency_skills?.name || a.skill_id}</span>
                     <span style={{ color: 'var(--text-dim)' }}>L{a.level_before}→{a.level_after}</span>
                     <span style={{ color: 'var(--text-dim)' }}>{a.mode}</span>
-                    <span style={{ color: 'var(--text-dim)' }}>{new Date(a.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</span>
+                    <span style={{ color: 'var(--text-dim)' }} title={`${studentName}'s local time`}>{formatDateTimeInTz(a.created_at, studentTimezone)}</span>
                   </div>
                 ))}
               </div>

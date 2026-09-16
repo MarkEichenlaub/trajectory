@@ -189,7 +189,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
 
   const [activeAttempt, setActiveAttempt] = useState(null)
   const [activeQuestions, setActiveQuestions] = useState([])
-  const [activeState, setActiveState] = useState({ answers: {}, flags: {}, eliminated: {}, index: 0 })
+  const [activeState, setActiveState] = useState({ answers: {}, flags: {}, stars: {}, eliminated: {}, index: 0 })
   const [detail, setDetail] = useState(null)
 
   // Assignments are the tutor saying "sit this one", so an assigned exam wins
@@ -227,7 +227,7 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
     setView(attempt.mode === 'live' ? 'live' : attempt.mode === 'paper_first' ? 'batch' : 'score')
   }
 
-  const EMPTY_STATE = { answers: {}, flags: {}, eliminated: {}, index: 0 }
+  const EMPTY_STATE = { answers: {}, flags: {}, stars: {}, eliminated: {}, index: 0 }
 
   async function handleStart() {
     if (!selectedExamId || isPreview) return
@@ -253,12 +253,14 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
         attempt.mode === 'score_only' ? Promise.resolve([]) : fetchFmaQuestions(attempt.exam_id),
         fetchFmaAttemptAnswers(attempt.id),
       ])
-      // Flags and crossed-out choices are restored alongside the answers, so a
-      // resumed test looks exactly as it did when the student stepped away.
-      const state = { answers: {}, flags: {}, eliminated: {}, index: 0 }
+      // Flags, stars and crossed-out choices are restored alongside the
+      // answers, so a resumed test looks exactly as it did when the student
+      // stepped away.
+      const state = { answers: {}, flags: {}, stars: {}, eliminated: {}, index: 0 }
       for (const a of saved) {
         if (a.selected_choice) state.answers[a.question_id] = a.selected_choice
         if (a.flagged) state.flags[a.question_id] = true
+        if (a.starred) state.stars[a.question_id] = true
         if (a.eliminated_choices?.length) state.eliminated[a.question_id] = a.eliminated_choices
       }
       // Open on the first question still unanswered rather than back at question
@@ -334,12 +336,13 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
 
   if (view === 'live') {
     return <FmaTestRunner studentId={studentId} attempt={activeAttempt} questions={activeQuestions}
-      initialAnswers={activeState.answers} initialFlags={activeState.flags} initialEliminated={activeState.eliminated}
+      initialAnswers={activeState.answers} initialFlags={activeState.flags} initialStars={activeState.stars}
+      initialEliminated={activeState.eliminated}
       initialIndex={activeState.index}
       onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'batch') {
-    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeState.answers} examPdfUrl={examById[activeAttempt?.exam_id]?.pdf_url} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
+    return <FmaBatchEntry studentId={studentId} attempt={activeAttempt} questions={activeQuestions} initialAnswers={activeState.answers} initialStars={activeState.stars} examPdfUrl={examById[activeAttempt?.exam_id]?.pdf_url} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
   }
   if (view === 'score') {
     return <FmaScoreOnly attempt={activeAttempt} onDone={() => handleFinished(activeAttempt.id)} onCancel={handleExitAttempt} />
