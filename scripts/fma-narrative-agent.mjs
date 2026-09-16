@@ -32,6 +32,7 @@
  *   --attempt <id>      re-analyze one attempt even if it already has a narrative
  *   --resend            rebuild and re-send the email from the stored narrative
  *   --no-email          write the narrative, skip the email
+ *   --dump-html <file>  also write the email's HTML to a file, to eyeball it
  */
 import { exec } from 'child_process'
 import { promisify } from 'util'
@@ -51,6 +52,12 @@ const RESEND = process.argv.includes('--resend')
 const NO_EMAIL = process.argv.includes('--no-email')
 const ONLY_ATTEMPT = (() => {
   const i = process.argv.indexOf('--attempt')
+  return i !== -1 ? process.argv[i + 1] : ''
+})()
+// The email is the whole product here, so being able to look at one without
+// sending it is worth a flag.
+const DUMP_HTML = (() => {
+  const i = process.argv.indexOf('--dump-html')
   return i !== -1 ? process.argv[i + 1] : ''
 })()
 
@@ -302,7 +309,7 @@ const NARRATIVE_SCHEMA = JSON.stringify({
              'wrong_answer_trend', 'what_helped', 'misses'],
 })
 
-function buildPrompt({ studentName, examName, attempt, rows, attemptPath, historyPath, workUploaded, scratchFile }) {
+function buildPrompt({ studentName, examName, attempt, rows, attemptPath, historyPath, workUploaded, scratchFiles = [] }) {
   const missed = rows.filter(r => !r.correct)
   const starred = rows.filter(r => r.starred)
   const luckyStars = starred.filter(r => r.correct)
@@ -315,6 +322,9 @@ function buildPrompt({ studentName, examName, attempt, rows, attemptPath, histor
     `Student: ${studentName}`,
     `Exam: ${examName} (${attempt.mode} mode)`,
     `Score: ${attempt.score ?? '?'} / ${rows.length}`,
+    (attempt.score_at_limit != null && attempt.score_at_limit !== attempt.score)
+      ? `Score when the 75 minutes ran out: ${attempt.score_at_limit} / ${rows.length}. They kept working past the limit and the extra time was worth ${attempt.score - attempt.score_at_limit} more. Say something about that gap -- it is the difference between what they know and what they can do inside the clock.`
+      : '',
     attempt.submitted_at ? `Submitted: ${attempt.submitted_at.slice(0, 10)}` : '',
     attempt.active_seconds ? `Working time: ${fmtSeconds(attempt.active_seconds)} (limit 75:00)` : '',
     `Missed or blank: ${missed.length ? missed.map(r => r.num).join(', ') : 'none'}`,
@@ -341,11 +351,12 @@ function buildPrompt({ studentName, examName, attempt, rows, attemptPath, histor
     '',
   ]
 
-  if (workUploaded && scratchFile) {
+  if (workUploaded && scratchFiles.length) {
     lines.push(
       'SCRATCH WORK',
-      `${studentName} uploaded a scan of the work: ${scratchFile}`,
-      'Read it. For each missed question, base likely_reasoning on what is',
+      `${studentName} uploaded ${scratchFiles.length} page${scratchFiles.length === 1 ? '' : 's'} of work:`,
+      ...scratchFiles.map(f => `  ${f}`),
+      'Read them all. For each missed question, base likely_reasoning on what is',
       'actually on the paper, and say what you can see.',
       '',
     )
@@ -485,6 +496,19 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
   const section = (title, body) => body
     ? `<h3 style="margin:20px 0 6px 0;font-size:15px">${title}</h3>${paras(body)}` : ''
 
+  // A sitting that ran long is two results. The big number above is the
+  // finished test; this says where they stood when the real clock would have
+  // stopped them, which is the number that predicts a real F=ma.
+  const overBy = (attempt.active_seconds || 0) - 4500
+  const splitScore = (attempt.score_at_limit == null || overBy <= 0) ? '' : `
+  <p style="font-size:13px;margin:0 0 8px;padding:8px 10px;border-left:4px solid #2a4a6d;background:#eef2f7;color:#1f3a5f">
+    <strong>${attempt.score_at_limit} / ${rows.length} at the 75-minute mark</strong>, then
+    ${esc(fmtSeconds(overBy))} of extra time took it to ${attempt.score ?? '—'}.
+    ${attempt.score > attempt.score_at_limit
+      ? `The extra time was worth ${attempt.score - attempt.score_at_limit} more question${attempt.score - attempt.score_at_limit === 1 ? '' : 's'}.`
+      : 'Nothing changed after the clock ran out.'}
+  </p>`
+
   // The student's own flag that they were guessing. Called out above the fold
   // because the ones they guessed RIGHT are invisible in the score and in the
   // table's colouring -- those are the questions worth reopening together.
@@ -522,6 +546,7 @@ function narrativeEmailHtml({ studentName, examName, attempt, rows, result, pron
   return `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px;color:#222;max-width:760px">
   <p style="margin:0 0 4px 0"><strong>${esc(studentName)}</strong> — ${esc(examName)}</p>
   <p style="font-size:22px;font-weight:700;margin:8px 0 4px">${attempt.score ?? '—'} / ${rows.length}</p>
+  ${splitScore}
   <p style="font-size:13px;color:#666;margin:0 0 12px">
     ${esc(attempt.mode)}${attempt.active_seconds ? ` · ${esc(fmtSeconds(attempt.active_seconds))} working time` : ''}${workUploaded ? '' : ' · no work uploaded'}${scratchNote ? ` · ${esc(scratchNote)}` : ''}
   </p>
@@ -653,20 +678,30 @@ async function run() {
       await log(`${attempt.id}: ${studentName} — ${examName}`)
 
       const rows = await loadAttemptDetail(attempt)
-      const workUploaded = Boolean(attempt.scratch_work_url)
 
-      // The scan is wanted either way: claude reads it, and it rides along as
-      // the email attachment.
-      const scratch = workUploaded ? await downloadScratch(attempt.scratch_work_url) : null
-      if (scratch) tmpFiles.push(scratch.path)
-      const attachments = (scratch && !scratch.tooLarge)
-        ? [{
-            filename: safeFilename(`${studentName} - ${examName} scratch work${scratch.ext}`),
-            content: scratch.bytes.toString('base64'),
-          }]
-        : []
-      const scratchNote = attachments.length ? 'scratch work attached'
-        : scratch?.tooLarge ? 'scratch work too large to attach — see the portal' : ''
+      // Every sheet of the scan, not just the first: the upload takes several
+      // files now, and claude reads all of them while all of them ride along as
+      // email attachments.
+      const { data: pageRows } = await supabase
+        .from('fma_scratch_pages').select('storage_path').eq('attempt_id', attempt.id).order('page_index')
+      const paths = (pageRows || []).map(p => p.storage_path)
+      if (!paths.length && attempt.scratch_work_url) paths.push(attempt.scratch_work_url)
+      const workUploaded = paths.length > 0
+
+      const scans = []
+      for (const path of paths) {
+        const got = await downloadScratch(path)
+        if (got) { scans.push(got); tmpFiles.push(got.path) }
+      }
+      const attachments = scans.filter(s => !s.tooLarge).map((s, i) => ({
+        filename: safeFilename(`${studentName} - ${examName} work${scans.length > 1 ? ` p${i + 1}` : ''}${s.ext}`),
+        content: s.bytes.toString('base64'),
+      }))
+      const tooLarge = scans.filter(s => s.tooLarge).length
+      const scratchNote = attachments.length
+        ? `${attachments.length} page${attachments.length === 1 ? '' : 's'} of work attached`
+        : tooLarge ? 'work too large to attach — see the portal' : ''
+      const scratch = scans[0] || null
 
       let result = null
       let sources = null
@@ -685,6 +720,7 @@ async function run() {
         await writeFile(attemptPath, JSON.stringify({
           student: studentName, exam: examName, mode: attempt.mode,
           score: attempt.score, out_of: rows.length,
+          score_at_75_minutes: attempt.score_at_limit ?? null,
           working_seconds: attempt.active_seconds, questions: rows,
         }, null, 2))
         await writeFile(historyPath, JSON.stringify(history, null, 2))
@@ -724,7 +760,7 @@ async function run() {
         try {
           result = await runClaude(buildPrompt({
             studentName, examName, attempt, rows,
-            attemptPath, historyPath, workUploaded, scratchFile: scratch?.path,
+            attemptPath, historyPath, workUploaded, scratchFiles: scans.map(x => x.path),
           }))
         } catch (e) {
           claudeError = e.message
@@ -769,12 +805,17 @@ async function run() {
       }
 
       const resultsUrl = `${PORTAL_URL}?view=fma&student=${encodeURIComponent(attempt.student_id)}&attempt=${encodeURIComponent(attempt.id)}`
+      const body = narrativeEmailHtml({
+        studentName, examName, attempt, rows, result, pronoun, pronounVerb,
+        workUploaded, resultsUrl, scratchNote, claudeError,
+      })
+      if (DUMP_HTML) {
+        await writeFile(DUMP_HTML, body)
+        await log(`${attempt.id}: email HTML written to ${DUMP_HTML}`)
+      }
       await notifyMark(
         `${studentName} finished ${examName} — ${attempt.score ?? '?'}/${rows.length}${workUploaded ? '' : ' (no work uploaded)'}`,
-        narrativeEmailHtml({
-          studentName, examName, attempt, rows, result, pronoun, pronounVerb,
-          workUploaded, resultsUrl, scratchNote, claudeError,
-        }),
+        body,
         attachments,
       )
       await log(`${attempt.id}: sent (${result ? 'full' : 'table only'}).`)

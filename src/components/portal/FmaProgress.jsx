@@ -58,11 +58,20 @@ export function FmaChart({ attempts, onSelect }) {
   const ticks = [0, 5, 10, 15, 20, 25]
   const fmtDate = t => new Date(t).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
+  // The 75-minute score, for the sittings that have one. An attempt that never
+  // went over has the same number twice, so the second line is only drawn once
+  // some sitting actually differs -- otherwise it just traces the first.
+  const timed = scored
+    .map((a, i) => ({ i, value: a.score_at_limit }))
+    .filter(t => t.value != null)
+  const showTimed = timed.some(t => t.value !== scored[t.i].score)
+
   if (scored.length === 0) {
     return <div className="empty-state">No graded practice tests yet — take one to start seeing your progress here.</div>
   }
 
   return (
+    <>
     <svg viewBox={`0 0 ${width} ${height}`} width="100%" style={{ maxWidth: width, display: 'block' }} role="img" aria-label="F=ma scores over time">
       {ticks.map(t => (
         <g key={t}>
@@ -83,12 +92,33 @@ export function FmaChart({ attempts, onSelect }) {
           as sitting on the line rather than inside the band below it. */}
       <text x={width - padR} y={(yScale(BORDERLINE_HIGH) + yScale(BORDERLINE_LOW)) / 2 + 3} fontSize={9} fill="var(--accent)" textAnchor="end">USAPhO Borderline</text>
 
+      {/* Two lines when any sitting ran long: the solid one is the finished
+          test, the dashed one is where they stood when the 75 minutes were up.
+          The gap between them is the thing worth looking at -- a wide gap says
+          the physics is there and the clock isn't. */}
       {scored.length > 1 && (
         <polyline
           points={scored.map((a, i) => `${xAt(i)},${yScale(a.score)}`).join(' ')}
           fill="none" stroke="var(--accent)" strokeWidth={1.5} opacity={0.45}
         />
       )}
+      {showTimed && timed.length > 1 && (
+        <polyline
+          points={timed.map(t => `${xAt(t.i)},${yScale(t.value)}`).join(' ')}
+          fill="none" stroke="var(--yellow)" strokeWidth={1.5} opacity={0.6} strokeDasharray="4 3"
+        />
+      )}
+      {showTimed && timed.map(t => (
+        <circle
+          key={`t-${scored[t.i].id}`}
+          cx={xAt(t.i)} cy={yScale(t.value)} r={4}
+          fill="var(--surface)" stroke="var(--yellow)" strokeWidth={1.5}
+          style={{ cursor: 'pointer' }}
+          onClick={() => onSelect(scored[t.i].id)}
+        >
+          <title>{`${scored[t.i].handouts?.name || scored[t.i].exam_id}: ${t.value}/${MAX_SCORE} at 75 min`}</title>
+        </circle>
+      ))}
 
       {/* Dates on the axis: the tooltip alone is unreachable on a touch screen. */}
       <text x={padL} y={height - 8} fontSize={9} fill="var(--text-dim)" textAnchor="start">{fmtDate(minT)}</text>
@@ -106,6 +136,13 @@ export function FmaChart({ attempts, onSelect }) {
         </circle>
       ))}
     </svg>
+    {showTimed && (
+      <div className="fma-chart-legend">
+        <span><i className="line solid" /> final score</span>
+        <span><i className="line dashed" /> score at 75 minutes</span>
+      </div>
+    )}
+    </>
   )
 }
 
@@ -466,8 +503,13 @@ export default function FmaProgress({ studentId, isPreview, assignedExamIds = []
               >
                 <div style={{ flex: 1, fontSize: 13 }}>{a.handouts?.name || a.exam_id}</div>
                 <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>{MODE_LABEL[a.mode] || a.mode}</div>
-                <div style={{ fontSize: 12, fontWeight: 600 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, textAlign: 'right' }}>
                   {a.score != null ? `${a.score}/${MAX_SCORE}` : '—'}
+                  {a.score_at_limit != null && a.score_at_limit !== a.score && (
+                    <div style={{ fontSize: 10, fontWeight: 500, color: 'var(--yellow)' }}>
+                      {a.score_at_limit} at 75 min
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

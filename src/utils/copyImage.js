@@ -29,7 +29,7 @@ const EXPORT_ROOT_CSS = `
   font-size: 14px; line-height: 1.5; color: var(--text, #1f3a5f);
   -webkit-font-smoothing: antialiased;
 }
-.${EXPORT_ROOT_CLASS} img { max-width: 100%; }
+.${EXPORT_ROOT_CLASS} img:not(.fma-work-crop-img) { max-width: 100%; }
 `
 
 let cssPromise = null

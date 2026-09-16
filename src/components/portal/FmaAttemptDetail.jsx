@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { renderStatementHtml } from '../../utils/renderStatement'
 import { copyNodeAsImage } from '../../utils/copyImage'
 import ScratchWorkLink from './ScratchWorkLink'
+import WorkCrop from './WorkCrop'
 
 const CHOICES = ['A', 'B', 'C', 'D', 'E']
 const LIMIT_SEC = 75 * 60
@@ -57,29 +58,13 @@ function buildShotHeader({ examName, questionNum, verdictLine, badges }) {
 // The two clipboard buttons on a question card. Kept as its own component so
 // each card owns its own "Copied" / error state instead of one shared banner
 // 20 questions away from the button that was pressed.
-function CopyButtons({ shotRef, examName, questionNum, verdictLine, badges }) {
+function CopyButtons({ shotRef, workRef, hasWork, examName, questionNum, verdictLine, badges, answerer }) {
   const [state, setState] = useState(null) // { kind: 'ok' | 'err' | 'busy', msg }
 
-  async function run(withAnswer) {
+  async function copy(node, prepare) {
     setState({ kind: 'busy', msg: 'Copying…' })
     try {
-      await copyNodeAsImage(shotRef.current, {
-        width: 680,
-        prepare: clone => {
-          if (!withAnswer) {
-            // The bare question: no key, no "your answer", nothing coloured in.
-            clone.querySelectorAll('.fma-tag').forEach(el => el.remove())
-            clone.querySelectorAll('.fma-review-choice').forEach(el => {
-              el.classList.remove('key', 'picked-wrong')
-            })
-          }
-          clone.prepend(buildShotHeader({
-            examName, questionNum,
-            verdictLine: withAnswer ? verdictLine : null,
-            badges: withAnswer ? badges : null,
-          }))
-        },
-      })
+      await copyNodeAsImage(node, { width: 680, prepare })
       setState({ kind: 'ok', msg: 'Copied' })
       setTimeout(() => setState(null), 2000)
     } catch (e) {
@@ -87,15 +72,46 @@ function CopyButtons({ shotRef, examName, questionNum, verdictLine, badges }) {
     }
   }
 
+  function runQuestion(withAnswer) {
+    copy(shotRef.current, clone => {
+      if (!withAnswer) {
+        // The bare question: no key, no "your answer", nothing coloured in.
+        clone.querySelectorAll('.fma-tag').forEach(el => el.remove())
+        clone.querySelectorAll('.fma-review-choice').forEach(el => {
+          el.classList.remove('key', 'picked-wrong')
+        })
+      }
+      clone.prepend(buildShotHeader({
+        examName, questionNum,
+        verdictLine: withAnswer ? verdictLine : null,
+        badges: withAnswer ? badges : null,
+      }))
+    })
+  }
+
+  function runWork() {
+    copy(workRef.current, clone => {
+      clone.prepend(buildShotHeader({
+        examName, questionNum,
+        verdictLine: `${answerer}'s work`,
+      }))
+    })
+  }
+
   const busy = state?.kind === 'busy'
   return (
     <div className="fma-copy-row">
-      <button className="sm" disabled={busy} onClick={() => run(false)} title="Copy the question alone as an image, ready to paste into Miro">
+      <button className="sm" disabled={busy} onClick={() => runQuestion(false)} title="Copy the question alone as an image, ready to paste into Miro">
         Copy problem
       </button>
-      <button className="sm" disabled={busy} onClick={() => run(true)} title="Copy the question with the answer given and the key">
+      <button className="sm" disabled={busy} onClick={() => runQuestion(true)} title="Copy the question with the answer given and the key">
         Copy with answer
       </button>
+      {hasWork && (
+        <button className="sm" disabled={busy} onClick={runWork} title="Copy just what they wrote for this question">
+          Copy their work
+        </button>
+      )}
       {state && (
         <span className={`fma-copy-status${state.kind === 'err' ? ' err' : ''}`}>{state.msg}</span>
       )}
@@ -104,11 +120,13 @@ function CopyButtons({ shotRef, examName, questionNum, verdictLine, badges }) {
 }
 
 export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, studentName = '' }) {
-  const { attempt, questions, answerByQuestion, secondsByQuestion } = detail
+  const { attempt, questions, answerByQuestion, secondsByQuestion, scratchPages = [], workByQuestion } = detail
   const questionRefs = useRef({})
-  // One capture node per question -- the slice of the card that becomes the
-  // image (statement, figures, choices), without the buttons or the solution.
+  // Two capture nodes per question: the slice of the card that becomes the
+  // question image (statement, figures, choices), and the student's work, which
+  // copies to Miro on its own.
   const shotRefs = useRef({})
+  const workRefs = useRef({})
 
   // Solutions are collapsed by default and expand in place, so a student who
   // wants to re-attempt a question they got wrong isn't shown the answer first.
@@ -129,6 +147,7 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
   const canReveal = graded || isAdmin
   const outOf = questions.length || 25
   const examName = attempt.handouts?.name || attempt.exam_id
+  const wentOver = (attempt.active_seconds || 0) > LIMIT_SEC
 
   // A skipped question is a question you got wrong -- there's no partial credit
   // on the F=ma -- so it belongs in the same bucket as a wrong answer. Verdicts
@@ -198,12 +217,25 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
       <button className="sm" onClick={onBack} style={{ marginBottom: 16 }}>← Back</button>
 
       <div className="fma-summary">
-        <div className="fma-summary-score">
-          {attempt.score != null
-            ? `${attempt.score}/${outOf}`
-            : canReveal && attempt.mode !== 'score_only'
-              ? `${nCorrect}/${outOf} so far`
-              : '—'}
+        <div>
+          <div className="fma-summary-score">
+            {attempt.score != null
+              ? `${attempt.score}/${outOf}`
+              : canReveal && attempt.mode !== 'score_only'
+                ? `${nCorrect}/${outOf} so far`
+                : '—'}
+          </div>
+          {/* A sitting that ran past 75 minutes is really two results, and the
+              timed one is the one that says where they'd land on the real
+              exam. Both are shown; the big number stays the finished test. */}
+          {wentOver && attempt.score_at_limit != null && (
+            <div className="fma-summary-split">
+              <div><b>{attempt.score_at_limit}</b>/{outOf} at 75 min</div>
+              <div className="dim">
+                <b>{attempt.score}</b>/{outOf} with {formatDuration(attempt.active_seconds - LIMIT_SEC)} extra
+              </div>
+            </div>
+          )}
         </div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 500 }}>{examName}</div>
@@ -211,9 +243,14 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
             {date} · {attempt.mode.replace('_', ' ')}
             {formatDuration(attempt.active_seconds) && <> · {formatDuration(attempt.active_seconds)} working time</>}
           </div>
-          {attempt.active_seconds > LIMIT_SEC && (
+          {wentOver && (
             <div style={{ fontSize: 11, color: 'var(--yellow)', marginTop: 2 }}>
               Ran {formatDuration(attempt.active_seconds - LIMIT_SEC)} past the 75-minute limit.
+              {attempt.score_at_limit != null && attempt.score != null && (
+                attempt.score > attempt.score_at_limit
+                  ? ` The extra time was worth ${attempt.score - attempt.score_at_limit} more question${attempt.score - attempt.score_at_limit === 1 ? '' : 's'}.`
+                  : ' Nothing changed after the clock ran out.'
+              )}
             </div>
           )}
           {!graded && isAdmin && (
@@ -340,7 +377,10 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
             const starred = !!ans?.starred
             const alsoAccepted = q.also_accepted || []
             if (!shotRefs.current[q.id]) shotRefs.current[q.id] = { current: null }
+            if (!workRefs.current[q.id]) workRefs.current[q.id] = { current: null }
             const shotRef = shotRefs.current[q.id]
+            const workRef = workRefs.current[q.id]
+            const workPieces = workByQuestion?.get(q.id) || []
             // The caption on a "with answer" copy, so the picture carries the
             // same verdict the card does once it's off on a Miro board.
             const verdictLine = skipped
@@ -421,14 +461,45 @@ export default function FmaAttemptDetail({ detail, onBack, isAdmin = false, stud
                   </div>
                 </div>
 
+                {/* What they actually wrote for this question, cut out of the
+                    whole-test scan by scripts/fma-work-splitter.mjs. The letter
+                    they picked says almost nothing on its own; this is where a
+                    wrong answer came from. */}
+                {workPieces.length > 0 && (
+                  <div className="fma-work-block">
+                    <div className="fma-work-label">
+                      {answerer}'s work
+                      {workPieces.some(wp => !wp.labeled) && (
+                        <span className="fma-work-warn" title="The question number wasn't written next to this, so the match is a guess from context">
+                          unlabeled — matched from context
+                        </span>
+                      )}
+                    </div>
+                    <div ref={el => { workRef.current = el }} className="fma-work-shot">
+                      {workPieces.map(wp => (
+                        <WorkCrop key={wp.id} work={wp} alt={`Work for question ${q.question_num}`} />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <CopyButtons
                   shotRef={shotRef}
+                  workRef={workRef}
+                  hasWork={workPieces.length > 0}
+                  answerer={answerer}
                   examName={examName}
                   questionNum={q.question_num}
                   verdictLine={verdictLine}
                   badges={badges}
                 />
 
+                {workPieces.length === 0 && scratchPages.length > 0 && (
+                  <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 8 }}>
+                    No work found for this one in the scan.{' '}
+                    <ScratchWorkLink path={scratchPages[0].storage_path} label="Open the whole scan ↗" />
+                  </div>
+                )}
                 {ans?.scratch_work_url && (
                   <ScratchWorkLink path={ans.scratch_work_url} label="Scratch work for this question ↗"
                     style={{ marginTop: 8, display: 'inline-block' }} />
