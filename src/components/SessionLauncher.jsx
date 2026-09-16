@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   fetchSessions, fetchAssignments, fetchStudents, fetchSessionProblems, firstReview,
-  fetchFmaAttempts, fetchFmaHomeworkAttempts,
+  fetchFmaAttempts, fetchFmaHomeworkAttempts, fetchFmaExams, fetchFmaHomeworkSets,
 } from '../utils/supabase'
 import { loadProblemBank } from '../utils/problemBank'
 
@@ -32,6 +32,11 @@ export default function SessionLauncher() {
   const [sessionProblems, setSessionProblems] = useState([])
   const [examAttempts, setExamAttempts] = useState([])
   const [hwAttempts, setHwAttempts] = useState([])
+  // Exams and homework sets digitized into the portal runners. These have no
+  // PDF of their own, so without a portal link their rows read "no problem
+  // link" and there's no way to pull the questions up before the session.
+  const [takeableExamIds, setTakeableExamIds] = useState(new Set())
+  const [takeableHwIds, setTakeableHwIds] = useState(new Set())
   const [error, setError] = useState(null)
   const openAllRef = useRef(null)
 
@@ -45,6 +50,8 @@ export default function SessionLauncher() {
         setSessionProblems(sp)
       })
       .catch(e => setError(e.message))
+    fetchFmaExams().then(e => setTakeableExamIds(new Set(e.map(x => x.id)))).catch(() => {})
+    fetchFmaHomeworkSets().then(s => setTakeableHwIds(new Set(s.map(x => x.id)))).catch(() => {})
   }, [])
 
   const session = useMemo(() => {
@@ -181,13 +188,29 @@ export default function SessionLauncher() {
   const fmaUrl = attempt =>
     `${window.location.origin}/?view=fma&student=${session.student_id}&attempt=${attempt.id}`
 
+  // A digitized exam or homework set is taken in the portal and has no PDF, so
+  // the only way to see the questions is the student's own portal page. The
+  // slug route (/akshatha/...) is the admin preview of it. Landing on the tab
+  // doesn't start anything — the runner only opens on a click — so this is
+  // safe to fire from "Open all".
+  const slug = (student?.first_name || '').toLowerCase()
+  const portalLink = problem => {
+    if (!problem || !slug) return null
+    const base = `${window.location.origin}/${slug}`
+    if (takeableExamIds.has(problem.id)) return { url: `${base}/fma-progress`, label: 'Exam' }
+    if (takeableHwIds.has(problem.id)) return { url: `${base}/assigned`, label: 'Quiz' }
+    return null
+  }
+
   const links = [
     session.meet_url && { label: 'Join Meet', url: session.meet_url, primary: true },
     session.miro_board_url && { label: 'Whiteboard', url: session.miro_board_url, primary: true },
     session.prep_note_url && { label: 'Next-time link', url: session.prep_note_url },
   ].filter(Boolean)
   openItems.forEach(({ problem }) => {
+    const portal = problem?.problemUrl ? null : portalLink(problem)
     if (problem?.problemUrl) links.push({ label: `${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
+    else if (portal) links.push({ label: `${portal.label} ↗`, url: portal.url })
   })
   doneItems.forEach(({ assignment, problem, submission, review, attempts }) => {
     if (problem?.problemUrl) links.push({ label: `${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
@@ -199,8 +222,11 @@ export default function SessionLauncher() {
   loneAttempts.filter(a => a.kind === 'exam')
     .forEach(a => links.push({ label: 'F=ma results ↗', url: fmaUrl(a.attempt) }))
   onDeckItems.forEach(({ problem }) => {
+    const portal = problem?.problemUrl ? null : portalLink(problem)
     if (problem?.problemUrl) {
       links.push({ label: `On deck: ${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
+    } else if (portal) {
+      links.push({ label: `On deck: ${portal.label} ↗`, url: portal.url })
     }
     if (problem?.solutionUrl) {
       links.push({ label: 'On deck: Solution ↗', url: problem.solutionUrl })
@@ -274,7 +300,7 @@ export default function SessionLauncher() {
           <SectionHeader>Since last time{sinceStr ? ` (${sinceStr})` : ''}</SectionHeader>
         )}
         {doneItems.map(item => (
-          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} tz={tz} />
+          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} portalLink={portalLink} tz={tz} />
         ))}
         {loneAttempts.map(({ attempt, kind }) => (
           <AttemptRow key={attempt.id} attempt={attempt} kind={kind} fmaUrl={fmaUrl} tz={tz} />
@@ -282,7 +308,7 @@ export default function SessionLauncher() {
 
         {openItems.length > 0 && <SectionHeader>Still open</SectionHeader>}
         {openItems.map(item => (
-          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} tz={tz} open />
+          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} portalLink={portalLink} tz={tz} open />
         ))}
 
         {onDeckItems.length > 0 && (
@@ -296,7 +322,9 @@ export default function SessionLauncher() {
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                   {problem?.problemUrl
                     ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">{problemLinkLabel(problem)} ↗</a>
-                    : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
+                    : portalLink(problem)
+                      ? <a href={portalLink(problem).url} target="_blank" rel="noreferrer">{portalLink(problem).label} ↗</a>
+                      : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
                   {problem?.solutionUrl
                     ? <a href={problem.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>
                     : <span style={{ color: 'var(--text-dim)' }}>No solution</span>}
@@ -316,9 +344,10 @@ function SectionHeader({ children }) {
   )
 }
 
-function AssignmentRow({ item, fmaUrl, tz, open }) {
+function AssignmentRow({ item, fmaUrl, portalLink, tz, open }) {
   const { assignment, problem, submission, review, attempts } = item
   const scored = attempts.filter(a => a.attempt.submitted_at)
+  const portal = problem?.problemUrl ? null : portalLink(problem)
   return (
     <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
       <div style={{ fontWeight: 500, marginBottom: 6 }}>
@@ -337,7 +366,9 @@ function AssignmentRow({ item, fmaUrl, tz, open }) {
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {problem?.problemUrl
           ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">{problemLinkLabel(problem)} ↗</a>
-          : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
+          : portal
+            ? <a href={portal.url} target="_blank" rel="noreferrer">{portal.label} ↗</a>
+            : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
         {submission
           ? <a href={submission} target="_blank" rel="noreferrer">Submission ↗</a>
           : assignment.requires_submission
