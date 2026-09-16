@@ -1,24 +1,24 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { fetchSessions, fetchAssignments, fetchStudents, fetchSessionProblems, firstReview } from '../utils/supabase'
+import {
+  fetchSessions, fetchAssignments, fetchStudents, fetchSessionProblems, firstReview,
+  fetchFmaAttempts, fetchFmaHomeworkAttempts,
+} from '../utils/supabase'
 import { loadProblemBank } from '../utils/problemBank'
 
-// "What's due for this session" — match the recalc_assignment_due_dates trigger:
-// due_date = (session date in America/Los_Angeles) − 1 day.
-// See supabase/migrations/20260605220000_due_dates_and_submissions.sql.
-function dueDateForSession(scheduledAt) {
-  const laDate = new Date(scheduledAt).toLocaleDateString('en-CA', {
-    timeZone: 'America/Los_Angeles',
-  }) // 'YYYY-MM-DD'
-  const d = new Date(laDate + 'T00:00:00Z')
-  d.setUTCDate(d.getUTCDate() - 1)
-  return d.toISOString().slice(0, 10)
+// Calendar date (YYYY-MM-DD) for a timestamp, read in the student's timezone.
+function localDate(ts, tz) {
+  return new Date(ts).toLocaleDateString('en-CA', { timeZone: tz })
 }
 
 function submissionUrl(a) {
   if (a.submission_bundle_url) return a.submission_bundle_url
   const subs = a.assignment_submissions || []
   return subs[0]?.file_url || ''
+}
+
+function problemLinkLabel(p) {
+  return p?.type === 'Book' ? 'Book' : p?.type === 'Handout' ? 'Handout' : p?.type === 'Exam' ? 'Exam' : 'Problem'
 }
 
 export default function SessionLauncher() {
@@ -30,6 +30,8 @@ export default function SessionLauncher() {
   const [students, setStudents] = useState([])
   const [bank, setBank] = useState([])
   const [sessionProblems, setSessionProblems] = useState([])
+  const [examAttempts, setExamAttempts] = useState([])
+  const [hwAttempts, setHwAttempts] = useState([])
   const [error, setError] = useState(null)
   const openAllRef = useRef(null)
 
@@ -61,24 +63,93 @@ export default function SessionLauncher() {
     () => students.find(s => s.id === session?.student_id) || null,
     [students, session]
   )
+  const tz = student?.timezone || 'America/New_York'
 
-  const dueItems = useMemo(() => {
+  // F=ma sittings live in their own tables, not in `assignments`, so a test the
+  // student took since last time only shows up if we go get it.
+  useEffect(() => {
+    const sid = session?.student_id
+    if (!sid) return
+    let cancelled = false
+    Promise.all([fetchFmaAttempts(sid), fetchFmaHomeworkAttempts(sid)])
+      .then(([ex, hw]) => {
+        if (cancelled) return
+        setExamAttempts(ex)
+        setHwAttempts(hw)
+      })
+      .catch(() => { if (!cancelled) { setExamAttempts([]); setHwAttempts([]) } })
+    return () => { cancelled = true }
+  }, [session?.student_id])
+
+  // "Since last time" runs from the previous session with this student. With no
+  // previous session (first meeting, or a gap in the calendar) fall back to two
+  // weeks so the page still has something on it.
+  const sinceAt = useMemo(() => {
+    if (!session || !sessions) return null
+    const t = new Date(session.scheduled_at).getTime()
+    const prev = sessions
+      .filter(s => s.student_id === session.student_id && s.session_type !== 'checkin')
+      .filter(s => new Date(s.scheduled_at).getTime() < t)
+      .sort((a, b) => new Date(b.scheduled_at) - new Date(a.scheduled_at))[0]
+    return prev ? new Date(prev.scheduled_at) : new Date(t - 14 * 86400000)
+  }, [sessions, session])
+
+  const attemptsFor = useMemo(() => {
+    return problemId => [
+      ...examAttempts.filter(a => a.exam_id === problemId).map(a => ({ attempt: a, kind: 'exam' })),
+      ...hwAttempts.filter(a => a.set_id === problemId).map(a => ({ attempt: a, kind: 'hw' })),
+    ]
+  }, [examAttempts, hwAttempts])
+
+  const toItem = useMemo(() => {
+    return a => ({
+      assignment: a,
+      problem: bank.find(p => p.id === a.problem_id) || null,
+      submission: submissionUrl(a),
+      review: firstReview(a),
+      attempts: attemptsFor(a.problem_id),
+    })
+  }, [bank, attemptsFor])
+
+  // Everything still open, whether or not it carries a due date. Most of what
+  // Mark assigns (handouts, F=ma exams) has no due date at all, so keying this
+  // list off one made the page read "nothing due" almost every time.
+  const openItems = useMemo(() => {
     if (!session) return []
-    const dueStr = dueDateForSession(session.scheduled_at)
+    return assignments
+      .filter(a => a.student_id === session.student_id && ['assigned', 'submitted'].includes(a.status))
+      .sort((a, b) =>
+        (a.due_date || '9999-99-99').localeCompare(b.due_date || '9999-99-99') ||
+        String(b.assigned_date || '').localeCompare(String(a.assigned_date || ''))
+      )
+      .map(toItem)
+  }, [session, assignments, toItem])
+
+  const doneItems = useMemo(() => {
+    if (!session || !sinceAt) return []
+    const sinceDay = localDate(sinceAt, tz)
     return assignments
       .filter(a =>
         a.student_id === session.student_id &&
-        a.requires_submission &&
-        ['assigned', 'submitted'].includes(a.status) &&
-        String(a.due_date || '').slice(0, 10) === dueStr
+        a.status === 'completed' &&
+        String(a.completed_date || '').slice(0, 10) >= sinceDay
       )
-      .map(a => ({
-        assignment: a,
-        problem: bank.find(p => p.id === a.problem_id) || null,
-        submission: submissionUrl(a),
-        review: firstReview(a),
-      }))
-  }, [session, assignments, bank])
+      .sort((a, b) => String(b.completed_date || '').localeCompare(String(a.completed_date || '')))
+      .map(toItem)
+  }, [session, assignments, sinceAt, tz, toItem])
+
+  // A test taken without an assignment behind it still belongs on the page.
+  const loneAttempts = useMemo(() => {
+    if (!session || !sinceAt) return []
+    const shown = new Set(doneItems.map(i => i.assignment.problem_id))
+    return [
+      ...examAttempts.map(a => ({ attempt: a, kind: 'exam', problemId: a.exam_id })),
+      ...hwAttempts.map(a => ({ attempt: a, kind: 'hw', problemId: a.set_id })),
+    ]
+      .filter(x => !shown.has(x.problemId))
+      .filter(x => x.attempt.submitted_at && new Date(x.attempt.submitted_at) >= sinceAt)
+      .sort((a, b) => new Date(b.attempt.submitted_at) - new Date(a.attempt.submitted_at))
+  }, [session, sinceAt, doneItems, examAttempts, hwAttempts])
 
   const onDeckItems = useMemo(() => {
     if (!session) return []
@@ -99,29 +170,37 @@ export default function SessionLauncher() {
   if (sessions === null) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>
   if (!session) return <div className="empty-state" style={{ marginTop: 80 }}>No upcoming session found.</div>
 
-  const tz = student?.timezone || 'America/New_York'
   const startStr = new Date(session.scheduled_at).toLocaleString('en-US', {
     weekday: 'short', month: 'short', day: 'numeric',
     hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short',
   })
+  const sinceStr = sinceAt
+    ? new Date(sinceAt).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: tz })
+    : ''
+
+  const fmaUrl = attempt =>
+    `${window.location.origin}/?view=fma&student=${session.student_id}&attempt=${attempt.id}`
 
   const links = [
     session.meet_url && { label: 'Join Meet', url: session.meet_url, primary: true },
     session.miro_board_url && { label: 'Whiteboard', url: session.miro_board_url, primary: true },
     session.prep_note_url && { label: 'Next-time link', url: session.prep_note_url },
   ].filter(Boolean)
-  dueItems.forEach(({ assignment, problem, submission, review }) => {
-    if (problem?.problemUrl) {
-      const label = problem.type === 'Book' ? 'Book' : problem.type === 'Handout' ? 'Handout' : 'Problem'
-      links.push({ label: `${label} ↗`, url: problem.problemUrl })
-    }
+  openItems.forEach(({ problem }) => {
+    if (problem?.problemUrl) links.push({ label: `${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
+  })
+  doneItems.forEach(({ assignment, problem, submission, review, attempts }) => {
+    if (problem?.problemUrl) links.push({ label: `${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
     if (submission) links.push({ label: 'Submission ↗', url: submission })
     if (review) links.push({ label: 'Report ↗', url: `${window.location.origin}/report?assignment=${assignment.id}` })
+    attempts.filter(a => a.kind === 'exam' && a.attempt.submitted_at)
+      .forEach(a => links.push({ label: 'F=ma results ↗', url: fmaUrl(a.attempt) }))
   })
+  loneAttempts.filter(a => a.kind === 'exam')
+    .forEach(a => links.push({ label: 'F=ma results ↗', url: fmaUrl(a.attempt) }))
   onDeckItems.forEach(({ problem }) => {
     if (problem?.problemUrl) {
-      const label = problem.type === 'Book' ? 'Book' : problem.type === 'Handout' ? 'Handout' : 'Problem'
-      links.push({ label: `On deck: ${label} ↗`, url: problem.problemUrl })
+      links.push({ label: `On deck: ${problemLinkLabel(problem)} ↗`, url: problem.problemUrl })
     }
     if (problem?.solutionUrl) {
       links.push({ label: 'On deck: Solution ↗', url: problem.solutionUrl })
@@ -134,6 +213,8 @@ export default function SessionLauncher() {
   const openAll = () => links.forEach((l, i) => {
     setTimeout(() => window.open(l.url, '_blank', 'noopener,noreferrer'), i * 300)
   })
+
+  const nothingAtAll = openItems.length === 0 && doneItems.length === 0 && loneAttempts.length === 0
 
   return (
     <div style={{ maxWidth: 560, margin: '40px auto', padding: '0 20px' }}>
@@ -183,49 +264,30 @@ export default function SessionLauncher() {
         <LinkRow label="Join Meet" url={session.meet_url} fallback="No Meet link" />
         <LinkRow label="Whiteboard" url={session.miro_board_url} fallback="No whiteboard" />
 
-        {dueItems.length === 0 && (
-          <div style={{ color: 'var(--text-dim)', marginTop: 8 }}>Nothing due for this session.</div>
-        )}
-        {dueItems.map(({ assignment, problem, submission, review }) => (
-          <div key={assignment.id} style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
-            <div style={{ fontWeight: 500, marginBottom: 6 }}>
-              {problem?.name || assignment.problem_id}
-            </div>
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-              {problem?.problemUrl
-                ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">
-                    {problem.type === 'Book' ? 'Book ↗' : problem.type === 'Handout' ? 'Handout ↗' : 'Problem ↗'}
-                  </a>
-                : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
-              {submission
-                ? <a href={submission} target="_blank" rel="noreferrer">Submission ↗</a>
-                : <span style={{ color: 'var(--text-dim)' }}>No submission yet</span>}
-              {review && (
-                <a href={`/report?assignment=${assignment.id}`} target="_blank" rel="noreferrer">Report ↗</a>
-              )}
-            </div>
-            {review && (
-              <div style={{ marginTop: 6, fontSize: 13, color: 'var(--text-dim)' }}>
-                {review.ai_summary && <div>🤖 {review.ai_summary}</div>}
-                {(review.question_breakdown || []).length > 0 && (
-                  <ul style={{ margin: '4px 0', paddingLeft: 18 }}>
-                    {review.question_breakdown.map((b, i) => (
-                      <li key={i}><strong>{b.verdict}</strong> — {b.question}: {b.note}</li>
-                    ))}
-                  </ul>
-                )}
-                {(review.issues || []).length > 0 && (
-                  <div>Work on: {review.issues.join(', ')}</div>
-                )}
-                {review.mark_notes && <div style={{ marginTop: 2 }}><strong>Your notes:</strong> {review.mark_notes}</div>}
-              </div>
-            )}
+        {nothingAtAll && (
+          <div style={{ color: 'var(--text-dim)', marginTop: 8 }}>
+            Nothing assigned, and nothing new since last time.
           </div>
+        )}
+
+        {doneItems.length + loneAttempts.length > 0 && (
+          <SectionHeader>Since last time{sinceStr ? ` (${sinceStr})` : ''}</SectionHeader>
+        )}
+        {doneItems.map(item => (
+          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} tz={tz} />
+        ))}
+        {loneAttempts.map(({ attempt, kind }) => (
+          <AttemptRow key={attempt.id} attempt={attempt} kind={kind} fmaUrl={fmaUrl} tz={tz} />
+        ))}
+
+        {openItems.length > 0 && <SectionHeader>Still open</SectionHeader>}
+        {openItems.map(item => (
+          <AssignmentRow key={item.assignment.id} item={item} fmaUrl={fmaUrl} tz={tz} open />
         ))}
 
         {onDeckItems.length > 0 && (
           <>
-            <div style={{ marginTop: 16, fontWeight: 600, color: 'var(--text-dim)' }}>On deck</div>
+            <SectionHeader>On deck</SectionHeader>
             {onDeckItems.map(({ sp, problem }) => (
               <div key={sp.id} style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
                 <div style={{ fontWeight: 500, marginBottom: 6 }}>
@@ -233,9 +295,7 @@ export default function SessionLauncher() {
                 </div>
                 <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                   {problem?.problemUrl
-                    ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">
-                        {problem.type === 'Book' ? 'Book ↗' : problem.type === 'Handout' ? 'Handout ↗' : 'Problem ↗'}
-                      </a>
+                    ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">{problemLinkLabel(problem)} ↗</a>
                     : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
                   {problem?.solutionUrl
                     ? <a href={problem.solutionUrl} target="_blank" rel="noreferrer">Solution ↗</a>
@@ -245,6 +305,94 @@ export default function SessionLauncher() {
             ))}
           </>
         )}
+      </div>
+    </div>
+  )
+}
+
+function SectionHeader({ children }) {
+  return (
+    <div style={{ marginTop: 16, fontWeight: 600, color: 'var(--text-dim)' }}>{children}</div>
+  )
+}
+
+function AssignmentRow({ item, fmaUrl, tz, open }) {
+  const { assignment, problem, submission, review, attempts } = item
+  const scored = attempts.filter(a => a.attempt.submitted_at)
+  return (
+    <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
+      <div style={{ fontWeight: 500, marginBottom: 6 }}>
+        {problem?.name || assignment.problem_id}
+        {open && assignment.due_date && (
+          <span style={{ color: 'var(--text-dim)', fontWeight: 400, fontSize: 13 }}>
+            {' '}— due {new Date(assignment.due_date + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' })}
+          </span>
+        )}
+        {!open && assignment.completed_date && (
+          <span style={{ color: 'var(--text-dim)', fontWeight: 400, fontSize: 13 }}>
+            {' '}— done {new Date(assignment.completed_date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}
+          </span>
+        )}
+      </div>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {problem?.problemUrl
+          ? <a href={problem.problemUrl} target="_blank" rel="noreferrer">{problemLinkLabel(problem)} ↗</a>
+          : <span style={{ color: 'var(--text-dim)' }}>No problem link</span>}
+        {submission
+          ? <a href={submission} target="_blank" rel="noreferrer">Submission ↗</a>
+          : assignment.requires_submission
+            ? <span style={{ color: 'var(--text-dim)' }}>No submission yet</span>
+            : null}
+        {review && (
+          <a href={`/report?assignment=${assignment.id}`} target="_blank" rel="noreferrer">Report ↗</a>
+        )}
+        {scored.map(({ attempt, kind }) => (
+          kind === 'exam'
+            ? <a key={attempt.id} href={fmaUrl(attempt)} target="_blank" rel="noreferrer">
+                F=ma results{attempt.score != null ? ` (${attempt.score}/25)` : ''} ↗
+              </a>
+            : <span key={attempt.id} style={{ color: 'var(--text-dim)' }}>
+                F=ma homework{attempt.score != null ? `: ${attempt.score}` : ''}
+              </span>
+        ))}
+      </div>
+      {review && (
+        <div style={{ marginTop: 6, fontSize: 13, color: 'var(--text-dim)' }}>
+          {review.ai_summary && <div>🤖 {review.ai_summary}</div>}
+          {(review.question_breakdown || []).length > 0 && (
+            <ul style={{ margin: '4px 0', paddingLeft: 18 }}>
+              {review.question_breakdown.map((b, i) => (
+                <li key={i}><strong>{b.verdict}</strong> — {b.question}: {b.note}</li>
+              ))}
+            </ul>
+          )}
+          {(review.issues || []).length > 0 && (
+            <div>Work on: {review.issues.join(', ')}</div>
+          )}
+          {review.mark_notes && <div style={{ marginTop: 2 }}><strong>Your notes:</strong> {review.mark_notes}</div>}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function AttemptRow({ attempt, kind, fmaUrl, tz }) {
+  const name = attempt.handouts?.name || attempt.exam_id || attempt.set_id
+  const when = new Date(attempt.submitted_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: tz })
+  return (
+    <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border, #2a2a2a)' }}>
+      <div style={{ fontWeight: 500, marginBottom: 6 }}>
+        {name}
+        <span style={{ color: 'var(--text-dim)', fontWeight: 400, fontSize: 13 }}> — done {when}</span>
+      </div>
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {kind === 'exam'
+          ? <a href={fmaUrl(attempt)} target="_blank" rel="noreferrer">
+              F=ma results{attempt.score != null ? ` (${attempt.score}/25)` : ''} ↗
+            </a>
+          : <span style={{ color: 'var(--text-dim)' }}>
+              F=ma homework{attempt.score != null ? `: ${attempt.score}` : ''}
+            </span>}
       </div>
     </div>
   )
