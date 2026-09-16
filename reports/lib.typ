@@ -117,45 +117,56 @@
     pagebreak()
     section("Appendix: Session Log")
 
-    // Only show the Assignment column when something was actually assigned.
-    // It also has to be a fraction, not `auto`: `auto` sizes to the longest
-    // assignment, which squeezes the summary column down to one word per line.
+    // Session tuples are (date, summary, assignment) or, when a student's
+    // sessions aren't all the same length, (date, summary, assignment, hours).
+    // Both the Assignment and Hours columns only show up when the data uses
+    // them, so most reports render exactly as before.
     let has-assignments = data.sessions.any(s => s.at(2).trim() != "")
+    let has-hours = data.sessions.any(s => s.len() > 3)
+    let hours-of(s) = if s.len() > 3 { s.at(3) } else { 1 }
+    let fmt-hours(h) = {
+      let n = if calc.fract(h) == 0 { str(calc.round(h)) } else { str(h) }
+      n + if h == 1 { " hr" } else { " hrs" }
+    }
 
-    if has-assignments {
-      table(
-        columns: (auto, 1.7fr, 1fr),
-        inset: (x: 8pt, y: 6pt),
-        align: (left + top, left + top, left + top),
-        stroke: 0.5pt + border,
-        fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
-        table.header(
-          text(fill: cream, weight: 600)[Date],
-          text(fill: cream, weight: 600)[Session summary],
-          text(fill: cream, weight: 600)[Assignment],
-        ),
-        ..data.sessions.map(s => (
-          text(font: mono-font, size: 9pt)[#s.at(0)],
-          [#s.at(1)],
-          text(size: 9pt)[#s.at(2)],
-        )).flatten(),
+    // `auto` on the summary column sizes to the longest assignment/hours cell
+    // and squeezes the summary down to one word per line, so those stay
+    // fractions.
+    let col-widths = (auto, 1.7fr)
+    if has-assignments { col-widths.push(1fr) }
+    if has-hours { col-widths.push(auto) }
+
+    let header-cells = (
+      text(fill: cream, weight: 600)[Date],
+      text(fill: cream, weight: 600)[Session summary],
+    )
+    if has-assignments { header-cells.push(text(fill: cream, weight: 600)[Assignment]) }
+    if has-hours { header-cells.push(text(fill: cream, weight: 600)[Hours]) }
+
+    let row-cells(s) = {
+      let cells = (
+        text(font: mono-font, size: 9pt)[#s.at(0)],
+        [#s.at(1)],
       )
-    } else {
-      table(
-        columns: (auto, 1fr),
-        inset: (x: 8pt, y: 6pt),
-        align: (left + top, left + top),
-        stroke: 0.5pt + border,
-        fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
-        table.header(
-          text(fill: cream, weight: 600)[Date],
-          text(fill: cream, weight: 600)[Session summary],
-        ),
-        ..data.sessions.map(s => (
-          text(font: mono-font, size: 9pt)[#s.at(0)],
-          [#s.at(1)],
-        )).flatten(),
-      )
+      if has-assignments { cells.push(text(size: 9pt)[#s.at(2)]) }
+      if has-hours { cells.push(text(size: 9pt)[#fmt-hours(hours-of(s))]) }
+      cells
+    }
+
+    table(
+      columns: col-widths,
+      inset: (x: 8pt, y: 6pt),
+      align: (left + top,) * col-widths.len(),
+      stroke: 0.5pt + border,
+      fill: (_, row) => if row == 0 { navy } else if calc.even(row) { cream } else { white },
+      table.header(..header-cells),
+      ..data.sessions.map(row-cells).flatten(),
+    )
+
+    if has-hours {
+      let total = data.sessions.map(hours-of).sum()
+      v(4pt)
+      align(right)[#text(size: 9pt, fill: dim)[Total: #fmt-hours(total)]]
     }
   }
 }

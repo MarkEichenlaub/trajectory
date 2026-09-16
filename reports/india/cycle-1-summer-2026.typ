@@ -49,16 +49,16 @@
   ),
 
   sessions: (
-    ("Jun 2, 2026", "Half-hour introductory meeting to talk through the course and how we'd work together.", "Physics 1: Mechanics Pre-Test; Velocity and Kinematics"),
-    ("Jun 9, 2026", "Unit conversions and estimation, including reading a cyclist's speed off a video and diagnosing a rental-car bill that came from confusing miles with kilometers.", "Velocity: Class Problems"),
-    ("Jun 12, 2026", "Orbital geometry and the seasons, then scientific notation and powers of ten, used to turn 3.09 x 10^17 seconds into about 9.5 billion years.", "Mechanics HW set: Velocity"),
-    ("Jul 8, 2026", "Average speed over legs traveled at different rates, using t = d/v and adding the times as fractions, with a first look at acceleration.", "Acceleration"),
-    ("Jul 15, 2026", "Constant acceleration read off position-time tables, noticing that successive one-second intervals cover distances in the ratio 1, 3, 5.", "Acceleration, Practice Problems 1; Projectile Motion; MCH02: Acceleration - Homework Problems"),
-    ("Aug 14, 2026", "A cannonball problem: the minimum launch speed and the horizontal distance that follows, using the free-fall drop 1/2 g t^2.", "Flying Cars and Archer Fish"),
-    ("Aug 20, 2026", "The vomit-comet weightlessness graph, which we showed was inconsistent with its own numbers, then the projectile range formula and why 45 degrees is the best launch angle.", "Projectile Motion Homework; Energy Conservation"),
-    ("Aug 26, 2026", "Odysseus shooting an arrow through the axe heads: a vertical-drop constraint gives a minimum speed, compared against the speed implied by a 300 m shot.", "Energy Conservation: Class Problems"),
-    ("Aug 28, 2026", "Energy conservation for falling and thrown objects, linearizing a data set as y = av^2 + b, and using an Atwood machine to measure g.", "Energy Conservation Homework"),
-    ("Sep 4, 2026", "A modified Atwood machine checked in two limiting cases, then a ramp-and-jump problem where energy conservation and projectile motion combine.", "Forms of Energy; Forms of Energy: Class Problems"),
+    ("Jun 2, 2026", "Half-hour introductory meeting to talk through the course and how we'd work together.", "Physics 1: Mechanics Pre-Test; Velocity and Kinematics", 0.5),
+    ("Jun 9, 2026", "Unit conversions and estimation, including reading a cyclist's speed off a video and diagnosing a rental-car bill that came from confusing miles with kilometers.", "Velocity: Class Problems", 3),
+    ("Jun 12, 2026", "Orbital geometry and the seasons, then scientific notation and powers of ten, used to turn 3.09 x 10^17 seconds into about 9.5 billion years.", "Mechanics HW set: Velocity", 1),
+    ("Jul 8, 2026", "Average speed over legs traveled at different rates, using t = d/v and adding the times as fractions, with a first look at acceleration.", "Acceleration", 1),
+    ("Jul 15, 2026", "Constant acceleration read off position-time tables, noticing that successive one-second intervals cover distances in the ratio 1, 3, 5.", "Acceleration, Practice Problems 1; Projectile Motion; MCH02: Acceleration - Homework Problems", 1),
+    ("Aug 14, 2026", "A cannonball problem: the minimum launch speed and the horizontal distance that follows, using the free-fall drop 1/2 g t^2.", "Flying Cars and Archer Fish", 1),
+    ("Aug 20, 2026", "The vomit-comet weightlessness graph, which we showed was inconsistent with its own numbers, then the projectile range formula and why 45 degrees is the best launch angle.", "Projectile Motion Homework; Energy Conservation", 1),
+    ("Aug 26, 2026", "Odysseus shooting an arrow through the axe heads: a vertical-drop constraint gives a minimum speed, compared against the speed implied by a 300 m shot.", "Energy Conservation: Class Problems", 1),
+    ("Aug 28, 2026", "Energy conservation for falling and thrown objects, linearizing a data set as y = av^2 + b, and using an Atwood machine to measure g.", "Energy Conservation Homework", 1),
+    ("Sep 4, 2026", "A modified Atwood machine checked in two limiting cases, then a ramp-and-jump problem where energy conservation and projectile motion combine.", "Forms of Energy; Forms of Energy: Class Problems", 1),
   ),
 )
 
