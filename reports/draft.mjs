@@ -101,7 +101,7 @@ async function main() {
   // so the drafted report covers exactly the sessions that triggered it.
   const nowIso = new Date().toISOString()
   let sq = db.from('sessions')
-    .select('id, scheduled_at, end_time, summary, tags')
+    .select('id, scheduled_at, end_time, summary, tags, billable')
     .eq('student_id', studentId)
     // Tutoring sessions only — a parent check-in carries no summary or tags and
     // would land in the report's session log as a blank row.
@@ -157,7 +157,20 @@ async function main() {
       const note = (a.notes || '').trim().replace(/\s+/g, ' ').replace(/[.;]$/, '')
       return note ? `${titleFor(a.problem_id)} — ${note}` : titleFor(a.problem_id)
     }).join('; ')
-    return { date: fmtDate(sess.scheduled_at), assignment: label }
+    // Fourth column of the session-log tuple. Sessions of uneven length get a
+    // real number of hours from the calendar span; a session flagged
+    // billable=false gives the string "free", which lib.typ shows in place of a
+    // number and leaves out of the billed total.
+    const start = new Date(sess.scheduled_at).getTime()
+    const end = sess.end_time ? new Date(sess.end_time).getTime() : NaN
+    const hours = Number.isFinite(start) && Number.isFinite(end) && end > start
+      ? Math.round(((end - start) / 3600000) * 100) / 100
+      : 1
+    return {
+      date: fmtDate(sess.scheduled_at),
+      assignment: label,
+      hours: sess.billable === false ? '"free"' : String(hours),
+    }
   })
 
   // Cycle label.
@@ -321,8 +334,9 @@ async function main() {
 }
 
 // Rewrites each sessions tuple as (authoritative date, model's summary,
-// authoritative assignment). Parsed line-by-line and left untouched if the shape
-// or row count is unexpected, so a surprise degrades to the drafted output.
+// authoritative assignment, authoritative hours). Only the summary is the
+// model's. Parsed line-by-line and left untouched if the shape or row count is
+// unexpected, so a surprise degrades to the drafted output.
 function restoreSessionFacts(block, rows) {
   if (!rows.length) return block
   const lines = block.split('\n')
@@ -334,10 +348,11 @@ function restoreSessionFacts(block, rows) {
   }
   if (close < 0) return block
 
-  // Middle field of each tuple: ("date", "summary", "assignment"),
+  // Middle field of each tuple: ("date", "summary", "assignment"[, hours]),
   // The (?:[^"\\]|\\.)* form keeps an escaped quote inside a summary from
-  // ending the match early.
-  const TUPLE = /\(\s*"(?:[^"\\]|\\.)*"\s*,\s*"((?:[^"\\]|\\.)*)"\s*,\s*"(?:[^"\\]|\\.)*"\s*\)/
+  // ending the match early. The hours field is optional here because the model
+  // may omit it; it is written from portal data either way.
+  const TUPLE = /\(\s*"(?:[^"\\]|\\.)*"\s*,\s*"((?:[^"\\]|\\.)*)"\s*,\s*"(?:[^"\\]|\\.)*"\s*(?:,[^)]*)?\)/
   const summaries = []
   for (const line of lines.slice(open + 1, close)) {
     const m = line.match(TUPLE)
@@ -349,7 +364,7 @@ function restoreSessionFacts(block, rows) {
   }
 
   const rebuilt = rows.map((r, i) =>
-    `    ("${esc(r.date)}", "${summaries[i]}", "${esc(r.assignment)}"),`)
+    `    ("${esc(r.date)}", "${summaries[i]}", "${esc(r.assignment)}", ${r.hours}),`)
   return [...lines.slice(0, open + 1), ...rebuilt, ...lines.slice(close)].join('\n')
 }
 
@@ -382,7 +397,7 @@ no markdown code fences, and no #report(...) call:
   resources: ( "…", "…" ),
   support: ( "…", "…" ),
   sessions: (
-    ("Mon DD, YYYY", "one-sentence summary.", "assignment"),
+    ("Mon DD, YYYY", "one-sentence summary.", "assignment", 1),
   ),
 )
 

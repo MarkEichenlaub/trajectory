@@ -257,7 +257,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
                   color: student.session_balance <= 1 ? 'var(--yellow)' : 'var(--green)',
                   fontWeight: 600,
                 }}>
-                  · {student.session_balance} session{student.session_balance !== 1 ? 's' : ''} remaining
+                  {/* The balance is hours, not sessions — a 90-minute session
+                      draws 1.5 — so saying "sessions" overstated what was left. */}
+                  · {student.session_balance} hour{student.session_balance !== 1 ? 's' : ''} remaining
                 </span>
               )}
             </p>

@@ -119,12 +119,19 @@
 
     // Session tuples are (date, summary, assignment) or, when a student's
     // sessions aren't all the same length, (date, summary, assignment, hours).
+    // `hours` is a number, or the string "free" for a session at no charge.
     // Both the Assignment and Hours columns only show up when the data uses
     // them, so most reports render exactly as before.
     let has-assignments = data.sessions.any(s => s.at(2).trim() != "")
     let has-hours = data.sessions.any(s => s.len() > 3)
     let hours-of(s) = if s.len() > 3 { s.at(3) } else { 1 }
+    // A free session (a trial, a make-good) gives "free" in place of a number:
+    // its time is shown, but it is not part of what the family is paying for,
+    // so it stays out of the total.
+    let is-free(s) = type(hours-of(s)) == str
+    let has-free = data.sessions.any(is-free)
     let fmt-hours(h) = {
+      if type(h) == str { return h }
       let n = if calc.fract(h) == 0 { str(calc.round(h)) } else { str(h) }
       n + if h == 1 { " hr" } else { " hrs" }
     }
@@ -164,9 +171,11 @@
     )
 
     if has-hours {
-      let total = data.sessions.map(hours-of).sum()
+      let billed = data.sessions.filter(s => not is-free(s)).map(hours-of)
+      let total = if billed.len() > 0 { billed.sum() } else { 0 }
+      let label = if has-free { "Billed total: " } else { "Total: " }
       v(4pt)
-      align(right)[#text(size: 9pt, fill: dim)[Total: #fmt-hours(total)]]
+      align(right)[#text(size: 9pt, fill: dim)[#label#fmt-hours(total)]]
     }
   }
 }

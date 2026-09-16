@@ -30,7 +30,7 @@ export default function InvoiceList({ invoices, setInvoices, isAdmin }) {
               {new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </span>
             <span style={{ fontSize: 13, flex: 1 }}>
-              ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
+              ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} hours
             </span>
             {(() => {
               let label, bg, color, line

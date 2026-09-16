@@ -263,6 +263,7 @@ async function checkVenmoReminders() {
       .select('id, scheduled_at, tags')
       .eq('student_id', student.id)
       .eq('session_type', 'session')
+      .eq('billable', true)
       .eq('balance_decremented', true)
       .eq('venmo_invoiced', false)
       .order('scheduled_at', { ascending: true })
@@ -290,10 +291,14 @@ Deno.serve(async (req) => {
 
   // Parent check-ins are free, so they must never reach the balance decrement
   // below — a 15-minute call would otherwise cost the family a full session.
+  // Same for anything flagged billable=false: a trial, or a session Mark has
+  // decided is on the house. Akshatha's trial was billed as a full session
+  // before that flag existed.
   const { data: sessions, error } = await supabase
     .from('sessions')
     .select('id, student_id, scheduled_at, end_time')
     .eq('session_type', 'session')
+    .eq('billable', true)
     .not('end_time', 'is', null)
     .lte('end_time', cutoff)
     .eq('balance_decremented', false)

@@ -1401,7 +1401,7 @@ function BillingView({ student, sessions, onSaveStudent, showToast }) {
   }
 
   async function handleCreateInvoice() {
-    if (!confirm(`Raise a Stripe invoice for ${student.name}'s next 10 sessions ($${(student.hourly_rate || 0) * 10})?
+    if (!confirm(`Raise a Stripe invoice for ${student.name}'s next 10 hours ($${(student.hourly_rate || 0) * 10})?
 
 This creates the invoice in Stripe and drafts the covering email. Nobody is emailed yet — the invoice then appears in the list below with a "Review & send" button, where you can read the email before it goes.`)) return
     setSaving(true)
@@ -1466,8 +1466,8 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
               onChange={e => setDraft(d => ({ ...d, session_balance: parseFloat(e.target.value) || 0 }))}
               style={{ width: 52, flex: 'none' }}
             />
-            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>sessions</span>
-            <button className="sm" disabled={saving} title="Add 10 sessions (payment received)" onClick={handleAddTen}>+10</button>
+            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>hours</span>
+            <button className="sm" disabled={saving} title="Add 10 hours (payment received)" onClick={handleAddTen}>+10</button>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Rate</label>
@@ -1476,7 +1476,7 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
               onChange={e => setDraft(d => ({ ...d, hourly_rate: parseFloat(e.target.value) || 0 }))}
               style={{ width: 80 }}
             />
-            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>/session</span>
+            <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>/hour</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>Invoicing</label>
@@ -1494,7 +1494,7 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
               already at zero needs the invoice raising deliberately. */}
           {student.invoicing_enabled && (student.hourly_rate ?? 0) > 0 && (
             <button className="sm" disabled={saving} onClick={handleCreateInvoice}
-              title="Raise a Stripe invoice for the next 10 sessions now">
+              title="Raise a Stripe invoice for the next 10 hours now">
               ⧉ Invoice now
             </button>
           )}
@@ -1564,7 +1564,7 @@ This creates the invoice in Stripe and drafts the covering email. Nobody is emai
                     {new Date(inv.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
                   <span style={{ fontSize: 13, flex: 1 }}>
-                    ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} sessions
+                    ${(inv.amount_cents / 100).toLocaleString()} — {inv.sessions_count} hours
                   </span>
                   {invoiceStatusBadge(inv)}
                   {inv.stripe_invoice_url && (

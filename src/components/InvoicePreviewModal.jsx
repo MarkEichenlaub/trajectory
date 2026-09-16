@@ -27,7 +27,7 @@ export default function InvoicePreviewModal({ invoice, studentName, onSend, onCl
           <div><strong style={{ color: 'var(--text)' }}>To:</strong> {invoice.staged_email_to}</div>
           <div><strong style={{ color: 'var(--text)' }}>Subject:</strong> {invoice.staged_email_subject}</div>
           <div>
-            <strong style={{ color: 'var(--text)' }}>Amount:</strong> ${(invoice.amount_cents / 100).toLocaleString()} — {invoice.sessions_count} sessions
+            <strong style={{ color: 'var(--text)' }}>Amount:</strong> ${(invoice.amount_cents / 100).toLocaleString()} — {invoice.sessions_count} hours
             {invoice.stripe_invoice_url && (
               <> · <a href={invoice.stripe_invoice_url} target="_blank" rel="noreferrer">Open in Stripe ↗</a></>
             )}

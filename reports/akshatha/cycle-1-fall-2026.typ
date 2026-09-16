@@ -37,7 +37,7 @@
     "No need to nudge her about effort. She works hard and she's willing to sit with a hard problem for a long time, which is the trait that matters most here."
   ),
   sessions: (
-    ("Aug 21, 2026", "First meeting, where we talked about the F=ma exam and got a sense of what she already knew.", "2011 F=ma; Blue Morin — Chapter 1", 0.5),
+    ("Aug 21, 2026", "First meeting, where we talked about the F=ma exam and got a sense of what she already knew.", "2011 F=ma; Blue Morin — Chapter 1", "free"),
     ("Aug 27, 2026", "We used dimensional analysis to build the oscillation frequency of a water droplet out of surface tension, density, and radius, then practiced turning small percent changes into answers with the binomial approximation.", "", 1),
     ("Aug 28, 2026", "We worked through spring energy and simple harmonic motion, landing on why the period of a linear spring doesn't depend on amplitude, and then asked what changes when the restoring force isn't linear.", "AoPS Practice Exam 1", 1),
     ("Aug 31, 2026", "We calculated moments of inertia by integration, checked them against the parallel axis theorem, and used the results to say which shapes roll down an incline fastest.", "Blue Morin — Ch 7, read and multiple choice problems", 1),
