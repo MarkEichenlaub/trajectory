@@ -50,6 +50,10 @@ function renderInline(text, allowDisplay = true) {
   })
   return escapeHtml(withHoles)
     .replace(/__([\s\S]+?)__/g, '<strong>$1</strong>')
+    // The AoPS scripts bold part labels as __(a)__, but the USAPhO-style
+    // discussion problem at the end of every week uses **a)** instead, which
+    // used to show the asterisks.
+    .replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>')
     // Figures where the author put them: a worked solution says "looks like
     // this:" and then shows one. Matched after escaping, so any quote in the
     // URL is already &quot; and cannot break out of the attribute, and the
@@ -59,6 +63,33 @@ function renderInline(text, allowDisplay = true) {
     .replace(new RegExp(`${HOLE_OPEN}(\\d+)${HOLE_CLOSE}`, 'g'), (_, i) => math[Number(i)])
 }
 
+// A bulleted list in the AoPS source is the forum's BBCode, "[list] [*] one
+// [*] two [/list]". Nothing downstream understood it, so the markers printed
+// literally, brackets and all, in the middle of the problem.
+const BBCODE_LIST_RE = /\[list(?:=[^\]]*)?\]([\s\S]*?)\[\/list\]/gi
+
+// One paragraph as HTML: prose in <p>, any BBCode list lifted out into a <ul>
+// beside it rather than nested inside the paragraph.
+function renderProse(text) {
+  const out = []
+  let last = 0
+  let m
+  BBCODE_LIST_RE.lastIndex = 0
+  while ((m = BBCODE_LIST_RE.exec(text))) {
+    const before = text.slice(last, m.index).trim()
+    if (before) out.push(`<p>${renderInline(before)}</p>`)
+    const items = m[1].split(/\[\*\]/).map(s => s.trim()).filter(Boolean)
+    if (items.length) {
+      out.push(`<ul class="statement-list">${
+        items.map(s => `<li>${renderInline(s)}</li>`).join('')}</ul>`)
+    }
+    last = m.index + m[0].length
+  }
+  const rest = text.slice(last).trim()
+  if (rest) out.push(`<p>${renderInline(rest)}</p>`)
+  return out.join('')
+}
+
 // Render a problem/question statement to HTML: paragraphs split on blank lines,
 // and a multiple-choice run at the end of a paragraph broken out one choice per
 // line, the way the choices are laid out on the real exam.
@@ -66,7 +97,7 @@ export function renderStatementHtml(text) {
   if (!text) return ''
   return statementBlocks(text)
     .map(({ stem, choices }) => {
-      const stemHtml = stem ? `<p>${renderInline(stem)}</p>` : ''
+      const stemHtml = stem ? renderProse(stem) : ''
       if (choices.length === 0) return stemHtml
       const items = choices
         .map(c => `<div class="statement-choice"><span class="choice-label">(${c.letter})</span> ${renderInline(c.text, false)}</div>`)

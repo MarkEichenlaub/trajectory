@@ -250,6 +250,11 @@ function chunkToPlainText(text) {
   return text
     .replace(/\$\$([\s\S]*?)\$\$/g, (_, tex) => latexToUnicode(tex))
     .replace(/__([\s\S]+?)__/g, '$1')
+    .replace(/\*\*([\s\S]+?)\*\*/g, '$1')
+    // BBCode bullets from the AoPS source: keep the items, one per line.
+    .replace(/\[list(?:=[^\]]*)?\]/gi, '')
+    .replace(/\[\/list\]/gi, '')
+    .replace(/\[\*\][ \t]*/g, '• ')
     .replace(/[ \t]+/g, ' ')
     .replace(/ ([,.;:?!])/g, '$1')
     .trim()

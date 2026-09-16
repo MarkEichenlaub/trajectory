@@ -49,4 +49,21 @@ describe('renderStatementHtml', () => {
     expect(html).toContain('<strong>')
     expect(html).not.toContain('__')
   })
+
+  it('renders the **...** bold the discussion problems use', () => {
+    const html = renderStatementHtml('**a)** Imagine the rings of Saturn.')
+    expect(html).toContain('<strong>a)</strong>')
+    expect(html).not.toContain('**')
+  })
+
+  // The AoPS source carries forum BBCode. The markers used to print literally.
+  it('turns a BBCode list into a real list, outside the paragraph', () => {
+    const html = renderStatementHtml(
+      'Model the ring:\n[list]\n[*] Take two rocks of mass $$m.$$\n[*] Tie a rope.\n[/list]\nDoes it tear?')
+    expect(html).not.toContain('[list]')
+    expect(html).not.toContain('[*]')
+    expect((html.match(/<li>/g) || []).length).toBe(2)
+    expect(html.indexOf('<ul')).toBeGreaterThan(html.indexOf('</p>'))
+    expect(html).toContain('Does it tear?')
+  })
 })

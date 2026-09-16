@@ -95,6 +95,17 @@ describe('statementToPlainText', () => {
   it('keeps paragraphs and drops bold markers', () => {
     expect(statementToPlainText('First __part__.\n\nSecond part.')).toBe('First part.\n\nSecond part.')
   })
+
+  it('drops **...** bold markers too', () => {
+    expect(statementToPlainText('**a)** Go.')).toBe('a) Go.')
+  })
+
+  it('turns a BBCode list into bullets', () => {
+    const text = statementToPlainText('Model it:\n[list]\n[*] One rock.\n[*] One rope.\n[/list]')
+    expect(text).not.toMatch(/\[list\]|\[\*\]|\[\/list\]/)
+    expect(text).toContain('• One rock.')
+    expect(text).toContain('• One rope.')
+  })
 })
 
 describe('problemToClipboardText', () => {
