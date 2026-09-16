@@ -5,7 +5,7 @@
   mentor:  "Mark Eichenlaub",
   cycle:   "Cycle 1 · Fall 2026",
   summary: (
-    "Eight sessions since late August, moving from dimensional analysis and scaling through oscillations, rotation, and gravitation - roughly the full mechanics core of the F=ma exam.",
+    "Nine sessions since late August, moving from dimensional analysis and scaling through oscillations, rotation, and gravitation - roughly the full mechanics core of the F=ma exam.",
     "On the practice F=ma she scored above the qualifying bar, and her algebra was fast and clean. What cost her points was conceptual: problems written so the standard formula doesn't quite apply until you rearrange something.",
     "She is comfortable enough with calculus that we set up and integrated the shell theorem by hand, which is a USAPhO-level exercise, not an F=ma one.",
     "Eleven assignments went out this cycle and she completed nine of them, including a full practice exam and several textbook chapters, between sessions."
@@ -33,7 +33,7 @@
   support: (
     "Ask her what a result means physically rather than whether she got it right - explaining out loud why a formula has to look a certain way is most of the skill we're building.",
     "Protect one uninterrupted 75-minute block for a practice exam when one is assigned; taking it in pieces loses the pacing practice that's the whole point.",
-    "Reading ahead in the textbook between sessions is making a real difference, so it's worth keeping that going even in weeks when school gets busy.",
+    "Reading ahead in the textbook between sessions is making a real difference, so it's a good idea to keep that going even in weeks when school gets busy.",
     "No need to nudge her about effort. She works hard and she's willing to sit with a hard problem for a long time, which is the trait that matters most here."
   ),
   sessions: (
@@ -42,7 +42,8 @@
     ("Aug 28, 2026", "We worked through spring energy and simple harmonic motion, landing on why the period of a linear spring doesn't depend on amplitude, and then asked what changes when the restoring force isn't linear.", "AoPS Practice Exam 1", 1),
     ("Aug 31, 2026", "We calculated moments of inertia by integration, checked them against the parallel axis theorem, and used the results to say which shapes roll down an incline fastest.", "Blue Morin — Ch 7, read and multiple choice problems", 1),
     ("Sep 1, 2026", "We derived the acceleration of a rolling sphere and tested it in limiting cases, then estimated the tension in a biceps tendon during a curl at around 200 pounds using torque about the elbow.", "Rolling Without Slipping; Blue Morin — Read ch 8, no need to do the problems yet", 1),
-    ("Sep 2, 2026", "We found the minimum friction needed to keep a rolling object from slipping, then moved to angular momentum and split a spinning disc's into an orbital piece and a spin piece.", "PhysicsWOOT 2 Practice F=ma Exam 1; Blue Morin — Read Ch 11. Do multiple choice. If done, try some problems; F=ma Rotational Motion & Angular Momentum (online quiz) — Akshatha Arunkumar", 1),
+    ("Sep 2, 2026", "We found the minimum friction needed to keep a rolling object from slipping, then moved to angular momentum and split a spinning disc's into an orbital piece and a spin piece.", "", 1),
+    ("Sep 8, 2026", "We worked two rotational collisions from Morin, found the fastest and slowest safe speeds on a banked curve, traced the tension along a rope draped over a pulley, and finished on a chain sliding off a table, where the motion runs away exponentially instead of oscillating.", "PhysicsWOOT 2 Practice F=ma Exam 1; Blue Morin — Read Ch 11. Do multiple choice. If done, try some problems; F=ma Rotational Motion & Angular Momentum (online quiz) — Akshatha Arunkumar", 1.5),
     ("Sep 10, 2026", "We built gravitational potential energy from scratch, set up and integrated the shell theorem ring by ring, sketched gravity inside a planet, and computed the 83-minute period of a low Earth orbit from nothing but g and the Earth's radius.", "Gravity from a Spherical Shell — Follow-up from our session: the shell-theorem integral done all the way through, plus the two lines where our algebra went off. Reading only", 1.5),
     ("Sep 15, 2026", "We reviewed her practice F=ma exam, worked the physical pendulum and the swinging semicircular disc, and practiced eliminating answer choices with limiting cases instead of full calculations.", "F=ma Gravity & Kepler's Laws (online quiz) — Akshatha Arunkumar", 1.5),
   ),

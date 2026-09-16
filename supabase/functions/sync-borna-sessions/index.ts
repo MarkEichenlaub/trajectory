@@ -345,6 +345,11 @@ Deno.serve(async (req) => {
     `https://www.googleapis.com/calendar/v3/calendars/primary/events?${pastParams}`,
     { headers: { 'Authorization': `Bearer ${accessToken}` } },
   )
+  // A row's id encodes the start time the event had when the row was created, so
+  // moving a past event leaves an id that matches no current start. Collect the
+  // event ids too: matching on those keeps a moved past session, which the id
+  // check alone deleted (see sync-recurring-sessions for the case this cost us).
+  const pastEventIds = new Set<string>()
   if (pastCalRes.ok) {
     const pastCalData = await pastCalRes.json() as { items?: CalEvent[] }
     const pastEvents = (pastCalData.items ?? []).filter(e =>
@@ -352,13 +357,14 @@ Deno.serve(async (req) => {
     )
     for (const e of pastEvents) {
       if (e.start.dateTime) validIds.add(`gcal-borna-${toCompactUTC(e.start.dateTime)}`)
+      pastEventIds.add(e.id)
     }
   } else {
     console.error('Past calendar query failed:', pastCalRes.status)
   }
   const { data: pastSessions } = await supabase
     .from('sessions')
-    .select('id')
+    .select('id, gcal_event_id, balance_decremented')
     .eq('student_id', STUDENT_ID)
     .eq('session_type', 'session')
     .like('id', 'gcal-borna-%')
@@ -366,9 +372,17 @@ Deno.serve(async (req) => {
     .lt('scheduled_at', now.toISOString())
   for (const s of pastSessions ?? []) {
     if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
+    if (s.gcal_event_id && pastEventIds.has(s.gcal_event_id as string)) continue
+    // A billed session is one that took place, and its board and summary are the
+    // only record of it. Never delete one, whatever the calendar says.
+    if (s.balance_decremented) {
+      console.error(`Refusing to delete billed past session ${s.id} for ${STUDENT_ID}`)
+      results.push({ eventId: '', date: s.id as string, status: 'past_orphan_kept_billed' })
+      continue
+    }
     const { error } = await supabase.from('sessions').delete().eq('id', s.id)
     if (error) console.error('Past orphan session delete error:', error)
-    else results.push({ eventId: '', date: s.id, status: 'past_orphan_deleted' })
+    else results.push({ eventId: '', date: s.id as string, status: 'past_orphan_deleted' })
   }
 
   const summary = {

@@ -218,12 +218,20 @@ async function syncOneSchedule(
   const pastListing = await listEvents(lookbackDate.toISOString(), now.toISOString())
   // Same rule as above: a failed listing is not an empty calendar.
   if (!pastListing.ok) return results
+  // A row's id encodes the start time the event had when the row was created, so
+  // moving a past event (9:45pm -> 9:30pm) leaves an id that no longer matches
+  // any current start. movedSessionIds only covers the forward pass, so the id
+  // check alone called that row an orphan and deleted a session that had already
+  // happened and been billed — Akshatha's Sep 8 session, recovered 2026-09-16.
+  // Matching on the calendar event id as well keeps a moved past session.
+  const pastEventIds = new Set<string>()
   for (const e of pastListing.events) {
     if (e.start.dateTime) validIds.add(`${idPrefix}${toCompactUTC(e.start.dateTime)}`)
+    pastEventIds.add(e.id)
   }
   const { data: pastSessions } = await supabase
     .from('sessions')
-    .select('id')
+    .select('id, gcal_event_id, balance_decremented')
     .eq('student_id', STUDENT_ID)
     .eq('session_type', 'session')
     .like('id', `${idPrefix}%`)
@@ -231,9 +239,18 @@ async function syncOneSchedule(
     .lt('scheduled_at', now.toISOString())
   for (const s of pastSessions ?? []) {
     if (validIds.has(s.id) || movedSessionIds.has(s.id)) continue
+    if (s.gcal_event_id && pastEventIds.has(s.gcal_event_id as string)) continue
+    // Last line of defence, whatever the calendar says: a billed session is a
+    // session that took place, and its board and summary are the only record of
+    // it. Never delete one — leave it and let an admin decide.
+    if (s.balance_decremented) {
+      console.error(`Refusing to delete billed past session ${s.id} for ${STUDENT_ID}`)
+      results.push({ eventId: '', date: s.id as string, status: 'past_orphan_kept_billed' })
+      continue
+    }
     const { error } = await supabase.from('sessions').delete().eq('id', s.id)
     if (error) console.error('Past orphan session delete error:', error)
-    else results.push({ eventId: '', date: s.id, status: 'past_orphan_deleted' })
+    else results.push({ eventId: '', date: s.id as string, status: 'past_orphan_deleted' })
   }
 
   return results

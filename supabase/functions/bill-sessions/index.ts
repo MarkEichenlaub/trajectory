@@ -49,8 +49,14 @@ async function sendEmail(to: string | string[], subject: string, body: string) {
   }
 }
 
-function buildInvoiceEmail(studentName: string, amountDollars: number, hostedUrl: string): { subject: string; body: string } {
-  const subject = `Invoice for ${studentName}'s physics tutoring — next 10 sessions`
+// The invoice buys 10 *hours*, not 10 sessions: the balance is decremented by a
+// session's real length, so a 90-minute session costs 1.5. Calling it "10
+// sessions" promised a family half again as much time as they were paying for.
+function buildInvoiceEmail(
+  studentName: string, amountDollars: number, hostedUrl: string, gender: string | null,
+): { subject: string; body: string } {
+  const their = gender === 'female' ? 'her' : gender === 'male' ? 'his' : 'their'
+  const subject = `Invoice for ${studentName}'s physics tutoring — next 10 hours`
   const body = `<!DOCTYPE html>
 <html><body style="margin:0;padding:0;background:#f4efe3;font-family:'IBM Plex Sans',Helvetica,Arial,sans-serif;color:#2a3142;">
   <div style="max-width:560px;margin:0 auto;padding:32px 24px;">
@@ -58,13 +64,14 @@ function buildInvoiceEmail(studentName: string, amountDollars: number, hostedUrl
     <div style="height:2px;background:#e2d8c4;margin:14px 0 22px;"></div>
     <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">Hello,</p>
     <p style="font-size:15px;line-height:1.6;margin:0 0 16px;">
-      ${studentName} has nearly used their current block of tutoring sessions. To keep things uninterrupted,
-      here is the invoice for the next block of <strong>10 sessions</strong>, totaling
+      ${studentName} has nearly used ${their} current block of tutoring hours. To keep things uninterrupted,
+      here is the invoice for the next <strong>10 hours</strong>, totaling
       <strong>$${amountDollars.toLocaleString()}</strong>.
     </p>
     <p style="font-size:15px;line-height:1.6;margin:0 0 24px;">
-      You can pay securely online (card or bank transfer) using the button below. Sessions are credited
-      to ${studentName}'s portal balance as soon as payment is received.
+      You can pay securely online (card or bank transfer) using the button below. The hours are credited
+      to ${studentName}'s portal balance as soon as payment is received, and each session draws on them
+      for as long as it runs.
     </p>
     <p style="margin:0 0 28px;">
       <a href="${hostedUrl}" style="display:inline-block;background:#2a4a6d;color:#f4efe3;text-decoration:none;font-size:15px;font-weight:600;padding:12px 28px;border-radius:6px;">Pay invoice</a>
@@ -333,7 +340,7 @@ Deno.serve(async (req) => {
       // Fetch student fresh each iteration to see latest balance
       const { data: student } = await supabase
         .from('students')
-        .select('id, name, billing_name, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at, status, invoicing_enabled')
+        .select('id, name, billing_name, gender, session_balance, hourly_rate, stripe_customer_id, last_report_reminder_at, status, invoicing_enabled')
         .eq('id', session.student_id)
         .single()
 
@@ -419,7 +426,7 @@ Deno.serve(async (req) => {
           collection_method: 'send_invoice',
           days_until_due: 7,
           auto_advance: 'false',
-          description: `Physics tutoring — 10 sessions with ${student.name}`,
+          description: `Physics tutoring — 10 hours with ${student.name}`,
           footer: `Student portal: https://portal.eichenlaubphysics.com/`,
           'metadata[student_id]': student.id,
           'payment_settings[payment_method_types][0]': 'card',
@@ -461,7 +468,7 @@ Deno.serve(async (req) => {
 
         // Compose the billing-contact email now and stage it onto the existing row.
         const amountDollars = student.hourly_rate * 10
-        const staged = buildInvoiceEmail(student.name, amountDollars, hostedUrl)
+        const staged = buildInvoiceEmail(student.name, amountDollars, hostedUrl, student.gender as string | null)
 
         const { error: stageErr } = await supabase.from('invoices')
           .update({
