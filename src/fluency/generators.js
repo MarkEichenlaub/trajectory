@@ -1354,6 +1354,412 @@ function genFmaFormulas(level, rng) {
   return fmaRecall(rng, randChoice(rng, pool))
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 11 — special-angle trig, 0° to 180° in 30° steps
+// From the 2026-09-17 session: Leo had cos θ = 1/2 sitting in front of him
+// and answered "30 degrees. No, I lied. 60 degrees." So the table gets
+// drilled both directions -- angle → value, and value → angle (the arccos
+// half). 45° is deliberately absent: Mark asked for the 30° grid, and the
+// 45-45-90 ratios already get reps in `vector-components`.
+// ═══════════════════════════════════════════════════════════════════════
+const TRIG_VALUES = {
+  zero:     { tex: '0', num: 0 },
+  one:      { tex: '1', num: 1 },
+  negone:   { tex: '-1', num: -1 },
+  half:     { tex: '\\tfrac{1}{2}', num: 0.5 },
+  neghalf:  { tex: '-\\tfrac{1}{2}', num: -0.5 },
+  r3h:      { tex: '\\tfrac{\\sqrt{3}}{2}', num: Math.sqrt(3) / 2 },
+  negr3h:   { tex: '-\\tfrac{\\sqrt{3}}{2}', num: -Math.sqrt(3) / 2 },
+  r3:       { tex: '\\sqrt{3}', num: Math.sqrt(3) },
+  negr3:    { tex: '-\\sqrt{3}', num: -Math.sqrt(3) },
+  invr3:    { tex: '\\tfrac{1}{\\sqrt{3}}', num: 1 / Math.sqrt(3) },
+  neginvr3: { tex: '-\\tfrac{1}{\\sqrt{3}}', num: -1 / Math.sqrt(3) },
+  undef:    { tex: '\\text{undefined}', num: null },
+}
+const TRIG_FLIP = {
+  one: 'negone', negone: 'one', half: 'neghalf', neghalf: 'half',
+  r3h: 'negr3h', negr3h: 'r3h', r3: 'negr3', negr3: 'r3',
+  invr3: 'neginvr3', neginvr3: 'invr3',
+}
+const TRIG_TABLE = {
+  0:   { sin: 'zero', cos: 'one',     tan: 'zero' },
+  30:  { sin: 'half', cos: 'r3h',     tan: 'invr3' },
+  60:  { sin: 'r3h',  cos: 'half',    tan: 'r3' },
+  90:  { sin: 'one',  cos: 'zero',    tan: 'undef' },
+  120: { sin: 'r3h',  cos: 'neghalf', tan: 'negr3' },
+  150: { sin: 'half', cos: 'negr3h',  tan: 'neginvr3' },
+  180: { sin: 'zero', cos: 'negone',  tan: 'zero' },
+}
+const SPECIAL_ANGLES = [0, 30, 60, 90, 120, 150, 180]
+const SIN_COS_POOL = ['zero', 'one', 'negone', 'half', 'neghalf', 'r3h', 'negr3h']
+const TAN_POOL = ['zero', 'one', 'negone', 'r3', 'negr3', 'invr3', 'neginvr3', 'undef']
+const FN_TEX = { sin: '\\sin', cos: '\\cos', tan: '\\tan' }
+const FN_NAME = { sin: 'sine', cos: 'cosine', tan: 'tangent' }
+
+// The sentence that actually fixes a sign slip, built from the angle itself.
+const AXIS_NOTE = {
+  0: 'At $$0°$$ the vector points along the $$+x$$ axis, so its cosine is 1 and its sine is 0.',
+  90: 'At $$90°$$ the vector points straight up the $$+y$$ axis, so its sine is 1, its cosine is 0, and its tangent blows up.',
+  180: 'At $$180°$$ the vector points along the $$-x$$ axis, so its cosine is $$-1$$ and its sine is 0.',
+}
+function quadrantNote(angle) {
+  if (AXIS_NOTE[angle]) return AXIS_NOTE[angle]
+  if (angle < 90) return `$$${angle}°$$ is in the first quadrant, where sine, cosine and tangent are all positive.`
+  return `The reference angle is $$180° - ${angle}° = ${180 - angle}°$$, and $$${angle}°$$ is in the second quadrant, where sine stays positive but cosine and tangent go negative.`
+}
+
+// Appends a decimal to an exact value, but only when there's a decimal worth
+// appending -- "-1 = -1" and "1/2 = 0.5" are noise next to "√3/2 ≈ 0.87".
+function decTail(x, tex) {
+  if (`${x}` === tex) return ''
+  const r = round2(x)
+  return r === x ? `= ${x}` : `\\approx ${r}`
+}
+
+function trigForwardMc(rng, fn, angle) {
+  const correct = TRIG_TABLE[angle][fn]
+  const pool = fn === 'tan' ? TAN_POOL : SIN_COS_POOL
+  // Lead the decoys with the two mistakes that actually happen: the sign
+  // flip, and the OTHER function's value at the same angle.
+  const swap = TRIG_TABLE[angle][fn === 'cos' ? 'sin' : 'cos']
+  const ordered = [TRIG_FLIP[correct], swap, ...shuffle(rng, pool)].filter(k => k && TRIG_VALUES[k])
+  const distractors = pickDistinctOrdered(correct, ordered, k => TRIG_VALUES[k].tex, 3)
+  const options = shuffle(rng, [correct, ...distractors]).map(k => ({ key: k, tex: TRIG_VALUES[k].tex }))
+  return {
+    promptMd: `What is $$${FN_TEX[fn]} ${angle}°$$?`,
+    fields: [{ key: 'ans', type: 'mc', label: '', options }],
+    answer: { ans: correct }, tolerance: {},
+    explanationMd: `$$${FN_TEX[fn]} ${angle}° = ${TRIG_VALUES[correct].tex}$$\n\n${quadrantNote(angle)}`,
+    timeTargetSec: 8,
+  }
+}
+
+function trigForwardValue(rng, fn, angle) {
+  const v = TRIG_VALUES[TRIG_TABLE[angle][fn]]
+  return {
+    promptMd: `Write $$${FN_TEX[fn]} ${angle}°$$ as a number. A decimal is fine, and so is an exact form like sqrt(3)/2.`,
+    equation: [{ tex: `${FN_TEX[fn]} ${angle}°` }, { tex: '=' }, { blank: 'v' }],
+    fields: [{ key: 'v', label: 'value', type: 'decimal', placeholder: 'e.g. 0.87' }],
+    answer: { v: v.num }, tolerance: { v: 0.02 },
+    explanationMd: `$$${FN_TEX[fn]} ${angle}° = ${v.tex} ${decTail(v.num, v.tex)}$$\n\n${quadrantNote(angle)}`,
+    timeTargetSec: 12,
+  }
+}
+
+// Which (function, angle) pairs have a single answer on 0°-180°. Cosine
+// always does. Sine repeats about 90°, so it needs "acute"/"obtuse" unless
+// it's sin 90°. Tangent is one-to-one except tan = 0, which hits 0° and 180°.
+const TRIG_REVERSE = (() => {
+  const out = []
+  for (const angle of SPECIAL_ANGLES) {
+    out.push({ fn: 'cos', angle })
+    if (angle === 90) out.push({ fn: 'sin', angle })
+    else if (angle !== 0 && angle !== 180) out.push({ fn: 'sin', angle, qualify: true })
+    if (TRIG_TABLE[angle].tan !== 'zero') out.push({ fn: 'tan', angle })
+  }
+  return out
+})()
+
+function trigReverse(rng, cand) {
+  const { fn, angle, qualify } = cand
+  const key = TRIG_TABLE[angle][fn]
+  const shared = {
+    equation: [{ tex: '\\theta =' }, { blank: 'deg' }, { tex: '{}^{\\circ}' }],
+    fields: [{ key: 'deg', label: 'θ (degrees)', type: 'int', placeholder: 'e.g. 60' }],
+    answer: { deg: angle }, tolerance: { deg: 0 },
+    timeTargetSec: 12,
+  }
+
+  if (key === 'undef') {
+    return {
+      ...shared,
+      promptMd: `$$\\tan\\theta$$ is undefined, and $$0° \\le \\theta \\le 180°$$.\n\nFind $$\\theta$$.`,
+      explanationMd: `Tangent is $$\\sin\\theta / \\cos\\theta$$, so it blows up wherever $$\\cos\\theta = 0$$ — at $$\\theta = 90°$$.`,
+    }
+  }
+
+  const tex = TRIG_VALUES[key].tex
+  // Only cosine gets the arccos phrasing: arccos returns an angle in
+  // 0°-180° already, so the question is honest. arcsin/arctan would not be.
+  if (fn === 'cos' && rng() < 0.45) {
+    return {
+      ...shared,
+      promptMd: `$$\\theta = \\arccos\\left(${tex}\\right)$$\n\nWhat is $$\\theta$$, in degrees?`,
+      explanationMd: `$$\\cos ${angle}° = ${tex}$$. Cosine slides from 1 down to $$-1$$ as $$\\theta$$ goes from 0° to 180°, hitting every value exactly once, so $$\\theta = ${angle}°$$ is the only answer.`,
+    }
+  }
+
+  const qual = qualify ? `, and $$\\theta$$ is ${angle < 90 ? 'acute' : 'obtuse'}` : ''
+  let why
+  if (fn === 'cos') {
+    why = `$$\\cos ${angle}° = ${tex}$$. Cosine slides from 1 down to $$-1$$ as $$\\theta$$ goes from 0° to 180°, hitting every value exactly once, so $$\\theta = ${angle}°$$ is the only answer.`
+  } else if (fn === 'sin') {
+    const twin = 180 - angle
+    why = qualify
+      ? `$$\\sin ${angle}° = \\sin ${twin}° = ${tex}$$, so the sine alone leaves two candidates. The ${angle < 90 ? 'acute' : 'obtuse'} one is $$${angle}°$$.`
+      : `$$\\sin 90° = 1$$, and 90° is the only place sine reaches 1.`
+  } else {
+    why = `$$\\tan ${angle}° = ${tex}$$. ${quadrantNote(angle)}`
+  }
+  return {
+    ...shared,
+    promptMd: `$$${FN_TEX[fn]}\\theta = ${tex}$$, with $$0° \\le \\theta \\le 180°$$${qual}.\n\nFind $$\\theta$$.`,
+    explanationMd: why,
+  }
+}
+
+// Sine's two-solutions-per-value habit, which is where a projectile problem
+// quietly loses its second launch angle.
+function trigBothSolutions(rng) {
+  const key = randChoice(rng, ['zero', 'half', 'r3h'])
+  const lo = key === 'zero' ? 0 : key === 'half' ? 30 : 60
+  const hi = 180 - lo
+  return {
+    promptMd: `$$\\sin\\theta = ${TRIG_VALUES[key].tex}$$ for $$0° \\le \\theta \\le 180°$$.\n\nThere are two answers. Give both.`,
+    fields: [
+      { key: 'lo', label: 'smaller θ (degrees)', type: 'int', placeholder: 'e.g. 30' },
+      { key: 'hi', label: 'larger θ (degrees)', type: 'int', placeholder: 'e.g. 150' },
+    ],
+    answer: { lo, hi }, tolerance: { lo: 0, hi: 0 },
+    explanationMd: `Sine takes the same value at $$\\theta$$ and at $$180° - \\theta$$, so $$\\sin ${lo}° = \\sin ${hi}° = ${TRIG_VALUES[key].tex}$$.`,
+    timeTargetSec: 20,
+  }
+}
+
+function genSpecialAngles(level, rng) {
+  const angles = level === 0 ? [0, 30, 60, 90] : SPECIAL_ANGLES
+  const fns = level <= 1 ? ['sin', 'cos'] : ['sin', 'cos', 'tan']
+
+  let kind
+  if (level <= 1) kind = 'mc'
+  else if (level === 2) kind = randChoice(rng, ['mc', 'mc', 'value'])
+  else if (level === 3) kind = randChoice(rng, ['reverse', 'reverse', 'mc'])
+  else if (level === 4) kind = randChoice(rng, ['mc', 'value', 'reverse', 'reverse'])
+  else kind = randChoice(rng, ['reverse', 'reverse', 'both', 'value', 'mc'])
+
+  if (kind === 'both') return trigBothSolutions(rng)
+  if (kind === 'reverse') return trigReverse(rng, randChoice(rng, TRIG_REVERSE))
+  if (kind === 'value') {
+    // "undefined" has no number to type, so the typed shape skips tan 90°.
+    const pairs = []
+    for (const a of angles) for (const f of fns) if (TRIG_TABLE[a][f] !== 'undef') pairs.push({ a, f })
+    const p = randChoice(rng, pairs)
+    return trigForwardValue(rng, p.f, p.a)
+  }
+  return trigForwardMc(rng, randChoice(rng, fns), randChoice(rng, angles))
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// Skill 12 — two-equation systems in F=ma clothing
+// The spool problem of 2026-09-17: Leo wrote down T cos θ - f = 0 and
+// 2f - T = 0 correctly, then spent several minutes adding, re-adding and
+// re-arranging them ("3F = T cos θ + T", "3F - T over T equals cos θ")
+// before Mark pointed at substitution. Mark, in the session: "The system of
+// equations is something that kind of needs to be second nature."
+//
+// So: every problem here is a system somebody could plausibly write down
+// during an F=ma problem, with the numbers picked so the answers come out
+// clean. Levels 0-1 are the bare moves (substitute; add to eliminate),
+// 2-3 add the real mechanics systems, and 4-5 reach the spool shape where
+// a whole symbol divides out and the answer is an angle.
+// ═══════════════════════════════════════════════════════════════════════
+function coefTex(c) { return c === 1 ? '' : `${c}` }
+
+const SYS_PAIRS = [['T', 'f'], ['F', 'f'], ['T', 'N']]
+
+function sysSubstitute(rng) {
+  const [A, B] = randChoice(rng, SYS_PAIRS)
+  const a = randInt(rng, 2, 9)
+  const k = randInt(rng, 2, 4)
+  const b = k * a
+  const S = a + b
+  return {
+    promptMd: `Two equations came off a force diagram:\n\n$$${k}${A} - ${B} = 0$$\n\n$$${A} + ${B} = ${S}$$\n\nFind $$${A}$$ and $$${B}$$.`,
+    fields: [
+      { key: 'A', label: A, type: 'decimal', placeholder: 'e.g. 4' },
+      { key: 'B', label: B, type: 'decimal', placeholder: 'e.g. 12' },
+    ],
+    answer: { A: a, B: b }, tolerance: { A: 0.02, B: 0.02 },
+    explanationMd: `The first equation already gives one unknown in terms of the other: $$${B} = ${k}${A}$$. Put that into the second and only $$${A}$$ is left:\n\n$$${A} + ${k}${A} = ${S} \\;\\Rightarrow\\; ${k + 1}${A} = ${S} \\;\\Rightarrow\\; ${A} = ${a}$$\n\nThen $$${B} = ${k}(${a}) = ${b}$$.`,
+    timeTargetSec: 30,
+  }
+}
+
+function sysSumDiff(rng) {
+  const [A, B] = randChoice(rng, SYS_PAIRS)
+  const b = randChoice(rng, [5, 10, 15, 20])
+  const a = b + randChoice(rng, [5, 10, 15, 20, 30])
+  return {
+    promptMd: `Solve this system for $$${A}$$ and $$${B}$$:\n\n$$${A} + ${B} = ${a + b}$$\n\n$$${A} - ${B} = ${a - b}$$`,
+    fields: [
+      { key: 'A', label: A, type: 'decimal', placeholder: 'e.g. 30' },
+      { key: 'B', label: B, type: 'decimal', placeholder: 'e.g. 10' },
+    ],
+    answer: { A: a, B: b }, tolerance: { A: 0.02, B: 0.02 },
+    explanationMd: `Add the two equations and $$${B}$$ cancels: $$2${A} = ${a + b} + ${a - b} = ${2 * a}$$, so $$${A} = ${a}$$. Then the first equation gives $$${B} = ${a + b} - ${a} = ${b}$$.`,
+    timeTargetSec: 25,
+  }
+}
+
+// Mass pairs where the Atwood answers land on a half-integer or better --
+// filtered here rather than curated by hand, so the pool can't drift.
+const ATWOOD_PAIRS = (() => {
+  const out = []
+  for (let m1 = 2; m1 <= 12; m1++) {
+    for (let m2 = 1; m2 < m1; m2++) {
+      const a = (m1 - m2) * 10 / (m1 + m2)
+      const T = m1 * (10 - a)
+      if (Number.isInteger(a * 2) && Number.isInteger(T * 2)) out.push({ m1, m2, a, T })
+    }
+  }
+  return out
+})()
+
+function sysAtwood(rng) {
+  const { m1, m2, a, T } = randChoice(rng, ATWOOD_PAIRS)
+  return {
+    promptMd: `An Atwood machine — two masses over a pulley, $$m_1$$ falling and $$m_2$$ rising — gives one equation per block ($$g = 10\\text{ m/s}^2$$):\n\n$$m_1 g - T = m_1 a$$\n\n$$T - m_2 g = m_2 a$$\n\nwith $$m_1 = ${m1}\\text{ kg}$$ and $$m_2 = ${m2}\\text{ kg}$$. Find $$a$$ and $$T$$.`,
+    fields: [
+      { key: 'a', label: 'a (m/s²)', type: 'decimal', placeholder: 'e.g. 2' },
+      { key: 'T', label: 'T (newtons)', type: 'decimal', placeholder: 'e.g. 24' },
+    ],
+    answer: { a, T }, tolerance: { a: 0.02, T: 0.02 },
+    explanationMd: `$$T$$ appears once with each sign, so adding the two equations kills it outright:\n\n$$(m_1 - m_2)g = (m_1 + m_2)a \\;\\Rightarrow\\; a = \\dfrac{(${m1} - ${m2})(10)}{${m1} + ${m2}} = ${a}\\text{ m/s}^2$$\n\nPut that back in the first equation: $$T = m_1(g - a) = ${m1}(10 - ${a}) = ${T}$$ N.`,
+    timeTargetSec: 45,
+  }
+}
+
+function sysTwoBlocks(rng) {
+  const m1 = randChoice(rng, [1, 2, 3, 4])
+  const m2 = randChoice(rng, [2, 3, 4, 5, 6])
+  const a = randChoice(rng, [2, 3, 4, 5, 6])
+  const F = (m1 + m2) * a
+  const N = m2 * a
+  return {
+    promptMd: `You push two blocks that are touching, with $$F$$ on the first and a contact force $$N$$ between them:\n\n$$F - N = m_1 a$$\n\n$$N = m_2 a$$\n\nwith $$F = ${F}\\text{ N}$$, $$m_1 = ${m1}\\text{ kg}$$ and $$m_2 = ${m2}\\text{ kg}$$. Find $$a$$ and $$N$$.`,
+    fields: [
+      { key: 'a', label: 'a (m/s²)', type: 'decimal', placeholder: 'e.g. 3' },
+      { key: 'N', label: 'N (newtons)', type: 'decimal', placeholder: 'e.g. 12' },
+    ],
+    answer: { a, N }, tolerance: { a: 0.02, N: 0.02 },
+    explanationMd: `The second equation gives $$N$$ in terms of $$a$$, so substitute it into the first and $$N$$ disappears:\n\n$$F - m_2 a = m_1 a \\;\\Rightarrow\\; F = (m_1 + m_2)a \\;\\Rightarrow\\; a = \\dfrac{${F}}{${m1} + ${m2}} = ${a}\\text{ m/s}^2$$\n\nThen $$N = m_2 a = ${m2}(${a}) = ${N}$$ N.`,
+    timeTargetSec: 40,
+  }
+}
+
+// The spool. 1:2 is weighted heavily because that's the actual problem Leo
+// worked, and it's the ratio that lands on a special angle.
+const SPOOL_RATIOS = [[1, 2], [1, 2], [1, 2], [1, 3], [1, 4], [3, 4], [2, 5], [3, 5], [4, 5]]
+
+function sysSpool(rng, withAngle) {
+  const [a, b] = withAngle ? [1, 2] : randChoice(rng, SPOOL_RATIOS)
+  const fn = randChoice(rng, ['cos', 'sin'])
+  const ft = FN_TEX[fn]
+  const ratio = a / b
+  const deg = fn === 'cos' ? 60 : 30
+  const fields = [{ key: 'v', label: `${fn} θ`, type: 'decimal', placeholder: 'e.g. 0.5' }]
+  const answer = { v: ratio }
+  const tolerance = { v: 0.02 }
+  if (withAngle) {
+    fields.push({ key: 'deg', label: 'θ (degrees)', type: 'int', placeholder: 'e.g. 45' })
+    answer.deg = deg
+    tolerance.deg = 0
+  }
+  return {
+    promptMd: `A spool is pulled by a string at angle $$\\theta$$. Balancing horizontal forces, then torques about the center, gives:\n\n$$T${ft}\\theta - f = 0$$\n\n$$${coefTex(b)}f - ${coefTex(a)}T = 0$$\n\nFind $$${ft}\\theta$$${withAngle ? `, then $$\\theta$$ (it's between 0° and 90°)` : ''}.`,
+    fields, answer, tolerance,
+    explanationMd: `The first equation hands you $$f = T${ft}\\theta$$. Substitute it into the second, and every term carries a $$T$$:\n\n$$${coefTex(b)}T${ft}\\theta - ${coefTex(a)}T = 0 \\;\\Rightarrow\\; T\\left(${coefTex(b)}${ft}\\theta - ${a}\\right) = 0$$\n\nThe tension isn't zero, so divide it out: $$${coefTex(b)}${ft}\\theta = ${a}$$, and $$${ft}\\theta = \\tfrac{${a}}{${b}} ${decTail(ratio, `${a}/${b}`)}$$.${withAngle ? ` Then $$\\theta = ${deg}°$$.` : ''}\n\nAdding or subtracting the two equations gets you nowhere here — substituting for $$f$$ is what makes the $$T$$ cancel.`,
+    timeTargetSec: withAngle ? 45 : 35,
+  }
+}
+
+const INCLINE_TRIG = [[0.6, 0.8], [0.8, 0.6]]
+
+function sysIncline(rng) {
+  const [s, c] = randChoice(rng, INCLINE_TRIG)
+  const m = randChoice(rng, [2, 4, 5, 10])
+  const mu = randChoice(rng, [0.2, 0.25, 0.5])
+  const N = m * 10 * c
+  const f = mu * N
+  const T = m * 10 * s + f
+  return {
+    promptMd: `A block on an incline is pulled up the slope by a rope, right on the verge of slipping. With $$g = 10\\text{ m/s}^2$$, $$\\sin\\theta = ${s}$$, $$\\cos\\theta = ${c}$$, $$m = ${m}\\text{ kg}$$ and $$\\mu = ${mu}$$:\n\n$$T - f - mg\\sin\\theta = 0$$\n\n$$N - mg\\cos\\theta = 0$$\n\n$$f = \\mu N$$\n\nFind $$N$$ and $$T$$, in newtons.`,
+    fields: [
+      { key: 'N', label: 'N (newtons)', type: 'decimal', placeholder: 'e.g. 40' },
+      { key: 'T', label: 'T (newtons)', type: 'decimal', placeholder: 'e.g. 50' },
+    ],
+    answer: { N, T }, tolerance: { N: 0.02, T: 0.02 },
+    explanationMd: `Start with the equation that has only one unknown in it. The second gives $$N = mg\\cos\\theta = ${m}(10)(${c}) = ${round2(N)}$$ N. The third turns that into friction: $$f = \\mu N = ${mu}(${round2(N)}) = ${round2(f)}$$ N. Now the first has nothing left but $$T$$:\n\n$$T = mg\\sin\\theta + f = ${round2(m * 10 * s)} + ${round2(f)} = ${round2(T)}\\text{ N}$$`,
+    timeTargetSec: 50,
+  }
+}
+
+// Hanging-mass-and-pulley combinations whose answers stay on half-integers.
+const PULLEY_PAIRS = (() => {
+  const out = []
+  for (const m of [1, 2, 3, 4, 5, 6]) {
+    for (const M of [2, 4, 6, 8, 10, 12, 16]) {
+      const a = 20 * m / (2 * m + M)
+      const T = 0.5 * M * a
+      if (Number.isInteger(a * 2) && Number.isInteger(T * 2)) out.push({ m, M, a, T })
+    }
+  }
+  return out
+})()
+
+function sysPulley(rng) {
+  const { m, M, a, T } = randChoice(rng, PULLEY_PAIRS)
+  return {
+    promptMd: `A block of mass $$m$$ hangs from a string wound around a solid-disk pulley of mass $$M$$ and radius $$R$$ ($$g = 10\\text{ m/s}^2$$). The block, the pulley, and the no-slip condition give:\n\n$$mg - T = ma$$\n\n$$TR = \\tfrac12 MR^2\\alpha$$\n\n$$a = \\alpha R$$\n\nwith $$m = ${m}\\text{ kg}$$ and $$M = ${M}\\text{ kg}$$. Find $$a$$ and $$T$$.`,
+    fields: [
+      { key: 'a', label: 'a (m/s²)', type: 'decimal', placeholder: 'e.g. 5' },
+      { key: 'T', label: 'T (newtons)', type: 'decimal', placeholder: 'e.g. 10' },
+    ],
+    answer: { a, T }, tolerance: { a: 0.02, T: 0.02 },
+    explanationMd: `The last two equations collapse into one. Divide the torque equation by $$R$$ to get $$T = \\tfrac12 MR\\alpha$$, then replace $$\\alpha R$$ with $$a$$: $$T = \\tfrac12 Ma$$, and $$R$$ is gone for good.\n\nNow substitute that into the block's equation:\n\n$$mg - \\tfrac12 Ma = ma \\;\\Rightarrow\\; a = \\dfrac{mg}{m + M/2} = \\dfrac{${m}(10)}{${m} + ${M / 2}} = ${a}\\text{ m/s}^2$$\n\nThen $$T = \\tfrac12 Ma = \\tfrac12(${M})(${a}) = ${T}$$ N.`,
+    timeTargetSec: 55,
+  }
+}
+
+function sysSign(rng) {
+  const k = randChoice(rng, [10, 20, 30, 40])
+  // Two 3-4-5 ropes. Whichever tension carries the bigger cosine gets
+  // solved for first, so the substitution factor is 0.75 either way.
+  const steep = rng() < 0.5
+  const T1 = steep ? 3 * k : 4 * k
+  const T2 = steep ? 4 * k : 3 * k
+  const [c1, s1] = steep ? [0.8, 0.6] : [0.6, 0.8]
+  const [c2, s2] = steep ? [0.6, 0.8] : [0.8, 0.6]
+  const W = 5 * k
+  const solveFirst = steep ? 'T_1' : 'T_2'
+  const other = steep ? 'T_2' : 'T_1'
+  const otherVal = steep ? T2 : T1
+  const firstVal = steep ? T1 : T2
+  return {
+    promptMd: `A sign hangs from two ropes. The horizontal and vertical force balances are:\n\n$$${c1}T_1 = ${c2}T_2$$\n\n$$${s1}T_1 + ${s2}T_2 = ${W}$$\n\nFind $$T_1$$ and $$T_2$$, in newtons.`,
+    fields: [
+      { key: 'T1', label: 'T₁ (newtons)', type: 'decimal', placeholder: 'e.g. 30' },
+      { key: 'T2', label: 'T₂ (newtons)', type: 'decimal', placeholder: 'e.g. 40' },
+    ],
+    answer: { T1, T2 }, tolerance: { T1: 0.02, T2: 0.02 },
+    explanationMd: `The first equation gives $$${solveFirst} = 0.75\\,${other}$$. Put that into the second, and only $$${other}$$ is left:\n\n$$1.25\\,${other} = ${W} \\;\\Rightarrow\\; ${other} = ${otherVal}\\text{ N}$$\n\nThen $$${solveFirst} = 0.75(${otherVal}) = ${firstVal}$$ N.`,
+    timeTargetSec: 50,
+  }
+}
+
+const SYS_LEVELS = {
+  0: [sysSubstitute, sysSumDiff],
+  1: [sysSubstitute, sysTwoBlocks, sysAtwood],
+  2: [sysTwoBlocks, sysAtwood, r => sysSpool(r, false)],
+  3: [r => sysSpool(r, false), sysSign, sysAtwood],
+  4: [r => sysSpool(r, false), r => sysSpool(r, true), sysIncline, sysPulley, sysSign],
+  5: [r => sysSpool(r, true), sysIncline, sysPulley, sysSign],
+}
+
+function genLinearSystems(level, rng) {
+  return randChoice(rng, SYS_LEVELS[level])(rng)
+}
+
 // ── Catalog ──────────────────────────────────────────────────────────────
 
 export const SKILLS = [
@@ -1406,6 +1812,16 @@ export const SKILLS = [
     slug: 'fma-formulas', name: 'F=ma formulas',
     description: 'Recall the formulas the F=ma solutions actually cite -- a = v^2/r and omega^2 r, omega = sqrt(k/m), moments of inertia, orbits, buoyancy -- and plug numbers into them.',
     category: 'formulas', maxLevel: 5, generate: genFmaFormulas,
+  },
+  {
+    slug: 'special-angles', name: 'Special angles: sin, cos, tan from 0° to 180°',
+    description: 'The 30°-step table both ways -- read off sin/cos/tan of 0, 30, 60, 90, 120, 150 and 180 degrees, and go backwards from a value to the angle (arccos(1/2) = 60°).',
+    category: 'trigonometry', maxLevel: 5, generate: genSpecialAngles,
+  },
+  {
+    slug: 'linear-systems', name: 'Two-equation systems (force + torque)',
+    description: 'Solving the small systems an F=ma problem actually produces -- substitute, add to eliminate, and divide out the symbol that cancels (T cos θ = f with 2f = T).',
+    category: 'algebra', maxLevel: 5, generate: genLinearSystems,
   },
 ]
 

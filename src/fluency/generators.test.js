@@ -347,3 +347,124 @@ describe('F=ma formula cards', () => {
     expect([...tiersAt(2)].sort()).toEqual([0, 1, 2])
   })
 })
+
+// ── special-angles ───────────────────────────────────────────────────────
+// The table is typed out by hand in generators.js, so the real guard is a
+// cross-check against Math.sin/cos/tan rather than against itself.
+describe('special-angles matches the actual trig functions', () => {
+  const rad = deg => deg * Math.PI / 180
+
+  it('every typed-value answer equals the real sin/cos/tan of the angle shown', () => {
+    let checked = 0
+    for (let level = 2; level <= 5; level++) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const p = generateProblem('special-angles', level, seed * 41 + level)
+        const lhs = p.equation?.[0]?.tex
+        const m = lhs && /^\\(sin|cos|tan) (\d+)°$/.exec(lhs)
+        if (!m) continue
+        checked++
+        expect(p.answer.v, `${lhs}`).toBeCloseTo(Math[m[1]](rad(+m[2])), 9)
+      }
+    }
+    expect(checked).toBeGreaterThan(20)
+  })
+
+  it('every angle it ever asks for or answers with is a 30° step in 0-180', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 300; seed++) {
+        const p = generateProblem('special-angles', level, seed * 29 + level)
+        for (const key of ['deg', 'lo', 'hi']) {
+          if (p.answer[key] == null) continue
+          expect(p.answer[key] % 30, `L${level} seed ${seed}`).toBe(0)
+          expect(p.answer[key]).toBeGreaterThanOrEqual(0)
+          expect(p.answer[key]).toBeLessThanOrEqual(180)
+        }
+        for (const deg of p.promptMd.matchAll(/(\d+)°/g)) {
+          expect(+deg[1] % 30, `L${level} seed ${seed}: ${p.promptMd}`).toBe(0)
+        }
+      }
+    }
+  })
+
+  // 45° belongs to vector-components; this skill is Mark's 30° grid only.
+  it('never asks about 45°', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 200; seed++) {
+        const p = generateProblem('special-angles', level, seed * 13 + level)
+        expect(p.promptMd).not.toMatch(/45°/)
+      }
+    }
+  })
+
+  it('reproduces the arccos(1/2) = 60° question Leo missed', () => {
+    const prompts = []
+    for (let seed = 1; seed <= 400; seed++) {
+      const p = generateProblem('special-angles', 3, seed)
+      if (p.answer.deg === 60 && /\\arccos|\\cos\\theta/.test(p.promptMd)) prompts.push(p)
+    }
+    expect(prompts.length).toBeGreaterThan(0)
+    expect(prompts[0].promptMd).toMatch(/\\tfrac\{1\}\{2\}/)
+  })
+})
+
+// ── linear-systems ───────────────────────────────────────────────────────
+describe('linear-systems stays hand-solvable and reproduces the spool', () => {
+  // Every answer is a multiple of 1/60 -- halves, thirds, quarters, fifths
+  // and tenths all qualify, arbitrary decimals don't. That's the file's
+  // no-calculator rule stated as something a test can check.
+  it('every numeric answer is a number you can write down by hand', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 200; seed++) {
+        const p = generateProblem('linear-systems', level, seed * 37 + level)
+        for (const f of p.fields) {
+          const v = p.answer[f.key]
+          expect(Math.abs(v * 60 - Math.round(v * 60)), `L${level} seed ${seed} ${f.key}=${v}`).toBeLessThan(1e-6)
+        }
+      }
+    }
+  })
+
+  it('the spool problem from the 2026-09-17 session comes out at cos θ = 1/2, θ = 60°', () => {
+    const hits = []
+    for (let seed = 1; seed <= 400; seed++) {
+      const p = generateProblem('linear-systems', 4, seed)
+      if (p.promptMd.includes('T\\cos\\theta - f = 0') && p.promptMd.includes('2f - T = 0') && p.answer.deg != null) hits.push(p)
+    }
+    expect(hits.length).toBeGreaterThan(0)
+    expect(hits[0].answer.v).toBe(0.5)
+    expect(hits[0].answer.deg).toBe(60)
+  })
+
+  it('always states every symbol it expects a number for', () => {
+    for (let level = 0; level <= 5; level++) {
+      for (let seed = 1; seed <= 150; seed++) {
+        const p = generateProblem('linear-systems', level, seed * 19 + level)
+        expect(p.promptMd).not.toMatch(/undefined|NaN/)
+        expect(p.explanationMd).not.toMatch(/undefined|NaN/)
+        expect((p.promptMd.match(/\$\$/g) || []).length % 2).toBe(0)
+        expect((p.explanationMd.match(/\$\$/g) || []).length % 2).toBe(0)
+      }
+    }
+  })
+})
+
+// A multiple-choice question with two buttons showing the same thing has no
+// right answer to click. Guard it for every skill, not just the ones that hit
+// it (K/k/P in physics-symbols, ±√3/2 in special-angles).
+describe('no multiple-choice question ever shows the same option twice', () => {
+  for (const skill of SKILLS) {
+    for (let level = 0; level <= skill.maxLevel; level++) {
+      it(`${skill.slug} level ${level}`, () => {
+        for (let seed = 1; seed <= 60; seed++) {
+          const p = generateProblem(skill.slug, level, seed * 23 + level)
+          for (const f of p.fields) {
+            if (f.type !== 'mc') continue
+            const shown = f.options.map(o => o.tex ?? o.label)
+            expect(new Set(shown).size, `seed ${seed}: ${shown.join(' | ')}`).toBe(shown.length)
+            expect(f.options.map(o => o.key)).toContain(p.answer[f.key])
+          }
+        }
+      })
+    }
+  }
+})
