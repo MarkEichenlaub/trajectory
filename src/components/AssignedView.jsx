@@ -175,16 +175,24 @@ export default function AssignedView({
     }
   }
 
+  // On All, the still-assigned problems sit on top in the order Mark dragged
+  // them into, so the list he lands on is the one the email will send; the rest
+  // follow, newest first.
   const filtered = [...assignments]
     .filter(a => statusFilter === 'all' || a.status === statusFilter)
     .sort((a, b) => {
-      if (statusFilter === 'assigned') {
-        return assignedOrder.indexOf(a.id) - assignedOrder.indexOf(b.id)
-      }
+      const ai = assignedOrder.indexOf(a.id)
+      const bi = assignedOrder.indexOf(b.id)
+      if (ai !== -1 && bi !== -1) return ai - bi
+      if (ai !== -1) return -1
+      if (bi !== -1) return 1
       return (b.assigned_date || '').localeCompare(a.assigned_date || '')
     })
 
-  const isDraggable = statusFilter === 'assigned'
+  // Reordering is about the assigned list, so only those rows drag, but they
+  // drag on All as well as on the Assigned tab.
+  const showsOrder = statusFilter === 'all' || statusFilter === 'assigned'
+  const canDrag = a => showsOrder && assignedOrder.includes(a.id)
 
   function handleDragStart(e, assignmentId) {
     setDragId(assignmentId)
@@ -260,9 +268,9 @@ export default function AssignedView({
         ))}
       </div>
 
-      {isDraggable && filtered.length > 1 && (
+      {showsOrder && assignedOrder.length > 1 && (
         <div style={{ color: 'var(--text-dim)', fontSize: 12, margin: '2px 0 6px' }}>
-          Drag ⠿ to reorder. This is the order the email and the student's portal use.
+          Drag ⠿ to reorder the assigned problems — the email and the student's portal use this order.
         </div>
       )}
 
@@ -285,6 +293,7 @@ export default function AssignedView({
 
             const isBeingDragged = dragId === a.id
             const isDragTarget = dragOverId === a.id
+            const isDraggable = canDrag(a)
             const summary = problemSummary(p)
             const review = firstReview(a)
 
