@@ -224,6 +224,18 @@ export default function AssignedView({
     setDragOverId(null)
   }
 
+  // Dragging is quick when it works, but a drop is easy to miss and there's no
+  // way to nudge a row with the keyboard, so every row also gets arrows.
+  function move(assignmentId, delta) {
+    const idx = assignedOrder.indexOf(assignmentId)
+    const target = idx + delta
+    if (idx === -1 || target < 0 || target >= assignedOrder.length) return
+    const next = [...assignedOrder]
+    next.splice(idx, 1)
+    next.splice(target, 0, assignmentId)
+    onReorder(next)
+  }
+
   return (
     <div className="assigned-view">
       <div className="assigned-header">
@@ -270,7 +282,7 @@ export default function AssignedView({
 
       {showsOrder && assignedOrder.length > 1 && (
         <div style={{ color: 'var(--text-dim)', fontSize: 12, margin: '2px 0 6px' }}>
-          Drag ⠿ to reorder the assigned problems — the email and the student's portal use this order.
+          Drag ⠿ or use ▲▼ to reorder the assigned problems — the email and the student's portal use this order.
         </div>
       )}
 
@@ -308,7 +320,21 @@ export default function AssignedView({
                 onDragEnd={isDraggable ? handleDragEnd : undefined}
               >
                 {isDraggable && (
-                  <span className="drag-handle" title="Drag to reorder">⠿</span>
+                  <span className="reorder-controls">
+                    <span className="drag-handle" title="Drag to reorder">⠿</span>
+                    <button
+                      className="reorder-arrow"
+                      disabled={assignedOrder.indexOf(a.id) === 0}
+                      onClick={() => move(a.id, -1)}
+                      title="Move up"
+                    >▲</button>
+                    <button
+                      className="reorder-arrow"
+                      disabled={assignedOrder.indexOf(a.id) === assignedOrder.length - 1}
+                      onClick={() => move(a.id, 1)}
+                      title="Move down"
+                    >▼</button>
+                  </span>
                 )}
                 <button
                   className={`status-toggle ${a.status}`}
