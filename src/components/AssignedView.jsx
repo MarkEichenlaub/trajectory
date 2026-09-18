@@ -260,6 +260,12 @@ export default function AssignedView({
         ))}
       </div>
 
+      {isDraggable && filtered.length > 1 && (
+        <div style={{ color: 'var(--text-dim)', fontSize: 12, margin: '2px 0 6px' }}>
+          Drag ⠿ to reorder. This is the order the email and the student's portal use.
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <div className="empty-state">
           {assignments.length === 0

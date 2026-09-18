@@ -4,7 +4,7 @@ import { fetchJSON } from '../utils/github'
 import { assembleProblemBank, fetchAopsProblems, refreshProblemBank } from '../utils/problemBank'
 import { bootEntry } from '../utils/boot'
 import { swr, k, cacheSet } from '../utils/cache'
-import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchFmaHomeworkSets, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule, updateAssignmentReviewNotes } from '../utils/supabase'
+import { supabase, fetchStudents, fetchAssignments, fetchSessions, fetchHandouts, fetchStudentContacts, fetchInvoices, insertAssignments, updateAssignment, deleteAssignment, saveStudent, removeStudent, sendEmail, sendStagedInvoice, createInvoiceNow, fetchStudentAccessibleSources, uploadFeedback, publishFeedback, saveHandout, updateHandout, deleteHandout, fetchExcludedProblems, excludeProblem, fetchSessionProblems, insertSessionProblems, deleteSessionProblem, markMyProblemCompleted, fetchFmaExams, fetchFmaHomeworkSets, fetchRecurringSchedule, saveRecurringSchedule, applyRecurringSchedule, updateAssignmentReviewNotes, updateAssignmentOrder, compareAssignedOrder } from '../utils/supabase'
 import { buildEmailBody, buildReportEmail } from '../utils/gmail'
 import SendEmailModal from './SendEmailModal'
 import InvoicePreviewModal from './InvoicePreviewModal'
@@ -49,7 +49,6 @@ export default function AdminApp({ userId }) {
   const [students, setStudents] = useState([])
   const [assignments, setAssignments] = useState([])
   const [sessions, setSessions] = useState([])
-  const [assignedOrderOverrides, setAssignedOrderOverrides] = useState({})
   const [excludedIds, setExcludedIds] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -775,22 +774,28 @@ export default function AdminApp({ userId }) {
   )
   const assignedCount = activeAssignments.filter(a => a.status === 'assigned').length
 
-  const assignedOrderForStudent = useMemo(() => {
-    const defaultOrder = assignments
+  const assignedOrderForStudent = useMemo(() =>
+    assignments
       .filter(a => a.student_id === activeStudentId && a.status === 'assigned')
-      .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
-      .map(a => a.id)
-    const override = assignedOrderOverrides[activeStudentId]
-    if (!override) return defaultOrder
-    const currentSet = new Set(defaultOrder)
-    const filtered = override.filter(id => currentSet.has(id))
-    const filteredSet = new Set(filtered)
-    const newOnes = defaultOrder.filter(id => !filteredSet.has(id))
-    return [...filtered, ...newOnes]
-  }, [assignments, activeStudentId, assignedOrderOverrides])
+      .sort(compareAssignedOrder)
+      .map(a => a.id),
+    [assignments, activeStudentId]
+  )
 
-  function handleReorder(newOrder) {
-    setAssignedOrderOverrides(prev => ({ ...prev, [activeStudentId]: newOrder }))
+  // Dragging writes sort_order back to the row, so the order survives a reload
+  // and the assignment email lists the problems the way Mark arranged them.
+  async function handleReorder(newOrder) {
+    const position = new Map(newOrder.map((id, i) => [id, i]))
+    const previous = assignments
+    setAssignments(prev => prev.map(a =>
+      position.has(a.id) ? { ...a, sort_order: position.get(a.id) } : a
+    ))
+    try {
+      await updateAssignmentOrder(newOrder)
+    } catch (e) {
+      setAssignments(previous)
+      showToast(e.message, 'error')
+    }
   }
 
   if (loading) return <div className="empty-state" style={{ marginTop: 80 }}>Loading… <span className="spin">⟳</span></div>

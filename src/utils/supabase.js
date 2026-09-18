@@ -53,6 +53,19 @@ export function firstReview(assignment) {
   return Array.isArray(r) ? (r[0] || null) : (r || null)
 }
 
+// Order for a student's assigned list: rows Mark has dragged into place come
+// first, in that order, then everything he hasn't touched, newest first. The
+// admin list, the assignment email and the student portal all sort with this,
+// so the three agree.
+export function compareAssignedOrder(a, b) {
+  const ai = Number.isFinite(a?.sort_order) ? a.sort_order : null
+  const bi = Number.isFinite(b?.sort_order) ? b.sort_order : null
+  if (ai !== null && bi !== null) return ai - bi
+  if (ai !== null) return -1
+  if (bi !== null) return 1
+  return (b?.assigned_date || '').localeCompare(a?.assigned_date || '')
+}
+
 export async function insertAssignments(rows) {
   const { error } = await adminClient().from('assignments').insert(rows)
   if (error) throw new Error(error.message)
@@ -61,6 +74,17 @@ export async function insertAssignments(rows) {
 export async function updateAssignment(id, updates) {
   const { error } = await adminClient().from('assignments').update(updates).eq('id', id)
   if (error) throw new Error(error.message)
+}
+
+// Persist a hand-dragged order for one student's assigned list. `orderedIds`
+// is the full list, top to bottom; each row's sort_order becomes its index.
+export async function updateAssignmentOrder(orderedIds) {
+  const client = adminClient()
+  const results = await Promise.all(
+    orderedIds.map((id, i) => client.from('assignments').update({ sort_order: i }).eq('id', id))
+  )
+  const failed = results.find(r => r.error)
+  if (failed) throw new Error(failed.error.message)
 }
 
 export async function deleteAssignment(assignmentId) {

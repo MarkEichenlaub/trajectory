@@ -7,6 +7,7 @@ import {
   fetchInvoices, fetchMyInvoices,
   uploadSubmission, notifySubmission,
   markMyProblemCompleted,
+  compareAssignedOrder,
 } from '../utils/supabase'
 import AccountManagement from './portal/AccountManagement'
 import { ContactsTab } from './portal/ContactsPanel'
@@ -108,7 +109,9 @@ export default function StudentView({ student, assignments, sessions, problems, 
     // so the student can still keep adding files for an update afterward.
     .filter(a => a.status === 'assigned' || a.status === 'submitted' || a.status === 'reviewed'
       || (a.status === 'completed' && a.requires_submission))
-    .sort((a, b) => (b.assigned_date || '').localeCompare(a.assigned_date || ''))
+    // Mark's hand-picked order (background reading before the problems that
+    // lean on it), falling back to newest first for anything he left alone.
+    .sort(compareAssignedOrder)
 
   const completedItems = assignments
     .filter(a => a.status === 'completed')
