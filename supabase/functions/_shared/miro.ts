@@ -55,6 +55,11 @@ export async function ensureBoardSharing(token: string, boardId: string): Promis
 /**
  * Create a session board the student can open from the calendar link.
  * Throws if Miro rejects the create; callers decide whether that is fatal.
+ *
+ * The board name always ends in "- Miro": the live-session capture tool
+ * (CapsLock+M / ;tutor) finds the right browser window by matching "Miro" in
+ * its tab title, and a browser tab's title is the board's own name, not
+ * "Miro" by default.
  */
 export async function createSessionBoard(
   token: string,
@@ -64,7 +69,7 @@ export async function createSessionBoard(
   const res = await fetch(MIRO_API, {
     method: 'POST',
     headers: miroHeaders(token),
-    body: JSON.stringify({ name, teamId, sharingPolicy: LINK_EDIT_POLICY }),
+    body: JSON.stringify({ name: `${name} - Miro`, teamId, sharingPolicy: LINK_EDIT_POLICY }),
   })
   if (!res.ok) throw new Error(`Miro create failed: ${res.status} ${await res.text()}`)
 
